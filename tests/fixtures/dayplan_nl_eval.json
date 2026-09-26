@@ -1,0 +1,142 @@
+[
+  {
+    "name": "wfh_laundry_lift_groceries",
+    "prompt": "Plan my work-from-home day from 08:00 to 21:00. I work 09:00-17:00. I have standup 10:00-10:30, planning 13:00-13:30, and a client call 15:30-16:00. Wash clothes for 30 minutes starting at 08:00, transfer them for 5 minutes within 15 minutes after washing, then dry them for 45 minutes immediately after the transfer. Lift for 60 minutes and get groceries for 45 minutes; both are required, and groceries must finish by 20:30. I would like lifting finished by 16:00, priority 5, and prefer to minimize work interruptions, priority 3.",
+    "expected": {
+      "horizon": {"start": "08:00", "end": "21:00"},
+      "work_window": {"start": "09:00", "end": "17:00"},
+      "fixed_events": {"standup": {"start": "10:00", "end": "10:30"}, "planning": {"start": "13:00", "end": "13:30"}, "client call": {"start": "15:30", "end": "16:00"}},
+      "tasks": {
+        "wash": {"duration_min": 30, "mode": "passive", "earliest_start": "08:00", "latest_end": "08:30", "required": true},
+        "transfer": {"duration_min": 5, "mode": "active", "required": true},
+        "dry": {"duration_min": 45, "mode": "passive", "required": true},
+        "lift": {"duration_min": 60, "mode": "active", "required": true},
+        "groceries": {"duration_min": 45, "mode": "active", "latest_end": "20:30", "required": true}
+      },
+      "precedences": [["wash", "transfer", 0, 15], ["transfer", "dry", 0, 0]],
+      "preferences": [["finish_before", "lift", "16:00"], ["minimize_work_interruptions"]],
+      "missing_info": false
+    }
+  },
+  {
+    "name": "multiple_meetings",
+    "prompt": "My day runs 08:00-18:00 and my work hours are 09:00-17:00. Put in a team sync from 09:30 to 10:00 and a client meeting from 14:00 to 15:00. I also need a 30-minute active email block and a 60-minute active report block.",
+    "expected": {
+      "horizon": {"start": "08:00", "end": "18:00"},
+      "work_window": {"start": "09:00", "end": "17:00"},
+      "fixed_events": {"team sync": {"start": "09:30", "end": "10:00"}, "client meeting": {"start": "14:00", "end": "15:00"}},
+      "tasks": {"email": {"duration_min": 30, "mode": "active"}, "report": {"duration_min": 60, "mode": "active"}},
+      "precedences": [],
+      "preferences": [],
+      "missing_info": false
+    }
+  },
+  {
+    "name": "active_and_passive",
+    "prompt": "Schedule 09:00-12:00. There is a meeting from 09:00-10:00. Start the dishwasher at 09:00; it runs passively for 90 minutes. I need a 30-minute active phone call after 10:30.",
+    "expected": {
+      "horizon": {"start": "09:00", "end": "12:00"},
+      "fixed_events": {"meeting": {"start": "09:00", "end": "10:00"}},
+      "tasks": {"dishwasher": {"duration_min": 90, "mode": "passive", "earliest_start": "09:00"}, "phone call": {"duration_min": 30, "mode": "active", "earliest_start": "10:30"}},
+      "precedences": [],
+      "preferences": [],
+      "missing_info": false
+    }
+  },
+  {
+    "name": "laundry_precedence",
+    "prompt": "Use an 08:00-14:00 horizon. Laundry has three required steps: wash is passive for 30 minutes, transfer is active for 5 minutes, and dry is passive for 45 minutes. Transfer must happen after washing and within 10 minutes of its finish; drying starts immediately after transfer.",
+    "expected": {
+      "horizon": {"start": "08:00", "end": "14:00"},
+      "tasks": {"wash": {"duration_min": 30, "mode": "passive", "required": true}, "transfer": {"duration_min": 5, "mode": "active", "required": true}, "dry": {"duration_min": 45, "mode": "passive", "required": true}},
+      "precedences": [["wash", "transfer", 0, 10], ["transfer", "dry", 0, 0]],
+      "preferences": [],
+      "missing_info": false
+    }
+  },
+  {
+    "name": "hard_timing",
+    "prompt": "The available day is 08:00-18:00. I must do a required 45-minute active workout no earlier than 16:00 and it must finish no later than 18:00. I also need a required 20-minute active shower after the workout.",
+    "expected": {
+      "horizon": {"start": "08:00", "end": "18:00"},
+      "tasks": {"workout": {"duration_min": 45, "mode": "active", "earliest_start": "16:00", "latest_end": "18:00", "required": true}, "shower": {"duration_min": 20, "mode": "active", "required": true}},
+      "precedences": [["workout", "shower", 0, null]],
+      "preferences": [],
+      "missing_info": false
+    }
+  },
+  {
+    "name": "soft_finish_preference",
+    "prompt": "Plan a 09:00-17:00 day with a required 60-minute active report. I would ideally like the report finished by 15:00, but that is only a preference.",
+    "expected": {
+      "horizon": {"start": "09:00", "end": "17:00"},
+      "tasks": {"report": {"duration_min": 60, "mode": "active", "required": true}},
+      "precedences": [],
+      "preferences": [["finish_before", "report", "15:00"]],
+      "missing_info": false
+    }
+  },
+  {
+    "name": "work_interruption_preference",
+    "prompt": "My day is 08:00-18:00 and my work window is 09:00-17:00. I need a required 45-minute active workout and a required 30-minute active grocery trip. Prefer to keep work interruptions to a minimum.",
+    "expected": {
+      "horizon": {"start": "08:00", "end": "18:00"},
+      "work_window": {"start": "09:00", "end": "17:00"},
+      "tasks": {"workout": {"duration_min": 45, "mode": "active", "required": true}, "grocery trip": {"duration_min": 30, "mode": "active", "required": true}},
+      "precedences": [],
+      "preferences": [["minimize_work_interruptions"]],
+      "missing_info": false
+    }
+  },
+  {
+    "name": "no_work_window",
+    "prompt": "Schedule my day from 10:00 to 16:00. I have a fixed dentist appointment from 12:00 to 13:00 and need a 30-minute active errand. I did not specify work hours because this is not a work day.",
+    "expected": {
+      "horizon": {"start": "10:00", "end": "16:00"},
+      "work_window": null,
+      "fixed_events": {"dentist appointment": {"start": "12:00", "end": "13:00"}},
+      "tasks": {"errand": {"duration_min": 30, "mode": "active"}},
+      "precedences": [],
+      "preferences": [],
+      "missing_info": false
+    }
+  },
+  {
+    "name": "paraphrase_variation",
+    "prompt": "Keep 07:00-20:00 open. I have to attend a stand-up from 09:00 until 09:15. A 20 min hands-on breakfast task and a 40 minute machine cycle are needed; the machine cycle can run unattended. The breakfast task cannot overlap the stand-up.",
+    "expected": {
+      "horizon": {"start": "07:00", "end": "20:00"},
+      "fixed_events": {"stand-up": {"start": "09:00", "end": "09:15"}},
+      "tasks": {"breakfast": {"duration_min": 20, "mode": "active"}, "machine cycle": {"duration_min": 40, "mode": "passive"}},
+      "precedences": [],
+      "preferences": [],
+      "missing_info": false
+    }
+  },
+  {
+    "name": "ambiguous_missing_horizon",
+    "prompt": "I need to get laundry and groceries done today. Laundry takes some time and groceries should be convenient. Please make a plan.",
+    "expected": {
+      "missing_info": true
+    }
+  },
+  {
+    "name": "ambiguous_missing_durations",
+    "prompt": "Schedule my workout before my appointment sometime tomorrow afternoon. The appointment is fixed, and I would like the workout earlier if possible.",
+    "expected": {
+      "missing_info": true
+    }
+  },
+  {
+    "name": "deadline_paraphrase",
+    "prompt": "For a 09:00-19:00 day, I need a required active 90-minute study session done by 17:00. A required passive 30-minute oven timer may run unattended. I must attend a class from 18:00-19:00.",
+    "expected": {
+      "horizon": {"start": "09:00", "end": "19:00"},
+      "fixed_events": {"class": {"start": "18:00", "end": "19:00"}},
+      "tasks": {"study": {"duration_min": 90, "mode": "active", "latest_end": "17:00", "required": true}, "oven timer": {"duration_min": 30, "mode": "passive", "required": true}},
+      "precedences": [],
+      "preferences": [],
+      "missing_info": false
+    }
+  }
+]

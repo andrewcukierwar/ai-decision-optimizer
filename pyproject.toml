@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "Deterministic scheduling core for the AI Decision Optimizer"
 requires-python = ">=3.9"
 dependencies = [
+    "openai>=1.66,<3",
     "ortools>=9.9,<10",
     "pydantic>=2.7,<3",
 ]
