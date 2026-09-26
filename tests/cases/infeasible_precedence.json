@@ -1,0 +1,14 @@
+{
+  "horizon": {"start": "08:00", "end": "12:00"},
+  "work_window": null,
+  "fixed_events": [],
+  "tasks": [
+    {"name": "wash", "duration_min": 60, "mode": "passive", "required": true},
+    {"name": "transfer", "duration_min": 5, "mode": "active", "latest_end": "08:30", "required": true}
+  ],
+  "precedences": [
+    {"before": "wash", "after": "transfer", "min_gap_min": 0, "max_gap_min": 0}
+  ],
+  "preferences": [],
+  "missing_info": []
+}

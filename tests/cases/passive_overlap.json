@@ -1,0 +1,14 @@
+{
+  "horizon": {"start": "08:00", "end": "12:00"},
+  "work_window": {"start": "09:00", "end": "12:00"},
+  "fixed_events": [
+    {"name": "meeting", "start": "09:00", "end": "10:00"}
+  ],
+  "tasks": [
+    {"name": "machine", "duration_min": 90, "mode": "passive", "earliest_start": "08:00", "required": true},
+    {"name": "call", "duration_min": 30, "mode": "active", "required": true}
+  ],
+  "precedences": [],
+  "preferences": [],
+  "missing_info": []
+}

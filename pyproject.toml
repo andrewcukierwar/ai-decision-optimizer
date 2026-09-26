@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-decision-optimizer"
+version = "0.1.0"
+description = "Deterministic scheduling core for the AI Decision Optimizer"
+requires-python = ">=3.9"
+dependencies = [
+    "ortools>=9.9,<10",
+    "pydantic>=2.7,<3",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<9"]
+
+[tool.setuptools.packages.find]
+include = ["dayplan*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

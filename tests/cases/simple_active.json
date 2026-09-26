@@ -1,0 +1,14 @@
+{
+  "horizon": {"start": "09:00", "end": "13:00"},
+  "work_window": {"start": "09:00", "end": "12:00"},
+  "fixed_events": [],
+  "tasks": [
+    {"name": "email", "duration_min": 30, "mode": "active", "required": true},
+    {"name": "focus", "duration_min": 60, "mode": "active", "required": true}
+  ],
+  "precedences": [],
+  "preferences": [
+    {"type": "finish_before", "task": "focus", "time": "11:00", "weight": 2}
+  ],
+  "missing_info": []
+}

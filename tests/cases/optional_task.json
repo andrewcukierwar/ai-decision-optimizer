@@ -1,0 +1,12 @@
+{
+  "horizon": {"start": "10:00", "end": "12:00"},
+  "work_window": null,
+  "fixed_events": [],
+  "tasks": [
+    {"name": "required_task", "duration_min": 30, "mode": "active", "required": true},
+    {"name": "optional_task", "duration_min": 90, "mode": "active", "required": false, "latest_end": "11:00"}
+  ],
+  "precedences": [],
+  "preferences": [],
+  "missing_info": []
+}

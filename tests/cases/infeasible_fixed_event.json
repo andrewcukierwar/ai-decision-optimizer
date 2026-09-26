@@ -1,0 +1,13 @@
+{
+  "horizon": {"start": "09:00", "end": "11:00"},
+  "work_window": {"start": "09:00", "end": "11:00"},
+  "fixed_events": [
+    {"name": "appointment", "start": "09:30", "end": "10:30"}
+  ],
+  "tasks": [
+    {"name": "long_active_task", "duration_min": 90, "mode": "active", "required": true}
+  ],
+  "precedences": [],
+  "preferences": [],
+  "missing_info": []
+}
