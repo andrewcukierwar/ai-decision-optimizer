@@ -11,8 +11,8 @@ from .schema import (
     PreferencePenalty,
     SolveStatus,
     TaskAssignment,
-    time_to_minutes,
     minutes_to_time,
+    time_to_minutes,
 )
 
 

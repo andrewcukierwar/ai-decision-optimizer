@@ -6,7 +6,7 @@ materialized result so a compiler bug can be caught independently.
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Tuple
 
 from .schema import DayPlan, DayPlanSolution, SolveStatus, Task, TaskAssignment, time_to_minutes
 

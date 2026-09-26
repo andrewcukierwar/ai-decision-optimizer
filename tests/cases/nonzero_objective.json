@@ -1,0 +1,15 @@
+{
+  "horizon": {"start": "09:00", "end": "11:00"},
+  "work_window": null,
+  "fixed_events": [
+    {"name": "appointment", "start": "09:00", "end": "10:00"}
+  ],
+  "tasks": [
+    {"name": "report", "duration_min": 40, "mode": "active", "required": true}
+  ],
+  "precedences": [],
+  "preferences": [
+    {"type": "finish_before", "task": "report", "time": "10:20", "weight": 5}
+  ],
+  "missing_info": []
+}

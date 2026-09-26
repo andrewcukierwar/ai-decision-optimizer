@@ -16,7 +16,7 @@ dependencies = [
 test = ["pytest>=8,<9"]
 
 [tool.setuptools.packages.find]
-include = ["dayplan*"]
+include = ["decision_optimizer*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

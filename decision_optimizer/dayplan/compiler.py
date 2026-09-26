@@ -5,7 +5,7 @@ from typing import Any, Dict, List
 
 from ortools.sat.python import cp_model
 
-from .schema import DayPlan, PreferenceType, TaskMode, time_to_minutes
+from .schema import DayPlan, TaskMode, time_to_minutes
 
 
 @dataclass
@@ -38,7 +38,6 @@ def compile_day_plan(plan: DayPlan) -> CompiledDayPlan:
     start_vars: Dict[str, Any] = {}
     end_vars: Dict[str, Any] = {}
     presence_vars: Dict[str, Any] = {}
-    task_intervals: Dict[str, Any] = {}
     active_intervals: List[Any] = []
 
     for task in plan.tasks:
@@ -66,7 +65,6 @@ def compile_day_plan(plan: DayPlan) -> CompiledDayPlan:
         start_vars[task.name] = start
         end_vars[task.name] = end
         presence_vars[task.name] = presence
-        task_intervals[task.name] = interval
         if task.mode == TaskMode.ACTIVE:
             active_intervals.append(interval)
 
@@ -94,11 +92,10 @@ def compile_day_plan(plan: DayPlan) -> CompiledDayPlan:
     penalty_vars: List[Any] = []
 
     for index, preference in enumerate(plan.preferences):
-        if preference.type == PreferenceType.FINISH_BEFORE:
+        if preference.type.value == "finish_before":
             assert preference.task is not None
             assert preference.time is not None
             target = time_to_minutes(preference.time)
-            task = next(task for task in plan.tasks if task.name == preference.task)
             late_upper_bound = max(0, horizon_end - target)
             late = model.NewIntVar(0, late_upper_bound, "late_" + str(index))
             # If an optional task is absent, its unused end variable is
@@ -108,7 +105,7 @@ def compile_day_plan(plan: DayPlan) -> CompiledDayPlan:
             model.AddMaxEquality(late, [0, end_vars[preference.task] - target])
             penalty_vars.append(late)
             objective_terms.append(late * preference.weight)
-        elif preference.type == PreferenceType.MINIMIZE_WORK_INTERRUPTIONS:
+        elif preference.type.value == "minimize_work_interruptions":
             if plan.work_window is None:
                 continue
             work_start = time_to_minutes(plan.work_window.start)
