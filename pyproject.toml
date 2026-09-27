@@ -11,6 +11,7 @@ dependencies = [
     "openai>=1.66,<3",
     "ortools>=9.9,<10",
     "pydantic>=2.7,<3",
+    "streamlit>=1.40,<2",
 ]
 
 [project.optional-dependencies]
