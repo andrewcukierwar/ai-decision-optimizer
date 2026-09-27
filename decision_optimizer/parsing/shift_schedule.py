@@ -20,7 +20,7 @@ from decision_optimizer.shift_schedule import (
 )
 
 
-DEFAULT_MODEL = "gpt-6-luna"
+DEFAULT_MODEL = "gpt-6-sol"  # gpt-6-luna
 
 SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS = """You extract one small workforce scheduling problem into the provided ShiftSchedule schema.
 
@@ -219,9 +219,7 @@ def _build_user_request(
 ) -> str:
     if previous_extraction is None:
         return original
-    previous_json = json.dumps(
-        previous_extraction.model_dump(mode="json"), indent=2
-    )
+    previous_json = json.dumps(previous_extraction.model_dump(mode="json"), indent=2)
     return (
         "Original user request:\n"
         + original

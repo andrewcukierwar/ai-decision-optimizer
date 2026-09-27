@@ -21,7 +21,7 @@ from decision_optimizer.dayplan import (
 )
 
 
-DEFAULT_MODEL = "gpt-6-luna"
+DEFAULT_MODEL = "gpt-6-sol"  # gpt-6-luna
 
 DAYPLAN_EXTRACTION_INSTRUCTIONS = """You extract one personal-day scheduling problem into the provided DayPlan schema.
 
@@ -159,7 +159,9 @@ def parse_dayplan(
 
     parsed = getattr(response, "output_parsed", None)
     if parsed is None:
-        raise DayPlanOutputError("The model returned no parsed DayPlanExtraction output")
+        raise DayPlanOutputError(
+            "The model returned no parsed DayPlanExtraction output"
+        )
 
     try:
         return (
@@ -197,14 +199,14 @@ def solve_from_text(
 
     solution = solve_day_plan(extraction.plan, time_limit_seconds=time_limit_seconds)
     validation = validate_solution(extraction.plan, solution)
-    return TextSolveResult(extraction=extraction, solution=solution, validation=validation)
+    return TextSolveResult(
+        extraction=extraction, solution=solution, validation=validation
+    )
 
 
 def _create_openai_client() -> Any:
     if not os.getenv("OPENAI_API_KEY"):
-        raise MissingAPIKeyError(
-            "OPENAI_API_KEY is required for live DayPlan parsing"
-        )
+        raise MissingAPIKeyError("OPENAI_API_KEY is required for live DayPlan parsing")
     try:
         from openai import OpenAI
     except ImportError as exc:
