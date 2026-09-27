@@ -20,8 +20,11 @@ from decision_optimizer.explanations import (
     render_dayplan_explanation,
     render_shift_schedule_explanation,
 )
-from decision_optimizer.parsing.dayplan import DayPlanError
-from decision_optimizer.parsing.shift_schedule import ShiftScheduleError
+from decision_optimizer.parsing.dayplan import DayPlanError, DayPlanExtraction
+from decision_optimizer.parsing.shift_schedule import (
+    ShiftScheduleError,
+    ShiftScheduleExtraction,
+)
 
 
 PROBLEM_TYPES = ("Day Planner", "Workforce Scheduler")
@@ -395,16 +398,26 @@ def _store_extraction(
     st.session_state[prefix + "_extraction"] = extraction
     st.session_state[prefix + "_clarification_used"] = clarification_used
     st.session_state.pop(prefix + "_run", None)
-    if extraction.plan is not None:
+
+    if isinstance(extraction, DayPlanExtraction):
+        if extraction.plan is None:
+            st.session_state.pop(prefix + "_edited_json", None)
+            return
         st.session_state[prefix + "_edited_json"] = json.dumps(
             extraction.plan.model_dump(mode="json"), indent=2
         )
-    elif extraction.schedule is not None:
+        return
+
+    if isinstance(extraction, ShiftScheduleExtraction):
+        if extraction.schedule is None:
+            st.session_state.pop(prefix + "_edited_json", None)
+            return
         st.session_state[prefix + "_edited_json"] = json.dumps(
             extraction.schedule.model_dump(mode="json"), indent=2
         )
-    else:
-        st.session_state.pop(prefix + "_edited_json", None)
+        return
+
+    raise TypeError("unsupported extraction type: " + type(extraction).__name__)
 
 
 def _reset_for_problem_change(st: Any, problem_type: str) -> None:

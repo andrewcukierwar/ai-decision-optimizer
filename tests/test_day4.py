@@ -28,9 +28,15 @@ from decision_optimizer.explanations import (
 from decision_optimizer.parsing.dayplan import DayPlanExtraction
 from decision_optimizer.parsing.shift_schedule import ShiftScheduleExtraction
 from decision_optimizer.shift_schedule import ShiftSchedule, SolveStatus as ShiftSolveStatus
+from app import _store_extraction
 
 
 CASES = Path(__file__).parent / "cases"
+
+
+class FakeStreamlit:
+    def __init__(self, session_state=None):
+        self.session_state = session_state or {}
 
 
 class FakeClient:
@@ -146,6 +152,51 @@ def test_incomplete_shift_schedule_supports_one_clarification_round():
 
     assert first.schedule is None
     assert final.schedule is not None
+
+
+def test_store_incomplete_dayplan_extraction_keeps_clarification_state_available():
+    state = FakeStreamlit({"dayplan_edited_json": "stale"})
+    extraction = DayPlanExtraction(
+        plan=None, missing_info=["What is the planning horizon?"]
+    )
+
+    _store_extraction(state, "dayplan", extraction, clarification_used=False)
+
+    assert state.session_state["dayplan_extraction"] == extraction
+    assert state.session_state["dayplan_clarification_used"] is False
+    assert "dayplan_edited_json" not in state.session_state
+
+
+def test_store_incomplete_shift_schedule_extraction_keeps_clarification_state_available():
+    state = FakeStreamlit({"shift_schedule_edited_json": "stale"})
+    extraction = ShiftScheduleExtraction(
+        schedule=None, missing_info=["Which shifts and dates should be staffed?"]
+    )
+
+    _store_extraction(state, "shift_schedule", extraction, clarification_used=False)
+
+    assert state.session_state["shift_schedule_extraction"] == extraction
+    assert state.session_state["shift_schedule_clarification_used"] is False
+    assert "shift_schedule_edited_json" not in state.session_state
+
+
+def test_store_complete_extractions_keeps_editable_json_for_both_problem_types():
+    dayplan = DayPlanExtraction(
+        plan=load_dayplan("simple_active.json"), missing_info=[]
+    )
+    day_state = FakeStreamlit()
+    _store_extraction(day_state, "dayplan", dayplan, clarification_used=False)
+
+    schedule = ShiftScheduleExtraction(
+        schedule=load_schedule("shift_schedule_basic.json"), missing_info=[]
+    )
+    shift_state = FakeStreamlit()
+    _store_extraction(
+        shift_state, "shift_schedule", schedule, clarification_used=False
+    )
+
+    assert json.loads(day_state.session_state["dayplan_edited_json"]) == dayplan.plan.model_dump(mode="json")
+    assert json.loads(shift_state.session_state["shift_schedule_edited_json"]) == schedule.schedule.model_dump(mode="json")
 
 
 def test_infeasible_dayplan_has_structured_diagnosis():
