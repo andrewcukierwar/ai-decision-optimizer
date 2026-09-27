@@ -12,6 +12,22 @@ Python · GPT-6 Sol · OpenAI Structured Outputs · Pydantic · OR-Tools CP-SAT 
 ![AI Decision Optimizer Day Planner](docs/images/day-planner.png)
 -->
 
+## Live demo
+
+The application has not been deployed yet. The future hosted URL will replace `LIVE_DEMO_URL_HERE` in the link at the top of this README.
+
+The hosted version will use server-side secret/environment configuration, so visitors will not need to provide their own OpenAI API key.
+
+## Screenshots
+
+Final screenshots will be added after deployment. The repository already has `docs/images/` ready for:
+
+<!-- Insert these images after deployment:
+![Day Planner](docs/images/day-planner.png)
+![Workforce Scheduler](docs/images/workforce-scheduler.png)
+![Infeasibility diagnosis](docs/images/infeasibility.png)
+-->
+
 ## Why this exists
 
 Planning requests are usually expressed in language: goals, deadlines, fixed events, preferences, and exceptions. LLMs are useful for turning that messy input into a structured problem. They are not the right component to guarantee that every hard constraint is satisfied or that the resulting plan is optimal.
@@ -67,6 +83,14 @@ flowchart LR
 - CP-SAT determines feasibility and the optimized decisions; it does not receive a free-form request.
 - The independent validator checks the materialized result against the confirmed schema and recomputes the relevant hard-constraint and objective semantics.
 - Explanations use structured solver and validator facts. They do not claim formal verification or rely on hidden reasoning about what the optimizer “wanted.”
+
+## Design decisions
+
+1. **Separate interpretation from optimization.** GPT-6 Sol extracts structured intent; CP-SAT chooses the schedule.
+2. **Use two concrete schemas.** `DayPlan` and `ShiftSchedule` keep the MVP bounded and testable instead of pretending to support arbitrary optimization problems.
+3. **Validate independently of the compiler.** Materialized solver results are checked against the confirmed schema by separate plain-Python validators.
+4. **Require user confirmation.** The parsed interpretation is visible and editable before it becomes an optimization problem.
+5. **Treat infeasibility as a valid result.** The system can report that no schedule exists and provide deterministic diagnostic evidence instead of forcing a plausible answer.
 
 ## What it can solve
 
@@ -146,7 +170,7 @@ After confirmation, CP-SAT materializes task assignments while respecting hard c
 
 ### Typed structured extraction
 
-The model must return one of the typed extraction schemas: `DayPlanExtraction` or `ShiftScheduleExtraction`. Pydantic validation rejects malformed structures and unsupported fields at the schema boundary.
+The model must return one of the typed extraction schemas: `DayPlanExtraction` or `ShiftScheduleExtraction`. Pydantic validates the structured output, and the concrete `DayPlan` and `ShiftSchedule` schemas reject unsupported input fields.
 
 ### User-confirmed interpretation
 
@@ -180,7 +204,7 @@ The following are curated MVP evaluation cases designed to exercise the supporte
 | Workforce Scheduler | 3 / 3 | 2 / 2 | 2 / 2 |
 | **Combined** | **16 / 16** | **13 / 13** | **13 / 13** |
 
-The live NL evaluation uses the configured OpenAI model and API. It is separate from the deterministic pytest suite, which currently reports **128 tests passing** and requires no API access.
+These reported live results use the configured OpenAI model and API; the evaluation cases are curated to exercise the MVP’s supported semantics. The deterministic suite is separate and documented below.
 
 ## Running locally
 
@@ -198,7 +222,15 @@ uv sync --extra test
 cp .env.example .env
 ```
 
-Set `OPENAI_API_KEY` in `.env`. The parser defaults to `gpt-6-sol`; set `OPENAI_MODEL` if you need to override it. The application reads these values from the environment, and `.env` is intentionally ignored by Git.
+Edit `.env` and set `OPENAI_API_KEY`. The parser defaults to `gpt-6-sol`; set `OPENAI_MODEL` if you need to override it. The application reads these values from the process environment and does not automatically load `.env`.
+
+On macOS/Linux, export the values in the shell that will run the app or evaluations:
+
+```bash
+set -a
+source .env
+set +a
+```
 
 ### Run the Streamlit app
 
@@ -208,47 +240,61 @@ uv run streamlit run app.py
 
 The app provides both the Day Planner and Workforce Scheduler flows. Each flow interprets the request, supports one clarification round when required, shows the typed interpretation, allows structured edits, and then confirms, solves, validates, and explains the result.
 
-### Run the deterministic test suite
+## Testing
+
+### Deterministic test suite
 
 ```bash
 uv run pytest
 ```
 
-### Run the opt-in live NL evaluations
+Normal pytest requires no `OPENAI_API_KEY` and makes no paid OpenAI API calls. The final engineering review verified **128 passing tests**.
 
-These scripts make paid API requests and are intentionally not collected by pytest:
+### Live natural-language evaluation
+
+These scripts make live OpenAI API calls and may incur API cost. Results can vary if a different model is configured. The checked-in cases are curated MVP evaluation cases, not a general benchmark.
 
 ```bash
 uv run python scripts/evaluate_dayplan_nl.py
 uv run python scripts/evaluate_shift_schedule_nl.py
 ```
 
-Use `--model MODEL_NAME` to override `OPENAI_MODEL` for an evaluation run. The checked-in fixtures live in `tests/fixtures/`.
+Both scripts support `--model MODEL_NAME` to override `OPENAI_MODEL` for that run. Run them from a shell where the `.env` values have been exported. The checked-in fixtures live in `tests/fixtures/`.
 
-## Limitations and scope
+## Current limitations
 
-- The MVP contains two concrete schemas: Day Planner and Workforce Scheduler; it does not attempt to represent arbitrary optimization problems.
-- Day Planner times use minute precision within one calendar-day horizon.
-- Workforce shifts use dated, same-day start and end times and the supported closed set of hard rules.
+- Day Planner is a same-day, minute-precision model; overnight intervals are not supported.
+- Workforce shifts are also same-day; overnight shifts are not supported.
+- The application supports one clarification round when the extracted formulation is incomplete.
+- Natural-language interpretation still depends on model quality. User confirmation and optional structured editing are the safeguard before solving.
+- Day Planner work-interruption cost counts active tasks that overlap the work window; it does not merge adjacent activities into interruption blocks.
+- Infeasibility diagnostics use bounded deterministic checks and relaxation analysis, not formal minimal-unsatisfiable-core proofs.
+- Workforce Scheduler supports a defined rule set rather than arbitrary user-authored constraints or a universal scheduling DSL.
 - The workforce objective covers preference penalties and workload fairness; labor-cost optimization is not implemented.
-- Calendar integration, routing, breaks, skills, overnight shifts, and arbitrary user-defined rule languages are outside the current repository scope.
-- Live natural-language behavior depends on the configured OpenAI model and API. The deterministic compiler, solvers, validators, diagnostics, explanations, and tests can be exercised without an API key.
 
-## Repository map
+## Roadmap
+
+Future work from `project_plan.md` includes:
+
+- additional optimization domains such as resource/budget allocation;
+- calendar and travel-time integration;
+- what-if and sensitivity analysis;
+- a larger natural-language evaluation benchmark;
+- experiments with Jev or another bounded decision layer.
+
+## Project structure
 
 ```text
-app.py                              Streamlit application
 decision_optimizer/
-  parsing/                          Structured natural-language extraction
-  dayplan/                          Day Planner schema, compiler, solver, validator
-  shift_schedule/                   Workforce schema, compiler, solver, validator
-  diagnostics.py                    Infeasibility findings and bounded relaxations
-  explanations.py                   Structured, grounded explanation facts
-scripts/                            Opt-in live NL evaluation runners
-tests/                              Deterministic tests, cases, and NL fixtures
-project_plan.md                     MVP scope and design rationale
+├── dayplan/             # schema, compiler, solver, validator
+├── shift_schedule/      # workforce schema, compiler, solver, validator
+├── parsing/             # structured natural-language extraction
+├── application.py       # orchestration
+├── diagnostics.py       # deterministic infeasibility analysis
+├── explanations.py      # grounded result/explanation facts
+└── presentation.py      # user-facing formatting helpers
+
+app.py                   # Streamlit application
+scripts/                 # live NL evaluation scripts
+tests/                   # deterministic regression suite
 ```
-
-## License
-
-No license file is currently included. Until one is added, the repository should be treated as source-available rather than as granting broad permission to reuse or redistribute the code.
