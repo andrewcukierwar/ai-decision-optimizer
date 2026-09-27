@@ -6,27 +6,15 @@ Turn natural-language planning problems into validated, optimized recommendation
 
 Python · GPT-6 Sol · OpenAI Structured Outputs · Pydantic · OR-Tools CP-SAT · Streamlit · pytest · uv
 
-[Live Demo](LIVE_DEMO_URL_HERE) · [GitHub Repository](https://github.com/andrewcukierwar/ai-decision-optimizer)
+[Live Demo](https://ai-decision-optimizer.streamlit.app/) · [GitHub Repository](https://github.com/andrewcukierwar/ai-decision-optimizer)
 
-<!-- Hero screenshot placeholder. Add the image after deployment:
-![AI Decision Optimizer Day Planner](docs/images/day-planner.png)
--->
+![AI Decision Optimizer Day Planner result](docs/images/day-planner.png)
 
 ## Live demo
 
-The application has not been deployed yet. The future hosted URL will replace `LIVE_DEMO_URL_HERE` in the link at the top of this README.
+The public Streamlit demo is available here: [Launch AI Decision Optimizer](https://ai-decision-optimizer.streamlit.app/).
 
-The hosted version will use server-side secret/environment configuration, so visitors will not need to provide their own OpenAI API key.
-
-## Screenshots
-
-Final screenshots will be added after deployment. The repository already has `docs/images/` ready for:
-
-<!-- Insert these images after deployment:
-![Day Planner](docs/images/day-planner.png)
-![Workforce Scheduler](docs/images/workforce-scheduler.png)
-![Infeasibility diagnosis](docs/images/infeasibility.png)
--->
+Deployment secrets are configured server-side, so visitors do not need to provide their own OpenAI API key.
 
 ## Why this exists
 
@@ -125,6 +113,8 @@ The Workforce Scheduler models dated shifts and employees with:
 
 The MVP uses two concrete schemas with a deliberately closed rule set. It is not a general-purpose workforce scheduling DSL.
 
+![AI Decision Optimizer Workforce Scheduler result](docs/images/workforce-scheduler.png)
+
 ## Example workflow
 
 ### Natural-language request
@@ -187,6 +177,8 @@ A solver result is not treated as trustworthy merely because CP-SAT returned it.
 ### Infeasibility handling
 
 The system can return no feasible solution. For infeasible inputs, the application reports deterministic diagnostic findings and tests bounded relaxations such as timing bounds, fixed events, precedence, active-person capacity, eligibility, availability, hours, and supported hard rules where applicable. It does not force a schedule.
+
+![AI Decision Optimizer infeasibility diagnosis](docs/images/infeasibility.png)
 
 ### Grounded explanations
 
