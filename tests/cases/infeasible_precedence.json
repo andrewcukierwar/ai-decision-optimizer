@@ -9,6 +9,5 @@
   "precedences": [
     {"before": "wash", "after": "transfer", "min_gap_min": 0, "max_gap_min": 0}
   ],
-  "preferences": [],
-  "missing_info": []
+  "preferences": []
 }

@@ -2,9 +2,10 @@ from types import SimpleNamespace
 
 import pytest
 
-from decision_optimizer.dayplan import DayPlan, SolveStatus
+from decision_optimizer.dayplan import DayPlan, SolveStatus, TimeWindow
 from decision_optimizer.parsing.dayplan import (
     DEFAULT_MODEL,
+    DAYPLAN_EXTRACTION_INSTRUCTIONS,
     DayPlanAPIError,
     DayPlanExtraction,
     DayPlanOutputError,
@@ -16,7 +17,7 @@ from decision_optimizer.parsing.dayplan import (
 from scripts.evaluate_dayplan_nl import formulation_differences, matches_expected
 
 
-def plan_with_one_task(*, missing_info=None):
+def plan_with_one_task():
     return DayPlan.model_validate(
         {
             "horizon": {"start": "09:00", "end": "13:00"},
@@ -27,7 +28,6 @@ def plan_with_one_task(*, missing_info=None):
             ],
             "precedences": [],
             "preferences": [],
-            "missing_info": missing_info or [],
         }
     )
 
@@ -183,9 +183,35 @@ def test_core_dayplan_still_requires_a_horizon():
                 "tasks": [],
                 "precedences": [],
                 "preferences": [],
-                "missing_info": ["What is the horizon?"],
             }
         )
+
+
+def test_dayplan_has_no_redundant_missing_info_channel():
+    assert "missing_info" not in DayPlan.model_fields
+    assert "only when the user explicitly gives work hours" in DAYPLAN_EXTRACTION_INSTRUCTIONS
+
+
+def test_structured_validation_error_preserves_location_and_reason():
+    invalid = FakeClient(
+        [
+            SimpleNamespace(
+                output_parsed={
+                    "plan": {
+                        "horizon": {"start": "09:00", "end": "13:00"},
+                        "tasks": [{"name": "focus", "mode": "active"}],
+                    },
+                    "missing_info": [],
+                }
+            )
+        ]
+    )
+
+    with pytest.raises(DayPlanOutputError) as error:
+        parse_dayplan("Schedule focus.", client=invalid)
+
+    assert "plan.tasks.0.duration_min" in str(error.value)
+    assert "Field required" in str(error.value)
 
 
 def test_evaluator_reports_consequential_field_differences():
@@ -224,7 +250,6 @@ def test_evaluator_accepts_harmless_task_name_variation():
             ],
             "precedences": [],
             "preferences": [],
-            "missing_info": [],
         }
     )
     extraction = complete_extraction(plan)
@@ -240,3 +265,21 @@ def test_evaluator_accepts_harmless_task_name_variation():
     }
 
     assert matches_expected(extraction, expected)
+
+
+def test_evaluator_catches_inferred_work_window():
+    plan = plan_with_one_task().model_copy(
+        update={"work_window": TimeWindow(start="09:00", end="13:00")}
+    )
+    expected = {
+        "horizon": {"start": "09:00", "end": "13:00"},
+        "work_window": None,
+        "fixed_events": {},
+        "tasks": {"focus": {"duration_min": 60, "mode": "active", "required": True}},
+        "precedences": [],
+        "preferences": [],
+    }
+
+    differences = formulation_differences(complete_extraction(plan), expected)
+
+    assert "expected work window null, actual 09:00-13:00" in differences

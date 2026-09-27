@@ -8,6 +8,5 @@
     {"name": "long_active_task", "duration_min": 90, "mode": "active", "required": true}
   ],
   "precedences": [],
-  "preferences": [],
-  "missing_info": []
+  "preferences": []
 }

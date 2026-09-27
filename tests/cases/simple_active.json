@@ -9,6 +9,5 @@
   "precedences": [],
   "preferences": [
     {"type": "finish_before", "task": "focus", "time": "11:00", "weight": 2}
-  ],
-  "missing_info": []
+  ]
 }

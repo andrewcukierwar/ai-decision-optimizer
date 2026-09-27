@@ -9,6 +9,5 @@
     {"name": "call", "duration_min": 30, "mode": "active", "earliest_start": "10:30", "required": true}
   ],
   "precedences": [],
-  "preferences": [],
-  "missing_info": []
+  "preferences": []
 }

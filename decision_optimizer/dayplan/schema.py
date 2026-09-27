@@ -149,7 +149,6 @@ class DayPlan(BaseModel):
     tasks: List[Task] = Field(default_factory=list)
     precedences: List[Precedence] = Field(default_factory=list)
     preferences: List[Preference] = Field(default_factory=list)
-    missing_info: List[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_references_and_windows(self) -> "DayPlan":

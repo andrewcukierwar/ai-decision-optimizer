@@ -10,6 +10,5 @@
   "precedences": [],
   "preferences": [
     {"type": "finish_before", "task": "report", "time": "10:20", "weight": 5}
-  ],
-  "missing_info": []
+  ]
 }

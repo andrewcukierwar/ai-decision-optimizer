@@ -7,6 +7,5 @@
     {"name": "optional_task", "duration_min": 90, "mode": "active", "required": false, "latest_end": "11:00"}
   ],
   "precedences": [],
-  "preferences": [],
-  "missing_info": []
+  "preferences": []
 }

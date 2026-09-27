@@ -33,6 +33,7 @@ Translate only facts supported by the user's text. Preserve DayPlan semantics ex
 - Explicitly required activities have required=true. Do not invent optional activities.
 - Clear hard language (must, need to, no later than, by, cannot overlap) becomes hard constraints.
 - Clear soft language (prefer, ideally, would like) becomes a supported Preference. Use weight=1 when no numeric priority is stated; preserve a stated priority.
+- Populate work_window only when the user explicitly gives work hours or a work window. Do not infer it from the general horizon or phrases such as "keep the day open".
 - Sequential statements such as laundry wash -> transfer -> dry become precedences.
 - Do not invent durations, deadlines, work windows, horizons, or other consequential facts.
 - If information genuinely needed to formulate the problem is missing or ambiguous, set plan=null and put concise questions/issues in missing_info instead of guessing. Do not put stylistic or nonessential uncertainty there.
@@ -77,8 +78,6 @@ class DayPlanExtraction(BaseModel):
             raise ValueError("missing_info is required when plan is null")
         if self.plan is not None and self.missing_info:
             raise ValueError("plan must be null when missing_info is populated")
-        if self.plan is not None and self.plan.missing_info:
-            raise ValueError("complete plan must not contain DayPlan.missing_info")
         return self
 
 
@@ -141,7 +140,8 @@ def parse_dayplan(
         )
     except ValidationError as exc:
         raise DayPlanOutputError(
-            "OpenAI returned structured data that failed DayPlanExtraction validation"
+            "OpenAI returned structured data that failed DayPlanExtraction validation: %s"
+            % _format_validation_error(exc)
         ) from exc
     except DayPlanError:
         raise
@@ -164,7 +164,8 @@ def parse_dayplan(
         )
     except ValidationError as exc:
         raise DayPlanOutputError(
-            "The parsed model output is not a valid DayPlanExtraction: %s" % exc
+            "The parsed model output is not a valid DayPlanExtraction: %s"
+            % _format_validation_error(exc)
         ) from exc
 
 
@@ -241,3 +242,13 @@ def _response_refusal(response: Any) -> Optional[str]:
             if refusal:
                 return str(refusal)
     return None
+
+
+def _format_validation_error(error: ValidationError) -> str:
+    """Keep Pydantic locations and reasons while omitting input values."""
+
+    details = []
+    for item in error.errors():
+        location = ".".join(str(part) for part in item.get("loc", ())) or "$"
+        details.append("%s: %s" % (location, item.get("msg", "validation error")))
+    return "; ".join(details) or str(error)
