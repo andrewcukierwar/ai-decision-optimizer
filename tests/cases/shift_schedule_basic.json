@@ -1,0 +1,28 @@
+{
+  "shifts": [
+    {"id": "mon_hospital", "day": "2026-10-05", "start": "09:00", "end": "13:00", "location": "hospital", "required_staff": 1},
+    {"id": "mon_clinic", "day": "2026-10-05", "start": "14:00", "end": "18:00", "location": "clinic", "required_staff": 1},
+    {"id": "tue_hospital", "day": "2026-10-06", "start": "09:00", "end": "13:00", "location": "hospital", "required_staff": 1},
+    {"id": "wed_clinic", "day": "2026-10-07", "start": "09:00", "end": "13:00", "location": "clinic", "required_staff": 1}
+  ],
+  "employees": [
+    {
+      "name": "Alice",
+      "max_hours": 8,
+      "unavailable": [{"day": "2026-10-05", "start": "08:00", "end": "14:00"}],
+      "eligible_locations": ["hospital", "clinic"]
+    },
+    {"name": "Bob", "max_hours": 8, "eligible_locations": ["hospital"]},
+    {
+      "name": "Cara",
+      "max_hours": 8,
+      "unavailable": [{"shift_id": "wed_clinic"}],
+      "eligible_locations": ["clinic"]
+    }
+  ],
+  "rules": [
+    {"type": "minimum_rest", "min_rest_hours": 12},
+    {"type": "maximum_consecutive_days", "max_days": 2}
+  ],
+  "objective_weights": {"preference_penalty": 0, "fairness": 1}
+}

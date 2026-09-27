@@ -13,6 +13,19 @@ from .dayplan import (
     parse_dayplan,
     solve_from_text,
 )
+from .shift_schedule import (
+    SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS,
+    ShiftScheduleAPIError,
+    ShiftScheduleError,
+    ShiftScheduleExtraction,
+    ShiftScheduleInputError,
+    ShiftScheduleMissingAPIKeyError,
+    ShiftScheduleOutputError,
+    ShiftScheduleRefusalError,
+    ShiftScheduleTextSolveResult,
+    parse_shift_schedule,
+    solve_from_text as solve_shift_schedule_from_text,
+)
 
 __all__ = [
     "DAYPLAN_EXTRACTION_INSTRUCTIONS",
@@ -26,4 +39,15 @@ __all__ = [
     "TextSolveResult",
     "parse_dayplan",
     "solve_from_text",
+    "SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS",
+    "ShiftScheduleAPIError",
+    "ShiftScheduleError",
+    "ShiftScheduleExtraction",
+    "ShiftScheduleInputError",
+    "ShiftScheduleMissingAPIKeyError",
+    "ShiftScheduleOutputError",
+    "ShiftScheduleRefusalError",
+    "ShiftScheduleTextSolveResult",
+    "parse_shift_schedule",
+    "solve_shift_schedule_from_text",
 ]

@@ -1,0 +1,12 @@
+{
+  "shifts": [
+    {"id": "morning", "day": "2026-10-05", "start": "08:00", "end": "12:00", "location": "store", "required_staff": 1},
+    {"id": "afternoon", "day": "2026-10-05", "start": "13:00", "end": "17:00", "location": "store", "required_staff": 1}
+  ],
+  "employees": [
+    {"name": "Ava", "max_hours": 8, "eligible_locations": ["store"]},
+    {"name": "Ben", "max_hours": 8, "eligible_locations": ["store"], "unavailable": [{"shift_id": "morning"}]}
+  ],
+  "rules": [],
+  "objective_weights": {"preference_penalty": 0, "fairness": 1}
+}

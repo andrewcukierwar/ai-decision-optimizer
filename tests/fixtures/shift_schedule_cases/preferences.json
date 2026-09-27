@@ -1,0 +1,12 @@
+{
+  "shifts": [
+    {"id": "opening", "day": "2026-10-05", "start": "09:00", "end": "13:00", "location": "office", "required_staff": 1},
+    {"id": "closing", "day": "2026-10-05", "start": "14:00", "end": "18:00", "location": "office", "required_staff": 1}
+  ],
+  "employees": [
+    {"name": "Ava", "max_hours": 8, "eligible_locations": ["office"], "preferred_shifts": ["opening"]},
+    {"name": "Ben", "max_hours": 8, "eligible_locations": ["office"], "preferred_shifts": ["closing"]}
+  ],
+  "rules": [{"type": "minimum_rest", "min_rest_hours": 0}],
+  "objective_weights": {"preference_penalty": 5, "fairness": 1}
+}

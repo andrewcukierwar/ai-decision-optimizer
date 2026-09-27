@@ -1,0 +1,10 @@
+{
+  "shifts": [
+    {"id": "secure", "day": "2026-10-05", "start": "10:00", "end": "14:00", "location": "secure", "required_staff": 1}
+  ],
+  "employees": [
+    {"name": "Ava", "max_hours": 8, "eligible_locations": ["office"]}
+  ],
+  "rules": [],
+  "objective_weights": {"preference_penalty": 1, "fairness": 1}
+}

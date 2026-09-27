@@ -1,0 +1,11 @@
+{
+  "shifts": [
+    {"id": "lab_day", "day": "2026-10-05", "start": "09:00", "end": "13:00", "location": "lab", "required_staff": 1}
+  ],
+  "employees": [
+    {"name": "Alex", "max_hours": 8, "eligible_locations": ["office"]},
+    {"name": "Blair", "max_hours": 8, "eligible_locations": ["lab"], "unavailable": [{"shift_id": "lab_day"}]}
+  ],
+  "rules": [],
+  "objective_weights": {"preference_penalty": 1, "fairness": 1}
+}

@@ -1,0 +1,39 @@
+[
+  {
+    "name": "straightforward_staffing",
+    "prompt": "Staff two shifts on 2026-10-05. Shift front_morning runs 09:00-13:00 at front_desk and needs one employee. Shift back_evening runs 14:00-18:00 at backroom and needs one employee. Alice can work up to 8 hours and is eligible for front_desk and backroom. Bob can work up to 4 hours, is eligible for front_desk, and is unavailable from 09:00 to 13:00 on 2026-10-05. The minimum rest rule is 0 hours.",
+    "expected": {
+      "missing_info": false,
+      "shifts": {
+        "front_morning": {"day": "2026-10-05", "start": "09:00", "end": "13:00", "location": "front_desk", "required_staff": 1},
+        "back_evening": {"day": "2026-10-05", "start": "14:00", "end": "18:00", "location": "backroom", "required_staff": 1}
+      },
+      "employees": {
+        "Alice": {"max_hours": 8, "eligible_locations": ["front_desk", "backroom"]},
+        "Bob": {"max_hours": 4, "eligible_locations": ["front_desk"], "unavailable": {"day": "2026-10-05", "start": "09:00", "end": "13:00"}}
+      },
+      "rules": [["minimum_rest", 0]]
+    }
+  },
+  {
+    "name": "preferences_and_availability",
+    "prompt": "For 2026-10-06, staff shift s1 from 09:00 to 13:00 at the clinic and shift s2 from 14:00 to 18:00 at the clinic; each needs one person. Alex can work 8 hours at the clinic and prefers s1. Blair can work 8 hours at the clinic, prefers s2, and is unavailable for s1. Use a minimum rest rule of 0 hours.",
+    "expected": {
+      "missing_info": false,
+      "shifts": {
+        "s1": {"day": "2026-10-06", "start": "09:00", "end": "13:00", "location": "clinic", "required_staff": 1},
+        "s2": {"day": "2026-10-06", "start": "14:00", "end": "18:00", "location": "clinic", "required_staff": 1}
+      },
+      "employees": {
+        "Alex": {"max_hours": 8, "eligible_locations": ["clinic"], "preferred_shifts": ["s1"]},
+        "Blair": {"max_hours": 8, "eligible_locations": ["clinic"], "preferred_shifts": ["s2"], "unavailable_shift": "s1"}
+      },
+      "rules": [["minimum_rest", 0]]
+    }
+  },
+  {
+    "name": "incomplete_staffing_request",
+    "prompt": "Please staff next week's shifts with Alice and Bob. Alice can work up to 8 hours and prefers mornings. Fill the rota fairly.",
+    "expected": {"missing_info": true}
+  }
+]
