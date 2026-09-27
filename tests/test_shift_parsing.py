@@ -4,7 +4,13 @@ from types import SimpleNamespace
 
 import pytest
 
-from decision_optimizer.shift_schedule import ShiftSchedule, SolveStatus
+from decision_optimizer.shift_schedule import (
+    MaximumConsecutiveDaysRule,
+    MinimumRestRule,
+    RequiredDaysOffRule,
+    ShiftSchedule,
+    SolveStatus,
+)
 from decision_optimizer.parsing.shift_schedule import (
     DEFAULT_MODEL,
     SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS,
@@ -74,6 +80,91 @@ def test_parser_uses_structured_shift_schedule_output_and_configurable_model(mon
     assert call["model"] == "test-model"
     assert call["text_format"] is ShiftScheduleExtraction
     assert call["input"][0]["content"] == SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS
+
+
+def test_structured_output_schema_uses_anyof_not_oneof_for_rules():
+    extraction_schema = ShiftScheduleExtraction.model_json_schema()
+    schedule_schema = ShiftSchedule.model_json_schema()
+    rules_schema = schedule_schema["properties"]["rules"]
+
+    assert "anyOf" in rules_schema["items"]
+    assert "oneOf" not in rules_schema["items"]
+    assert "oneOf" not in json.dumps(rules_schema)
+    assert "anyOf" in extraction_schema["properties"]["schedule"]
+    assert "oneOf" not in json.dumps(extraction_schema)
+
+
+@pytest.mark.parametrize(
+    ("rule_payload", "rule_class"),
+    [
+        ({"type": "minimum_rest", "min_rest_hours": 8}, MinimumRestRule),
+        ({"type": "maximum_consecutive_days", "max_days": 3}, MaximumConsecutiveDaysRule),
+        (
+            {
+                "type": "required_days_off",
+                "employee_name": "Ava",
+                "days": ["2026-10-06"],
+            },
+            RequiredDaysOffRule,
+        ),
+    ],
+)
+def test_each_closed_rule_variant_validates_to_its_concrete_model(rule_payload, rule_class):
+    schedule = ShiftSchedule.model_validate(
+        {
+            "shifts": [
+                {
+                    "id": "front",
+                    "day": "2026-10-05",
+                    "start": "09:00",
+                    "end": "13:00",
+                    "location": "store",
+                    "required_staff": 1,
+                }
+            ],
+            "employees": [
+                {"name": "Ava", "max_hours": 8, "eligible_locations": ["store"]}
+            ],
+            "rules": [rule_payload],
+        }
+    )
+
+    assert isinstance(schedule.rules[0], rule_class)
+
+
+@pytest.mark.parametrize(
+    "rule_payload",
+    [
+        {"type": "minimum_rest", "min_rest_hours": -1},
+        {"type": "maximum_consecutive_days"},
+        {
+            "type": "required_days_off",
+            "employee_name": "Ava",
+            "days": ["2026-10-06", "2026-10-06"],
+        },
+        {"type": "unsupported_rule", "value": 1},
+    ],
+)
+def test_malformed_closed_rule_payloads_fail_validation(rule_payload):
+    with pytest.raises(ValueError):
+        ShiftSchedule.model_validate(
+            {
+                "shifts": [
+                    {
+                        "id": "front",
+                        "day": "2026-10-05",
+                        "start": "09:00",
+                        "end": "13:00",
+                        "location": "store",
+                        "required_staff": 1,
+                    }
+                ],
+                "employees": [
+                    {"name": "Ava", "max_hours": 8, "eligible_locations": ["store"]}
+                ],
+                "rules": [rule_payload],
+            }
+        )
 
 
 def test_parser_uses_default_model_when_environment_is_unset(monkeypatch):
@@ -161,4 +252,3 @@ def test_nl_fixture_has_three_cases_including_clarification_case():
 
     assert len(cases) == 3
     assert any(case["expected"].get("missing_info") for case in cases)
-

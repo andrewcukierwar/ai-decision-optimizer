@@ -8,7 +8,7 @@ workforce scheduling DSL.
 from datetime import date as datetime_date
 from datetime import time as datetime_time
 from enum import Enum
-from typing import Annotated, List, Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from pydantic import BaseModel, Field, field_serializer, model_validator
 
@@ -129,10 +129,12 @@ class RequiredDaysOffRule(BaseModel):
         return self
 
 
-Rule = Annotated[
-    Union[MinimumRestRule, MaximumConsecutiveDaysRule, RequiredDaysOffRule],
-    Field(discriminator="type"),
-]
+# Keep this as a regular union rather than a discriminated union.  Pydantic's
+# discriminated form emits JSON Schema ``oneOf``, which is rejected by the
+# Structured Outputs subset used by the Responses API.  The Literal ``type``
+# field on each branch still makes model validation select the right concrete
+# rule class, while the regular union emits ``anyOf``.
+Rule = Union[MinimumRestRule, MaximumConsecutiveDaysRule, RequiredDaysOffRule]
 
 
 class ObjectiveWeights(BaseModel):
@@ -216,4 +218,3 @@ class ShiftScheduleSolution(BaseModel):
     objective_value: int = Field(default=0, ge=0)
     optimal: bool = False
     message: Optional[str] = None
-
