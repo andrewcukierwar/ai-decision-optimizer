@@ -54,6 +54,29 @@ def test_schedule_rows_combine_tasks_and_fixed_events_in_time_order():
     assert rows[2]["Time"] == "10:30–11:00 AM"
 
 
+def test_schedule_rows_show_duplicate_fixed_event_display_names_individually():
+    plan = DayPlan.model_validate(
+        {
+            "horizon": {"start": "09:00", "end": "18:00"},
+            "fixed_events": [
+                {"name": "Meeting", "start": "10:00", "end": "10:30"},
+                {"name": "Meeting", "start": "13:00", "end": "13:30"},
+                {"name": "Meeting", "start": "16:00", "end": "16:30"},
+            ],
+            "tasks": [],
+        }
+    )
+
+    rows = build_dayplan_schedule_rows(plan, [])
+
+    assert [row["Activity"] for row in rows] == ["Meeting", "Meeting", "Meeting"]
+    assert [row["Time"] for row in rows] == [
+        "10:00–10:30 AM",
+        "1:00–1:30 PM",
+        "4:00–4:30 PM",
+    ]
+
+
 def test_preference_result_text_uses_grounded_penalty_facts_only():
     plan = DayPlan.model_validate(
         json.loads((CASES / "wfh_laundry_lift.json").read_text())

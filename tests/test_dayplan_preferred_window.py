@@ -209,6 +209,29 @@ def test_real_clarification_reextracts_full_dayplan_and_fixture_checks_completen
     assert formulation_differences(result, case["expected"]) == []
 
 
+def test_repeated_meeting_nl_fixture_accepts_duplicate_fixed_event_names():
+    case = next(
+        case
+        for case in json.loads((FIXTURES / "dayplan_nl_eval.json").read_text())
+        if case["name"] == "repeated_generic_meetings"
+    )
+    expected = case["expected"]
+    plan = DayPlan.model_validate(
+        {
+            "horizon": expected["horizon"],
+            "work_window": expected["work_window"],
+            "fixed_events": expected["fixed_events"],
+            "tasks": [],
+            "precedences": [],
+            "preferences": [],
+        }
+    )
+
+    extraction = DayPlanExtraction(plan=plan, missing_info=[])
+
+    assert formulation_differences(extraction, expected) == []
+
+
 def test_real_laundry_process_chain_requires_immediate_handoffs():
     plan = _real_request_plan()
     result = solve_day_plan(plan)

@@ -171,5 +171,22 @@
       "preferences": [],
       "missing_info": false
     }
+  },
+  {
+    "name": "repeated_generic_meetings",
+    "prompt": "My day is 09:00-18:00. I have meetings from 10:00-10:30, 13:00-13:30, and 16:00-16:30.",
+    "expected": {
+      "horizon": {"start": "09:00", "end": "18:00"},
+      "work_window": null,
+      "fixed_events": [
+        {"name": "Meeting", "start": "10:00", "end": "10:30"},
+        {"name": "Meeting", "start": "13:00", "end": "13:30"},
+        {"name": "Meeting", "start": "16:00", "end": "16:30"}
+      ],
+      "tasks": {},
+      "precedences": [],
+      "preferences": [],
+      "missing_info": false
+    }
   }
 ]

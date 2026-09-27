@@ -160,21 +160,44 @@ def _compare_window(
 
 
 def _compare_events(
-    differences: List[str], actual: Iterable[Any], expected: Dict[str, Dict[str, str]]
+    differences: List[str], actual: Iterable[Any], expected: Any
 ) -> None:
-    matched, missing, extra = _match_named(expected.keys(), actual)
-    for name in missing:
-        differences.append("missing fixed event: " + name)
-    for event in extra:
-        differences.append("unexpected fixed event: " + event.name)
-    for name, event in matched.items():
-        expected_value = "%s-%s" % (expected[name]["start"], expected[name]["end"])
+    if isinstance(expected, dict):
+        expected_items = [
+            {"name": name, "start": window["start"], "end": window["end"]}
+            for name, window in expected.items()
+        ]
+    else:
+        expected_items = list(expected)
+
+    remaining = list(actual)
+    for expected_item in expected_items:
+        name = expected_item["name"]
+        expected_value = "%s-%s" % (expected_item["start"], expected_item["end"])
+        named_candidates = [
+            event for event in remaining if _names_match(name, event.name)
+        ]
+        if not named_candidates:
+            differences.append("missing fixed event: " + name)
+            continue
+
+        event = next(
+            (
+                candidate
+                for candidate in named_candidates
+                if _format_window(candidate) == expected_value
+            ),
+            named_candidates[0],
+        )
+        remaining.remove(event)
         actual_value = _format_window(event)
         if actual_value != expected_value:
             differences.append(
                 "fixed event %s time expected %s, actual %s"
                 % (name, expected_value, actual_value)
             )
+    for event in remaining:
+        differences.append("unexpected fixed event: " + event.name)
 
 
 def _compare_tasks(

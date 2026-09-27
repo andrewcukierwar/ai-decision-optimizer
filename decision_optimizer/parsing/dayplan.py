@@ -30,6 +30,7 @@ Translate only facts supported by the user's text. Preserve DayPlan semantics ex
 - Use HH:MM for times and integer minutes for durations.
 - An active task requires the person's attention. A passive task can run while the person does something else.
 - Fixed meetings/events belong in fixed_events, not tasks.
+- Fixed event names are display labels and may repeat; preserve repeated labels and do not invent numbering solely to make them unique.
 - Explicitly required activities have required=true. Do not invent optional activities.
 - Clear hard language (must, need to, no later than, by, cannot overlap) becomes hard constraints.
 - Clear soft language (prefer, ideally, would like) becomes a supported Preference. Use weight=1 when no numeric priority is stated; preserve a stated priority.

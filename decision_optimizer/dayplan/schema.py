@@ -180,14 +180,9 @@ class DayPlan(BaseModel):
         horizon_start = time_to_minutes(self.horizon.start)
         horizon_end = time_to_minutes(self.horizon.end)
         task_names = [task.name for task in self.tasks]
-        fixed_names = [event.name for event in self.fixed_events]
 
         if len(set(task_names)) != len(task_names):
             raise ValueError("task names must be unique")
-        if len(set(fixed_names)) != len(fixed_names):
-            raise ValueError("fixed event names must be unique")
-        if set(task_names).intersection(fixed_names):
-            raise ValueError("task and fixed event names must be disjoint")
 
         if self.work_window:
             work_start = time_to_minutes(self.work_window.start)

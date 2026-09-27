@@ -69,11 +69,15 @@ def compile_day_plan(plan: DayPlan) -> CompiledDayPlan:
         if task.mode == TaskMode.ACTIVE:
             active_intervals.append(interval)
 
-    for event in plan.fixed_events:
+    for index, event in enumerate(plan.fixed_events):
         event_start = time_to_minutes(event.start)
         event_duration = time_to_minutes(event.end) - event_start
         active_intervals.append(
-            model.NewFixedSizeIntervalVar(event_start, event_duration, "fixed_" + event.name)
+            model.NewFixedSizeIntervalVar(
+                event_start,
+                event_duration,
+                "fixed_%d_%s" % (index, event.name),
+            )
         )
 
     if active_intervals:
