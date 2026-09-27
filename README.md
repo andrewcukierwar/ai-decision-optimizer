@@ -119,7 +119,7 @@ The MVP uses two concrete schemas with a deliberately closed rule set. It is not
 
 ### Natural-language request
 
-> Plan my work-from-home day from 09:00 to 18:00. Work hours bound the plan. I have a meeting from 10:30 to 11:00. I need 30 minutes for groceries, a laundry chain of 30-minute wash, 5-minute transfer, and 45-minute dry, plus a one-hour lift and a 30-minute lunch. The machines can run unattended, but I must be free for the transfer. Prefer groceries before lunch, lunch between 12:00 and 13:00, and lifting in the early afternoon, finished before 16:00.
+> Plan my Saturday from 8:00 AM to 6:00 PM. I have an appointment from 10:30 to 11:00 AM. I need 30 minutes for groceries, and I need to do laundry: washing takes 30 minutes, transferring it takes 5 minutes, and drying takes 45 minutes. The washer and dryer can run unattended, but I need to be free for the transfer. I also want to work out for an hour and take 30 minutes for lunch. I’d prefer to get groceries done before lunch, work out in the early afternoon, and eat lunch sometime between noon and 1:00 PM.
 
 ### Interpreted formulation
 
@@ -127,17 +127,16 @@ The request becomes a typed `DayPlan` containing a fixed event, active and passi
 
 ```json
 {
-  "horizon": {"start": "09:00", "end": "18:00"},
-  "work_window": {"start": "09:00", "end": "18:00"},
+  "horizon": {"start": "08:00", "end": "18:00"},
   "fixed_events": [
-    {"name": "meeting", "start": "10:30", "end": "11:00"}
+    {"name": "appointment", "start": "10:30", "end": "11:00"}
   ],
   "tasks": [
+    {"name": "groceries", "duration_min": 30, "mode": "active"},
     {"name": "wash", "duration_min": 30, "mode": "passive"},
     {"name": "transfer", "duration_min": 5, "mode": "active"},
     {"name": "dry", "duration_min": 45, "mode": "passive"},
-    {"name": "groceries", "duration_min": 30, "mode": "active"},
-    {"name": "lift", "duration_min": 60, "mode": "active"},
+    {"name": "workout", "duration_min": 60, "mode": "active"},
     {"name": "lunch", "duration_min": 30, "mode": "active"}
   ],
   "precedences": [
@@ -147,7 +146,7 @@ The request becomes a typed `DayPlan` containing a fixed event, active and passi
   "preferences": [
     {"type": "finish_before", "task": "groceries", "time": "12:00", "weight": 1},
     {"type": "preferred_window", "task": "lunch", "start": "12:00", "end": "13:00", "weight": 1},
-    {"type": "preferred_window", "task": "lift", "start": "12:00", "end": "15:00", "weight": 1}
+    {"type": "preferred_window", "task": "workout", "start": "12:00", "end": "15:00", "weight": 1}
   ]
 }
 ```
