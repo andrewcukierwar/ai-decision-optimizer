@@ -8,9 +8,9 @@ responsible for solving and validation.
 import json
 import os
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any, List, Optional
 
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError, model_validator
 
 from decision_optimizer.dayplan import (
     DayPlan,
@@ -35,9 +35,9 @@ Translate only facts supported by the user's text. Preserve DayPlan semantics ex
 - Clear soft language (prefer, ideally, would like) becomes a supported Preference. Use weight=1 when no numeric priority is stated; preserve a stated priority.
 - Sequential statements such as laundry wash -> transfer -> dry become precedences.
 - Do not invent durations, deadlines, work windows, horizons, or other consequential facts.
-- If information genuinely needed to formulate the problem is missing or ambiguous, put concise questions/issues in missing_info instead of guessing. Do not put stylistic or nonessential uncertainty there.
-- If the horizon is missing, use horizon=null and explain what is needed in missing_info. If a task's duration or a consequential timing fact is missing, do not fabricate it.
-- Output every schema field; use null for nullable fields and [] for empty lists.
+- If information genuinely needed to formulate the problem is missing or ambiguous, set plan=null and put concise questions/issues in missing_info instead of guessing. Do not put stylistic or nonessential uncertainty there.
+- If all consequential information is present, set missing_info=[] and put the complete valid DayPlan in plan.
+- Do not return a partial DayPlan. If a required task duration, time bound, horizon, or other consequential fact is missing, return plan=null.
 """
 
 
@@ -65,41 +65,68 @@ class DayPlanOutputError(DayPlanError):
     """The model response was absent or could not be validated as a DayPlan."""
 
 
+class DayPlanExtraction(BaseModel):
+    """Structured boundary result for either a complete plan or clarification."""
+
+    plan: Optional[DayPlan]
+    missing_info: List[str]
+
+    @model_validator(mode="after")
+    def validate_completeness(self) -> "DayPlanExtraction":
+        if self.plan is None and not self.missing_info:
+            raise ValueError("missing_info is required when plan is null")
+        if self.plan is not None and self.missing_info:
+            raise ValueError("plan must be null when missing_info is populated")
+        if self.plan is not None and self.plan.missing_info:
+            raise ValueError("complete plan must not contain DayPlan.missing_info")
+        return self
+
+
 @dataclass
 class TextSolveResult:
     """The typed interpretation and, when possible, deterministic solve result."""
 
-    plan: DayPlan
+    extraction: DayPlanExtraction
     solution: Optional[DayPlanSolution] = None
     validation: Optional[ValidationReport] = None
+
+    @property
+    def plan(self) -> Optional[DayPlan]:
+        """Expose the complete plan for callers that do not need wrapper details."""
+
+        return self.extraction.plan
 
 
 def parse_dayplan(
     user_text: str,
     *,
-    first_plan: Optional[DayPlan] = None,
+    previous_extraction: Optional[DayPlanExtraction] = None,
     clarification: Optional[str] = None,
     client: Any = None,
     model: Optional[str] = None,
-) -> DayPlan:
-    """Parse natural language into a typed ``DayPlan`` with one clarification round.
+) -> DayPlanExtraction:
+    """Parse natural language into a complete plan or one clarification request.
 
     For clarification, pass the original request again together with the first
-    parsed plan and the user's answer::
+    extraction and the user's answer::
 
-        parse_dayplan(original, first_plan=first_plan, clarification=answer)
+        parse_dayplan(
+            original,
+            previous_extraction=first_extraction,
+            clarification=answer,
+        )
     """
 
     if not isinstance(user_text, str) or not user_text.strip():
         raise DayPlanInputError("user_text must be a non-empty string")
-    if (first_plan is None) != (clarification is None):
+    if (previous_extraction is None) != (clarification is None):
         raise DayPlanInputError(
-            "first_plan and clarification must be supplied together for a clarification round"
+            "previous_extraction and clarification must be supplied together for a clarification round"
         )
     if clarification is not None and not clarification.strip():
         raise DayPlanInputError("clarification must be a non-empty string")
 
-    request = _build_user_request(user_text, first_plan, clarification)
+    request = _build_user_request(user_text, previous_extraction, clarification)
     if client is None:
         client = _create_openai_client()
 
@@ -110,11 +137,11 @@ def parse_dayplan(
                 {"role": "system", "content": DAYPLAN_EXTRACTION_INSTRUCTIONS},
                 {"role": "user", "content": request},
             ],
-            text_format=DayPlan,
+            text_format=DayPlanExtraction,
         )
     except ValidationError as exc:
         raise DayPlanOutputError(
-            "OpenAI returned structured data that failed DayPlan validation"
+            "OpenAI returned structured data that failed DayPlanExtraction validation"
         ) from exc
     except DayPlanError:
         raise
@@ -127,20 +154,24 @@ def parse_dayplan(
 
     parsed = getattr(response, "output_parsed", None)
     if parsed is None:
-        raise DayPlanOutputError("The model returned no parsed DayPlan output")
+        raise DayPlanOutputError("The model returned no parsed DayPlanExtraction output")
 
     try:
-        return parsed if isinstance(parsed, DayPlan) else DayPlan.model_validate(parsed)
+        return (
+            parsed
+            if isinstance(parsed, DayPlanExtraction)
+            else DayPlanExtraction.model_validate(parsed)
+        )
     except ValidationError as exc:
         raise DayPlanOutputError(
-            "The parsed model output is not a valid DayPlan: %s" % exc
+            "The parsed model output is not a valid DayPlanExtraction: %s" % exc
         ) from exc
 
 
 def solve_from_text(
     user_text: str,
     *,
-    first_plan: Optional[DayPlan] = None,
+    previous_extraction: Optional[DayPlanExtraction] = None,
     clarification: Optional[str] = None,
     client: Any = None,
     model: Optional[str] = None,
@@ -148,21 +179,19 @@ def solve_from_text(
 ) -> TextSolveResult:
     """Parse, then solve and independently validate when interpretation is complete."""
 
-    plan = parse_dayplan(
+    extraction = parse_dayplan(
         user_text,
-        first_plan=first_plan,
+        previous_extraction=previous_extraction,
         clarification=clarification,
         client=client,
         model=model,
     )
-    if plan.missing_info:
-        return TextSolveResult(plan=plan)
-    if plan.horizon is None:
-        raise DayPlanOutputError("DayPlan has no horizon and did not report missing_info")
+    if extraction.plan is None:
+        return TextSolveResult(extraction=extraction)
 
-    solution = solve_day_plan(plan, time_limit_seconds=time_limit_seconds)
-    validation = validate_solution(plan, solution)
-    return TextSolveResult(plan=plan, solution=solution, validation=validation)
+    solution = solve_day_plan(extraction.plan, time_limit_seconds=time_limit_seconds)
+    validation = validate_solution(extraction.plan, solution)
+    return TextSolveResult(extraction=extraction, solution=solution, validation=validation)
 
 
 def _create_openai_client() -> Any:
@@ -184,20 +213,20 @@ def _create_openai_client() -> Any:
 
 def _build_user_request(
     original: str,
-    first_plan: Optional[DayPlan],
+    previous_extraction: Optional[DayPlanExtraction],
     clarification: Optional[str],
 ) -> str:
-    if first_plan is None:
+    if previous_extraction is None:
         return original
-    first_plan_json = json.dumps(first_plan.model_dump(mode="json"), indent=2)
+    previous_json = json.dumps(previous_extraction.model_dump(mode="json"), indent=2)
     return (
         "Original user request:\n"
         + original
-        + "\n\nFirst parsed DayPlan:\n"
-        + first_plan_json
+        + "\n\nPrior extraction:\n"
+        + previous_json
         + "\n\nUser clarification:\n"
         + clarification
-        + "\n\nReturn a corrected complete DayPlan, preserving supported facts from the original request."
+        + "\n\nReturn a corrected DayPlanExtraction, preserving supported facts from the original request."
     )
 
 

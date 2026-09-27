@@ -28,12 +28,6 @@ def validate_solution(plan: DayPlan, result: DayPlanSolution) -> ValidationRepor
             errors.append("non-feasible result must not contain preference penalties")
         return ValidationReport(valid=not errors, errors=errors)
 
-    if plan.horizon is None:
-        return ValidationReport(
-            valid=False,
-            errors=["a feasible result requires a DayPlan horizon"],
-        )
-
     tasks_by_name: Dict[str, Task] = {task.name: task for task in plan.tasks}
     assignments_by_name: Dict[str, TaskAssignment] = {}
     for assignment in result.assignments:

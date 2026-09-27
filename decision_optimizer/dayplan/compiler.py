@@ -31,9 +31,6 @@ def compile_day_plan(plan: DayPlan) -> CompiledDayPlan:
     works or performs another active task.
     """
 
-    if plan.horizon is None:
-        raise ValueError("DayPlan horizon is required for deterministic solving")
-
     model = cp_model.CpModel()
     horizon_start = time_to_minutes(plan.horizon.start)
     horizon_end = time_to_minutes(plan.horizon.end)

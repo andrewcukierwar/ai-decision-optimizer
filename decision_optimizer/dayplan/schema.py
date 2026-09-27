@@ -143,9 +143,7 @@ class Preference(_TimeModel):
 
 
 class DayPlan(BaseModel):
-    # A missing horizon is allowed only for an interpretation that has
-    # ``missing_info``.  The deterministic compiler still requires one.
-    horizon: Optional[Horizon] = None
+    horizon: Horizon
     work_window: Optional[TimeWindow] = None
     fixed_events: List[FixedEvent] = Field(default_factory=list)
     tasks: List[Task] = Field(default_factory=list)
@@ -155,12 +153,8 @@ class DayPlan(BaseModel):
 
     @model_validator(mode="after")
     def validate_references_and_windows(self) -> "DayPlan":
-        horizon_start = horizon_end = None
-        if self.horizon:
-            horizon_start = time_to_minutes(self.horizon.start)
-            horizon_end = time_to_minutes(self.horizon.end)
-        elif not self.missing_info:
-            raise ValueError("horizon is required unless missing_info is populated")
+        horizon_start = time_to_minutes(self.horizon.start)
+        horizon_end = time_to_minutes(self.horizon.end)
         task_names = [task.name for task in self.tasks]
         fixed_names = [event.name for event in self.fixed_events]
 
@@ -174,13 +168,13 @@ class DayPlan(BaseModel):
         if self.work_window:
             work_start = time_to_minutes(self.work_window.start)
             work_end = time_to_minutes(self.work_window.end)
-            if self.horizon and (work_start < horizon_start or work_end > horizon_end):
+            if work_start < horizon_start or work_end > horizon_end:
                 raise ValueError("work_window must be inside horizon")
 
         for event in self.fixed_events:
             event_start = time_to_minutes(event.start)
             event_end = time_to_minutes(event.end)
-            if self.horizon and (event_start < horizon_start or event_end > horizon_end):
+            if event_start < horizon_start or event_end > horizon_end:
                 raise ValueError("fixed events must be inside horizon")
 
         task_name_set = set(task_names)
