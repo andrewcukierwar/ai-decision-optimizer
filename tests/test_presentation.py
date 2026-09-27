@@ -1,6 +1,7 @@
 import json
 from datetime import time
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -9,8 +10,10 @@ from decision_optimizer.diagnostics import _format_minutes
 from decision_optimizer.explanations import build_dayplan_explanation_payload
 from decision_optimizer.presentation import (
     build_dayplan_schedule_rows,
-    dayplan_preference_statements,
     dayplan_explanation_lines,
+    dayplan_preference_statements,
+    dayplan_preference_summary,
+    format_entity_name,
     format_time,
     format_time_range,
 )
@@ -37,6 +40,39 @@ def test_diagnostic_time_display_uses_the_same_12_hour_helper():
     assert _format_minutes(810) == "1:30 PM"
 
 
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        ("breakfast", "Breakfast"),
+        ("prepare for interview", "Prepare for interview"),
+        ("pharmacy errand", "Pharmacy errand"),
+        ("work out", "Work out"),
+        ("take baked item out and clean up", "Take baked item out and clean up"),
+        ("", ""),
+    ],
+)
+def test_format_entity_name_uses_sentence_style_only(value, expected):
+    assert format_entity_name(value) == expected
+
+
+@pytest.mark.parametrize(
+    ("penalties", "expected"),
+    [
+        ([SimpleNamespace(amount=0), SimpleNamespace(amount=0)], "2 / 2 satisfied"),
+        (
+            [SimpleNamespace(amount=0), SimpleNamespace(amount=2), SimpleNamespace(amount=0)],
+            "2 / 3 satisfied",
+        ),
+        ([], "None specified"),
+        ([SimpleNamespace(amount=3)], "0 / 1 satisfied"),
+    ],
+)
+def test_dayplan_preference_summary_counts_preferences_not_penalty_minutes(
+    penalties, expected
+):
+    assert dayplan_preference_summary(penalties) == expected
+
+
 def test_schedule_rows_combine_tasks_and_fixed_events_in_time_order():
     plan = DayPlan.model_validate(
         json.loads((CASES / "passive_overlap.json").read_text())
@@ -45,7 +81,7 @@ def test_schedule_rows_combine_tasks_and_fixed_events_in_time_order():
 
     rows = build_dayplan_schedule_rows(plan, solution.assignments)
 
-    assert [row["Activity"] for row in rows] == ["meeting", "machine", "call"]
+    assert [row["Activity"] for row in rows] == ["Meeting", "Machine", "Call"]
     assert [row["Type"] for row in rows] == [
         "Fixed event",
         "Passive task",
@@ -88,7 +124,7 @@ def test_preference_result_text_uses_grounded_penalty_facts_only():
     assert facts is not None
     statements = dayplan_preference_statements(facts)
 
-    assert "✓ lift finished before 4:00 PM" in statements
+    assert "✓ Lift finished before 4:00 PM" in statements
     assert "△ 1 work-window interruption recorded" in statements
     assert all("12:00" not in statement for statement in statements)
     assert format_time_range("12:00", "13:00") == "12:00–1:00 PM"

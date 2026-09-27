@@ -291,5 +291,5 @@ def test_dayplan_explanation_describes_preference_metadata_and_outcomes():
     assert lunch.preferred_start == "12:00"
     assert lunch.preferred_end == "13:00"
     explanation = render_dayplan_explanation(facts)
-    assert "lunch was scheduled within its preferred 12:00-13:00 window" in explanation
-    assert "groceries finished by the preferred 12:00 target" in explanation
+    assert "Lunch was scheduled within its preferred 12:00-13:00 window" in explanation
+    assert "Groceries finished by the preferred 12:00 target" in explanation

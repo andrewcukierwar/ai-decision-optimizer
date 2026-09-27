@@ -7,10 +7,40 @@ display values without changing solver inputs or serialized schema values.
 
 from datetime import date as datetime_date
 from datetime import datetime, time as datetime_time
+import re
 from typing import Any, Dict, Iterable, List, Union
 
 
 TimeValue = Union[str, datetime_time]
+
+
+def format_entity_name(value: str) -> str:
+    """Capitalize only the first character of a user-facing entity name."""
+
+    return value[:1].upper() + value[1:]
+
+
+def format_dayplan_text_names(text: str, names: Iterable[str]) -> str:
+    """Format known Day Planner names inside already-rendered diagnostic text."""
+
+    formatted = text
+    for name in sorted({item for item in names if len(item) > 1}, key=len, reverse=True):
+        formatted = re.sub(
+            r"(?<!\w)" + re.escape(name) + r"(?!\w)",
+            format_entity_name(name),
+            formatted,
+        )
+    return formatted
+
+
+def dayplan_preference_summary(preference_penalties: Iterable[Any]) -> str:
+    """Summarize encoded preferences by count, not by penalty magnitude."""
+
+    penalties = list(preference_penalties)
+    if not penalties:
+        return "None specified"
+    satisfied = sum(item.amount == 0 for item in penalties)
+    return f"{satisfied} / {len(penalties)} satisfied"
 
 
 def format_time(value: TimeValue) -> str:
@@ -82,7 +112,7 @@ def build_dayplan_schedule_rows(plan: Any, assignments: Iterable[Any]) -> List[D
                 assignment.name,
                 {
                     "Time": format_time_range(assignment.start, assignment.end),
-                    "Activity": assignment.name,
+                    "Activity": format_entity_name(assignment.name),
                     "Type": f"{task.mode.value.capitalize()} task",
                     "Duration": format_duration(task.duration_min),
                 },
@@ -98,7 +128,7 @@ def build_dayplan_schedule_rows(plan: Any, assignments: Iterable[Any]) -> List[D
                 event.name,
                 {
                     "Time": format_time_range(event.start, event.end),
-                    "Activity": event.name,
+                    "Activity": format_entity_name(event.name),
                     "Type": "Fixed event",
                     "Duration": format_duration(duration),
                 },
@@ -114,13 +144,14 @@ def dayplan_preference_statements(facts: Any) -> List[str]:
 
     statements: List[str] = []
     for item in facts.preference_penalties:
+        task_name = format_entity_name(item.task) if item.task else item.task
         if item.preference_type == "finish_before" and item.task and item.target_time:
             target = format_time(item.target_time)
             if item.amount == 0:
-                statements.append(f"✓ {item.task} finished before {target}")
+                statements.append(f"✓ {task_name} finished before {target}")
             else:
                 statements.append(
-                    f"△ {item.task} finished {item.amount} minutes after the preferred {target} target"
+                    f"△ {task_name} finished {item.amount} minutes after the preferred {target} target"
                 )
         elif (
             item.preference_type == "preferred_window"
@@ -131,11 +162,11 @@ def dayplan_preference_statements(facts: Any) -> List[str]:
             window = format_time_range(item.preferred_start, item.preferred_end)
             if item.amount == 0:
                 statements.append(
-                    f"✓ {item.task} scheduled within the preferred {window} window"
+                    f"✓ {task_name} scheduled within the preferred {window} window"
                 )
             else:
                 statements.append(
-                    f"△ {item.task} ended {item.amount} minutes outside the preferred {window} window"
+                    f"△ {task_name} ended {item.amount} minutes outside the preferred {window} window"
                 )
         elif item.preference_type == "minimize_work_interruptions":
             if item.amount == 0:
@@ -168,11 +199,17 @@ def dayplan_explanation_lines(facts: Any) -> List[str]:
     if getattr(facts, "work_window_interrupting_tasks", None):
         lines.append(
             "Work was interrupted by "
-            + _join_items(facts.work_window_interrupting_tasks)
+            + _join_items(
+                [format_entity_name(item) for item in facts.work_window_interrupting_tasks]
+            )
             + "."
         )
 
-    passive = [item.name for item in facts.assignments if item.mode == "passive"]
+    passive = [
+        format_entity_name(item.name)
+        for item in facts.assignments
+        if item.mode == "passive"
+    ]
     if passive:
         lines.append("Passive activities included: " + _join_items(passive) + ".")
     if satisfied:

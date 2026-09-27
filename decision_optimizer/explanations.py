@@ -17,6 +17,7 @@ from .dayplan import (
     time_to_minutes,
 )
 from .dayplan.validator import ValidationReport as DayPlanValidationReport
+from .presentation import format_entity_name
 from .shift_schedule import (
     ObjectiveBreakdown,
     ShiftSchedule,
@@ -261,7 +262,9 @@ def render_dayplan_explanation(facts: DayPlanExplanationFacts) -> str:
     if facts.work_window_interrupting_tasks:
         lines.append(
             "Work was interrupted by %s."
-            % _join_explanation_items(facts.work_window_interrupting_tasks)
+            % _join_explanation_items(
+                [format_entity_name(item) for item in facts.work_window_interrupting_tasks]
+            )
         )
     if facts.preference_penalties:
         details = []
@@ -270,12 +273,16 @@ def render_dayplan_explanation(facts: DayPlanExplanationFacts) -> str:
                 if item.amount == 0:
                     details.append(
                         "%s finished by the preferred %s target"
-                        % (item.task, item.target_time)
+                        % (format_entity_name(item.task), item.target_time)
                     )
                 else:
                     details.append(
                         "%s finished %d minutes after the preferred %s target"
-                        % (item.task, item.amount, item.target_time)
+                        % (
+                            format_entity_name(item.task),
+                            item.amount,
+                            item.target_time,
+                        )
                     )
             elif (
                 item.preference_type == "preferred_window"
@@ -286,13 +293,17 @@ def render_dayplan_explanation(facts: DayPlanExplanationFacts) -> str:
                 if item.amount == 0:
                     details.append(
                         "%s was scheduled within its preferred %s-%s window"
-                        % (item.task, item.preferred_start, item.preferred_end)
+                        % (
+                            format_entity_name(item.task),
+                            item.preferred_start,
+                            item.preferred_end,
+                        )
                     )
                 else:
                     details.append(
                         "%s was scheduled %d minutes outside its preferred %s-%s window"
                         % (
-                            item.task,
+                            format_entity_name(item.task),
                             item.amount,
                             item.preferred_start,
                             item.preferred_end,

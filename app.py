@@ -26,6 +26,9 @@ from decision_optimizer.presentation import (
     dayplan_explanation_lines,
     dayplan_preference_statements,
     dayplan_infeasibility_summary,
+    dayplan_preference_summary,
+    format_dayplan_text_names,
+    format_entity_name,
     format_date,
     format_duration,
     format_minutes_duration,
@@ -219,7 +222,7 @@ def _render_dayplan_run(st: Any, run: DayPlanRun) -> None:
             st.error("Independent validation reported an issue with the infeasible result.")
             for error in run.validation.errors:
                 st.write("- " + error)
-        _render_dayplan_diagnostic(st, run.diagnosis)
+        _render_dayplan_diagnostic(st, run.diagnosis, run.plan)
         return
 
     st.subheader("Recommended schedule")
@@ -328,7 +331,7 @@ def _render_dayplan_interpretation_summary(st: Any, plan: Any) -> None:
         st.dataframe(
             [
                 {
-                    "Event": event.name,
+                    "Event": format_entity_name(event.name),
                     "Time": format_time_range(event.start, event.end),
                     "Duration": format_duration(_duration_minutes(event.start, event.end)),
                 }
@@ -345,7 +348,7 @@ def _render_dayplan_interpretation_summary(st: Any, plan: Any) -> None:
         st.dataframe(
             [
                 {
-                    "Activity": task.name,
+                    "Activity": format_entity_name(task.name),
                     "Duration": format_duration(task.duration_min),
                     "Mode": task.mode.value.capitalize(),
                     "Required": "Required" if task.required else "Optional",
@@ -363,7 +366,10 @@ def _render_dayplan_interpretation_summary(st: Any, plan: Any) -> None:
         st.dataframe(
             [
                 {
-                    "Dependency": f"{item.before} → {item.after}",
+                    "Dependency": (
+                        f"{format_entity_name(item.before)} → "
+                        f"{format_entity_name(item.after)}"
+                    ),
                     "Timing": _dependency_timing(item),
                 }
                 for item in plan.precedences
@@ -493,7 +499,10 @@ def _render_dayplan_result_summary(st: Any, run: DayPlanRun) -> None:
     columns = st.columns(3)
     columns[0].metric("Status", _status_label(solution.status.value))
     columns[1].metric("Validation", "Passed" if run.validation.valid else "Failed")
-    columns[2].metric("Preference penalty", solution.objective_value)
+    columns[2].metric(
+        "Preferences",
+        dayplan_preference_summary(solution.preference_penalties),
+    )
     st.caption(
         "Schedule produced by deterministic OR-Tools CP-SAT and independently validated."
     )
@@ -531,7 +540,7 @@ def _render_dayplan_advanced_details(st: Any, run: DayPlanRun) -> None:
         st.dataframe(
             [
                 {
-                    "Task": assignment.name,
+                    "Task": format_entity_name(assignment.name),
                     "Start": format_time(assignment.start),
                     "End": format_time(assignment.end),
                     "Duration": format_duration(
@@ -633,7 +642,7 @@ def _dayplan_penalty_rows(run: DayPlanRun) -> list:
             {
                 "Preference": penalty.preference_index,
                 "Type": penalty.preference_type.value,
-                "Task": preference.task or "",
+                "Task": format_entity_name(preference.task) if preference.task else "",
                 "Target": target,
                 "Penalty amount": penalty.amount,
                 "Weighted penalty": penalty.weighted_penalty,
@@ -644,10 +653,10 @@ def _dayplan_penalty_rows(run: DayPlanRun) -> list:
 
 def _dayplan_preference_label(preference: Any) -> str:
     if preference.type.value == "finish_before":
-        return f"{preference.task} · finish before {format_time(preference.time)}"
+        return f"{format_entity_name(preference.task)} · finish before {format_time(preference.time)}"
     if preference.type.value == "preferred_window":
         return (
-            f"{preference.task} · preferred "
+            f"{format_entity_name(preference.task)} · preferred "
             f"{format_time_range(preference.start, preference.end)}"
         )
     return "Minimize work interruptions"
@@ -718,7 +727,7 @@ def _render_diagnostic(st: Any, diagnostic: Optional[InfeasibilityDiagnostic]) -
 
 
 def _render_dayplan_diagnostic(
-    st: Any, diagnostic: Optional[InfeasibilityDiagnostic]
+    st: Any, diagnostic: Optional[InfeasibilityDiagnostic], plan: Any
 ) -> None:
     if diagnostic is None:
         st.warning("No bounded diagnostic was available.")
@@ -727,7 +736,14 @@ def _render_dayplan_diagnostic(
     if diagnostic.suggestions:
         st.markdown("**Practical relaxation suggestions**")
         for suggestion in diagnostic.suggestions:
-            st.write("- " + suggestion)
+            st.write(
+                "- "
+                + format_dayplan_text_names(
+                    suggestion,
+                    [task.name for task in plan.tasks]
+                    + [event.name for event in plan.fixed_events],
+                )
+            )
 
     relaxation_codes = {
         "timing_bounds_binding",
@@ -749,7 +765,17 @@ def _render_dayplan_diagnostic(
     if primary_findings:
         st.markdown("**Most useful deterministic diagnosis**")
         for finding in primary_findings:
-            st.markdown("**%s** — %s" % (finding.summary, finding.evidence))
+            st.markdown(
+                "**%s** — %s"
+                % (
+                    finding.summary,
+                    format_dayplan_text_names(
+                        finding.evidence,
+                        [task.name for task in plan.tasks]
+                        + [event.name for event in plan.fixed_events],
+                    ),
+                )
+            )
 
     if advanced_findings or diagnostic.tested_relaxations:
         with st.expander("Advanced diagnostic details"):
@@ -759,7 +785,17 @@ def _render_dayplan_diagnostic(
                     + ", ".join(diagnostic.tested_relaxations)
                 )
             for finding in advanced_findings:
-                st.markdown("**%s** — %s" % (finding.summary, finding.evidence))
+                st.markdown(
+                    "**%s** — %s"
+                    % (
+                        finding.summary,
+                        format_dayplan_text_names(
+                            finding.evidence,
+                            [task.name for task in plan.tasks]
+                            + [event.name for event in plan.fixed_events],
+                        ),
+                    )
+                )
 
 
 def _store_extraction(
