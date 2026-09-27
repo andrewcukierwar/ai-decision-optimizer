@@ -32,6 +32,32 @@
     }
   },
   {
+    "name": "clarified_monday_wfh_full_problem",
+    "prompt": "On Mondays, I work from home. Our general hours are from 9am to 6pm. My Mondays are pretty light, so I have time to do errands during the day. I usually have a single meeting from 10:30am to 11:00am. I need to do groceries which takes 30 minutes. Laundry is across the street: wash takes 30 minutes, transferring takes 5 minutes, and drying takes 45 minutes. I can work while the machines are running but need to be free for the transfer. I also need to lift which takes an hour. I prefer to lift in the early afternoon as there are less people there. It gets crowded around 4pm. Grocery shopping also gets crowded in the afternoon so I prefer to go before lunch. I like to eat lunch around 12pm to 1pm if I can. How should I plan my day?",
+    "clarification": "Yes those stated work hours should bound the whole plan. Lunch should take 30 minutes.",
+    "expected": {
+      "horizon": {"start": "09:00", "end": "18:00"},
+      "work_window": {"start": "09:00", "end": "18:00"},
+      "fixed_events": {"meeting": {"start": "10:30", "end": "11:00"}},
+      "tasks": {
+        "groceries": {"duration_min": 30, "mode": "active", "required": true},
+        "wash": {"duration_min": 30, "mode": "passive", "required": true},
+        "transfer": {"duration_min": 5, "mode": "active", "required": true},
+        "dry": {"duration_min": 45, "mode": "passive", "required": true},
+        "lift": {"duration_min": 60, "mode": "active", "required": true},
+        "lunch": {"duration_min": 30, "mode": "active", "required": true}
+      },
+      "required_tasks": ["groceries", "wash", "transfer", "dry", "lift", "lunch"],
+      "precedences": [["wash", "transfer", 0, null], ["transfer", "dry", 0, null]],
+      "preferences": [
+        ["preferred_window", "lunch", "12:00", "13:00", 1],
+        ["finish_before", "lift", "16:00", 1],
+        ["preferred_window", "groceries", "09:00", "12:00", 1]
+      ],
+      "missing_info": false
+    }
+  },
+  {
     "name": "active_and_passive",
     "prompt": "Schedule 09:00-12:00. There is a meeting from 09:00-10:00. Start the dishwasher at 09:00; it runs passively for 90 minutes. I need a 30-minute active phone call after 10:30.",
     "expected": {

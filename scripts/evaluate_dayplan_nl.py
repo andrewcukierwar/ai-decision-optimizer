@@ -48,6 +48,14 @@ def main() -> None:
     for case in cases:
         try:
             extraction = parse_dayplan(case["prompt"], client=client, model=args.model)
+            if case.get("clarification") and extraction.plan is None:
+                extraction = parse_dayplan(
+                    case["prompt"],
+                    previous_extraction=extraction,
+                    clarification=case["clarification"],
+                    client=client,
+                    model=args.model,
+                )
         except DayPlanError as exc:
             print("FAIL %-32s %s" % (case["name"], exc))
             continue
@@ -128,6 +136,10 @@ def formulation_differences(
 
     _compare_events(differences, plan.fixed_events, expected.get("fixed_events", {}))
     _compare_tasks(differences, plan.tasks, expected.get("tasks", {}))
+    actual_task_names = [task.name for task in plan.tasks]
+    for required_task in expected.get("required_tasks", []):
+        if not any(_names_match(required_task, actual_name) for actual_name in actual_task_names):
+            differences.append("missing required task: " + required_task)
     _compare_precedences(differences, plan, expected.get("precedences", []))
     _compare_preferences(differences, plan, expected.get("preferences", []))
     return differences
@@ -230,35 +242,67 @@ def _compare_preferences(
     used: set = set()
     for item in expected:
         preference_type = item[0]
-        task = item[1] if len(item) > 1 else None
-        time = item[2] if len(item) > 2 else None
-        candidate_index = next(
-            (
-                index
-                for index, actual_item in enumerate(actual)
-                if index not in used
-                and actual_item.type.value == preference_type
-                and _optional_names_match(task, actual_item.task)
-                and _field_value(actual_item.time) == time
-            ),
-            None,
-        )
+        if preference_type == "preferred_window":
+            task = item[1]
+            start = item[2]
+            end = item[3]
+            candidate_index = next(
+                (
+                    index
+                    for index, actual_item in enumerate(actual)
+                    if index not in used
+                    and actual_item.type.value == preference_type
+                    and _optional_names_match(task, actual_item.task)
+                    and _field_value(actual_item.start) == start
+                    and _field_value(actual_item.end) == end
+                ),
+                None,
+            )
+        else:
+            task = item[1] if len(item) > 1 else None
+            time = item[2] if len(item) > 2 else None
+            candidate_index = next(
+                (
+                    index
+                    for index, actual_item in enumerate(actual)
+                    if index not in used
+                    and actual_item.type.value == preference_type
+                    and _optional_names_match(task, actual_item.task)
+                    and _field_value(actual_item.time) == time
+                ),
+                None,
+            )
         if candidate_index is None:
+            end_text = item[3] if preference_type == "preferred_window" else None
             differences.append(
-                "missing preference: " + _preference_text(preference_type, task, time)
+                "missing preference: "
+                + _preference_text(preference_type, task, item[2], end_text)
             )
             continue
         used.add(candidate_index)
-        if len(item) > 3 and actual[candidate_index].weight != item[3]:
+        if preference_type == "preferred_window":
+            expected_weight = item[4] if len(item) > 4 else None
+        else:
+            expected_weight = item[3] if len(item) > 3 else None
+        if expected_weight is not None and actual[candidate_index].weight != expected_weight:
             differences.append(
                 "preference %s weight expected %s, actual %s"
-                % (preference_type, item[3], actual[candidate_index].weight)
+                % (preference_type, expected_weight, actual[candidate_index].weight)
             )
     for index, item in enumerate(actual):
         if index not in used:
             differences.append(
                 "unexpected preference: "
-                + _preference_text(item.type.value, item.task, _field_value(item.time))
+                + _preference_text(
+                    item.type.value,
+                    item.task,
+                    _field_value(item.time)
+                    if item.type.value != "preferred_window"
+                    else _field_value(item.start),
+                    _field_value(item.end)
+                    if item.type.value == "preferred_window"
+                    else None,
+                )
             )
 
 
@@ -341,12 +385,19 @@ def _display(value: Any) -> str:
     return str(value)
 
 
-def _preference_text(preference_type: str, task: Optional[str], time: Optional[str]) -> str:
+def _preference_text(
+    preference_type: str,
+    task: Optional[str],
+    time: Optional[str],
+    end: Optional[str] = None,
+) -> str:
     parts = [preference_type]
     if task is not None:
         parts.append("task=" + task)
     if time is not None:
         parts.append("time=" + time)
+    if end is not None:
+        parts.append("end=" + end)
     return ", ".join(parts)
 
 

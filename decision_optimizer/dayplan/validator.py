@@ -103,6 +103,25 @@ def validate_solution(plan: DayPlan, result: DayPlanSolution) -> ValidationRepor
                 if assignment is None
                 else max(0, time_to_minutes(assignment.end) - time_to_minutes(preference.time))
             )
+        elif preference.type.value == "preferred_window":
+            assert preference.task is not None
+            assert preference.start is not None
+            assert preference.end is not None
+            assignment = assignments_by_name.get(preference.task)
+            amount = (
+                0
+                if assignment is None
+                else max(
+                    0,
+                    time_to_minutes(preference.start)
+                    - time_to_minutes(assignment.start),
+                )
+                + max(
+                    0,
+                    time_to_minutes(assignment.end)
+                    - time_to_minutes(preference.end),
+                )
+            )
         else:
             amount = _work_interruptions(plan, assignments_by_name)
         expected_penalties.append((index, preference.type, amount, amount * preference.weight))

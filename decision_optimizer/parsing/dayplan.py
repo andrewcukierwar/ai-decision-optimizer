@@ -33,8 +33,12 @@ Translate only facts supported by the user's text. Preserve DayPlan semantics ex
 - Explicitly required activities have required=true. Do not invent optional activities.
 - Clear hard language (must, need to, no later than, by, cannot overlap) becomes hard constraints.
 - Clear soft language (prefer, ideally, would like) becomes a supported Preference. Use weight=1 when no numeric priority is stated; preserve a stated priority.
+- Supported soft timing preferences include finish_before, minimize_work_interruptions, and preferred_window. Use preferred_window with task, start, end, and weight when the user supports a time range; its penalty is the minutes outside that range.
+- Phrases such as "around 12 to 1" can support preferred_window 12:00-13:00. "Before lunch" can support a preferred window ending at the explicitly stated lunch start when the planning horizon supplies the lower bound. "Early afternoon" alone does not support an invented exact start time, but an explicit nearby boundary such as "crowded around 16:00" can support finish_before at 16:00.
 - Populate work_window only when the user explicitly gives work hours or a work window. Do not infer it from the general horizon or phrases such as "keep the day open".
 - Sequential statements such as laundry wash -> transfer -> dry become precedences.
+- Before returning a complete DayPlan, re-read the entire user request and account for every explicitly stated required activity, duration, fixed event, active/passive distinction, ordering/dependency, hard time constraint, and supported soft preference. Do not silently drop a consequential statement. If it cannot be represented safely using this schema, return a concise missing_info question instead.
+- Context such as a weekday or working from home is not a modeled DayPlan constraint unless it changes a supported timing or resource fact; do not invent unsupported schema fields.
 - Do not invent durations, deadlines, work windows, horizons, or other consequential facts.
 - If information genuinely needed to formulate the problem is missing or ambiguous, set plan=null and put concise questions/issues in missing_info instead of guessing. Do not put stylistic or nonessential uncertainty there.
 - If all consequential information is present, set missing_info=[] and put the complete valid DayPlan in plan.
@@ -227,7 +231,7 @@ def _build_user_request(
         + previous_json
         + "\n\nUser clarification:\n"
         + clarification
-        + "\n\nReturn a corrected DayPlanExtraction, preserving supported facts from the original request."
+        + "\n\nRe-extract the full original scheduling problem using the clarification. Do not return only the clarified subset. Re-read the original request and preserve every supported task, duration, fixed event, mode, dependency, hard constraint, and soft preference before returning the corrected DayPlanExtraction."
     )
 
 

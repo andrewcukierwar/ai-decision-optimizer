@@ -20,6 +20,7 @@ class TaskMode(str, Enum):
 class PreferenceType(str, Enum):
     FINISH_BEFORE = "finish_before"
     MINIMIZE_WORK_INTERRUPTIONS = "minimize_work_interruptions"
+    PREFERRED_WINDOW = "preferred_window"
 
 
 class SolveStatus(str, Enum):
@@ -128,6 +129,8 @@ class Preference(_TimeModel):
     type: PreferenceType
     task: Optional[str] = None
     time: Optional[datetime_time] = None
+    start: Optional[datetime_time] = None
+    end: Optional[datetime_time] = None
     weight: int = Field(gt=0)
 
     @model_validator(mode="after")
@@ -135,9 +138,31 @@ class Preference(_TimeModel):
         if self.time:
             time_to_minutes(self.time)
         if self.type == PreferenceType.FINISH_BEFORE:
-            if self.task is None or self.time is None:
+            if (
+                self.task is None
+                or self.time is None
+                or self.start is not None
+                or self.end is not None
+            ):
                 raise ValueError("finish_before requires task and time")
-        elif self.task is not None or self.time is not None:
+        elif self.type == PreferenceType.PREFERRED_WINDOW:
+            if (
+                self.task is None
+                or self.start is None
+                or self.end is None
+                or self.time is not None
+            ):
+                raise ValueError("preferred_window requires task, start, and end")
+            start = time_to_minutes(self.start)
+            end = time_to_minutes(self.end)
+            if end <= start:
+                raise ValueError("preferred_window end must be after start")
+        elif (
+            self.task is not None
+            or self.time is not None
+            or self.start is not None
+            or self.end is not None
+        ):
             raise ValueError("minimize_work_interruptions takes no task or time")
         return self
 
@@ -182,9 +207,14 @@ class DayPlan(BaseModel):
                 raise ValueError("precedence references an unknown task")
 
         for preference in self.preferences:
-            if preference.type == PreferenceType.FINISH_BEFORE:
+            if preference.type in (
+                PreferenceType.FINISH_BEFORE,
+                PreferenceType.PREFERRED_WINDOW,
+            ):
                 if preference.task not in task_name_set:
-                    raise ValueError("finish_before references an unknown task")
+                    raise ValueError(
+                        "%s references an unknown task" % preference.type.value
+                    )
         return self
 
 

@@ -85,6 +85,23 @@ def _preference_amount(plan: DayPlan, assignments: List[TaskAssignment], index: 
             return 0
         return max(0, time_to_minutes(assignment.end) - time_to_minutes(preference.time))
 
+    if preference.type.value == "preferred_window":
+        assert preference.task is not None
+        assert preference.start is not None
+        assert preference.end is not None
+        assignment = assignment_by_name.get(preference.task)
+        if assignment is None:
+            return 0
+        starts_early = max(
+            0,
+            time_to_minutes(preference.start) - time_to_minutes(assignment.start),
+        )
+        ends_late = max(
+            0,
+            time_to_minutes(assignment.end) - time_to_minutes(preference.end),
+        )
+        return starts_early + ends_late
+
     if plan.work_window is None:
         return 0
     work_start = time_to_minutes(plan.work_window.start)

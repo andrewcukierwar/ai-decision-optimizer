@@ -105,6 +105,8 @@ def test_one_round_clarification_includes_original_plan_and_answer():
     assert "I need a focus block today." in request
     assert "What time does the day start and end?" in request
     assert "Use a 09:00-13:00 day" in request
+    assert "Re-extract the full original scheduling problem" in request
+    assert "Do not return only the clarified subset" in request
 
 
 def test_missing_info_stops_orchestration_before_solving():
