@@ -15,9 +15,8 @@ from .explanations import (
     build_dayplan_explanation_payload,
     build_shift_schedule_explanation_payload,
 )
-from .parsing.dayplan import DayPlanError, DayPlanExtraction, parse_dayplan
+from .parsing.dayplan import DayPlanExtraction, parse_dayplan
 from .parsing.shift_schedule import (
-    ShiftScheduleError,
     ShiftScheduleExtraction,
     parse_shift_schedule,
 )

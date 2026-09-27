@@ -41,6 +41,8 @@ def validate_solution(
     """Check a materialized solution against ShiftSchedule semantics."""
 
     errors: List[str] = []
+    if result.optimal != (result.status == SolveStatus.OPTIMAL):
+        errors.append("optimal flag does not match solve status")
     if result.status in (SolveStatus.INFEASIBLE, SolveStatus.UNKNOWN):
         if result.assignments:
             errors.append("non-feasible result must not contain assignments")

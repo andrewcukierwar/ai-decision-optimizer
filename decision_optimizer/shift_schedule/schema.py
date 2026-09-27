@@ -10,7 +10,7 @@ from datetime import time as datetime_time
 from enum import Enum
 from typing import List, Literal, Optional, Union
 
-from pydantic import BaseModel, Field, field_serializer, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_serializer, model_validator
 
 
 class RuleType(str, Enum):
@@ -42,7 +42,13 @@ def minutes_to_time(minutes: int) -> datetime_time:
     return datetime_time(hour=minutes // 60, minute=minutes % 60)
 
 
-class _ShiftTimeModel(BaseModel):
+class _StrictModel(BaseModel):
+    """Reject unsupported input fields instead of silently discarding them."""
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class _ShiftTimeModel(_StrictModel):
     """Compact HH:MM JSON serialization for time-bearing models."""
 
     @field_serializer("start", "end", check_fields=False)
@@ -99,7 +105,7 @@ class Unavailability(_ShiftTimeModel):
         return self
 
 
-class Employee(BaseModel):
+class Employee(_StrictModel):
     name: str = Field(min_length=1)
     max_hours: int = Field(ge=0)
     unavailable: List[Unavailability] = Field(default_factory=list)
@@ -107,17 +113,17 @@ class Employee(BaseModel):
     preferred_shifts: List[str] = Field(default_factory=list)
 
 
-class MinimumRestRule(BaseModel):
+class MinimumRestRule(_StrictModel):
     type: Literal["minimum_rest"] = "minimum_rest"
     min_rest_hours: int = Field(ge=0)
 
 
-class MaximumConsecutiveDaysRule(BaseModel):
+class MaximumConsecutiveDaysRule(_StrictModel):
     type: Literal["maximum_consecutive_days"] = "maximum_consecutive_days"
     max_days: int = Field(ge=1)
 
 
-class RequiredDaysOffRule(BaseModel):
+class RequiredDaysOffRule(_StrictModel):
     type: Literal["required_days_off"] = "required_days_off"
     employee_name: str = Field(min_length=1)
     days: List[datetime_date] = Field(min_length=1)
@@ -137,7 +143,7 @@ class RequiredDaysOffRule(BaseModel):
 Rule = Union[MinimumRestRule, MaximumConsecutiveDaysRule, RequiredDaysOffRule]
 
 
-class ObjectiveWeights(BaseModel):
+class ObjectiveWeights(_StrictModel):
     """Integer weights for the two intentionally small objective components."""
 
     preference_penalty: int = Field(default=1, ge=0)
@@ -150,7 +156,7 @@ class ObjectiveWeights(BaseModel):
 PREFERENCE_NORMALIZATION_MINUTES = 60
 
 
-class ShiftSchedule(BaseModel):
+class ShiftSchedule(_StrictModel):
     shifts: List[Shift] = Field(min_length=1)
     employees: List[Employee] = Field(min_length=1)
     rules: List[Rule] = Field(default_factory=list)

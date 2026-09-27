@@ -101,13 +101,26 @@ def compile_day_plan(plan: DayPlan) -> CompiledDayPlan:
             assert preference.task is not None
             assert preference.time is not None
             target = time_to_minutes(preference.time)
-            late_upper_bound = max(0, horizon_end - target)
+            # The unused end variable of an absent optional task still has a
+            # domain.  Compute the raw lateness independently, then reify the
+            # actual penalty so absence is always zero even when the preferred
+            # time lies outside the planning horizon.
+            late_upper_bound = max(
+                0,
+                horizon_end
+                + tasks_by_name[preference.task].duration_min
+                - target,
+            )
+            raw_late = model.NewIntVar(
+                0, late_upper_bound, "raw_late_" + str(index)
+            )
             late = model.NewIntVar(0, late_upper_bound, "late_" + str(index))
-            # If an optional task is absent, its unused end variable is
-            # constrained below the target so the penalty remains zero.
             presence = presence_vars[preference.task]
-            model.Add(end_vars[preference.task] <= target).OnlyEnforceIf(presence.Not())
-            model.AddMaxEquality(late, [0, end_vars[preference.task] - target])
+            model.AddMaxEquality(
+                raw_late, [0, end_vars[preference.task] - target]
+            )
+            model.Add(late == raw_late).OnlyEnforceIf(presence)
+            model.Add(late == 0).OnlyEnforceIf(presence.Not())
             penalty_vars.append(late)
             objective_terms.append(late * preference.weight)
         elif preference.type.value == "preferred_window":
@@ -117,13 +130,6 @@ def compile_day_plan(plan: DayPlan) -> CompiledDayPlan:
             preferred_start = time_to_minutes(preference.start)
             preferred_end = time_to_minutes(preference.end)
             presence = presence_vars[preference.task]
-            # An absent optional task receives no soft-window penalty.
-            model.Add(start_vars[preference.task] >= preferred_start).OnlyEnforceIf(
-                presence.Not()
-            )
-            model.Add(end_vars[preference.task] <= preferred_end).OnlyEnforceIf(
-                presence.Not()
-            )
             early_upper_bound = max(0, preferred_start - horizon_start)
             late_upper_bound = max(
                 0,
@@ -131,11 +137,16 @@ def compile_day_plan(plan: DayPlan) -> CompiledDayPlan:
                 + tasks_by_name[preference.task].duration_min
                 - preferred_end,
             )
-            early = model.NewIntVar(
-                0, early_upper_bound, "early_window_penalty_" + str(index)
+            raw_early = model.NewIntVar(
+                0, early_upper_bound, "raw_early_window_penalty_" + str(index)
             )
-            late = model.NewIntVar(
-                0, late_upper_bound, "late_window_penalty_" + str(index)
+            raw_late = model.NewIntVar(
+                0, late_upper_bound, "raw_late_window_penalty_" + str(index)
+            )
+            raw_outside = model.NewIntVar(
+                0,
+                early_upper_bound + late_upper_bound,
+                "raw_preferred_window_penalty_" + str(index),
             )
             outside = model.NewIntVar(
                 0,
@@ -143,12 +154,14 @@ def compile_day_plan(plan: DayPlan) -> CompiledDayPlan:
                 "preferred_window_penalty_" + str(index),
             )
             model.AddMaxEquality(
-                early, [0, preferred_start - start_vars[preference.task]]
+                raw_early, [0, preferred_start - start_vars[preference.task]]
             )
             model.AddMaxEquality(
-                late, [0, end_vars[preference.task] - preferred_end]
+                raw_late, [0, end_vars[preference.task] - preferred_end]
             )
-            model.Add(outside == early + late)
+            model.Add(raw_outside == raw_early + raw_late)
+            model.Add(outside == raw_outside).OnlyEnforceIf(presence)
+            model.Add(outside == 0).OnlyEnforceIf(presence.Not())
             penalty_vars.append(outside)
             objective_terms.append(outside * preference.weight)
         elif preference.type.value == "minimize_work_interruptions":

@@ -20,7 +20,7 @@ from decision_optimizer.shift_schedule import (
 )
 
 
-DEFAULT_MODEL = "gpt-6-sol"  # gpt-6-luna
+DEFAULT_MODEL = "gpt-6-sol"
 
 SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS = """You extract one small workforce scheduling problem into the provided ShiftSchedule schema.
 

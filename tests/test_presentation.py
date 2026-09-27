@@ -13,6 +13,7 @@ from decision_optimizer.presentation import (
     dayplan_explanation_lines,
     dayplan_preference_statements,
     dayplan_preference_summary,
+    format_dayplan_text_names,
     format_entity_name,
     format_shift_label,
     shift_infeasibility_summary,
@@ -44,6 +45,14 @@ def test_format_time_uses_us_12_hour_display(value, expected):
 def test_diagnostic_time_display_uses_the_same_12_hour_helper():
     assert _format_minutes(0) == "12:00 AM"
     assert _format_minutes(810) == "1:30 PM"
+    assert _format_minutes(-30) == "30 minutes before the planning day"
+    assert _format_minutes(1470) == "12:30 AM (+1 day)"
+
+
+def test_diagnostic_name_formatting_treats_backslashes_as_literal_text():
+    assert format_dayplan_text_names(
+        r"relax \1 task", [r"\1 task"]
+    ) == r"relax \1 task"
 
 
 @pytest.mark.parametrize(
@@ -195,6 +204,25 @@ def test_preference_result_text_uses_grounded_penalty_facts_only():
     assert "△ 1 work-window interruption recorded" in statements
     assert all("12:00" not in statement for statement in statements)
     assert format_time_range("12:00", "13:00") == "12:00–1:00 PM"
+
+
+def test_preferred_window_penalty_text_does_not_misstate_which_endpoint_missed():
+    facts = SimpleNamespace(
+        preference_penalties=[
+            SimpleNamespace(
+                preference_type="preferred_window",
+                task="focus",
+                preferred_start="10:00",
+                preferred_end="11:00",
+                amount=30,
+                weighted_penalty=30,
+            )
+        ]
+    )
+
+    assert dayplan_preference_statements(facts) == [
+        "△ Focus was scheduled 30 minutes outside the preferred 10:00–11:00 AM window"
+    ]
 
 
 def test_explanation_identifies_active_tasks_interrupting_work_window():

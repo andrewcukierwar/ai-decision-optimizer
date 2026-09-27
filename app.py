@@ -73,6 +73,7 @@ def main() -> None:
             else "Example: Staff the 09:00-13:00 store shift on 2026-10-05..."
         ),
     )
+    _reset_for_request_change(st, prefix, request)
     if st.button("Interpret", type="primary", key=prefix + "_interpret"):
         _interpret(st, problem_type, request)
 
@@ -93,6 +94,8 @@ def main() -> None:
 
 def _interpret(st: Any, problem_type: str, request: str) -> None:
     prefix = _prefix(problem_type)
+    _clear_interpretation_state(st, prefix)
+    st.session_state[prefix + "_source_request"] = request
     try:
         extraction = (
             parse_dayplan_request(request)
@@ -175,6 +178,7 @@ def _render_dayplan_interpretation(
             key=prefix + "_edited_json",
             height=360,
         )
+    _discard_run_if_json_changed(st, prefix, edited_json)
     if st.button("Confirm & Solve", type="primary", key=prefix + "_solve"):
         try:
             confirmed_plan = validate_edited_dayplan_json(edited_json)
@@ -183,6 +187,7 @@ def _render_dayplan_interpretation(
             return
         run = solve_confirmed_dayplan(confirmed_plan)
         st.session_state[prefix + "_run"] = run
+        st.session_state[prefix + "_solved_json"] = edited_json
 
     run = st.session_state.get(prefix + "_run")
     if run is not None:
@@ -205,6 +210,7 @@ def _render_shift_schedule_interpretation(
             key=prefix + "_edited_json",
             height=360,
         )
+    _discard_run_if_json_changed(st, prefix, edited_json)
     if st.button("Confirm & Solve", type="primary", key=prefix + "_solve"):
         try:
             confirmed_schedule = validate_edited_shift_schedule_json(edited_json)
@@ -213,6 +219,7 @@ def _render_shift_schedule_interpretation(
             return
         run = solve_confirmed_shift_schedule(confirmed_schedule)
         st.session_state[prefix + "_run"] = run
+        st.session_state[prefix + "_solved_json"] = edited_json
 
     run = st.session_state.get(prefix + "_run")
     if run is not None:
@@ -741,6 +748,10 @@ def _render_shift_infeasible_result(st: Any, run: ShiftScheduleRun) -> None:
     st.error(summary[0])
     for line in summary[1:]:
         st.write(line)
+    if not run.validation.valid:
+        st.error("Independent validation reported an issue with the infeasible result.")
+        for error in run.validation.errors:
+            st.write("- " + error)
     _render_shift_diagnostic(st, run.diagnosis)
 
 
@@ -871,6 +882,7 @@ def _store_extraction(
     st.session_state[prefix + "_extraction"] = extraction
     st.session_state[prefix + "_clarification_used"] = clarification_used
     st.session_state.pop(prefix + "_run", None)
+    st.session_state.pop(prefix + "_solved_json", None)
 
     if isinstance(extraction, DayPlanExtraction):
         if extraction.plan is None:
@@ -904,11 +916,47 @@ def _reset_for_problem_change(st: Any, problem_type: str) -> None:
             "clarification",
             "edited_json",
             "run",
+            "solved_json",
+            "source_request",
             "error",
         ):
             st.session_state.pop(prefix + "_" + suffix, None)
         st.session_state.pop(prefix + "_clarification_used", None)
     st.session_state["_active_problem_type"] = problem_type
+
+
+def _reset_for_request_change(st: Any, prefix: str, request: str) -> None:
+    """Discard all derived state when the natural-language source changes."""
+
+    source_request = st.session_state.get(prefix + "_source_request")
+    if source_request is None or source_request == request:
+        return
+    _clear_interpretation_state(st, prefix)
+    st.session_state.pop(prefix + "_source_request", None)
+
+
+def _clear_interpretation_state(st: Any, prefix: str) -> None:
+    for suffix in (
+        "extraction",
+        "clarification",
+        "clarification_used",
+        "edited_json",
+        "run",
+        "solved_json",
+        "error",
+    ):
+        st.session_state.pop(prefix + "_" + suffix, None)
+
+
+def _discard_run_if_json_changed(st: Any, prefix: str, edited_json: str) -> None:
+    """Prevent a run for an older JSON formulation from being redisplayed."""
+
+    if prefix + "_run" not in st.session_state:
+        return
+    if st.session_state.get(prefix + "_solved_json") == edited_json:
+        return
+    st.session_state.pop(prefix + "_run", None)
+    st.session_state.pop(prefix + "_solved_json", None)
 
 
 def _prefix(problem_type: str) -> str:

@@ -5,8 +5,7 @@ small set of relaxed schema variants.  It does not inspect CP-SAT internals and
 it never decides feasibility independently of CP-SAT.
 """
 
-from datetime import date as datetime_date
-from typing import Callable, Dict, Iterable, List, Optional, Set, Tuple
+from typing import Iterable, List, Optional, Set, Tuple
 
 from pydantic import BaseModel, Field
 
@@ -449,8 +448,8 @@ def diagnose_shift_schedule_infeasibility(
                             code="required_day_off_conflict",
                             summary="A required day off blocks coverage",
                             evidence=(
-                                "%s is the only available eligible employee for %s, but "
-                                "%s requires that day off."
+                                "%s is needed to meet coverage for %s, but %s requires "
+                                "that day off."
                                 % (
                                     employee.name,
                                     format_shift_label(shift, include_date=True),
@@ -625,7 +624,19 @@ def _union_length(intervals: Iterable[Tuple[int, int]]) -> int:
 
 
 def _format_minutes(value: int) -> str:
-    return format_time("%02d:%02d" % (value // 60, value % 60))
+    if value < 0:
+        return "%d minutes before the planning day" % abs(value)
+    day_offset, minute_of_day = divmod(value, 24 * 60)
+    rendered = format_time(
+        "%02d:%02d" % (minute_of_day // 60, minute_of_day % 60)
+    )
+    if day_offset == 0:
+        return rendered
+    return "%s (+%d day%s)" % (
+        rendered,
+        day_offset,
+        "" if day_offset == 1 else "s",
+    )
 
 
 def _employee_count_label(count: int) -> str:

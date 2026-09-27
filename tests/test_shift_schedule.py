@@ -82,6 +82,17 @@ def test_validator_catches_a_corrupted_materialized_result():
     assert any("coverage" in error or "duplicate" in error for error in report.errors)
 
 
+def test_validator_rejects_optimal_flag_that_disagrees_with_status():
+    schedule = load_case("shift_schedule_basic.json")
+    result = solve_shift_schedule(schedule)
+    result.optimal = False
+
+    report = validate_solution(schedule, result)
+
+    assert report.valid is False
+    assert "optimal flag does not match solve status" in report.errors
+
+
 def test_minimum_rest_is_a_hard_constraint():
     schedule = ShiftSchedule.model_validate(
         {

@@ -5,6 +5,7 @@ import pytest
 
 from decision_optimizer.dayplan import (
     DayPlan,
+    DayPlanSolution,
     SolveStatus,
     compile_day_plan,
     solve_day_plan,
@@ -241,6 +242,39 @@ def test_validator_catches_a_corrupted_solver_result():
 
     assert report.valid is False
     assert any("positive duration" in error for error in report.errors)
+
+
+def test_validator_rejects_feasible_status_when_fixed_events_overlap():
+    plan = DayPlan.model_validate(
+        {
+            "horizon": {"start": "09:00", "end": "12:00"},
+            "fixed_events": [
+                {"name": "meeting", "start": "09:00", "end": "10:00"},
+                {"name": "appointment", "start": "09:30", "end": "10:30"},
+            ],
+        }
+    )
+    corrupted = DayPlanSolution(status=SolveStatus.OPTIMAL, optimal=True)
+
+    report = validate_solution(plan, corrupted)
+
+    assert report.valid is False
+    assert any("fixed events overlap" in error for error in report.errors)
+
+
+def test_validator_rejects_corrupted_nonfeasible_metadata():
+    plan = load_case("infeasible_fixed_event.json")
+    corrupted = DayPlanSolution(
+        status=SolveStatus.INFEASIBLE,
+        objective_value=1,
+        optimal=True,
+    )
+
+    report = validate_solution(plan, corrupted)
+
+    assert report.valid is False
+    assert "optimal flag does not match solve status" in report.errors
+    assert "non-feasible result must have a zero objective" in report.errors
 
 
 def test_compiler_exposes_integer_minute_model_handles():

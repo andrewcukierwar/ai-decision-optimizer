@@ -29,7 +29,11 @@ from decision_optimizer.parsing.dayplan import DayPlanExtraction
 from decision_optimizer.parsing.shift_schedule import ShiftScheduleExtraction
 from decision_optimizer.shift_schedule import ShiftSchedule, SolveStatus as ShiftSolveStatus
 from decision_optimizer.presentation import dayplan_infeasibility_summary
-from app import _store_extraction
+from app import (
+    _discard_run_if_json_changed,
+    _reset_for_request_change,
+    _store_extraction,
+)
 
 
 CASES = Path(__file__).parent / "cases"
@@ -111,6 +115,29 @@ def test_invalid_edited_json_is_rejected_before_solving():
         validate_edited_dayplan_json(invalid)
     with pytest.raises(EditedInterpretationError, match="Invalid JSON"):
         validate_edited_shift_schedule_json("{not json")
+
+
+@pytest.mark.parametrize(
+    ("validator", "payload", "field_path"),
+    [
+        (
+            validate_edited_dayplan_json,
+            lambda: load_dayplan("simple_active.json").model_dump(mode="json"),
+            ("tasks", 0),
+        ),
+        (
+            validate_edited_shift_schedule_json,
+            lambda: load_schedule("shift_schedule_basic.json").model_dump(mode="json"),
+            ("employees", 0),
+        ),
+    ],
+)
+def test_edited_json_rejects_unsupported_nested_fields(validator, payload, field_path):
+    data = payload()
+    data[field_path[0]][field_path[1]]["unsupported_constraint"] = True
+
+    with pytest.raises(EditedInterpretationError, match="Extra inputs are not permitted"):
+        validator(json.dumps(data))
 
 
 def test_incomplete_extraction_enters_clarification_state_and_one_round_completes():
@@ -200,6 +227,39 @@ def test_store_complete_extractions_keeps_editable_json_for_both_problem_types()
     assert json.loads(shift_state.session_state["shift_schedule_edited_json"]) == schedule.schedule.model_dump(mode="json")
 
 
+def test_changed_request_discards_old_interpretation_and_run_state():
+    state = FakeStreamlit(
+        {
+            "dayplan_source_request": "old request",
+            "dayplan_extraction": object(),
+            "dayplan_edited_json": "{}",
+            "dayplan_run": object(),
+            "dayplan_solved_json": "{}",
+            "dayplan_error": "old error",
+        }
+    )
+
+    _reset_for_request_change(state, "dayplan", "new request")
+
+    assert not any(
+        key.startswith("dayplan_") for key in state.session_state
+    )
+
+
+def test_changed_edited_json_discards_old_solver_run():
+    state = FakeStreamlit(
+        {
+            "shift_schedule_run": object(),
+            "shift_schedule_solved_json": '{"old": true}',
+        }
+    )
+
+    _discard_run_if_json_changed(state, "shift_schedule", '{"new": true}')
+
+    assert "shift_schedule_run" not in state.session_state
+    assert "shift_schedule_solved_json" not in state.session_state
+
+
 def test_infeasible_dayplan_has_structured_diagnosis():
     plan = load_dayplan("infeasible_precedence.json")
     diagnostic = diagnose_dayplan_infeasibility(plan)
@@ -258,6 +318,44 @@ def test_infeasible_shift_schedule_has_structured_diagnosis():
     assert diagnostic.suggestions
     assert run.solution.status == ShiftSolveStatus.INFEASIBLE
     assert run.diagnosis is not None
+
+
+def test_required_day_off_diagnosis_does_not_claim_needed_employee_is_only_one():
+    schedule = ShiftSchedule.model_validate(
+        {
+            "shifts": [
+                {
+                    "id": "team_shift",
+                    "day": "2026-10-05",
+                    "start": "09:00",
+                    "end": "13:00",
+                    "location": "site",
+                    "required_staff": 3,
+                }
+            ],
+            "employees": [
+                {"name": name, "max_hours": 8, "eligible_locations": ["site"]}
+                for name in ("A", "B", "C")
+            ],
+            "rules": [
+                {
+                    "type": "required_days_off",
+                    "employee_name": "A",
+                    "days": ["2026-10-05"],
+                }
+            ],
+        }
+    )
+
+    diagnostic = diagnose_shift_schedule_infeasibility(schedule)
+    finding = next(
+        item
+        for item in diagnostic.findings
+        if item.code == "required_day_off_conflict"
+    )
+
+    assert "is needed to meet coverage" in finding.evidence
+    assert "only available eligible employee" not in finding.evidence
 
 
 def test_explanation_payloads_are_grounded_structured_facts_only():

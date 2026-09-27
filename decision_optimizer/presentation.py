@@ -90,7 +90,7 @@ def format_dayplan_text_names(text: str, names: Iterable[str]) -> str:
     for name in sorted({item for item in names if len(item) > 1}, key=len, reverse=True):
         formatted = re.sub(
             r"(?<!\w)" + re.escape(name) + r"(?!\w)",
-            format_entity_name(name),
+            lambda _: format_entity_name(name),
             formatted,
         )
     return formatted
@@ -229,7 +229,7 @@ def dayplan_preference_statements(facts: Any) -> List[str]:
                 )
             else:
                 statements.append(
-                    f"△ {task_name} ended {item.amount} minutes outside the preferred {window} window"
+                    f"△ {task_name} was scheduled {item.amount} minutes outside the preferred {window} window"
                 )
         elif item.preference_type == "minimize_work_interruptions":
             if item.amount == 0:

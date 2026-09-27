@@ -21,11 +21,15 @@ def validate_solution(plan: DayPlan, result: DayPlanSolution) -> ValidationRepor
     """Check a solution against DayPlan semantics using only plain Python."""
 
     errors: List[str] = []
+    if result.optimal != (result.status == SolveStatus.OPTIMAL):
+        errors.append("optimal flag does not match solve status")
     if result.status in (SolveStatus.INFEASIBLE, SolveStatus.UNKNOWN):
         if result.assignments:
             errors.append("non-feasible result must not contain assignments")
         if result.preference_penalties:
             errors.append("non-feasible result must not contain preference penalties")
+        if result.objective_value != 0:
+            errors.append("non-feasible result must have a zero objective")
         return ValidationReport(valid=not errors, errors=errors)
 
     tasks_by_name: Dict[str, Task] = {task.name: task for task in plan.tasks}
@@ -78,6 +82,20 @@ def validate_solution(plan: DayPlan, result: DayPlanSolution) -> ValidationRepor
         for name, start, end in active_intervals:
             if _overlap(start, end, event_start, event_end):
                 errors.append("active task overlaps fixed event: %s and %s" % (name, event.name))
+
+    for left_index, left in enumerate(plan.fixed_events):
+        left_start = time_to_minutes(left.start)
+        left_end = time_to_minutes(left.end)
+        for right in plan.fixed_events[left_index + 1 :]:
+            if _overlap(
+                left_start,
+                left_end,
+                time_to_minutes(right.start),
+                time_to_minutes(right.end),
+            ):
+                errors.append(
+                    "fixed events overlap: %s and %s" % (left.name, right.name)
+                )
 
     for precedence in plan.precedences:
         before = assignments_by_name.get(precedence.before)

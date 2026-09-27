@@ -21,7 +21,7 @@ from decision_optimizer.dayplan import (
 )
 
 
-DEFAULT_MODEL = "gpt-6-sol"  # gpt-6-luna
+DEFAULT_MODEL = "gpt-6-sol"
 
 DAYPLAN_EXTRACTION_INSTRUCTIONS = """You extract one personal-day scheduling problem into the provided DayPlan schema.
 

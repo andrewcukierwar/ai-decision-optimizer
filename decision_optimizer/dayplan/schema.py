@@ -9,7 +9,7 @@ from datetime import time as datetime_time
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, field_serializer, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_serializer, model_validator
 
 
 class TaskMode(str, Enum):
@@ -46,7 +46,13 @@ def minutes_to_time(minutes: int) -> datetime_time:
     return datetime_time(hour=minutes // 60, minute=minutes % 60)
 
 
-class _TimeModel(BaseModel):
+class _StrictModel(BaseModel):
+    """Reject unsupported input fields instead of silently discarding them."""
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class _TimeModel(_StrictModel):
     """Shared compact ``HH:MM`` JSON serialization for time-bearing models."""
 
     @field_serializer(
@@ -110,7 +116,7 @@ class Task(_TimeModel):
         return self
 
 
-class Precedence(BaseModel):
+class Precedence(_StrictModel):
     before: str = Field(min_length=1)
     after: str = Field(min_length=1)
     min_gap_min: int = Field(default=0, ge=0)
@@ -167,7 +173,7 @@ class Preference(_TimeModel):
         return self
 
 
-class DayPlan(BaseModel):
+class DayPlan(_StrictModel):
     horizon: Horizon
     work_window: Optional[TimeWindow] = None
     fixed_events: List[FixedEvent] = Field(default_factory=list)

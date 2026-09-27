@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import date as datetime_date
 from datetime import timedelta
 import re
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 from ortools.sat.python import cp_model
 

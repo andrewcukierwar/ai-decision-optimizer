@@ -2,6 +2,8 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
+
 from decision_optimizer.dayplan import DayPlan, solve_day_plan, validate_solution
 from decision_optimizer.explanations import (
     build_dayplan_explanation_payload,
@@ -105,6 +107,48 @@ def test_validator_catches_corrupted_preferred_window_penalty():
 
     assert report.valid is False
     assert any("preference penalty" in error for error in report.errors)
+
+
+@pytest.mark.parametrize(
+    "preference",
+    [
+        {
+            "type": "finish_before",
+            "task": "optional",
+            "time": "08:00",
+            "weight": 1,
+        },
+        {
+            "type": "preferred_window",
+            "task": "optional",
+            "start": "07:00",
+            "end": "08:00",
+            "weight": 1,
+        },
+    ],
+)
+def test_optional_task_can_be_omitted_when_preference_is_outside_horizon(preference):
+    plan = DayPlan.model_validate(
+        {
+            "horizon": {"start": "09:00", "end": "12:00"},
+            "tasks": [
+                {
+                    "name": "optional",
+                    "duration_min": 30,
+                    "mode": "active",
+                    "required": False,
+                }
+            ],
+            "preferences": [preference],
+        }
+    )
+
+    result = solve_day_plan(plan)
+
+    assert result.assignments == []
+    assert result.objective_value == 0
+    assert result.preference_penalties[0].amount == 0
+    assert validate_solution(plan, result).valid
 
 
 class FakeClient:
