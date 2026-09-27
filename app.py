@@ -30,7 +30,9 @@ PROBLEM_TYPES = ("Day Planner", "Workforce Scheduler")
 def main() -> None:
     import streamlit as st
 
-    st.set_page_config(page_title="AI Decision Optimizer", page_icon="🧭", layout="wide")
+    st.set_page_config(
+        page_title="AI Decision Optimizer", page_icon="🧭", layout="wide"
+    )
     st.title("AI Decision Optimizer")
     st.caption(
         "Interpretation → deterministic optimization → independent validation → grounded explanation"
@@ -92,12 +94,12 @@ def _render_dayplan_flow(st: Any, request: str, prefix: str, extraction: Any) ->
     if extraction.plan is None:
         _render_clarification(st, prefix, extraction.missing_info)
         if not st.session_state.get(prefix + "_clarification_used", False):
-            answer = st.text_input("One clarification response", key=prefix + "_clarification")
+            answer = st.text_input(
+                "One clarification response", key=prefix + "_clarification"
+            )
             if st.button("Submit clarification", key=prefix + "_clarify"):
                 try:
-                    extraction = clarify_dayplan_request(
-                        request, extraction, answer
-                    )
+                    extraction = clarify_dayplan_request(request, extraction, answer)
                     _store_extraction(st, prefix, extraction, clarification_used=True)
                 except (DayPlanError, ShiftScheduleError) as error:
                     st.error(str(error))
@@ -118,7 +120,9 @@ def _render_shift_schedule_flow(
     if extraction.schedule is None:
         _render_clarification(st, prefix, extraction.missing_info)
         if not st.session_state.get(prefix + "_clarification_used", False):
-            answer = st.text_input("One clarification response", key=prefix + "_clarification")
+            answer = st.text_input(
+                "One clarification response", key=prefix + "_clarification"
+            )
             if st.button("Submit clarification", key=prefix + "_clarify"):
                 try:
                     extraction = clarify_shift_schedule_request(
@@ -134,7 +138,9 @@ def _render_shift_schedule_flow(
     _render_shift_schedule_interpretation(st, request, prefix, extraction.schedule)
 
 
-def _render_dayplan_interpretation(st: Any, request: str, prefix: str, plan: Any) -> None:
+def _render_dayplan_interpretation(
+    st: Any, request: str, prefix: str, plan: Any
+) -> None:
     st.subheader("Interpretation")
     st.caption("LLM-produced structured formulation — edit it before solving.")
     edited_json = st.text_area(
@@ -183,10 +189,16 @@ def _render_shift_schedule_interpretation(
 def _render_dayplan_run(st: Any, run: DayPlanRun) -> None:
     solution = run.solution
     st.subheader("Optimization")
-    st.caption("Deterministic OR-Tools CP-SAT result — the LLM does not choose the schedule.")
+    st.caption(
+        "Deterministic OR-Tools CP-SAT result — the LLM does not choose the schedule."
+    )
     st.write(
         "Solve status: **%s** · Optimal: **%s** · Objective value: **%d**"
-        % (solution.status.value, "yes" if solution.optimal else "no", solution.objective_value)
+        % (
+            solution.status.value,
+            "yes" if solution.optimal else "no",
+            solution.objective_value,
+        )
     )
 
     st.subheader("Validation")
@@ -243,10 +255,16 @@ def _render_dayplan_run(st: Any, run: DayPlanRun) -> None:
 def _render_shift_schedule_run(st: Any, run: ShiftScheduleRun) -> None:
     solution = run.solution
     st.subheader("Optimization")
-    st.caption("Deterministic OR-Tools CP-SAT result — the LLM does not choose assignments.")
+    st.caption(
+        "Deterministic OR-Tools CP-SAT result — the LLM does not choose assignments."
+    )
     st.write(
         "Solve status: **%s** · Optimal: **%s** · Objective value: **%d**"
-        % (solution.status.value, "yes" if solution.optimal else "no", solution.objective_value)
+        % (
+            solution.status.value,
+            "yes" if solution.optimal else "no",
+            solution.objective_value,
+        )
     )
 
     st.subheader("Validation")
@@ -265,7 +283,9 @@ def _render_shift_schedule_run(st: Any, run: ShiftScheduleRun) -> None:
         return
 
     shifts_by_id = {shift.id: shift for shift in run.schedule.shifts}
-    employees_by_shift: Dict[str, list] = {shift.id: [] for shift in run.schedule.shifts}
+    employees_by_shift: Dict[str, list] = {
+        shift.id: [] for shift in run.schedule.shifts
+    }
     for assignment in solution.assignments:
         employees_by_shift[assignment.shift_id].append(assignment.employee_name)
     rows = []
@@ -303,10 +323,22 @@ def _render_shift_schedule_run(st: Any, run: ShiftScheduleRun) -> None:
     st.markdown("**Preference / fairness objective breakdown**")
     st.dataframe(
         [
-            {"component": "preference penalties", "value": solution.objective_breakdown.preference_penalty},
-            {"component": "weighted preference penalty", "value": solution.objective_breakdown.weighted_preference_penalty},
-            {"component": "fairness spread (minutes)", "value": solution.objective_breakdown.fairness_minutes_spread},
-            {"component": "weighted fairness", "value": solution.objective_breakdown.weighted_fairness},
+            {
+                "component": "preference penalties",
+                "value": solution.objective_breakdown.preference_penalty,
+            },
+            {
+                "component": "weighted preference penalty",
+                "value": solution.objective_breakdown.weighted_preference_penalty,
+            },
+            {
+                "component": "fairness spread (minutes)",
+                "value": solution.objective_breakdown.fairness_minutes_spread,
+            },
+            {
+                "component": "weighted fairness",
+                "value": solution.objective_breakdown.weighted_fairness,
+            },
             {"component": "total", "value": solution.objective_breakdown.total},
         ],
         use_container_width=True,
@@ -335,11 +367,15 @@ def _render_shift_schedule_run(st: Any, run: ShiftScheduleRun) -> None:
 
 def _render_clarification(st: Any, prefix: str, missing_info: Any) -> None:
     st.subheader("Clarification needed")
-    st.warning("The interpretation is incomplete. Answer one clarification question before solving.")
+    st.warning(
+        "The interpretation is incomplete. Answer one clarification question before solving."
+    )
     for item in missing_info:
         st.write("- " + item)
     if st.session_state.get(prefix + "_clarification_used", False):
-        st.info("The single clarification round has been used; edit the request and interpret again if needed.")
+        st.info(
+            "The single clarification round has been used; edit the request and interpret again if needed."
+        )
 
 
 def _render_diagnostic(st: Any, diagnostic: Optional[InfeasibilityDiagnostic]) -> None:
@@ -353,7 +389,9 @@ def _render_diagnostic(st: Any, diagnostic: Optional[InfeasibilityDiagnostic]) -
         st.write("Suggested relaxation: " + finding.suggestion)
 
 
-def _store_extraction(st: Any, prefix: str, extraction: Any, clarification_used: bool) -> None:
+def _store_extraction(
+    st: Any, prefix: str, extraction: Any, clarification_used: bool
+) -> None:
     st.session_state[prefix + "_extraction"] = extraction
     st.session_state[prefix + "_clarification_used"] = clarification_used
     st.session_state.pop(prefix + "_run", None)
@@ -374,7 +412,14 @@ def _reset_for_problem_change(st: Any, problem_type: str) -> None:
     if previous == problem_type:
         return
     for prefix in ("dayplan", "shift_schedule"):
-        for suffix in ("request", "extraction", "clarification", "edited_json", "run", "error"):
+        for suffix in (
+            "request",
+            "extraction",
+            "clarification",
+            "edited_json",
+            "run",
+            "error",
+        ):
             st.session_state.pop(prefix + "_" + suffix, None)
         st.session_state.pop(prefix + "_clarification_used", None)
     st.session_state["_active_problem_type"] = problem_type
@@ -385,7 +430,7 @@ def _prefix(problem_type: str) -> str:
 
 
 def _show_api_hint(st: Any) -> None:
-    st.info("Enter a request and select Interpret. Live natural-language interpretation requires OPENAI_API_KEY.")
+    st.info("Enter a scheduling problem above, then select Interpret.")
 
 
 if __name__ == "__main__":
