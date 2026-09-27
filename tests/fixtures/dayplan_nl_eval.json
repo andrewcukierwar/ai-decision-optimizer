@@ -48,11 +48,12 @@
         "lunch": {"duration_min": 30, "mode": "active", "required": true}
       },
       "required_tasks": ["groceries", "wash", "transfer", "dry", "lift", "lunch"],
-      "precedences": [["wash", "transfer", 0, null], ["transfer", "dry", 0, null]],
+      "precedences": [["wash", "transfer", 0, 0], ["transfer", "dry", 0, 0]],
       "preferences": [
+        ["finish_before", "groceries", "12:00", 1],
         ["preferred_window", "lunch", "12:00", "13:00", 1],
-        ["finish_before", "lift", "16:00", 1],
-        ["preferred_window", "groceries", "09:00", "12:00", 1]
+        ["preferred_window", "lift", "12:00", "15:00", 1],
+        ["finish_before", "lift", "16:00", 1]
       ],
       "missing_info": false
     }

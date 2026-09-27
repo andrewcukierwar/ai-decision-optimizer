@@ -192,6 +192,8 @@ def test_core_dayplan_still_requires_a_horizon():
 def test_dayplan_has_no_redundant_missing_info_channel():
     assert "missing_info" not in DayPlan.model_fields
     assert "only when the user explicitly gives work hours" in DAYPLAN_EXTRACTION_INSTRUCTIONS
+    assert "early afternoon=12:00-15:00" in DAYPLAN_EXTRACTION_INSTRUCTIONS
+    assert "max_gap_min=0" in DAYPLAN_EXTRACTION_INSTRUCTIONS
 
 
 def test_structured_validation_error_preserves_location_and_reason():

@@ -31,6 +31,10 @@ class DayPlanExplanationAssignment(BaseModel):
 class DayPlanExplanationPenalty(BaseModel):
     preference_index: int
     preference_type: str
+    task: Optional[str] = None
+    target_time: Optional[str] = None
+    preferred_start: Optional[str] = None
+    preferred_end: Optional[str] = None
     amount: int
     weighted_penalty: int
 
@@ -99,6 +103,9 @@ def build_dayplan_explanation_payload(
 
     task_modes = {task.name: task.mode.value for task in plan.tasks}
     task_durations = {task.name: task.duration_min for task in plan.tasks}
+    preferences_by_index = {
+        index: preference for index, preference in enumerate(plan.preferences)
+    }
     return DayPlanExplanationFacts(
         status=solution.status.value,
         optimal=solution.optimal,
@@ -117,6 +124,22 @@ def build_dayplan_explanation_payload(
             DayPlanExplanationPenalty(
                 preference_index=penalty.preference_index,
                 preference_type=penalty.preference_type.value,
+                task=preferences_by_index[penalty.preference_index].task,
+                target_time=(
+                    preferences_by_index[penalty.preference_index].time.strftime("%H:%M")
+                    if preferences_by_index[penalty.preference_index].time is not None
+                    else None
+                ),
+                preferred_start=(
+                    preferences_by_index[penalty.preference_index].start.strftime("%H:%M")
+                    if preferences_by_index[penalty.preference_index].start is not None
+                    else None
+                ),
+                preferred_end=(
+                    preferences_by_index[penalty.preference_index].end.strftime("%H:%M")
+                    if preferences_by_index[penalty.preference_index].end is not None
+                    else None
+                ),
                 amount=penalty.amount,
                 weighted_penalty=penalty.weighted_penalty,
             )
@@ -194,7 +217,7 @@ def render_dayplan_explanation(facts: DayPlanExplanationFacts) -> str:
 
     status = "optimal" if facts.optimal else facts.status
     lines = [
-        "The deterministic solver returned an %s DayPlan with objective %d."
+        "The deterministic solver returned an %s DayPlan with preference penalty %d."
         % (status, facts.objective_value),
         "The independent plain-Python validator accepted every displayed assignment and penalty.",
     ]
@@ -203,12 +226,51 @@ def render_dayplan_explanation(facts: DayPlanExplanationFacts) -> str:
             "Activities are shown at the solver's materialized times; active/passive mode and duration come from the confirmed interpretation."
         )
     if facts.preference_penalties:
-        penalty_text = ", ".join(
-            "%s=%d (weighted %d)"
-            % (item.preference_type, item.amount, item.weighted_penalty)
-            for item in facts.preference_penalties
-        )
-        lines.append("Objective preference penalties: " + penalty_text + ".")
+        details = []
+        for item in facts.preference_penalties:
+            if item.preference_type == "finish_before" and item.task and item.target_time:
+                if item.amount == 0:
+                    details.append(
+                        "%s finished by the preferred %s target"
+                        % (item.task, item.target_time)
+                    )
+                else:
+                    details.append(
+                        "%s finished %d minutes after the preferred %s target"
+                        % (item.task, item.amount, item.target_time)
+                    )
+            elif (
+                item.preference_type == "preferred_window"
+                and item.task
+                and item.preferred_start
+                and item.preferred_end
+            ):
+                if item.amount == 0:
+                    details.append(
+                        "%s was scheduled within its preferred %s-%s window"
+                        % (item.task, item.preferred_start, item.preferred_end)
+                    )
+                else:
+                    details.append(
+                        "%s was scheduled %d minutes outside its preferred %s-%s window"
+                        % (
+                            item.task,
+                            item.amount,
+                            item.preferred_start,
+                            item.preferred_end,
+                        )
+                    )
+            elif item.preference_type == "minimize_work_interruptions":
+                details.append(
+                    "the work-interruption preference incurred %d interruption(s)"
+                    % item.amount
+                )
+            else:
+                details.append(
+                    "%s incurred %d weighted preference penalty"
+                    % (item.preference_type, item.weighted_penalty)
+                )
+        lines.append("Encoded preference results: " + "; ".join(details) + ".")
     else:
         lines.append("No preference penalties were recorded in the validated result.")
     return " ".join(lines)

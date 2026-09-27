@@ -3,6 +3,10 @@ from pathlib import Path
 from types import SimpleNamespace
 
 from decision_optimizer.dayplan import DayPlan, solve_day_plan, validate_solution
+from decision_optimizer.explanations import (
+    build_dayplan_explanation_payload,
+    render_dayplan_explanation,
+)
 from decision_optimizer.parsing.dayplan import DayPlanExtraction, parse_dayplan
 from scripts.evaluate_dayplan_nl import formulation_differences
 
@@ -61,6 +65,37 @@ def test_preferred_window_nonzero_optimum_is_materialized():
     assert report.valid, report.errors
 
 
+def test_preferred_window_starting_before_window_has_known_penalty():
+    plan = DayPlan.model_validate(
+        {
+            "horizon": {"start": "09:00", "end": "12:00"},
+            "tasks": [
+                {
+                    "name": "early_task",
+                    "duration_min": 30,
+                    "mode": "active",
+                    "latest_end": "09:30",
+                    "required": True,
+                }
+            ],
+            "preferences": [
+                {
+                    "type": "preferred_window",
+                    "task": "early_task",
+                    "start": "10:00",
+                    "end": "11:00",
+                    "weight": 1,
+                }
+            ],
+        }
+    )
+    result = solve_day_plan(plan)
+
+    assert result.objective_value == 60
+    assert result.preference_penalties[0].amount == 60
+    assert validate_solution(plan, result).valid
+
+
 def test_validator_catches_corrupted_preferred_window_penalty():
     plan = _preferred_window_plan()
     result = solve_day_plan(plan)
@@ -100,10 +135,26 @@ def _real_request_plan():
                 {"name": "lunch", "duration_min": 30, "mode": "active", "required": True},
             ],
             "precedences": [
-                {"before": "wash", "after": "transfer", "min_gap_min": 0},
-                {"before": "transfer", "after": "dry", "min_gap_min": 0},
+                {
+                    "before": "wash",
+                    "after": "transfer",
+                    "min_gap_min": 0,
+                    "max_gap_min": 0,
+                },
+                {
+                    "before": "transfer",
+                    "after": "dry",
+                    "min_gap_min": 0,
+                    "max_gap_min": 0,
+                },
             ],
             "preferences": [
+                {
+                    "type": "finish_before",
+                    "task": "groceries",
+                    "time": "12:00",
+                    "weight": 1,
+                },
                 {
                     "type": "preferred_window",
                     "task": "lunch",
@@ -112,16 +163,16 @@ def _real_request_plan():
                     "weight": 1,
                 },
                 {
-                    "type": "finish_before",
+                    "type": "preferred_window",
                     "task": "lift",
-                    "time": "16:00",
+                    "start": "12:00",
+                    "end": "15:00",
                     "weight": 1,
                 },
                 {
-                    "type": "preferred_window",
-                    "task": "groceries",
-                    "start": "09:00",
-                    "end": "12:00",
+                    "type": "finish_before",
+                    "task": "lift",
+                    "time": "16:00",
                     "weight": 1,
                 },
             ],
@@ -156,3 +207,32 @@ def test_real_clarification_reextracts_full_dayplan_and_fixture_checks_completen
     assert "Do not return only the clarified subset" in clarification_request
     assert set(case["expected"]["required_tasks"]) == set(case["expected"]["tasks"])
     assert formulation_differences(result, case["expected"]) == []
+
+
+def test_real_laundry_process_chain_requires_immediate_handoffs():
+    plan = _real_request_plan()
+    result = solve_day_plan(plan)
+    assignments = {item.name: item for item in result.assignments}
+
+    assert assignments["transfer"].start == assignments["wash"].end
+    assert assignments["dry"].start == assignments["transfer"].end
+    assert validate_solution(plan, result).valid
+
+
+def test_dayplan_explanation_describes_preference_metadata_and_outcomes():
+    plan = _real_request_plan()
+    result = solve_day_plan(plan)
+    validation = validate_solution(plan, result)
+    facts = build_dayplan_explanation_payload(plan, result, validation)
+
+    assert facts is not None
+    lunch = next(
+        item
+        for item in facts.preference_penalties
+        if item.task == "lunch"
+    )
+    assert lunch.preferred_start == "12:00"
+    assert lunch.preferred_end == "13:00"
+    explanation = render_dayplan_explanation(facts)
+    assert "lunch was scheduled within its preferred 12:00-13:00 window" in explanation
+    assert "groceries finished by the preferred 12:00 target" in explanation

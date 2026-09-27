@@ -196,7 +196,7 @@ def _render_dayplan_run(st: Any, run: DayPlanRun) -> None:
         "Deterministic OR-Tools CP-SAT result — the LLM does not choose the schedule."
     )
     st.write(
-        "Solve status: **%s** · Optimal: **%s** · Objective value: **%d**"
+        "Solve status: **%s** · Optimal: **%s** · Preference penalty: **%d**"
         % (
             solution.status.value,
             "yes" if solution.optimal else "no",
@@ -219,6 +219,11 @@ def _render_dayplan_run(st: Any, run: DayPlanRun) -> None:
         st.warning(solution.message or "The solver did not determine feasibility.")
         return
 
+    if solution.objective_value == 0:
+        st.success("All encoded soft preferences were satisfied.")
+    else:
+        st.warning("Some encoded soft preferences could not be fully satisfied.")
+
     task_by_name = {task.name: task for task in run.plan.tasks}
     rows = []
     for assignment in sorted(run.solution.assignments, key=lambda item: item.start):
@@ -235,16 +240,35 @@ def _render_dayplan_run(st: Any, run: DayPlanRun) -> None:
     st.markdown("**Task schedule**")
     st.dataframe(rows, use_container_width=True, hide_index=True)
 
-    penalty_rows = [
-        {
-            "preference": penalty.preference_index,
-            "type": penalty.preference_type.value,
-            "amount": penalty.amount,
-            "weighted_penalty": penalty.weighted_penalty,
-        }
-        for penalty in run.solution.preference_penalties
-    ]
-    st.markdown("**Preference / objective breakdown**")
+    preferences_by_index = {
+        index: preference for index, preference in enumerate(run.plan.preferences)
+    }
+    penalty_rows = []
+    for penalty in run.solution.preference_penalties:
+        preference = preferences_by_index[penalty.preference_index]
+        penalty_rows.append(
+            {
+                "preference": penalty.preference_index,
+                "type": penalty.preference_type.value,
+                "task": preference.task or "",
+                "target": (
+                    preference.time.strftime("%H:%M")
+                    if preference.time is not None
+                    else (
+                        "%s-%s"
+                        % (
+                            preference.start.strftime("%H:%M"),
+                            preference.end.strftime("%H:%M"),
+                        )
+                        if preference.start is not None and preference.end is not None
+                        else ""
+                    )
+                ),
+                "penalty_minutes_or_count": penalty.amount,
+                "weighted_penalty": penalty.weighted_penalty,
+            }
+        )
+    st.markdown("**Preference penalty breakdown**")
     if penalty_rows:
         st.dataframe(penalty_rows, use_container_width=True, hide_index=True)
     else:
