@@ -9,6 +9,7 @@ from .schema import (
     EmployeeLoad,
     ObjectiveBreakdown,
     PreferencePenalty,
+    PREFERENCE_NORMALIZATION_MINUTES,
     ShiftAssignment,
     ShiftSchedule,
     ShiftScheduleSolution,
@@ -124,15 +125,16 @@ def _materialize_objective(
 
     preference_penalty = sum(item.amount for item in penalties)
     weighted_preference = sum(item.weighted_penalty for item in penalties)
+    normalized_preference = weighted_preference * PREFERENCE_NORMALIZATION_MINUTES
     fairness_spread = max(minutes_by_employee.values()) - min(minutes_by_employee.values())
     weighted_fairness = fairness_spread * schedule.objective_weights.fairness
-    total = weighted_preference + weighted_fairness
+    total = normalized_preference + weighted_fairness
     breakdown = ObjectiveBreakdown(
         preference_penalty=preference_penalty,
         weighted_preference_penalty=weighted_preference,
+        normalized_preference_penalty=normalized_preference,
         fairness_minutes_spread=fairness_spread,
         weighted_fairness=weighted_fairness,
         total=total,
     )
     return penalties, breakdown
-

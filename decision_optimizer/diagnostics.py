@@ -24,7 +24,7 @@ from .shift_schedule import (
     time_to_minutes as shift_time_to_minutes,
 )
 from .dayplan.schema import time_to_minutes as dayplan_time_to_minutes
-from .presentation import format_time
+from .presentation import format_shift_label, format_shift_location, format_time
 
 
 class DiagnosticFinding(BaseModel):
@@ -326,17 +326,29 @@ def diagnose_shift_schedule_infeasibility(
             if not _is_unavailable(employee.unavailable, shift)
         ]
         if len(available) < shift.required_staff:
+            required_label = _employee_count_label(shift.required_staff)
             if not eligible:
                 evidence = (
-                    "%s requires %d employee(s), but no employee is eligible for %s."
-                    % (shift.id, shift.required_staff, shift.location)
+                    "%s requires %s, but no eligible employee is available."
+                    % (format_shift_label(shift, include_date=True), required_label)
                 )
-                suggestion = "Add an eligible employee for %s or change the shift location." % shift.location
+                suggestion = "Add an eligible employee for %s or change the shift location." % format_shift_location(shift.location)
+            elif not available:
+                evidence = (
+                    "%s requires %s, but no eligible employee is available."
+                    % (format_shift_label(shift, include_date=True), required_label)
+                )
+                suggestion = "Resolve an unavailable window or add another eligible employee."
             else:
                 evidence = (
-                    "%s requires %d employee(s), but only %d eligible employee(s) are "
+                    "%s requires %s, but only %s %s "
                     "available."
-                    % (shift.id, shift.required_staff, len(available))
+                    % (
+                        format_shift_label(shift, include_date=True),
+                        required_label,
+                        _employee_count_label(len(available)),
+                        "is" if len(available) == 1 else "are",
+                    )
                 )
                 suggestion = "Resolve an unavailable window or add another eligible employee."
             findings.append(
@@ -360,9 +372,11 @@ def diagnose_shift_schedule_infeasibility(
                 code="total_max_hours_too_small",
                 summary="Employee maximum hours cannot cover demand",
                 evidence=(
-                    "Required coverage is %d minutes, but employee maximum hours provide "
-                    "only %d minutes."
-                    % (total_required_minutes, total_max_minutes)
+                    "Required coverage is %s, but employee maximum hours provide only %s."
+                    % (
+                        _employee_hours_label(total_required_minutes),
+                        _employee_hours_label(total_max_minutes),
+                    )
                 ),
                 suggestion="Increase a max-hours limit or add another employee.",
             )
@@ -380,17 +394,30 @@ def diagnose_shift_schedule_infeasibility(
             if location in employee.eligible_locations
         )
         if required_minutes > eligible_capacity:
+            eligible_names = [
+                employee.name
+                for employee in schedule.employees
+                if location in employee.eligible_locations
+            ]
+            eligible_people = _join_names(eligible_names) or "Eligible employees"
+            eligible_verb = "provides" if len(eligible_names) == 1 else "provide"
             findings.append(
                 DiagnosticFinding(
                     family="eligibility_capacity",
                     code="location_capacity_too_small",
                     summary="Location eligibility blocks enough staffing",
                     evidence=(
-                        "%s requires %d eligible employee-minutes, but eligible "
-                        "employees provide at most %d."
-                        % (location, required_minutes, eligible_capacity)
+                        "%s requires %s, but %s %s at most %s."
+                        % (
+                            format_shift_location(location),
+                            _employee_hours_label(required_minutes),
+                            eligible_people,
+                            eligible_verb,
+                            _employee_hours_label(eligible_capacity),
+                        )
                     ),
-                    suggestion="Add eligibility for this location or add another eligible employee.",
+                    suggestion="Add eligibility for %s or add another eligible employee."
+                    % format_shift_location(location),
                 )
             )
 
@@ -424,7 +451,11 @@ def diagnose_shift_schedule_infeasibility(
                             evidence=(
                                 "%s is the only available eligible employee for %s, but "
                                 "%s requires that day off."
-                                % (employee.name, shift.id, employee.name)
+                                % (
+                                    employee.name,
+                                    format_shift_label(shift, include_date=True),
+                                    employee.name,
+                                )
                             ),
                             suggestion="Add coverage or relax the required day off.",
                         )
@@ -595,6 +626,21 @@ def _union_length(intervals: Iterable[Tuple[int, int]]) -> int:
 
 def _format_minutes(value: int) -> str:
     return format_time("%02d:%02d" % (value // 60, value % 60))
+
+
+def _employee_count_label(count: int) -> str:
+    return "%d employee%s" % (count, "" if count == 1 else "s")
+
+
+def _employee_hours_label(minutes: int) -> str:
+    hours = minutes / 60
+    return "%g employee-hour%s" % (hours, "" if hours == 1 else "s")
+
+
+def _join_names(names: List[str]) -> str:
+    if len(names) == 2:
+        return "%s and %s" % (names[0], names[1])
+    return ", ".join(names)
 
 
 def _is_unavailable(unavailable: List[Unavailability], shift: Shift) -> bool:

@@ -36,9 +36,12 @@ choose assignments, or write optimization reasoning.
 - Do not disable an objective by setting its weight to 0 unless the user explicitly asks to ignore or disable that objective.
 - If the user expresses a preference or fairness goal without a numeric weight, use the default weight 1.
 - Do not invent dates, shift times, staffing requirements, eligibility, availability, max hours, or employee names.
-- If any information needed to formulate the schedule is materially missing or ambiguous, return schedule=null and concise missing_info questions/issues.
+- Use missing_info only for genuinely missing or ambiguous factual information required by the schema.
 - Do not return a partial ShiftSchedule. If the schedule cannot be formulated safely, return schedule=null.
-- If all consequential information is present, return missing_info=[] and the complete valid ShiftSchedule.
+- Do not assess whether the schedule can be staffed. If all schema facts are known, return the complete ShiftSchedule and let the deterministic optimizer determine feasibility.
+- Do not ask the user to add employees, increase capacity, relax constraints, change requirements, or otherwise repair likely infeasibility during extraction.
+- Once a clarification supplies the missing facts, reconstruct the complete original problem, incorporate the clarification, and return the complete ShiftSchedule.
+- If all consequential factual information is present, return missing_info=[] even when the hard constraints appear contradictory or impossible.
 """
 
 

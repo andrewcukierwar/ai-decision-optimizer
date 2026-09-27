@@ -32,6 +32,11 @@ from decision_optimizer.presentation import (
     format_date,
     format_duration,
     format_minutes_duration,
+    format_shift_label,
+    format_shift_location,
+    format_shift_references,
+    shift_infeasibility_summary,
+    shift_preference_violation_count,
     format_time,
     format_time_range,
     format_time_window,
@@ -263,6 +268,10 @@ def _render_dayplan_run(st: Any, run: DayPlanRun) -> None:
 
 def _render_shift_schedule_run(st: Any, run: ShiftScheduleRun) -> None:
     solution = run.solution
+    if solution.status.value == "infeasible":
+        _render_shift_infeasible_result(st, run)
+        return
+
     st.subheader("Recommended assignments")
     _render_shift_result_summary(st, run)
     if not run.validation.valid:
@@ -271,9 +280,6 @@ def _render_shift_schedule_run(st: Any, run: ShiftScheduleRun) -> None:
             st.write("- " + error)
         return
 
-    if solution.status.value == "infeasible":
-        _render_diagnostic(st, run.diagnosis)
-        return
     if solution.status.value not in {"optimal", "feasible"}:
         st.warning(solution.message or "The solver did not determine feasibility.")
         return
@@ -291,7 +297,10 @@ def _render_shift_schedule_run(st: Any, run: ShiftScheduleRun) -> None:
             {
                 "Employee": load.employee_name,
                 "Hours": f"{load.hours:g} hr",
-                "Assigned shifts": ", ".join(load.assigned_shift_ids) or "—",
+                "Assigned shifts": format_shift_references(
+                    run.schedule, load.assigned_shift_ids
+                )
+                or "—",
             }
             for load in solution.employee_hours
         ],
@@ -396,10 +405,10 @@ def _render_shift_schedule_interpretation_summary(st: Any, schedule: Any) -> Non
     st.dataframe(
         [
             {
-                "Shift": shift.id,
+                "Shift": format_shift_label(shift),
                 "Date": format_date(shift.day),
                 "Time": format_time_range(shift.start, shift.end),
-                "Location": shift.location,
+                "Location": format_shift_location(shift.location),
                 "Required staff": shift.required_staff,
             }
             for shift in sorted(schedule.shifts, key=lambda item: (item.day, item.start, item.id))
@@ -428,7 +437,11 @@ def _render_shift_schedule_interpretation_summary(st: Any, schedule: Any) -> Non
             [
                 {
                     "Employee": employee.name,
-                    "Eligible locations": ", ".join(employee.eligible_locations) or "None",
+                    "Eligible locations": ", ".join(
+                        format_shift_location(location)
+                        for location in employee.eligible_locations
+                    )
+                    or "None",
                 }
                 for employee in schedule.employees
             ],
@@ -457,7 +470,10 @@ def _render_shift_schedule_interpretation_summary(st: Any, schedule: Any) -> Non
         preference_rows = [
             {
                 "Employee": employee.name,
-                "Preferred shifts": ", ".join(employee.preferred_shifts) or "None",
+                "Preferred shifts": format_shift_references(
+                    schedule, employee.preferred_shifts
+                )
+                or "None",
             }
             for employee in schedule.employees
         ]
@@ -514,7 +530,8 @@ def _render_shift_result_summary(st: Any, run: ShiftScheduleRun) -> None:
     columns[0].metric("Status", _status_label(solution.status.value))
     columns[1].metric("Validation", "Passed" if run.validation.valid else "Failed")
     columns[2].metric(
-        "Preference penalty", solution.objective_breakdown.weighted_preference_penalty
+        "Preference violations",
+        shift_preference_violation_count(solution.preference_penalties),
     )
     columns[3].metric(
         "Fairness spread",
@@ -576,8 +593,12 @@ def _render_shift_advanced_details(st: Any, run: ShiftScheduleRun) -> None:
             [
                 {"Component": "Preference penalties", "Value": breakdown.preference_penalty},
                 {
-                    "Component": "Weighted preference penalty",
+                    "Component": "Weighted preference contribution (raw count × weight)",
                     "Value": breakdown.weighted_preference_penalty,
+                },
+                {
+                    "Component": "Normalized preference contribution (60 min per violation)",
+                    "Value": breakdown.normalized_preference_penalty,
                 },
                 {
                     "Component": "Fairness spread (minutes)",
@@ -615,10 +636,10 @@ def _shift_assignment_rows(schedule: Any, solution: Any) -> list:
         assigned_by_shift[assignment.shift_id].append(assignment.employee_name)
     return [
         {
-            "Shift": shift.id,
+            "Shift": format_shift_label(shift),
             "Date": format_date(shift.day),
             "Time": format_time_range(shift.start, shift.end),
-            "Location": shift.location,
+            "Location": format_shift_location(shift.location),
             "Assigned staff": ", ".join(sorted(assigned_by_shift[shift.id])) or "Unfilled",
         }
         for shift in sorted(schedule.shifts, key=lambda item: (item.day, item.start, item.id))
@@ -715,15 +736,61 @@ def _render_clarification(st: Any, prefix: str, missing_info: Any) -> None:
         )
 
 
-def _render_diagnostic(st: Any, diagnostic: Optional[InfeasibilityDiagnostic]) -> None:
-    st.error("No feasible solution found")
+def _render_shift_infeasible_result(st: Any, run: ShiftScheduleRun) -> None:
+    summary = shift_infeasibility_summary(run.diagnosis)
+    st.error(summary[0])
+    for line in summary[1:]:
+        st.write(line)
+    _render_shift_diagnostic(st, run.diagnosis)
+
+
+def _render_shift_diagnostic(
+    st: Any, diagnostic: Optional[InfeasibilityDiagnostic]
+) -> None:
     if diagnostic is None:
         st.warning("No bounded diagnostic was available.")
         return
-    st.markdown("**Likely conflicts and deterministic evidence**")
-    for finding in diagnostic.findings:
+
+    suggestions = list(diagnostic.suggestions)
+    if any(
+        finding.code
+        in {
+            "coverage_eligibility_or_availability",
+            "total_max_hours_too_small",
+            "location_capacity_too_small",
+        }
+        for finding in diagnostic.findings
+    ):
+        suggestions.append("Reduce staffing requirements.")
+    if suggestions:
+        st.markdown("**Practical next steps**")
+        for suggestion in dict.fromkeys(suggestions):
+            st.write("- " + suggestion)
+
+    primary_findings = [
+        finding
+        for finding in diagnostic.findings
+        if not finding.code.endswith("_binding")
+    ]
+    if primary_findings:
+        st.markdown("**Deterministic conflicts**")
+    for finding in primary_findings:
         st.markdown("**%s** — %s" % (finding.summary, finding.evidence))
-        st.write("Suggested relaxation: " + finding.suggestion)
+
+    advanced_findings = [
+        finding
+        for finding in diagnostic.findings
+        if finding.code.endswith("_binding")
+    ]
+    if advanced_findings or diagnostic.tested_relaxations:
+        with st.expander("Advanced diagnostic details"):
+            for finding in advanced_findings:
+                st.markdown("**%s** — %s" % (finding.summary, finding.evidence))
+            if diagnostic.tested_relaxations:
+                st.caption(
+                    "Bounded relaxation checks: "
+                    + ", ".join(diagnostic.tested_relaxations)
+                )
 
 
 def _render_dayplan_diagnostic(

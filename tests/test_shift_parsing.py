@@ -12,7 +12,9 @@ from decision_optimizer.shift_schedule import (
     RequiredDaysOffRule,
     ShiftSchedule,
     SolveStatus,
+    solve_shift_schedule,
 )
+from decision_optimizer.diagnostics import diagnose_shift_schedule_infeasibility
 from decision_optimizer.parsing.shift_schedule import (
     DEFAULT_MODEL,
     SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS,
@@ -118,6 +120,12 @@ def test_extraction_instructions_preserve_default_objective_weights():
     assert "preference_penalty=1 and fairness=1" in SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS
     assert "Do not disable an objective" in SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS
     assert "default weight 1" in SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS
+
+
+def test_extraction_instructions_leave_feasibility_to_the_deterministic_optimizer():
+    assert "Do not assess whether the schedule can be staffed" in SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS
+    assert "let the deterministic optimizer determine feasibility" in SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS
+    assert "repair likely infeasibility" in SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS
 
 
 def test_evaluator_checks_expected_objective_weights():
@@ -245,6 +253,52 @@ def test_one_round_clarification_includes_original_extraction_and_answer():
     assert "2026-10-05" in request
 
 
+def test_infeasible_staffing_clarification_returns_complete_schedule_for_solver():
+    original = (
+        "Front desk 09:00-13:00 requires 2; front desk 13:00-17:00 requires 2; "
+        "back room 09:00-13:00 requires 1; back room 13:00-17:00 requires 1. "
+        "Alice and Bob are front-desk-only and can each work up to 4 hours. "
+        "Carla is back-room-only and unavailable 09:00-13:00."
+    )
+    incomplete = incomplete_extraction("What is Carla's maximum hours?")
+    complete = ShiftSchedule.model_validate(
+        {
+            "shifts": [
+                {"id": "front_morning", "day": "2026-10-05", "start": "09:00", "end": "13:00", "location": "front_desk", "required_staff": 2},
+                {"id": "front_afternoon", "day": "2026-10-05", "start": "13:00", "end": "17:00", "location": "front_desk", "required_staff": 2},
+                {"id": "back_morning", "day": "2026-10-05", "start": "09:00", "end": "13:00", "location": "back_room", "required_staff": 1},
+                {"id": "back_afternoon", "day": "2026-10-05", "start": "13:00", "end": "17:00", "location": "back_room", "required_staff": 1},
+            ],
+            "employees": [
+                {"name": "Alice", "max_hours": 4, "eligible_locations": ["front_desk"]},
+                {"name": "Bob", "max_hours": 4, "eligible_locations": ["front_desk"]},
+                {"name": "Carla", "max_hours": 4, "eligible_locations": ["back_room"], "unavailable": [{"day": "2026-10-05", "start": "09:00", "end": "13:00"}]},
+            ],
+        }
+    )
+    client = FakeClient(
+        [parsed_response(incomplete), parsed_response(complete_extraction(complete))]
+    )
+
+    first = parse_shift_schedule(original, client=client)
+    final = parse_shift_schedule(
+        original,
+        previous_extraction=first,
+        clarification="Carla can work up to 4 hours. No, do not change the staffing requirements.",
+        client=client,
+    )
+
+    assert first.schedule is None
+    assert final.schedule == complete
+    solution = solve_shift_schedule(final.schedule)
+    assert solution.status == SolveStatus.INFEASIBLE
+    diagnostic = diagnose_shift_schedule_infeasibility(final.schedule)
+    assert any("Back room" in finding.evidence for finding in diagnostic.findings)
+    assert any("no eligible employee is available" in finding.evidence for finding in diagnostic.findings)
+    assert any("Alice and Bob provide at most 8 employee-hours" in finding.evidence for finding in diagnostic.findings)
+    assert any("16 employee-hours" in finding.evidence for finding in diagnostic.findings)
+
+
 def test_missing_info_stops_orchestration_before_solving():
     extraction = incomplete_extraction("Which dates, times, and staffing levels apply?")
     result = solve_from_text(
@@ -296,9 +350,10 @@ def test_refusal_and_invalid_structured_output_are_typed_errors():
         parse_shift_schedule("Staff the store.", client=invalid)
 
 
-def test_nl_fixture_has_three_cases_including_clarification_case():
+def test_nl_fixture_has_four_cases_including_infeasible_staffing_case():
     fixture = Path(__file__).parent / "fixtures" / "shift_schedule_nl_eval.json"
     cases = json.loads(fixture.read_text())
 
-    assert len(cases) == 3
+    assert len(cases) == 4
     assert any(case["expected"].get("missing_info") for case in cases)
+    assert any("infeasible_staffing" in case["name"] for case in cases)

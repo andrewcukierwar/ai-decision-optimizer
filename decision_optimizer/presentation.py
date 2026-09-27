@@ -20,6 +20,69 @@ def format_entity_name(value: str) -> str:
     return value[:1].upper() + value[1:]
 
 
+def format_shift_location(value: str) -> str:
+    """Render a Workforce location without changing its schema value."""
+
+    return format_entity_name(value.replace("_", " "))
+
+
+def format_shift_label(shift: Any, *, include_date: bool = False) -> str:
+    """Build a readable shift label from structured fields, never from its id."""
+
+    parts = [format_shift_location(shift.location)]
+    if include_date:
+        parts.append(format_date(shift.day))
+    parts.append(format_time_range(shift.start, shift.end))
+    return " · ".join(parts)
+
+
+def format_shift_references(schedule: Any, shift_ids: Iterable[str]) -> str:
+    """Render assigned/preferred shift references while preserving unknown ids."""
+
+    shifts_by_id = {shift.id: shift for shift in schedule.shifts}
+    return ", ".join(
+        format_shift_label(shifts_by_id[shift_id], include_date=True)
+        if shift_id in shifts_by_id
+        else shift_id
+        for shift_id in shift_ids
+    )
+
+
+def shift_preference_violation_count(preference_penalties: Iterable[Any]) -> int:
+    """Count outside-preference assignments, not the magnitude of each amount."""
+
+    return sum(1 for item in preference_penalties if item.amount > 0)
+
+
+def shift_infeasibility_summary(diagnostic: Any) -> List[str]:
+    """Return the separate Workforce infeasible-result presentation heading."""
+
+    return ["No feasible staffing schedule", "Deterministic diagnosis completed"]
+
+
+def shift_workload_explanation(employee_hours: Iterable[Any]) -> str:
+    """Describe the measured minimum, maximum, and spread of assigned hours."""
+
+    hours = [float(load.hours) for load in employee_hours]
+    if not hours:
+        return "No employee workloads were materialized."
+    minimum = min(hours)
+    maximum = max(hours)
+    spread = maximum - minimum
+    if spread == 0:
+        return "Workloads are evenly distributed at %s per employee." % _hours_label(
+            minimum
+        )
+    return (
+        "Assigned hours range from %s to %s, a %s spread."
+        % (
+            _hours_label(minimum),
+            _hours_label(maximum),
+            _hours_label(spread, hyphenate=True),
+        )
+    )
+
+
 def format_dayplan_text_names(text: str, names: Iterable[str]) -> str:
     """Format known Day Planner names inside already-rendered diagnostic text."""
 
@@ -254,17 +317,14 @@ def shift_preference_statements(schedule: Any, facts: Any) -> List[str]:
             shift = shifts_by_id.get(penalty.shift_id)
             shift_detail = penalty.shift_id
             if shift is not None:
-                shift_detail = (
-                    f"{penalty.shift_id} ({format_date(shift.day)}, "
-                    f"{format_time_range(shift.start, shift.end)})"
-                )
+                shift_detail = format_shift_label(shift, include_date=True)
             statements.append(
-                f"△ {penalty.employee_name} was assigned {shift_detail} outside their preferred shifts"
+                f"△ {penalty.employee_name} was assigned {shift_detail} outside their listed preferred shifts"
             )
         return statements
 
     if any(employee.preferred_shifts for employee in schedule.employees):
-        return ["✓ All encoded employee shift preferences were satisfied"]
+        return ["✓ No employees were assigned outside their listed preferred shifts"]
     return ["No employee shift preferences were encoded"]
 
 
@@ -274,22 +334,19 @@ def shift_explanation_lines(facts: Any) -> List[str]:
     lines: List[str] = []
     if facts.preference_penalties:
         details = [
-            f"{item.employee_name} was assigned {item.shift_id} outside their preferred shifts"
+            f"{item.employee_name} was assigned {getattr(item, 'shift_label', None) or item.shift_id} outside their listed preferred shifts"
             for item in facts.preference_penalties
         ]
         lines.append("Tradeoff: " + _join_items(details) + ".")
     else:
-        lines.append("No employee preference penalties were recorded.")
+        if getattr(facts, "has_preferred_shifts", False):
+            lines.append(
+                "No employees were assigned outside their listed preferred shifts."
+            )
+        else:
+            lines.append("No employee shift preferences were encoded.")
 
-    spread = facts.objective_breakdown.fairness_minutes_spread
-    if spread == 0:
-        lines.append("Assigned workload is evenly distributed across employees.")
-    else:
-        lines.append(
-            "The resulting workload spread is "
-            + format_minutes_duration(spread)
-            + "."
-        )
+    lines.append(shift_workload_explanation(facts.employee_hours))
     return lines[:3]
 
 
@@ -310,6 +367,14 @@ def _clock(value: datetime_time) -> str:
 
 def _minutes_between(start: datetime_time, end: datetime_time) -> int:
     return (end.hour * 60 + end.minute) - (start.hour * 60 + start.minute)
+
+
+def _hours_label(value: float, *, hyphenate: bool = False) -> str:
+    number = f"{value:g}"
+    unit = "hour" if value == 1 else "hours"
+    if hyphenate:
+        return f"{number}-hour"
+    return f"{number} {unit}"
 
 
 def _without_marker(value: str) -> str:

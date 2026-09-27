@@ -14,9 +14,15 @@ from decision_optimizer.presentation import (
     dayplan_preference_statements,
     dayplan_preference_summary,
     format_entity_name,
+    format_shift_label,
+    shift_infeasibility_summary,
+    shift_preference_statements,
+    shift_preference_violation_count,
+    shift_workload_explanation,
     format_time,
     format_time_range,
 )
+from decision_optimizer.shift_schedule import ShiftSchedule
 
 
 CASES = Path(__file__).parent / "cases"
@@ -53,6 +59,67 @@ def test_diagnostic_time_display_uses_the_same_12_hour_helper():
 )
 def test_format_entity_name_uses_sentence_style_only(value, expected):
     assert format_entity_name(value) == expected
+
+
+def test_shift_labels_use_structured_fields_instead_of_machine_ids():
+    schedule = ShiftSchedule.model_validate(
+        {
+            "shifts": [
+                {"id": "front_desk_morning", "day": "2026-10-05", "start": "09:00", "end": "13:00", "location": "front_desk", "required_staff": 1}
+            ],
+            "employees": [{"name": "Grace", "max_hours": 8, "eligible_locations": ["front_desk"], "preferred_shifts": ["front_desk_morning"]}],
+        }
+    )
+
+    assert format_shift_label(schedule.shifts[0]) == "Front desk · 9:00 AM–1:00 PM"
+    assert "front_desk_morning" not in format_shift_label(schedule.shifts[0])
+
+
+def test_workforce_preference_language_describes_outside_assignments_only():
+    schedule = ShiftSchedule.model_validate(
+        {
+            "shifts": [
+                {"id": "preferred", "day": "2026-10-05", "start": "09:00", "end": "10:00", "location": "office", "required_staff": 1},
+                {"id": "other", "day": "2026-10-05", "start": "10:00", "end": "11:00", "location": "office", "required_staff": 1},
+            ],
+            "employees": [{"name": "Grace", "max_hours": 8, "eligible_locations": ["office"], "preferred_shifts": ["preferred"]}],
+        }
+    )
+    no_penalties = SimpleNamespace(preference_penalties=[])
+    violated = SimpleNamespace(
+        preference_penalties=[
+            SimpleNamespace(employee_name="Grace", shift_id="other", amount=1)
+        ]
+    )
+
+    assert shift_preference_statements(schedule, no_penalties) == [
+        "✓ No employees were assigned outside their listed preferred shifts"
+    ]
+    assert shift_preference_statements(schedule, violated) == [
+        "△ Grace was assigned Office · Oct 5, 2026 · 10:00–11:00 AM outside their listed preferred shifts"
+    ]
+
+
+@pytest.mark.parametrize(
+    ("loads", "expected"),
+    [
+        ([SimpleNamespace(hours=15), SimpleNamespace(hours=15)], "Workloads are evenly distributed at 15 hours per employee."),
+        ([SimpleNamespace(hours=4), SimpleNamespace(hours=8)], "Assigned hours range from 4 hours to 8 hours, a 4-hour spread."),
+    ],
+)
+def test_workforce_fairness_explanation_uses_min_max_assigned_hours(loads, expected):
+    assert shift_workload_explanation(loads) == expected
+
+
+def test_workforce_preference_count_and_infeasible_heading_are_deterministic():
+    assert shift_preference_violation_count(
+        [SimpleNamespace(amount=1), SimpleNamespace(amount=3)]
+    ) == 2
+    assert shift_preference_violation_count([]) == 0
+    assert shift_infeasibility_summary(None) == [
+        "No feasible staffing schedule",
+        "Deterministic diagnosis completed",
+    ]
 
 
 @pytest.mark.parametrize(

@@ -15,6 +15,7 @@ from .schema import (
     Shift,
     ShiftSchedule,
     Unavailability,
+    PREFERENCE_NORMALIZATION_MINUTES,
     time_to_minutes,
 )
 
@@ -36,7 +37,9 @@ def compile_shift_schedule(schedule: ShiftSchedule) -> CompiledShiftSchedule:
     Each employee/shift pair has one Boolean assignment variable.  All
     constraints are hard except the two small objective components: assigning
     an employee outside their preferred shift list, and the spread between the
-    highest and lowest assigned hours.
+    highest and lowest assigned hours.  The primary score is
+    ``preference_weight * violations * 60 + fairness_weight * spread_minutes``;
+    raw violation count is a deterministic secondary tie-break.
     """
 
     model = cp_model.CpModel()
@@ -153,18 +156,18 @@ def compile_shift_schedule(schedule: ShiftSchedule) -> CompiledShiftSchedule:
                 )
             preference_penalty_vars[(employee.name, shift.id)] = penalty
 
-    objective_terms: List[Any] = []
-    if schedule.objective_weights.preference_penalty and preference_penalty_vars:
-        objective_terms.append(
-            schedule.objective_weights.preference_penalty
-            * sum(preference_penalty_vars.values())
-        )
-    if schedule.objective_weights.fairness:
-        objective_terms.append(
-            schedule.objective_weights.fairness * fairness_spread_var
-        )
-    if objective_terms:
-        model.Minimize(sum(objective_terms))
+    raw_preference_penalty = sum(preference_penalty_vars.values())
+    primary_objective = (
+        schedule.objective_weights.preference_penalty
+        * PREFERENCE_NORMALIZATION_MINUTES
+        * raw_preference_penalty
+        + schedule.objective_weights.fairness * fairness_spread_var
+    )
+    # Preserve the normalized primary ordering exactly, then prefer fewer raw
+    # preference violations for equal primary scores.  The scale is strictly
+    # greater than the largest possible secondary value.
+    tie_break_scale = len(preference_penalty_vars) + 1
+    model.Minimize(primary_objective * tie_break_scale + raw_preference_penalty)
 
     return CompiledShiftSchedule(
         model=model,
@@ -284,4 +287,3 @@ def _overlap_times(start_a: int, end_a: int, start_b: int, end_b: int) -> bool:
 
 def _safe_name(value: str) -> str:
     return re.sub(r"[^A-Za-z0-9_]+", "_", value).strip("_") or "value"
-

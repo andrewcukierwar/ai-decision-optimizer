@@ -37,5 +37,25 @@
     "name": "incomplete_staffing_request",
     "prompt": "Please staff next week's shifts with Alice and Bob. Alice can work up to 8 hours and prefers mornings. Fill the rota fairly.",
     "expected": {"missing_info": true}
+  },
+  {
+    "name": "infeasible_staffing_is_extracted_not_repaired",
+    "prompt": "Front desk 09:00-13:00 requires 2; front desk 13:00-17:00 requires 2; back room 09:00-13:00 requires 1; back room 13:00-17:00 requires 1. Alice and Bob are front-desk-only and can each work up to 4 hours. Carla is back-room-only, can work up to 4 hours, and is unavailable 09:00-13:00. There are no other employees.",
+    "expected": {
+      "missing_info": false,
+      "shifts": {
+        "front_morning": {"day": "2026-10-05", "start": "09:00", "end": "13:00", "location": "front_desk", "required_staff": 2},
+        "front_afternoon": {"day": "2026-10-05", "start": "13:00", "end": "17:00", "location": "front_desk", "required_staff": 2},
+        "back_morning": {"day": "2026-10-05", "start": "09:00", "end": "13:00", "location": "back_room", "required_staff": 1},
+        "back_afternoon": {"day": "2026-10-05", "start": "13:00", "end": "17:00", "location": "back_room", "required_staff": 1}
+      },
+      "employees": {
+        "Alice": {"max_hours": 4, "eligible_locations": ["front_desk"]},
+        "Bob": {"max_hours": 4, "eligible_locations": ["front_desk"]},
+        "Carla": {"max_hours": 4, "eligible_locations": ["back_room"], "unavailable": {"day": "2026-10-05", "start": "09:00", "end": "13:00"}}
+      },
+      "rules": [],
+      "objective_weights": {"preference_penalty": 1, "fairness": 1}
+    }
   }
 ]

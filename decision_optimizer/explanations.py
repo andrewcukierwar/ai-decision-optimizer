@@ -17,7 +17,7 @@ from .dayplan import (
     time_to_minutes,
 )
 from .dayplan.validator import ValidationReport as DayPlanValidationReport
-from .presentation import format_entity_name
+from .presentation import format_entity_name, format_shift_label, shift_workload_explanation
 from .shift_schedule import (
     ObjectiveBreakdown,
     ShiftSchedule,
@@ -78,6 +78,7 @@ class ShiftScheduleExplanationLoad(BaseModel):
 class ShiftScheduleExplanationPenalty(BaseModel):
     employee_name: str
     shift_id: str
+    shift_label: Optional[str] = None
     amount: int
     weighted_penalty: int
 
@@ -94,6 +95,7 @@ class ShiftScheduleExplanationFacts(BaseModel):
     preference_penalties: List[ShiftScheduleExplanationPenalty]
     objective_breakdown: ObjectiveBreakdown
     validation_valid: bool
+    has_preferred_shifts: bool = False
     validation_errors: List[str] = Field(default_factory=list)
 
 
@@ -235,6 +237,11 @@ def build_shift_schedule_explanation_payload(
             ShiftScheduleExplanationPenalty(
                 employee_name=penalty.employee_name,
                 shift_id=penalty.shift_id,
+                shift_label=(
+                    format_shift_label(shifts_by_id[penalty.shift_id], include_date=True)
+                    if penalty.shift_id in shifts_by_id
+                    else None
+                ),
                 amount=penalty.amount,
                 weighted_penalty=penalty.weighted_penalty,
             )
@@ -242,6 +249,9 @@ def build_shift_schedule_explanation_payload(
         ],
         objective_breakdown=solution.objective_breakdown,
         validation_valid=validation.valid,
+        has_preferred_shifts=any(
+            employee.preferred_shifts for employee in schedule.employees
+        ),
         validation_errors=list(validation.errors),
     )
 
@@ -342,18 +352,24 @@ def render_shift_schedule_explanation(facts: ShiftScheduleExplanationFacts) -> s
         "The deterministic solver returned an %s Workforce Scheduler result with objective %d."
         % (status, facts.objective_value),
         "The independent plain-Python validator accepted the assignments, coverage, eligibility, availability, hours, and hard-rule checks.",
-        "Fairness spread is %d minutes; weighted preference penalty is %d and weighted fairness is %d."
+        "Primary score components are normalized preference contribution %d and weighted fairness %d; the exact fairness spread is %d minutes."
         % (
-            breakdown.fairness_minutes_spread,
-            breakdown.weighted_preference_penalty,
+            breakdown.normalized_preference_penalty,
             breakdown.weighted_fairness,
+            breakdown.fairness_minutes_spread,
         ),
+        shift_workload_explanation(facts.employee_hours),
     ]
     if facts.preference_penalties:
+        count = len(facts.preference_penalties)
+        assignment_noun = "employee assignment" if count == 1 else "employee assignments"
+        verb = "was" if count == 1 else "were"
         lines.append(
-            "%d preference assignment(s) incurred a penalty."
-            % len(facts.preference_penalties)
+            "%d %s %s outside their listed preferred shifts."
+            % (count, assignment_noun, verb)
         )
+    elif facts.has_preferred_shifts:
+        lines.append("No employees were assigned outside their listed preferred shifts.")
     else:
-        lines.append("No preference assignment penalties were recorded.")
+        lines.append("No employee shift preferences were encoded.")
     return " ".join(lines)

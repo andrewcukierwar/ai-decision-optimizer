@@ -144,6 +144,12 @@ class ObjectiveWeights(BaseModel):
     fairness: int = Field(default=1, ge=0)
 
 
+# The normalized optimization objective treats one outside-preference assignment
+# as approximately one hour of workload spread.  Materialized fairness remains
+# exact in minutes; this constant only defines the primary objective's units.
+PREFERENCE_NORMALIZATION_MINUTES = 60
+
+
 class ShiftSchedule(BaseModel):
     shifts: List[Shift] = Field(min_length=1)
     employees: List[Employee] = Field(min_length=1)
@@ -202,8 +208,19 @@ class PreferencePenalty(BaseModel):
 
 
 class ObjectiveBreakdown(BaseModel):
+    """Materialized objective values.
+
+    ``weighted_preference_penalty`` is the raw weighted count.  One violation
+    is normalized to 60 minutes in ``normalized_preference_penalty`` so it is
+    comparable to the exact minute-based fairness spread.  ``total`` is the
+    normalized primary optimization score.  The CP-SAT model uses raw
+    preference violations only as a secondary tie-break after this primary
+    score, so that tie-break is intentionally not included in ``total``.
+    """
+
     preference_penalty: int = Field(default=0, ge=0)
     weighted_preference_penalty: int = Field(default=0, ge=0)
+    normalized_preference_penalty: int = Field(default=0, ge=0)
     fairness_minutes_spread: int = Field(default=0, ge=0)
     weighted_fairness: int = Field(default=0, ge=0)
     total: int = Field(default=0, ge=0)
