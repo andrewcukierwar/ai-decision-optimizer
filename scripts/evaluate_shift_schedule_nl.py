@@ -5,15 +5,19 @@ pytest because every prompt makes a paid API request.
 """
 
 import argparse
+from datetime import date as datetime_date
+from datetime import time as datetime_time
+from enum import Enum
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from decision_optimizer.parsing.shift_schedule import (
     ShiftScheduleError,
     _create_openai_client,
     parse_shift_schedule,
 )
+from decision_optimizer.shift_schedule import solve_shift_schedule, validate_solution
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,7 +41,12 @@ def main() -> None:
     except ShiftScheduleError as exc:
         parser.error(str(exc))
 
-    matches = 0
+    formulation_matches = 0
+    complete_cases = sum(
+        1 for case in cases if case["expected"].get("missing_info") is not True
+    )
+    solved_successfully = 0
+    validation_passes = 0
     for case in cases:
         try:
             extraction = parse_shift_schedule(case["prompt"], client=client, model=args.model)
@@ -47,7 +56,7 @@ def main() -> None:
 
         differences = formulation_differences(extraction, case["expected"])
         if not differences:
-            matches += 1
+            formulation_matches += 1
             print("PASS " + case["name"])
         else:
             print("MISS " + case["name"])
@@ -56,7 +65,30 @@ def main() -> None:
             if args.show_actual:
                 print(json.dumps(extraction.model_dump(mode="json"), indent=2, sort_keys=True))
 
-    print("%d/%d ShiftSchedule formulations matched expected key fields" % (matches, len(cases)))
+        if case["expected"].get("missing_info") is True:
+            continue
+        if extraction.schedule is None:
+            continue
+
+        solution = solve_shift_schedule(extraction.schedule)
+        report = validate_solution(extraction.schedule, solution)
+        if solution.status.value in {"optimal", "feasible"}:
+            solved_successfully += 1
+        if report.valid:
+            validation_passes += 1
+
+    print(
+        "%d/%d ShiftSchedule formulations matched expected key fields"
+        % (formulation_matches, len(cases))
+    )
+    print(
+        "%d/%d formulation-valid cases solved successfully"
+        % (solved_successfully, complete_cases)
+    )
+    print(
+        "%d/%d solver results passed independent validation"
+        % (validation_passes, complete_cases)
+    )
 
 
 def formulation_differences(extraction: Any, expected: Dict[str, Any]) -> List[str]:
@@ -83,11 +115,7 @@ def formulation_differences(extraction: Any, expected: Dict[str, Any]) -> List[s
             differences.append("missing shift: " + shift_id)
             continue
         for field, expected_value in expected_shift.items():
-            actual_value = getattr(actual, field)
-            if hasattr(actual_value, "strftime"):
-                actual_value = actual_value.strftime("%H:%M")
-            elif hasattr(actual_value, "isoformat"):
-                actual_value = actual_value.isoformat()
+            actual_value = _normalize_value(getattr(actual, field))
             if actual_value != expected_value:
                 differences.append(
                     "shift %s %s expected %s, actual %s"
@@ -124,7 +152,29 @@ def formulation_differences(extraction: Any, expected: Dict[str, Any]) -> List[s
             actual_rules.append(["maximum_consecutive_days", rule.max_days])
     if sorted(actual_rules) != sorted(expected.get("rules", [])):
         differences.append("rule set mismatch")
+    expected_weights = expected.get("objective_weights")
+    if expected_weights is not None:
+        actual_weights = schedule.objective_weights
+        for field, expected_value in expected_weights.items():
+            actual_value = getattr(actual_weights, field)
+            if actual_value != expected_value:
+                differences.append(
+                    "objective_weights %s expected %s, actual %s"
+                    % (field, expected_value, actual_value)
+                )
     return differences
+
+
+def _normalize_value(value: Any) -> Any:
+    """Normalize typed Pydantic values for stable evaluator comparisons."""
+
+    if isinstance(value, Enum):
+        return value.value
+    if isinstance(value, datetime_time):
+        return value.strftime("%H:%M")
+    if isinstance(value, datetime_date):
+        return value.isoformat()
+    return value
 
 
 if __name__ == "__main__":

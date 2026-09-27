@@ -1,4 +1,6 @@
 import json
+from datetime import date as datetime_date
+from datetime import time as datetime_time
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -21,6 +23,10 @@ from decision_optimizer.parsing.shift_schedule import (
     ShiftScheduleRefusalError,
     parse_shift_schedule,
     solve_from_text,
+)
+from scripts.evaluate_shift_schedule_nl import (
+    _normalize_value,
+    formulation_differences,
 )
 
 
@@ -80,6 +86,50 @@ def test_parser_uses_structured_shift_schedule_output_and_configurable_model(mon
     assert call["model"] == "test-model"
     assert call["text_format"] is ShiftScheduleExtraction
     assert call["input"][0]["content"] == SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS
+
+
+def test_evaluator_normalizes_dates_and_times_without_confusing_date_for_time():
+    assert _normalize_value(datetime_date(2026, 10, 5)) == "2026-10-05"
+    assert _normalize_value(datetime_time(9, 0)) == "09:00"
+
+    differences = formulation_differences(
+        complete_extraction(sample_schedule()),
+        {
+            "missing_info": False,
+            "shifts": {
+                "front": {
+                    "day": "2026-10-05",
+                    "start": "09:00",
+                    "end": "13:00",
+                    "location": "store",
+                    "required_staff": 1,
+                }
+            },
+            "employees": {"Ava": {"max_hours": 8, "eligible_locations": ["store"]}},
+            "rules": [],
+            "objective_weights": {"preference_penalty": 1, "fairness": 1},
+        },
+    )
+
+    assert differences == []
+
+
+def test_extraction_instructions_preserve_default_objective_weights():
+    assert "preference_penalty=1 and fairness=1" in SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS
+    assert "Do not disable an objective" in SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS
+    assert "default weight 1" in SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS
+
+
+def test_evaluator_checks_expected_objective_weights():
+    differences = formulation_differences(
+        complete_extraction(sample_schedule()),
+        {
+            "missing_info": False,
+            "objective_weights": {"preference_penalty": 2, "fairness": 1},
+        },
+    )
+
+    assert "objective_weights preference_penalty expected 2, actual 1" in differences
 
 
 def test_structured_output_schema_uses_anyof_not_oneof_for_rules():

@@ -12,7 +12,8 @@
         "Alice": {"max_hours": 8, "eligible_locations": ["front_desk", "backroom"]},
         "Bob": {"max_hours": 4, "eligible_locations": ["front_desk"], "unavailable": {"day": "2026-10-05", "start": "09:00", "end": "13:00"}}
       },
-      "rules": [["minimum_rest", 0]]
+      "rules": [["minimum_rest", 0]],
+      "objective_weights": {"preference_penalty": 1, "fairness": 1}
     }
   },
   {
@@ -28,7 +29,8 @@
         "Alex": {"max_hours": 8, "eligible_locations": ["clinic"], "preferred_shifts": ["s1"]},
         "Blair": {"max_hours": 8, "eligible_locations": ["clinic"], "preferred_shifts": ["s2"], "unavailable_shift": "s1"}
       },
-      "rules": [["minimum_rest", 0]]
+      "rules": [["minimum_rest", 0]],
+      "objective_weights": {"preference_penalty": 1, "fairness": 1}
     }
   },
   {

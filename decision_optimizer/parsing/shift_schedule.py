@@ -32,7 +32,9 @@ choose assignments, or write optimization reasoning.
 - Use unavailable.shift_id for a named unavailable shift, day alone for a full unavailable day, and day plus start/end for a time window.
 - preferred_shifts is a soft preference list of shift ids. Do not invent preferences.
 - Supported hard rules are minimum_rest (whole hours), maximum_consecutive_days, and required_days_off for a named employee.
-- Use objective_weights only when the user specifies objective priorities; otherwise leave the schema defaults.
+- If the user gives no numeric objective weights, preserve the schema defaults exactly: preference_penalty=1 and fairness=1.
+- Do not disable an objective by setting its weight to 0 unless the user explicitly asks to ignore or disable that objective.
+- If the user expresses a preference or fairness goal without a numeric weight, use the default weight 1.
 - Do not invent dates, shift times, staffing requirements, eligibility, availability, max hours, or employee names.
 - If any information needed to formulate the schedule is materially missing or ambiguous, return schedule=null and concise missing_info questions/issues.
 - Do not return a partial ShiftSchedule. If the schedule cannot be formulated safely, return schedule=null.
@@ -250,4 +252,3 @@ def _format_validation_error(error: ValidationError) -> str:
         location = ".".join(str(part) for part in item.get("loc", ())) or "$"
         details.append("%s: %s" % (location, item.get("msg", "validation error")))
     return "; ".join(details) or str(error)
-
