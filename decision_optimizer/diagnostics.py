@@ -24,6 +24,7 @@ from .shift_schedule import (
     time_to_minutes as shift_time_to_minutes,
 )
 from .dayplan.schema import time_to_minutes as dayplan_time_to_minutes
+from .presentation import format_time
 
 
 class DiagnosticFinding(BaseModel):
@@ -569,7 +570,7 @@ def _union_length(intervals: Iterable[Tuple[int, int]]) -> int:
 
 
 def _format_minutes(value: int) -> str:
-    return "%02d:%02d" % (value // 60, value % 60)
+    return format_time("%02d:%02d" % (value // 60, value % 60))
 
 
 def _is_unavailable(unavailable: List[Unavailability], shift: Shift) -> bool:
