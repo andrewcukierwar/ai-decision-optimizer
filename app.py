@@ -25,6 +25,7 @@ from decision_optimizer.presentation import (
     build_dayplan_schedule_rows,
     dayplan_explanation_lines,
     dayplan_preference_statements,
+    dayplan_infeasibility_summary,
     format_date,
     format_duration,
     format_minutes_duration,
@@ -212,6 +213,15 @@ def _render_shift_schedule_interpretation(
 
 def _render_dayplan_run(st: Any, run: DayPlanRun) -> None:
     solution = run.solution
+    if solution.status.value == "infeasible":
+        _render_dayplan_result_summary(st, run)
+        if not run.validation.valid:
+            st.error("Independent validation reported an issue with the infeasible result.")
+            for error in run.validation.errors:
+                st.write("- " + error)
+        _render_dayplan_diagnostic(st, run.diagnosis)
+        return
+
     st.subheader("Recommended schedule")
     _render_dayplan_result_summary(st, run)
     if not run.validation.valid:
@@ -220,9 +230,6 @@ def _render_dayplan_run(st: Any, run: DayPlanRun) -> None:
             st.write("- " + error)
         return
 
-    if solution.status.value == "infeasible":
-        _render_diagnostic(st, run.diagnosis)
-        return
     if solution.status.value not in {"optimal", "feasible"}:
         st.warning(solution.message or "The solver did not determine feasibility.")
         return
@@ -476,6 +483,13 @@ def _render_shift_schedule_interpretation_summary(st: Any, schedule: Any) -> Non
 
 def _render_dayplan_result_summary(st: Any, run: DayPlanRun) -> None:
     solution = run.solution
+    if solution.status.value == "infeasible":
+        summary = dayplan_infeasibility_summary(run.diagnosis)
+        st.error(summary[0])
+        for line in summary[1:]:
+            st.write(line)
+        return
+
     columns = st.columns(3)
     columns[0].metric("Status", _status_label(solution.status.value))
     columns[1].metric("Validation", "Passed" if run.validation.valid else "Failed")
@@ -701,6 +715,51 @@ def _render_diagnostic(st: Any, diagnostic: Optional[InfeasibilityDiagnostic]) -
     for finding in diagnostic.findings:
         st.markdown("**%s** — %s" % (finding.summary, finding.evidence))
         st.write("Suggested relaxation: " + finding.suggestion)
+
+
+def _render_dayplan_diagnostic(
+    st: Any, diagnostic: Optional[InfeasibilityDiagnostic]
+) -> None:
+    if diagnostic is None:
+        st.warning("No bounded diagnostic was available.")
+        return
+
+    if diagnostic.suggestions:
+        st.markdown("**Practical relaxation suggestions**")
+        for suggestion in diagnostic.suggestions:
+            st.write("- " + suggestion)
+
+    relaxation_codes = {
+        "timing_bounds_binding",
+        "fixed_event_conflict",
+        "precedence_constraints_binding",
+        "active_person_capacity_binding",
+    }
+    primary_findings = [
+        finding
+        for finding in diagnostic.findings
+        if finding.code not in relaxation_codes
+    ]
+    advanced_findings = [
+        finding
+        for finding in diagnostic.findings
+        if finding.code in relaxation_codes
+    ]
+
+    if primary_findings:
+        st.markdown("**Most useful deterministic diagnosis**")
+        for finding in primary_findings:
+            st.markdown("**%s** — %s" % (finding.summary, finding.evidence))
+
+    if advanced_findings or diagnostic.tested_relaxations:
+        with st.expander("Advanced diagnostic details"):
+            if diagnostic.tested_relaxations:
+                st.write(
+                    "Bounded relaxation tests: "
+                    + ", ".join(diagnostic.tested_relaxations)
+                )
+            for finding in advanced_findings:
+                st.markdown("**%s** — %s" % (finding.summary, finding.evidence))
 
 
 def _store_extraction(

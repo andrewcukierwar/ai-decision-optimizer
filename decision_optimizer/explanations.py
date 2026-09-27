@@ -9,7 +9,13 @@ from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
-from .dayplan import DayPlan, DayPlanSolution, SolveStatus as DayPlanSolveStatus
+from .dayplan import (
+    DayPlan,
+    DayPlanSolution,
+    SolveStatus as DayPlanSolveStatus,
+    TaskMode,
+    time_to_minutes,
+)
 from .dayplan.validator import ValidationReport as DayPlanValidationReport
 from .shift_schedule import (
     ObjectiveBreakdown,
@@ -49,6 +55,7 @@ class DayPlanExplanationFacts(BaseModel):
     assignments: List[DayPlanExplanationAssignment]
     preference_penalties: List[DayPlanExplanationPenalty]
     validation_valid: bool
+    work_window_interrupting_tasks: List[str] = Field(default_factory=list)
     validation_errors: List[str] = Field(default_factory=list)
 
 
@@ -103,6 +110,7 @@ def build_dayplan_explanation_payload(
 
     task_modes = {task.name: task.mode.value for task in plan.tasks}
     task_durations = {task.name: task.duration_min for task in plan.tasks}
+    interrupting_tasks = _work_window_interrupting_tasks(plan, solution)
     preferences_by_index = {
         index: preference for index, preference in enumerate(plan.preferences)
     }
@@ -145,9 +153,34 @@ def build_dayplan_explanation_payload(
             )
             for penalty in solution.preference_penalties
         ],
+        work_window_interrupting_tasks=interrupting_tasks,
         validation_valid=validation.valid,
         validation_errors=list(validation.errors),
     )
+
+
+def _work_window_interrupting_tasks(
+    plan: DayPlan, solution: DayPlanSolution
+) -> List[str]:
+    """Return active materialized assignments that overlap the work window."""
+
+    if plan.work_window is None:
+        return []
+
+    work_start = time_to_minutes(plan.work_window.start)
+    work_end = time_to_minutes(plan.work_window.end)
+    task_modes = {task.name: task.mode for task in plan.tasks}
+    assignments = sorted(
+        solution.assignments,
+        key=lambda item: (item.start, item.end, item.name),
+    )
+    return [
+        assignment.name
+        for assignment in assignments
+        if task_modes[assignment.name] == TaskMode.ACTIVE
+        and time_to_minutes(assignment.start) < work_end
+        and time_to_minutes(assignment.end) > work_start
+    ]
 
 
 def build_shift_schedule_explanation_payload(
@@ -225,6 +258,11 @@ def render_dayplan_explanation(facts: DayPlanExplanationFacts) -> str:
         lines.append(
             "Activities are shown at the solver's materialized times; active/passive mode and duration come from the confirmed interpretation."
         )
+    if facts.work_window_interrupting_tasks:
+        lines.append(
+            "Work was interrupted by %s."
+            % _join_explanation_items(facts.work_window_interrupting_tasks)
+        )
     if facts.preference_penalties:
         details = []
         for item in facts.preference_penalties:
@@ -274,6 +312,14 @@ def render_dayplan_explanation(facts: DayPlanExplanationFacts) -> str:
     else:
         lines.append("No preference penalties were recorded in the validated result.")
     return " ".join(lines)
+
+
+def _join_explanation_items(items: List[str]) -> str:
+    if len(items) == 1:
+        return items[0]
+    if len(items) == 2:
+        return "%s and %s" % (items[0], items[1])
+    return ", ".join(items[:-1]) + ", and " + items[-1]
 
 
 def render_shift_schedule_explanation(facts: ShiftScheduleExplanationFacts) -> str:

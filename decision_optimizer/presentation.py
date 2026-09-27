@@ -165,6 +165,13 @@ def dayplan_explanation_lines(facts: Any) -> List[str]:
     else:
         lines.append("No soft preferences were encoded for this plan.")
 
+    if getattr(facts, "work_window_interrupting_tasks", None):
+        lines.append(
+            "Work was interrupted by "
+            + _join_items(facts.work_window_interrupting_tasks)
+            + "."
+        )
+
     passive = [item.name for item in facts.assignments if item.mode == "passive"]
     if passive:
         lines.append("Passive activities included: " + _join_items(passive) + ".")
@@ -173,6 +180,31 @@ def dayplan_explanation_lines(facts: Any) -> List[str]:
     if not lines:
         lines.append("The confirmed activities were placed in the recommended schedule.")
     return lines[:4]
+
+
+def dayplan_infeasibility_summary(diagnostic: Any) -> List[str]:
+    """Build deterministic, user-facing summary lines for an infeasible DayPlan."""
+
+    lines = ["No feasible schedule"]
+    if diagnostic is None:
+        return lines + ["No deterministic diagnosis was available."]
+
+    lines.append("Deterministic diagnosis completed")
+    if (
+        diagnostic.required_active_minutes is not None
+        and diagnostic.available_person_minutes is not None
+        and diagnostic.capacity_shortfall_minutes
+        and diagnostic.capacity_shortfall_minutes > 0
+    ):
+        lines.extend(
+            [
+                "Required active work: %d minutes" % diagnostic.required_active_minutes,
+                "Available person-time after fixed events: %d minutes"
+                % diagnostic.available_person_minutes,
+                "Capacity shortfall: %d minutes" % diagnostic.capacity_shortfall_minutes,
+            ]
+        )
+    return lines
 
 
 def shift_preference_statements(schedule: Any, facts: Any) -> List[str]:

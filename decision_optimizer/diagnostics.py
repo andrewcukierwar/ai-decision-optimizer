@@ -44,6 +44,9 @@ class InfeasibilityDiagnostic(BaseModel):
     findings: List[DiagnosticFinding] = Field(default_factory=list)
     suggestions: List[str] = Field(default_factory=list)
     tested_relaxations: List[str] = Field(default_factory=list)
+    required_active_minutes: Optional[int] = None
+    available_person_minutes: Optional[int] = None
+    capacity_shortfall_minutes: Optional[int] = None
 
 
 def diagnose_dayplan_infeasibility(
@@ -109,6 +112,10 @@ def diagnose_dayplan_infeasibility(
         for event in plan.fixed_events
     )
     available_person_minutes = (horizon_end - horizon_start) - fixed_blocked_minutes
+    available_person_minutes = max(0, available_person_minutes)
+    capacity_shortfall_minutes = max(
+        0, required_active_minutes - available_person_minutes
+    )
     if required_active_minutes > available_person_minutes:
         findings.append(
             DiagnosticFinding(
@@ -121,7 +128,7 @@ def diagnose_dayplan_infeasibility(
                     % (required_active_minutes, max(0, available_person_minutes))
                 ),
                 suggestion=(
-                    "Shorten or make a task passive, move a fixed event, or extend the horizon."
+                    "Shorten or remove required active work."
                 ),
             )
         )
@@ -221,7 +228,7 @@ def diagnose_dayplan_infeasibility(
                 code="fixed_event_conflict",
                 summary="Fixed-event no-overlap is binding",
                 evidence="Removing fixed events restored feasibility.",
-                suggestion="Move a fixed event or move the active task that conflicts with it.",
+                suggestion="Move or shorten a fixed event.",
             ),
         )
 
@@ -254,7 +261,10 @@ def diagnose_dayplan_infeasibility(
                 code="active_person_capacity_binding",
                 summary="Active-task person capacity is binding",
                 evidence="Treating active tasks as passive restored feasibility.",
-                suggestion="Move, shorten, or make one active task passive.",
+                suggestion=(
+                    "If an activity can legitimately run unattended, marking it passive "
+                    "could add capacity."
+                ),
             ),
         )
 
@@ -273,11 +283,25 @@ def diagnose_dayplan_infeasibility(
             )
         )
     findings = findings[:6]
+    practical_suggestions: List[str] = []
+    if capacity_shortfall_minutes > 0:
+        practical_suggestions.extend(
+            [
+                "Extend the planning horizon.",
+                "Shorten or remove required active work.",
+            ]
+        )
+    if plan.fixed_events:
+        practical_suggestions.append("Move or shorten a fixed event.")
+    practical_suggestions.extend(item.suggestion for item in findings)
     return InfeasibilityDiagnostic(
         problem_type="dayplan",
         findings=findings,
-        suggestions=_unique(item.suggestion for item in findings),
+        suggestions=_unique(practical_suggestions),
         tested_relaxations=tested,
+        required_active_minutes=required_active_minutes,
+        available_person_minutes=available_person_minutes,
+        capacity_shortfall_minutes=capacity_shortfall_minutes,
     )
 
 

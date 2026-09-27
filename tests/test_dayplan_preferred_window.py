@@ -232,6 +232,40 @@ def test_repeated_meeting_nl_fixture_accepts_duplicate_fixed_event_names():
     assert formulation_differences(extraction, expected) == []
 
 
+def test_continuous_process_fixture_requires_immediate_active_passive_handoffs():
+    case = next(
+        case
+        for case in json.loads((FIXTURES / "dayplan_nl_eval.json").read_text())
+        if case["name"] == "continuous_baking_chain"
+    )
+    expected = case["expected"]
+    plan = DayPlan.model_validate(
+        {
+            "horizon": expected["horizon"],
+            "work_window": expected["work_window"],
+            "fixed_events": [],
+            "tasks": [
+                {"name": name, **task}
+                for name, task in expected["tasks"].items()
+            ],
+            "precedences": [
+                {
+                    "before": before,
+                    "after": after,
+                    "min_gap_min": min_gap,
+                    "max_gap_min": max_gap,
+                }
+                for before, after, min_gap, max_gap in expected["precedences"]
+            ],
+            "preferences": [],
+        }
+    )
+    extraction = DayPlanExtraction(plan=plan, missing_info=[])
+
+    assert formulation_differences(extraction, expected) == []
+    assert [item.max_gap_min for item in plan.precedences] == [0, 0]
+
+
 def test_real_laundry_process_chain_requires_immediate_handoffs():
     plan = _real_request_plan()
     result = solve_day_plan(plan)

@@ -188,5 +188,25 @@
       "preferences": [],
       "missing_info": false
     }
+  },
+  {
+    "name": "continuous_baking_chain",
+    "prompt": "My day is 08:00-18:00. I want to bake something: prep takes 20 active minutes, then it bakes unattended for 45 minutes, and I need 10 active minutes immediately afterward to take it out and clean up.",
+    "expected": {
+      "horizon": {"start": "08:00", "end": "18:00"},
+      "work_window": null,
+      "fixed_events": {},
+      "tasks": {
+        "prep": {"duration_min": 20, "mode": "active", "required": true},
+        "bake": {"duration_min": 45, "mode": "passive", "required": true},
+        "take out and clean up": {"duration_min": 10, "mode": "active", "required": true}
+      },
+      "precedences": [
+        ["prep", "bake", 0, 0],
+        ["bake", "take out and clean up", 0, 0]
+      ],
+      "preferences": [],
+      "missing_info": false
+    }
   }
 ]

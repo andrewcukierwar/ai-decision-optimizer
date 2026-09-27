@@ -28,6 +28,7 @@ from decision_optimizer.explanations import (
 from decision_optimizer.parsing.dayplan import DayPlanExtraction
 from decision_optimizer.parsing.shift_schedule import ShiftScheduleExtraction
 from decision_optimizer.shift_schedule import ShiftSchedule, SolveStatus as ShiftSolveStatus
+from decision_optimizer.presentation import dayplan_infeasibility_summary
 from app import _store_extraction
 
 
@@ -212,6 +213,35 @@ def test_infeasible_dayplan_has_structured_diagnosis():
     assert diagnostic.suggestions
     assert run.solution.status == DayPlanSolveStatus.INFEASIBLE
     assert run.diagnosis is not None
+
+
+def test_infeasible_dayplan_summary_shows_capacity_shortfall_without_penalty_metric():
+    plan = DayPlan.model_validate(
+        {
+            "horizon": {"start": "09:00", "end": "12:00"},
+            "fixed_events": [
+                {"name": "Meeting", "start": "10:00", "end": "11:00"}
+            ],
+            "tasks": [
+                {"name": "task 1", "duration_min": 70, "mode": "active"},
+                {"name": "task 2", "duration_min": 70, "mode": "active"},
+                {"name": "task 3", "duration_min": 70, "mode": "active"},
+            ],
+        }
+    )
+    diagnostic = diagnose_dayplan_infeasibility(plan)
+
+    assert diagnostic.required_active_minutes == 210
+    assert diagnostic.available_person_minutes == 120
+    assert diagnostic.capacity_shortfall_minutes == 90
+    assert dayplan_infeasibility_summary(diagnostic) == [
+        "No feasible schedule",
+        "Deterministic diagnosis completed",
+        "Required active work: 210 minutes",
+        "Available person-time after fixed events: 120 minutes",
+        "Capacity shortfall: 90 minutes",
+    ]
+    assert all("Preference penalty" not in line for line in dayplan_infeasibility_summary(diagnostic))
 
 
 def test_infeasible_shift_schedule_has_structured_diagnosis():
