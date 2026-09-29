@@ -170,13 +170,20 @@ def evaluate_dayplan(
 ) -> EvaluationRecord:
     """Score a DayPlan output exclusively against ``canonical``."""
 
-    optimal = solve_day_plan(canonical)
-    canonical_feasible = optimal.status in {DaySolveStatus.OPTIMAL, DaySolveStatus.FEASIBLE}
+    canonical_result = solve_day_plan(canonical)
+    canonical_feasible = canonical_result.status in {
+        DaySolveStatus.OPTIMAL,
+        DaySolveStatus.FEASIBLE,
+    }
+    optimal_objective = (
+        canonical_result.objective_value
+        if canonical_result.status == DaySolveStatus.OPTIMAL
+        else None
+    )
     if solution is None:
         return _empty_record(
             score=_dayplan_hard_score(canonical, [], []),
-            canonical_feasible=canonical_feasible,
-            optimal_objective=optimal.objective_value if canonical_feasible else None,
+            optimal_objective=optimal_objective,
             formulation_match=(
                 formulation_match
                 if formulation_match is not None
@@ -228,7 +235,6 @@ def evaluate_dayplan(
     required_names = {task.name for task in canonical.tasks if task.required}
     completed_names = {item.name for item in mapped_assignments}
     objective_value = canonical_solution.objective_value if reported_feasible else None
-    optimal_objective = optimal.objective_value if canonical_feasible else None
     return _record(
         valid_output=True,
         score=score,
@@ -261,16 +267,20 @@ def evaluate_shift_schedule(
 ) -> EvaluationRecord:
     """Score a workforce output exclusively against ``canonical``."""
 
-    optimal = solve_shift_schedule(canonical)
-    canonical_feasible = optimal.status in {
+    canonical_result = solve_shift_schedule(canonical)
+    canonical_feasible = canonical_result.status in {
         ShiftSolveStatus.OPTIMAL,
         ShiftSolveStatus.FEASIBLE,
     }
+    optimal_objective = (
+        canonical_result.objective_value
+        if canonical_result.status == ShiftSolveStatus.OPTIMAL
+        else None
+    )
     if solution is None:
         return _empty_record(
             score=_shift_hard_score(canonical, [], []),
-            canonical_feasible=canonical_feasible,
-            optimal_objective=optimal.objective_value if canonical_feasible else None,
+            optimal_objective=optimal_objective,
             formulation_match=(
                 formulation_match
                 if formulation_match is not None
@@ -336,7 +346,6 @@ def evaluate_shift_schedule(
         for shift in canonical.shifts
     )
     objective_value = canonical_solution.objective_value if reported_feasible else None
-    optimal_objective = optimal.objective_value if canonical_feasible else None
     return _record(
         valid_output=True,
         score=score,
@@ -454,15 +463,22 @@ def _dayplan_hard_score(
     assignments: Sequence[TaskAssignment],
     alignment_errors: Sequence[str],
 ) -> Tuple[int, int]:
-    checks: List[bool] = [False for _ in alignment_errors]
+    # Every entry below corresponds to a canonical constraint slot.  Output
+    # mistakes change pass/fail values, never the number of checks.
+    checks: List[bool] = [not alignment_errors]
     tasks = {task.name: task for task in plan.tasks}
     by_name: Dict[str, List[TaskAssignment]] = {name: [] for name in tasks}
     for assignment in assignments:
         by_name.setdefault(assignment.name, []).append(assignment)
     for task in plan.tasks:
-        if task.required:
-            checks.append(len(by_name[task.name]) == 1)
-        for assignment in by_name[task.name]:
+        task_assignments = by_name[task.name]
+        checks.append(
+            len(task_assignments) == 1
+            if task.required
+            else len(task_assignments) <= 1
+        )
+        if len(task_assignments) == 1:
+            assignment = task_assignments[0]
             start = day_minutes(assignment.start)
             end = day_minutes(assignment.end)
             checks.append(
@@ -472,27 +488,48 @@ def _dayplan_hard_score(
                 and (task.earliest_start is None or start >= day_minutes(task.earliest_start))
                 and (task.latest_end is None or end <= day_minutes(task.latest_end))
             )
-        if len(by_name[task.name]) > 1:
-            checks.append(False)
+        else:
+            # Optional absence is valid; a missing required task or duplicate
+            # assignments cannot silently remove its timing check.
+            checks.append(not task.required and not task_assignments)
 
-    active = [
-        (item.name, day_minutes(item.start), day_minutes(item.end))
-        for item in assignments
-        if item.name in tasks and tasks[item.name].mode.value == "active"
-    ]
-    for index, left in enumerate(active):
-        for right in active[index + 1 :]:
-            checks.append(not _overlap(left[1], left[2], right[1], right[2]))
-    for _, start, end in active:
-        for event in plan.fixed_events:
-            checks.append(
-                not _overlap(
-                    start,
-                    end,
-                    day_minutes(event.start),
-                    day_minutes(event.end),
+    active_tasks = [task for task in plan.tasks if task.mode.value == "active"]
+    for index, left_task in enumerate(active_tasks):
+        for right_task in active_tasks[index + 1 :]:
+            left = by_name[left_task.name]
+            right = by_name[right_task.name]
+            if len(left) > 1 or len(right) > 1:
+                checks.append(False)
+            elif not left or not right:
+                checks.append(
+                    (bool(left) or not left_task.required)
+                    and (bool(right) or not right_task.required)
                 )
-            )
+            else:
+                checks.append(
+                    not _overlap(
+                        day_minutes(left[0].start),
+                        day_minutes(left[0].end),
+                        day_minutes(right[0].start),
+                        day_minutes(right[0].end),
+                    )
+                )
+    for task in active_tasks:
+        task_assignments = by_name[task.name]
+        for event in plan.fixed_events:
+            if len(task_assignments) > 1:
+                checks.append(False)
+            elif not task_assignments:
+                checks.append(not task.required)
+            else:
+                checks.append(
+                    not _overlap(
+                        day_minutes(task_assignments[0].start),
+                        day_minutes(task_assignments[0].end),
+                        day_minutes(event.start),
+                        day_minutes(event.end),
+                    )
+                )
     for index, left in enumerate(plan.fixed_events):
         for right in plan.fixed_events[index + 1 :]:
             checks.append(
@@ -503,15 +540,20 @@ def _dayplan_hard_score(
                     day_minutes(right.end),
                 )
             )
-    one_by_name = {
-        name: values[0] for name, values in by_name.items() if len(values) == 1
-    }
     for precedence in plan.precedences:
-        before = one_by_name.get(precedence.before)
-        after = one_by_name.get(precedence.after)
-        if before is None or after is None:
-            checks.append(True)
+        before_values = by_name[precedence.before]
+        after_values = by_name[precedence.after]
+        if len(before_values) > 1 or len(after_values) > 1:
+            checks.append(False)
             continue
+        if not before_values or not after_values:
+            checks.append(
+                (bool(before_values) or not tasks[precedence.before].required)
+                and (bool(after_values) or not tasks[precedence.after].required)
+            )
+            continue
+        before = before_values[0]
+        after = after_values[0]
         gap = day_minutes(after.start) - day_minutes(before.end)
         checks.append(
             gap >= precedence.min_gap_min
@@ -525,26 +567,29 @@ def _shift_hard_score(
     assignments: Sequence[ShiftAssignment],
     alignment_errors: Sequence[str],
 ) -> Tuple[int, int]:
-    checks: List[bool] = [False for _ in alignment_errors]
+    # Reference validity and assignment uniqueness are fixed inventory items;
+    # subsequent checks enumerate canonical variables and rules only.
+    checks: List[bool] = [not alignment_errors]
     shifts = {item.id: item for item in schedule.shifts}
     employees = {item.name: item for item in schedule.employees}
     pairs = [(item.employee_name, item.shift_id) for item in assignments]
     pair_set = set(pairs)
-    if len(pairs) != len(pair_set):
-        checks.append(False)
+    checks.append(len(pairs) == len(pair_set))
     for shift in schedule.shifts:
         checks.append(sum(shift_id == shift.id for _, shift_id in pairs) == shift.required_staff)
-    for employee_name, shift_id in pairs:
-        employee = employees[employee_name]
-        shift = shifts[shift_id]
-        checks.append(
-            shift.location in employee.eligible_locations
-            and not shift_is_unavailable(employee.unavailable, shift)
-        )
     ordered_shifts = sorted(
         schedule.shifts, key=lambda item: (item.day, shift_minutes(item.start), item.id)
     )
     for employee in schedule.employees:
+        for shift in schedule.shifts:
+            assigned = (employee.name, shift.id) in pair_set
+            checks.append(
+                not assigned
+                or (
+                    shift.location in employee.eligible_locations
+                    and not shift_is_unavailable(employee.unavailable, shift)
+                )
+            )
         assigned = [shifts[shift_id] for name, shift_id in pairs if name == employee.name]
         checks.append(sum(item.duration_minutes for item in assigned) <= employee.max_hours * 60)
         for index, left in enumerate(ordered_shifts):
@@ -612,7 +657,6 @@ def _record(
 def _empty_record(
     *,
     score: Tuple[int, int],
-    canonical_feasible: bool,
     optimal_objective: Optional[int],
     formulation_match: bool,
     telemetry: Optional[RunTelemetry],

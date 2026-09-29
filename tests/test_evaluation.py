@@ -1,8 +1,10 @@
+import decision_optimizer.evaluation as evaluation_module
 from decision_optimizer.dayplan import (
     DayPlan,
     SolveStatus,
     TaskAssignment,
     materialize_day_plan_solution,
+    solve_day_plan,
 )
 from decision_optimizer.evaluation import (
     align_names,
@@ -14,7 +16,9 @@ from decision_optimizer.evaluation import (
 from decision_optimizer.shift_schedule import (
     ShiftAssignment,
     ShiftSchedule,
+    SolveStatus as ShiftSolveStatus,
     materialize_shift_schedule_solution,
+    solve_shift_schedule,
 )
 
 
@@ -310,5 +314,147 @@ def test_feasible_infeasible_correctness_comes_from_canonical_cp_sat_solve():
 
     assert result.feasible_correctly_reported is True
     assert result.canonical_validation_valid is True
+    assert result.optimal_objective is None
+    assert result.objective_gap is None
+
+
+def test_dayplan_hard_constraint_total_is_fixed_for_complete_and_omitted_output():
+    canonical = DayPlan.model_validate(
+        {
+            "horizon": {"start": "09:00", "end": "12:00"},
+            "fixed_events": [
+                {"name": "standup", "start": "10:30", "end": "11:00"}
+            ],
+            "tasks": [
+                {"name": "draft", "duration_min": 30, "mode": "active"},
+                {"name": "review", "duration_min": 30, "mode": "active"},
+            ],
+            "precedences": [{"before": "draft", "after": "review"}],
+        }
+    )
+    complete = solve_day_plan(canonical)
+    omitted = materialize_day_plan_solution(
+        canonical,
+        [TaskAssignment(name="draft", start="09:00", end="09:30")],
+    )
+
+    complete_metrics = evaluate_dayplan(canonical, complete, arm_spec=canonical)
+    omitted_metrics = evaluate_dayplan(canonical, omitted, arm_spec=canonical)
+
+    assert complete_metrics.hard_constraints_total == omitted_metrics.hard_constraints_total
+    assert complete_metrics.hard_constraints_satisfied > omitted_metrics.hard_constraints_satisfied
+    assert complete_metrics.required_completed is True
+    assert omitted_metrics.required_completed is False
+
+
+def test_shift_hard_constraint_total_is_fixed_for_complete_and_omitted_output():
+    canonical = ShiftSchedule.model_validate(
+        {
+            "shifts": [
+                {
+                    "id": "morning",
+                    "day": "2026-10-05",
+                    "start": "08:00",
+                    "end": "12:00",
+                    "location": "store",
+                    "required_staff": 1,
+                },
+                {
+                    "id": "evening",
+                    "day": "2026-10-05",
+                    "start": "16:00",
+                    "end": "20:00",
+                    "location": "store",
+                    "required_staff": 1,
+                },
+            ],
+            "employees": [
+                {"name": "Ava", "max_hours": 8, "eligible_locations": ["store"]},
+                {"name": "Ben", "max_hours": 8, "eligible_locations": ["store"]},
+            ],
+            "rules": [{"type": "minimum_rest", "min_rest_hours": 12}],
+        }
+    )
+    complete = solve_shift_schedule(canonical)
+    omitted = materialize_shift_schedule_solution(canonical, [])
+
+    complete_metrics = evaluate_shift_schedule(canonical, complete, arm_spec=canonical)
+    omitted_metrics = evaluate_shift_schedule(canonical, omitted, arm_spec=canonical)
+
+    assert complete_metrics.hard_constraints_total == omitted_metrics.hard_constraints_total
+    assert complete_metrics.hard_constraints_satisfied > omitted_metrics.hard_constraints_satisfied
+    assert complete_metrics.required_completed is True
+    assert omitted_metrics.required_completed is False
+
+
+def test_feasible_dayplan_reference_is_not_labeled_optimal(monkeypatch):
+    canonical = DayPlan.model_validate(
+        {
+            "horizon": {"start": "09:00", "end": "11:00"},
+            "tasks": [
+                {"name": "focus", "duration_min": 60, "mode": "active"}
+            ],
+            "preferences": [
+                {
+                    "type": "finish_before",
+                    "task": "focus",
+                    "time": "10:00",
+                    "weight": 1,
+                }
+            ],
+        }
+    )
+    assignments = [TaskAssignment(name="focus", start="09:00", end="10:00")]
+    arm_solution = materialize_day_plan_solution(canonical, assignments)
+    feasible_reference = materialize_day_plan_solution(
+        canonical, assignments, status=SolveStatus.FEASIBLE
+    )
+    monkeypatch.setattr(
+        evaluation_module, "solve_day_plan", lambda unused: feasible_reference
+    )
+
+    result = evaluate_dayplan(canonical, arm_solution, arm_spec=canonical)
+
+    assert result.feasible_correctly_reported is True
+    assert result.objective_value == 0
+    assert result.optimal_objective is None
+    assert result.objective_gap is None
+
+
+def test_feasible_shift_reference_is_not_labeled_optimal(monkeypatch):
+    canonical = ShiftSchedule.model_validate(
+        {
+            "shifts": [
+                {
+                    "id": "front",
+                    "day": "2026-10-05",
+                    "start": "09:00",
+                    "end": "13:00",
+                    "location": "store",
+                    "required_staff": 1,
+                }
+            ],
+            "employees": [
+                {"name": "Ava", "max_hours": 8, "eligible_locations": ["store"]}
+            ],
+        }
+    )
+    assignments = [ShiftAssignment(shift_id="front", employee_name="Ava")]
+    arm_solution = materialize_shift_schedule_solution(canonical, assignments)
+    feasible_reference = materialize_shift_schedule_solution(
+        canonical,
+        assignments,
+        status=ShiftSolveStatus.FEASIBLE,
+    )
+    monkeypatch.setattr(
+        evaluation_module,
+        "solve_shift_schedule",
+        lambda unused: feasible_reference,
+    )
+
+    result = evaluate_shift_schedule(canonical, arm_solution, arm_spec=canonical)
+
+    assert result.feasible_correctly_reported is True
+    assert result.objective_value == 0
     assert result.optimal_objective is None
     assert result.objective_gap is None
