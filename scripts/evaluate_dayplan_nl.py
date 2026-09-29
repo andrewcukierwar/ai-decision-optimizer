@@ -10,7 +10,9 @@ import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
+from decision_optimizer import config as _config  # noqa: F401 - loads local .env
 from decision_optimizer.dayplan import DayPlan, solve_day_plan, validate_solution
+from decision_optimizer.evaluation import names_match as canonical_names_match
 from decision_optimizer.parsing.dayplan import (
     DayPlanError,
     DayPlanExtraction,
@@ -349,15 +351,7 @@ def _match_named(
 
 
 def _names_match(expected: Optional[str], actual: Optional[str]) -> bool:
-    if expected is None or actual is None:
-        return expected == actual
-    expected_tokens = _name_tokens(expected)
-    actual_tokens = _name_tokens(actual)
-    return bool(expected_tokens and actual_tokens) and (
-        expected_tokens == actual_tokens
-        or expected_tokens.issubset(actual_tokens)
-        or actual_tokens.issubset(expected_tokens)
-    )
+    return canonical_names_match(expected, actual)
 
 
 def _optional_names_match(expected: Optional[str], actual: Optional[str]) -> bool:

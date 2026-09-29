@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List
 
+from decision_optimizer import config as _config  # noqa: F401 - loads local .env
 from decision_optimizer.parsing.shift_schedule import (
     ShiftScheduleError,
     _create_openai_client,

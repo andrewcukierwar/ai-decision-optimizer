@@ -1,0 +1,1416 @@
+[
+  {
+    "name": "regional_week",
+    "prompt": "Create a fair workforce schedule for these shifts. Cover every shift exactly at its stated staffing level.\nShifts:\n- 20261005_morning on 2026-10-05 from 08:00 to 12:00 at north needs 2 staff.\n- 20261005_evening on 2026-10-05 from 16:00 to 20:00 at north needs 2 staff.\n- 20261006_morning on 2026-10-06 from 08:00 to 12:00 at south needs 2 staff.\n- 20261006_evening on 2026-10-06 from 16:00 to 20:00 at south needs 2 staff.\n- 20261007_morning on 2026-10-07 from 08:00 to 12:00 at north needs 2 staff.\n- 20261007_evening on 2026-10-07 from 16:00 to 20:00 at north needs 2 staff.\n- 20261008_morning on 2026-10-08 from 08:00 to 12:00 at south needs 2 staff.\n- 20261008_evening on 2026-10-08 from 16:00 to 20:00 at south needs 2 staff.\n- 20261009_morning on 2026-10-09 from 08:00 to 12:00 at north needs 2 staff.\n- 20261009_evening on 2026-10-09 from 16:00 to 20:00 at north needs 2 staff.\n- 20261010_morning on 2026-10-10 from 08:00 to 12:00 at south needs 2 staff.\n- 20261010_evening on 2026-10-10 from 16:00 to 20:00 at south needs 2 staff.\n- 20261011_morning on 2026-10-11 from 08:00 to 12:00 at north needs 2 staff.\n- 20261011_evening on 2026-10-11 from 16:00 to 20:00 at north needs 2 staff.\nEmployees:\n- Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.\n- Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening.\n- Casey can work at most 32 hours; is eligible at north and south; is unavailable for 20261008_morning, 20261006_evening; prefers 20261006_morning, 20261007_morning, 20261010_morning, 20261011_morning.\n- Devon can work at most 32 hours; is eligible at north and south; is unavailable for 20261009_evening, 20261009_morning; prefers 20261006_evening, 20261007_evening, 20261008_evening, 20261010_evening, 20261011_evening.\n- Emery can work at most 32 hours; is eligible at north and south; is unavailable for 20261011_morning, 20261011_evening; prefers 20261005_morning, 20261007_morning, 20261008_morning, 20261009_morning.\n- Finley can work at most 32 hours; is eligible at north; is unavailable for 20261005_evening, 20261007_morning; prefers 20261007_evening, 20261008_evening, 20261009_evening, 20261011_evening.\n- Gray can work at most 32 hours; is eligible at south; is unavailable for 20261007_morning, 20261009_evening; prefers 20261005_morning, 20261006_morning, 20261008_morning, 20261009_morning, 20261010_morning.\n- Harper can work at most 32 hours; is eligible at north and south; is unavailable for 20261008_evening, 20261005_morning; prefers 20261005_evening, 20261006_evening, 20261009_evening, 20261010_evening.\nRequire at least 12 hours of rest between shifts.\nNo employee may work more than 4 consecutive days.\nCasey must have 2026-10-07 off.\nHarper must have 2026-10-10 off.\nUse preference penalty weight 2 and fairness weight 1.",
+    "canonical": {
+      "shifts": [
+        {
+          "id": "20261005_morning",
+          "day": "2026-10-05",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261005_evening",
+          "day": "2026-10-05",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261006_morning",
+          "day": "2026-10-06",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261006_evening",
+          "day": "2026-10-06",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261007_morning",
+          "day": "2026-10-07",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261007_evening",
+          "day": "2026-10-07",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261008_morning",
+          "day": "2026-10-08",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261008_evening",
+          "day": "2026-10-08",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261009_morning",
+          "day": "2026-10-09",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261009_evening",
+          "day": "2026-10-09",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261010_morning",
+          "day": "2026-10-10",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261010_evening",
+          "day": "2026-10-10",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261011_morning",
+          "day": "2026-10-11",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261011_evening",
+          "day": "2026-10-11",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        }
+      ],
+      "employees": [
+        {
+          "name": "Avery",
+          "max_hours": 32,
+          "unavailable": [
+            {
+              "shift_id": "20261005_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261008_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north"
+          ],
+          "preferred_shifts": [
+            "20261006_morning",
+            "20261007_morning",
+            "20261009_morning",
+            "20261010_morning",
+            "20261011_morning"
+          ]
+        },
+        {
+          "name": "Blake",
+          "max_hours": 32,
+          "unavailable": [
+            {
+              "shift_id": "20261006_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261011_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261005_evening",
+            "20261007_evening",
+            "20261009_evening",
+            "20261010_evening",
+            "20261011_evening"
+          ]
+        },
+        {
+          "name": "Casey",
+          "max_hours": 32,
+          "unavailable": [
+            {
+              "shift_id": "20261008_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261006_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261006_morning",
+            "20261007_morning",
+            "20261010_morning",
+            "20261011_morning"
+          ]
+        },
+        {
+          "name": "Devon",
+          "max_hours": 32,
+          "unavailable": [
+            {
+              "shift_id": "20261009_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261009_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261006_evening",
+            "20261007_evening",
+            "20261008_evening",
+            "20261010_evening",
+            "20261011_evening"
+          ]
+        },
+        {
+          "name": "Emery",
+          "max_hours": 32,
+          "unavailable": [
+            {
+              "shift_id": "20261011_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261011_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261005_morning",
+            "20261007_morning",
+            "20261008_morning",
+            "20261009_morning"
+          ]
+        },
+        {
+          "name": "Finley",
+          "max_hours": 32,
+          "unavailable": [
+            {
+              "shift_id": "20261005_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261007_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north"
+          ],
+          "preferred_shifts": [
+            "20261007_evening",
+            "20261008_evening",
+            "20261009_evening",
+            "20261011_evening"
+          ]
+        },
+        {
+          "name": "Gray",
+          "max_hours": 32,
+          "unavailable": [
+            {
+              "shift_id": "20261007_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261009_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261005_morning",
+            "20261006_morning",
+            "20261008_morning",
+            "20261009_morning",
+            "20261010_morning"
+          ]
+        },
+        {
+          "name": "Harper",
+          "max_hours": 32,
+          "unavailable": [
+            {
+              "shift_id": "20261008_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261005_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261005_evening",
+            "20261006_evening",
+            "20261009_evening",
+            "20261010_evening"
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "type": "minimum_rest",
+          "min_rest_hours": 12
+        },
+        {
+          "type": "maximum_consecutive_days",
+          "max_days": 4
+        },
+        {
+          "type": "required_days_off",
+          "employee_name": "Casey",
+          "days": [
+            "2026-10-07"
+          ]
+        },
+        {
+          "type": "required_days_off",
+          "employee_name": "Harper",
+          "days": [
+            "2026-10-10"
+          ]
+        }
+      ],
+      "objective_weights": {
+        "preference_penalty": 2,
+        "fairness": 1
+      }
+    }
+  },
+  {
+    "name": "ten_day_rotation",
+    "prompt": "Create a fair workforce schedule for these shifts. Cover every shift exactly at its stated staffing level.\nShifts:\n- 20261026_morning on 2026-10-26 from 08:00 to 12:00 at north needs 2 staff.\n- 20261026_evening on 2026-10-26 from 16:00 to 20:00 at north needs 2 staff.\n- 20261027_morning on 2026-10-27 from 08:00 to 12:00 at south needs 2 staff.\n- 20261027_evening on 2026-10-27 from 16:00 to 20:00 at south needs 2 staff.\n- 20261028_morning on 2026-10-28 from 08:00 to 12:00 at north needs 2 staff.\n- 20261028_evening on 2026-10-28 from 16:00 to 20:00 at north needs 2 staff.\n- 20261029_morning on 2026-10-29 from 08:00 to 12:00 at south needs 2 staff.\n- 20261029_evening on 2026-10-29 from 16:00 to 20:00 at south needs 2 staff.\n- 20261030_morning on 2026-10-30 from 08:00 to 12:00 at north needs 2 staff.\n- 20261030_evening on 2026-10-30 from 16:00 to 20:00 at north needs 2 staff.\n- 20261031_morning on 2026-10-31 from 08:00 to 12:00 at south needs 2 staff.\n- 20261031_evening on 2026-10-31 from 16:00 to 20:00 at south needs 2 staff.\n- 20261101_morning on 2026-11-01 from 08:00 to 12:00 at north needs 2 staff.\n- 20261101_evening on 2026-11-01 from 16:00 to 20:00 at north needs 2 staff.\n- 20261102_morning on 2026-11-02 from 08:00 to 12:00 at south needs 2 staff.\n- 20261102_evening on 2026-11-02 from 16:00 to 20:00 at south needs 2 staff.\n- 20261103_morning on 2026-11-03 from 08:00 to 12:00 at north needs 2 staff.\n- 20261103_evening on 2026-11-03 from 16:00 to 20:00 at north needs 2 staff.\n- 20261104_morning on 2026-11-04 from 08:00 to 12:00 at south needs 2 staff.\n- 20261104_evening on 2026-11-04 from 16:00 to 20:00 at south needs 2 staff.\nEmployees:\n- Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.\n- Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening.\n- Casey can work at most 40 hours; is eligible at north and south; is unavailable for 20261029_evening, 20261103_evening; prefers 20261027_morning, 20261028_morning, 20261029_morning, 20261031_evening, 20261101_evening, 20261102_evening.\n- Devon can work at most 40 hours; is eligible at north and south; is unavailable for 20261031_morning, 20261027_morning; prefers 20261027_evening, 20261028_evening, 20261029_evening, 20261101_morning, 20261102_morning, 20261103_morning.\n- Emery can work at most 40 hours; is eligible at north and south; is unavailable for 20261101_evening, 20261029_evening; prefers 20261028_morning, 20261029_morning, 20261030_morning, 20261102_evening, 20261103_evening.\n- Finley can work at most 40 hours; is eligible at north; is unavailable for 20261103_morning, 20261101_morning; prefers 20261026_morning, 20261028_evening, 20261029_evening, 20261030_evening, 20261102_morning, 20261104_morning.\n- Gray can work at most 40 hours; is eligible at south; is unavailable for 20261104_evening, 20261103_evening; prefers 20261026_evening, 20261029_morning, 20261030_morning, 20261031_morning, 20261102_evening.\n- Harper can work at most 40 hours; is eligible at north and south; is unavailable for 20261027_morning, 20261027_morning; prefers 20261026_morning, 20261029_evening, 20261030_evening, 20261031_evening, 20261103_morning, 20261104_morning.\n- Indigo can work at most 40 hours; is eligible at north and south; is unavailable for 20261028_evening, 20261029_evening; prefers 20261026_evening, 20261027_evening, 20261030_morning, 20261031_morning, 20261101_morning, 20261103_evening, 20261104_evening.\nRequire at least 12 hours of rest between shifts.\nNo employee may work more than 4 consecutive days.\nCasey must have 2026-10-28 off.\nIndigo must have 2026-11-03 off.\nUse preference penalty weight 2 and fairness weight 1.",
+    "canonical": {
+      "shifts": [
+        {
+          "id": "20261026_morning",
+          "day": "2026-10-26",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261026_evening",
+          "day": "2026-10-26",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261027_morning",
+          "day": "2026-10-27",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261027_evening",
+          "day": "2026-10-27",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261028_morning",
+          "day": "2026-10-28",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261028_evening",
+          "day": "2026-10-28",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261029_morning",
+          "day": "2026-10-29",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261029_evening",
+          "day": "2026-10-29",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261030_morning",
+          "day": "2026-10-30",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261030_evening",
+          "day": "2026-10-30",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261031_morning",
+          "day": "2026-10-31",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261031_evening",
+          "day": "2026-10-31",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261101_morning",
+          "day": "2026-11-01",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261101_evening",
+          "day": "2026-11-01",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261102_morning",
+          "day": "2026-11-02",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261102_evening",
+          "day": "2026-11-02",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261103_morning",
+          "day": "2026-11-03",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261103_evening",
+          "day": "2026-11-03",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261104_morning",
+          "day": "2026-11-04",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261104_evening",
+          "day": "2026-11-04",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        }
+      ],
+      "employees": [
+        {
+          "name": "Avery",
+          "max_hours": 40,
+          "unavailable": [
+            {
+              "shift_id": "20261026_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261029_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north"
+          ],
+          "preferred_shifts": [
+            "20261026_morning",
+            "20261027_morning",
+            "20261028_morning",
+            "20261030_evening",
+            "20261031_evening",
+            "20261101_evening",
+            "20261104_morning"
+          ]
+        },
+        {
+          "name": "Blake",
+          "max_hours": 40,
+          "unavailable": [
+            {
+              "shift_id": "20261028_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261101_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261026_evening",
+            "20261027_evening",
+            "20261028_evening",
+            "20261031_morning",
+            "20261102_morning",
+            "20261104_evening"
+          ]
+        },
+        {
+          "name": "Casey",
+          "max_hours": 40,
+          "unavailable": [
+            {
+              "shift_id": "20261029_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261103_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261027_morning",
+            "20261028_morning",
+            "20261029_morning",
+            "20261031_evening",
+            "20261101_evening",
+            "20261102_evening"
+          ]
+        },
+        {
+          "name": "Devon",
+          "max_hours": 40,
+          "unavailable": [
+            {
+              "shift_id": "20261031_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261027_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261027_evening",
+            "20261028_evening",
+            "20261029_evening",
+            "20261101_morning",
+            "20261102_morning",
+            "20261103_morning"
+          ]
+        },
+        {
+          "name": "Emery",
+          "max_hours": 40,
+          "unavailable": [
+            {
+              "shift_id": "20261101_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261029_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261028_morning",
+            "20261029_morning",
+            "20261030_morning",
+            "20261102_evening",
+            "20261103_evening"
+          ]
+        },
+        {
+          "name": "Finley",
+          "max_hours": 40,
+          "unavailable": [
+            {
+              "shift_id": "20261103_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261101_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north"
+          ],
+          "preferred_shifts": [
+            "20261026_morning",
+            "20261028_evening",
+            "20261029_evening",
+            "20261030_evening",
+            "20261102_morning",
+            "20261104_morning"
+          ]
+        },
+        {
+          "name": "Gray",
+          "max_hours": 40,
+          "unavailable": [
+            {
+              "shift_id": "20261104_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261103_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261026_evening",
+            "20261029_morning",
+            "20261030_morning",
+            "20261031_morning",
+            "20261102_evening"
+          ]
+        },
+        {
+          "name": "Harper",
+          "max_hours": 40,
+          "unavailable": [
+            {
+              "shift_id": "20261027_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261027_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261026_morning",
+            "20261029_evening",
+            "20261030_evening",
+            "20261031_evening",
+            "20261103_morning",
+            "20261104_morning"
+          ]
+        },
+        {
+          "name": "Indigo",
+          "max_hours": 40,
+          "unavailable": [
+            {
+              "shift_id": "20261028_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261029_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261026_evening",
+            "20261027_evening",
+            "20261030_morning",
+            "20261031_morning",
+            "20261101_morning",
+            "20261103_evening",
+            "20261104_evening"
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "type": "minimum_rest",
+          "min_rest_hours": 12
+        },
+        {
+          "type": "maximum_consecutive_days",
+          "max_days": 4
+        },
+        {
+          "type": "required_days_off",
+          "employee_name": "Casey",
+          "days": [
+            "2026-10-28"
+          ]
+        },
+        {
+          "type": "required_days_off",
+          "employee_name": "Indigo",
+          "days": [
+            "2026-11-03"
+          ]
+        }
+      ],
+      "objective_weights": {
+        "preference_penalty": 2,
+        "fairness": 1
+      }
+    }
+  },
+  {
+    "name": "two_week_rotation",
+    "prompt": "Create a fair workforce schedule for these shifts. Cover every shift exactly at its stated staffing level.\nShifts:\n- 20261116_morning on 2026-11-16 from 08:00 to 12:00 at north needs 2 staff.\n- 20261116_evening on 2026-11-16 from 16:00 to 20:00 at north needs 2 staff.\n- 20261117_morning on 2026-11-17 from 08:00 to 12:00 at south needs 2 staff.\n- 20261117_evening on 2026-11-17 from 16:00 to 20:00 at south needs 2 staff.\n- 20261118_morning on 2026-11-18 from 08:00 to 12:00 at north needs 2 staff.\n- 20261118_evening on 2026-11-18 from 16:00 to 20:00 at north needs 2 staff.\n- 20261119_morning on 2026-11-19 from 08:00 to 12:00 at south needs 2 staff.\n- 20261119_evening on 2026-11-19 from 16:00 to 20:00 at south needs 2 staff.\n- 20261120_morning on 2026-11-20 from 08:00 to 12:00 at north needs 2 staff.\n- 20261120_evening on 2026-11-20 from 16:00 to 20:00 at north needs 2 staff.\n- 20261121_morning on 2026-11-21 from 08:00 to 12:00 at south needs 2 staff.\n- 20261121_evening on 2026-11-21 from 16:00 to 20:00 at south needs 2 staff.\n- 20261122_morning on 2026-11-22 from 08:00 to 12:00 at north needs 2 staff.\n- 20261122_evening on 2026-11-22 from 16:00 to 20:00 at north needs 2 staff.\n- 20261123_morning on 2026-11-23 from 08:00 to 12:00 at south needs 2 staff.\n- 20261123_evening on 2026-11-23 from 16:00 to 20:00 at south needs 2 staff.\n- 20261124_morning on 2026-11-24 from 08:00 to 12:00 at north needs 2 staff.\n- 20261124_evening on 2026-11-24 from 16:00 to 20:00 at north needs 2 staff.\n- 20261125_morning on 2026-11-25 from 08:00 to 12:00 at south needs 2 staff.\n- 20261125_evening on 2026-11-25 from 16:00 to 20:00 at south needs 2 staff.\n- 20261126_morning on 2026-11-26 from 08:00 to 12:00 at north needs 2 staff.\n- 20261126_evening on 2026-11-26 from 16:00 to 20:00 at north needs 2 staff.\n- 20261127_morning on 2026-11-27 from 08:00 to 12:00 at south needs 2 staff.\n- 20261127_evening on 2026-11-27 from 16:00 to 20:00 at south needs 2 staff.\n- 20261128_morning on 2026-11-28 from 08:00 to 12:00 at north needs 2 staff.\n- 20261128_evening on 2026-11-28 from 16:00 to 20:00 at north needs 2 staff.\n- 20261129_morning on 2026-11-29 from 08:00 to 12:00 at south needs 2 staff.\n- 20261129_evening on 2026-11-29 from 16:00 to 20:00 at south needs 2 staff.\nEmployees:\n- Avery can work at most 48 hours; is eligible at north; is unavailable for 20261117_morning, 20261119_evening; prefers 20261116_morning, 20261118_morning, 20261121_morning, 20261122_morning, 20261123_morning, 20261126_morning, 20261127_morning, 20261128_morning.\n- Blake can work at most 48 hours; is eligible at south; is unavailable for 20261118_evening, 20261122_morning; prefers 20261116_evening, 20261117_evening, 20261121_evening, 20261122_evening, 20261123_evening, 20261126_evening, 20261127_evening, 20261128_evening.\n- Casey can work at most 48 hours; is eligible at north and south; is unavailable for 20261120_morning, 20261124_evening; prefers 20261117_morning, 20261118_morning, 20261119_morning, 20261122_morning, 20261123_morning, 20261124_morning, 20261127_morning, 20261128_morning, 20261129_morning.\n- Devon can work at most 48 hours; is eligible at north and south; is unavailable for 20261121_evening, 20261127_morning; prefers 20261117_evening, 20261118_evening, 20261119_evening, 20261122_evening, 20261123_evening, 20261124_evening, 20261127_evening, 20261128_evening, 20261129_evening.\n- Emery can work at most 48 hours; is eligible at north and south; is unavailable for 20261123_morning, 20261129_evening; prefers 20261118_morning, 20261119_morning, 20261120_morning, 20261124_morning, 20261125_morning, 20261128_morning, 20261129_morning.\n- Finley can work at most 48 hours; is eligible at north; is unavailable for 20261124_evening, 20261118_morning; prefers 20261118_evening, 20261119_evening, 20261120_evening, 20261123_evening, 20261125_evening, 20261128_evening, 20261129_evening.\n- Gray can work at most 48 hours; is eligible at south; is unavailable for 20261126_morning, 20261120_evening; prefers 20261116_morning, 20261119_morning, 20261120_morning, 20261121_morning, 20261124_morning, 20261125_morning, 20261129_morning.\n- Harper can work at most 48 hours; is eligible at north and south; is unavailable for 20261127_evening, 20261123_morning; prefers 20261116_evening, 20261119_evening, 20261120_evening, 20261121_evening, 20261124_evening, 20261125_evening, 20261126_evening, 20261129_evening.\n- Indigo can work at most 48 hours; is eligible at north and south; is unavailable for 20261129_morning, 20261125_evening; prefers 20261116_morning, 20261117_morning, 20261120_morning, 20261121_morning, 20261122_morning, 20261125_morning, 20261126_morning, 20261127_morning.\n- Jordan can work at most 48 hours; is eligible at north and south; is unavailable for 20261116_evening, 20261128_morning; prefers 20261117_evening, 20261120_evening, 20261121_evening, 20261122_evening, 20261125_evening, 20261126_evening, 20261127_evening.\nRequire at least 12 hours of rest between shifts.\nNo employee may work more than 4 consecutive days.\nCasey must have 2026-11-18 off.\nJordan must have 2026-11-28 off.\nUse preference penalty weight 2 and fairness weight 1.",
+    "canonical": {
+      "shifts": [
+        {
+          "id": "20261116_morning",
+          "day": "2026-11-16",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261116_evening",
+          "day": "2026-11-16",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261117_morning",
+          "day": "2026-11-17",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261117_evening",
+          "day": "2026-11-17",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261118_morning",
+          "day": "2026-11-18",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261118_evening",
+          "day": "2026-11-18",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261119_morning",
+          "day": "2026-11-19",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261119_evening",
+          "day": "2026-11-19",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261120_morning",
+          "day": "2026-11-20",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261120_evening",
+          "day": "2026-11-20",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261121_morning",
+          "day": "2026-11-21",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261121_evening",
+          "day": "2026-11-21",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261122_morning",
+          "day": "2026-11-22",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261122_evening",
+          "day": "2026-11-22",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261123_morning",
+          "day": "2026-11-23",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261123_evening",
+          "day": "2026-11-23",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261124_morning",
+          "day": "2026-11-24",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261124_evening",
+          "day": "2026-11-24",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261125_morning",
+          "day": "2026-11-25",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261125_evening",
+          "day": "2026-11-25",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261126_morning",
+          "day": "2026-11-26",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261126_evening",
+          "day": "2026-11-26",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261127_morning",
+          "day": "2026-11-27",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261127_evening",
+          "day": "2026-11-27",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261128_morning",
+          "day": "2026-11-28",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261128_evening",
+          "day": "2026-11-28",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "north",
+          "required_staff": 2
+        },
+        {
+          "id": "20261129_morning",
+          "day": "2026-11-29",
+          "start": "08:00",
+          "end": "12:00",
+          "location": "south",
+          "required_staff": 2
+        },
+        {
+          "id": "20261129_evening",
+          "day": "2026-11-29",
+          "start": "16:00",
+          "end": "20:00",
+          "location": "south",
+          "required_staff": 2
+        }
+      ],
+      "employees": [
+        {
+          "name": "Avery",
+          "max_hours": 48,
+          "unavailable": [
+            {
+              "shift_id": "20261117_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261119_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north"
+          ],
+          "preferred_shifts": [
+            "20261116_morning",
+            "20261118_morning",
+            "20261121_morning",
+            "20261122_morning",
+            "20261123_morning",
+            "20261126_morning",
+            "20261127_morning",
+            "20261128_morning"
+          ]
+        },
+        {
+          "name": "Blake",
+          "max_hours": 48,
+          "unavailable": [
+            {
+              "shift_id": "20261118_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261122_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261116_evening",
+            "20261117_evening",
+            "20261121_evening",
+            "20261122_evening",
+            "20261123_evening",
+            "20261126_evening",
+            "20261127_evening",
+            "20261128_evening"
+          ]
+        },
+        {
+          "name": "Casey",
+          "max_hours": 48,
+          "unavailable": [
+            {
+              "shift_id": "20261120_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261124_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261117_morning",
+            "20261118_morning",
+            "20261119_morning",
+            "20261122_morning",
+            "20261123_morning",
+            "20261124_morning",
+            "20261127_morning",
+            "20261128_morning",
+            "20261129_morning"
+          ]
+        },
+        {
+          "name": "Devon",
+          "max_hours": 48,
+          "unavailable": [
+            {
+              "shift_id": "20261121_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261127_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261117_evening",
+            "20261118_evening",
+            "20261119_evening",
+            "20261122_evening",
+            "20261123_evening",
+            "20261124_evening",
+            "20261127_evening",
+            "20261128_evening",
+            "20261129_evening"
+          ]
+        },
+        {
+          "name": "Emery",
+          "max_hours": 48,
+          "unavailable": [
+            {
+              "shift_id": "20261123_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261129_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261118_morning",
+            "20261119_morning",
+            "20261120_morning",
+            "20261124_morning",
+            "20261125_morning",
+            "20261128_morning",
+            "20261129_morning"
+          ]
+        },
+        {
+          "name": "Finley",
+          "max_hours": 48,
+          "unavailable": [
+            {
+              "shift_id": "20261124_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261118_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north"
+          ],
+          "preferred_shifts": [
+            "20261118_evening",
+            "20261119_evening",
+            "20261120_evening",
+            "20261123_evening",
+            "20261125_evening",
+            "20261128_evening",
+            "20261129_evening"
+          ]
+        },
+        {
+          "name": "Gray",
+          "max_hours": 48,
+          "unavailable": [
+            {
+              "shift_id": "20261126_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261120_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261116_morning",
+            "20261119_morning",
+            "20261120_morning",
+            "20261121_morning",
+            "20261124_morning",
+            "20261125_morning",
+            "20261129_morning"
+          ]
+        },
+        {
+          "name": "Harper",
+          "max_hours": 48,
+          "unavailable": [
+            {
+              "shift_id": "20261127_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261123_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261116_evening",
+            "20261119_evening",
+            "20261120_evening",
+            "20261121_evening",
+            "20261124_evening",
+            "20261125_evening",
+            "20261126_evening",
+            "20261129_evening"
+          ]
+        },
+        {
+          "name": "Indigo",
+          "max_hours": 48,
+          "unavailable": [
+            {
+              "shift_id": "20261129_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261125_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261116_morning",
+            "20261117_morning",
+            "20261120_morning",
+            "20261121_morning",
+            "20261122_morning",
+            "20261125_morning",
+            "20261126_morning",
+            "20261127_morning"
+          ]
+        },
+        {
+          "name": "Jordan",
+          "max_hours": 48,
+          "unavailable": [
+            {
+              "shift_id": "20261116_evening",
+              "day": null,
+              "start": null,
+              "end": null
+            },
+            {
+              "shift_id": "20261128_morning",
+              "day": null,
+              "start": null,
+              "end": null
+            }
+          ],
+          "eligible_locations": [
+            "north",
+            "south"
+          ],
+          "preferred_shifts": [
+            "20261117_evening",
+            "20261120_evening",
+            "20261121_evening",
+            "20261122_evening",
+            "20261125_evening",
+            "20261126_evening",
+            "20261127_evening"
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "type": "minimum_rest",
+          "min_rest_hours": 12
+        },
+        {
+          "type": "maximum_consecutive_days",
+          "max_days": 4
+        },
+        {
+          "type": "required_days_off",
+          "employee_name": "Casey",
+          "days": [
+            "2026-11-18"
+          ]
+        },
+        {
+          "type": "required_days_off",
+          "employee_name": "Jordan",
+          "days": [
+            "2026-11-28"
+          ]
+        }
+      ],
+      "objective_weights": {
+        "preference_penalty": 2,
+        "fairness": 1
+      }
+    }
+  }
+]

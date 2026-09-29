@@ -22,7 +22,7 @@ from .schema import (
     minutes_to_time,
     time_to_minutes,
 )
-from .solver import solve_shift_schedule
+from .solver import materialize_shift_schedule_solution, solve_shift_schedule
 from .validator import ValidationReport, validate_solution
 
 __all__ = [
@@ -47,6 +47,7 @@ __all__ = [
     "ValidationReport",
     "compile_shift_schedule",
     "minutes_to_time",
+    "materialize_shift_schedule_solution",
     "solve_shift_schedule",
     "time_to_minutes",
     "validate_solution",

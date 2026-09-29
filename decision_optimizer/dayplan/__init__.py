@@ -18,7 +18,7 @@ from .schema import (
     time_to_minutes,
 )
 from .compiler import CompiledDayPlan, compile_day_plan
-from .solver import solve_day_plan
+from .solver import materialize_day_plan_solution, solve_day_plan
 from .validator import ValidationReport, validate_solution
 
 __all__ = [
@@ -39,6 +39,7 @@ __all__ = [
     "ValidationReport",
     "compile_day_plan",
     "minutes_to_time",
+    "materialize_day_plan_solution",
     "solve_day_plan",
     "time_to_minutes",
     "validate_solution",

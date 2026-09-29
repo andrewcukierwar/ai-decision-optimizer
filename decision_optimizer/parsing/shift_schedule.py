@@ -5,7 +5,6 @@ selects employees, creates solver constraints, or explains a result.
 """
 
 import json
-import os
 from dataclasses import dataclass
 from typing import Any, List, Optional
 
@@ -18,9 +17,11 @@ from decision_optimizer.shift_schedule import (
     solve_shift_schedule,
     validate_solution,
 )
+from decision_optimizer.config import DEFAULT_OPENAI_MODEL, openai_api_key, openai_model
+from decision_optimizer.telemetry import RunTelemetry
 
 
-DEFAULT_MODEL = "gpt-6-sol"
+DEFAULT_MODEL = DEFAULT_OPENAI_MODEL
 
 SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS = """You extract one small workforce scheduling problem into the provided ShiftSchedule schema.
 
@@ -104,6 +105,7 @@ def parse_shift_schedule(
     clarification: Optional[str] = None,
     client: Any = None,
     model: Optional[str] = None,
+    telemetry: Optional[RunTelemetry] = None,
 ) -> ShiftScheduleExtraction:
     """Parse natural language into a complete schedule or one clarification request."""
 
@@ -121,14 +123,26 @@ def parse_shift_schedule(
         client = _create_openai_client()
 
     try:
-        response = client.responses.parse(
-            model=model or os.getenv("OPENAI_MODEL", DEFAULT_MODEL),
-            input=[
-                {"role": "system", "content": SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS},
-                {"role": "user", "content": request},
-            ],
-            text_format=ShiftScheduleExtraction,
-        )
+        if telemetry is None:
+            response = client.responses.parse(
+                model=model or openai_model(),
+                input=[
+                    {"role": "system", "content": SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS},
+                    {"role": "user", "content": request},
+                ],
+                text_format=ShiftScheduleExtraction,
+            )
+        else:
+            with telemetry.track("llm"):
+                response = client.responses.parse(
+                    model=model or openai_model(),
+                    input=[
+                        {"role": "system", "content": SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS},
+                        {"role": "user", "content": request},
+                    ],
+                    text_format=ShiftScheduleExtraction,
+                )
+            telemetry.record_openai_response(response)
     except ValidationError as exc:
         raise ShiftScheduleOutputError(
             "OpenAI returned structured data that failed ShiftScheduleExtraction validation: %s"
@@ -173,6 +187,7 @@ def solve_from_text(
     clarification: Optional[str] = None,
     client: Any = None,
     model: Optional[str] = None,
+    telemetry: Optional[RunTelemetry] = None,
     time_limit_seconds: Optional[float] = 10.0,
 ) -> ShiftScheduleTextSolveResult:
     """Parse, solve, and independently validate a complete extraction."""
@@ -183,6 +198,7 @@ def solve_from_text(
         clarification=clarification,
         client=client,
         model=model,
+        telemetry=telemetry,
     )
     if extraction.schedule is None:
         return ShiftScheduleTextSolveResult(extraction=extraction)
@@ -197,7 +213,7 @@ def solve_from_text(
 
 
 def _create_openai_client() -> Any:
-    if not os.getenv("OPENAI_API_KEY"):
+    if not openai_api_key():
         raise ShiftScheduleMissingAPIKeyError(
             "OPENAI_API_KEY is required for live ShiftSchedule parsing"
         )

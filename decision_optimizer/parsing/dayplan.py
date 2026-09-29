@@ -6,7 +6,6 @@ responsible for solving and validation.
 """
 
 import json
-import os
 from dataclasses import dataclass
 from typing import Any, List, Optional
 
@@ -19,9 +18,11 @@ from decision_optimizer.dayplan import (
     solve_day_plan,
     validate_solution,
 )
+from decision_optimizer.config import DEFAULT_OPENAI_MODEL, openai_api_key, openai_model
+from decision_optimizer.telemetry import RunTelemetry
 
 
-DEFAULT_MODEL = "gpt-6-sol"
+DEFAULT_MODEL = DEFAULT_OPENAI_MODEL
 
 DAYPLAN_EXTRACTION_INSTRUCTIONS = """You extract one personal-day scheduling problem into the provided DayPlan schema.
 
@@ -109,6 +110,7 @@ def parse_dayplan(
     clarification: Optional[str] = None,
     client: Any = None,
     model: Optional[str] = None,
+    telemetry: Optional[RunTelemetry] = None,
 ) -> DayPlanExtraction:
     """Parse natural language into a complete plan or one clarification request.
 
@@ -136,14 +138,26 @@ def parse_dayplan(
         client = _create_openai_client()
 
     try:
-        response = client.responses.parse(
-            model=model or os.getenv("OPENAI_MODEL", DEFAULT_MODEL),
-            input=[
-                {"role": "system", "content": DAYPLAN_EXTRACTION_INSTRUCTIONS},
-                {"role": "user", "content": request},
-            ],
-            text_format=DayPlanExtraction,
-        )
+        if telemetry is None:
+            response = client.responses.parse(
+                model=model or openai_model(),
+                input=[
+                    {"role": "system", "content": DAYPLAN_EXTRACTION_INSTRUCTIONS},
+                    {"role": "user", "content": request},
+                ],
+                text_format=DayPlanExtraction,
+            )
+        else:
+            with telemetry.track("llm"):
+                response = client.responses.parse(
+                    model=model or openai_model(),
+                    input=[
+                        {"role": "system", "content": DAYPLAN_EXTRACTION_INSTRUCTIONS},
+                        {"role": "user", "content": request},
+                    ],
+                    text_format=DayPlanExtraction,
+                )
+            telemetry.record_openai_response(response)
     except ValidationError as exc:
         raise DayPlanOutputError(
             "OpenAI returned structured data that failed DayPlanExtraction validation: %s"
@@ -184,6 +198,7 @@ def solve_from_text(
     clarification: Optional[str] = None,
     client: Any = None,
     model: Optional[str] = None,
+    telemetry: Optional[RunTelemetry] = None,
     time_limit_seconds: Optional[float] = 10.0,
 ) -> TextSolveResult:
     """Parse, then solve and independently validate when interpretation is complete."""
@@ -194,6 +209,7 @@ def solve_from_text(
         clarification=clarification,
         client=client,
         model=model,
+        telemetry=telemetry,
     )
     if extraction.plan is None:
         return TextSolveResult(extraction=extraction)
@@ -206,7 +222,7 @@ def solve_from_text(
 
 
 def _create_openai_client() -> Any:
-    if not os.getenv("OPENAI_API_KEY"):
+    if not openai_api_key():
         raise MissingAPIKeyError("OPENAI_API_KEY is required for live DayPlan parsing")
     try:
         from openai import OpenAI

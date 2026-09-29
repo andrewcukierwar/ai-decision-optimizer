@@ -1,6 +1,6 @@
 """Solve a compiled ShiftSchedule and materialize a typed result."""
 
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, Iterable, List, Optional, Set, Tuple
 
 from ortools.sat.python import cp_model
 
@@ -42,19 +42,14 @@ def solve_shift_schedule(
                         )
                     )
 
-        employee_hours = _materialize_employee_hours(schedule, assignments)
-        penalties, breakdown = _materialize_objective(schedule, assignments)
-        return ShiftScheduleSolution(
+        return materialize_shift_schedule_solution(
+            schedule,
+            assignments,
             status=(
                 SolveStatus.OPTIMAL
                 if status == cp_model.OPTIMAL
                 else SolveStatus.FEASIBLE
             ),
-            assignments=assignments,
-            employee_hours=employee_hours,
-            preference_penalties=penalties,
-            objective_breakdown=breakdown,
-            objective_value=breakdown.total,
             optimal=status == cp_model.OPTIMAL,
         )
 
@@ -67,6 +62,34 @@ def solve_shift_schedule(
     return ShiftScheduleSolution(
         status=SolveStatus.UNKNOWN,
         message="CP-SAT did not determine feasibility within the configured limit.",
+    )
+
+
+def materialize_shift_schedule_solution(
+    schedule: ShiftSchedule,
+    assignments: Iterable[ShiftAssignment],
+    *,
+    status: SolveStatus = SolveStatus.FEASIBLE,
+    optimal: bool = False,
+    message: Optional[str] = None,
+) -> ShiftScheduleSolution:
+    """Recompute workloads and objective fields for external assignments."""
+
+    materialized = list(assignments)
+    if status in (SolveStatus.INFEASIBLE, SolveStatus.UNKNOWN):
+        return ShiftScheduleSolution(status=status, optimal=False, message=message)
+
+    employee_hours = _materialize_employee_hours(schedule, materialized)
+    penalties, breakdown = _materialize_objective(schedule, materialized)
+    return ShiftScheduleSolution(
+        status=SolveStatus.OPTIMAL if optimal else status,
+        assignments=materialized,
+        employee_hours=employee_hours,
+        preference_penalties=penalties,
+        objective_breakdown=breakdown,
+        objective_value=breakdown.total,
+        optimal=optimal,
+        message=message,
     )
 
 

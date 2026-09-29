@@ -1,6 +1,6 @@
 """Solve a compiled DayPlan and materialize a typed result."""
 
-from typing import List, Optional
+from typing import Iterable, List, Optional
 
 from ortools.sat.python import cp_model
 
@@ -39,24 +39,10 @@ def solve_day_plan(plan: DayPlan, time_limit_seconds: Optional[float] = 10.0) ->
                     )
                 )
 
-        penalties: List[PreferencePenalty] = []
-        for index, preference in enumerate(plan.preferences):
-            amount = _preference_amount(plan, assignments, index)
-            penalties.append(
-                PreferencePenalty(
-                    preference_index=index,
-                    preference_type=preference.type,
-                    amount=amount,
-                    weighted_penalty=amount * preference.weight,
-                )
-            )
-
-        objective_value = int(round(solver.ObjectiveValue())) if plan.preferences else 0
-        return DayPlanSolution(
+        return materialize_day_plan_solution(
+            plan,
+            assignments,
             status=(SolveStatus.OPTIMAL if status == cp_model.OPTIMAL else SolveStatus.FEASIBLE),
-            assignments=assignments,
-            objective_value=objective_value,
-            preference_penalties=penalties,
             optimal=status == cp_model.OPTIMAL,
         )
 
@@ -69,6 +55,41 @@ def solve_day_plan(plan: DayPlan, time_limit_seconds: Optional[float] = 10.0) ->
     return DayPlanSolution(
         status=SolveStatus.UNKNOWN,
         message="CP-SAT did not determine feasibility within the configured limit.",
+    )
+
+
+def materialize_day_plan_solution(
+    plan: DayPlan,
+    assignments: Iterable[TaskAssignment],
+    *,
+    status: SolveStatus = SolveStatus.FEASIBLE,
+    optimal: bool = False,
+    message: Optional[str] = None,
+) -> DayPlanSolution:
+    """Recompute objective fields for externally produced assignments."""
+
+    materialized = list(assignments)
+    if status in (SolveStatus.INFEASIBLE, SolveStatus.UNKNOWN):
+        return DayPlanSolution(status=status, optimal=False, message=message)
+
+    penalties: List[PreferencePenalty] = []
+    for index, preference in enumerate(plan.preferences):
+        amount = _preference_amount(plan, materialized, index)
+        penalties.append(
+            PreferencePenalty(
+                preference_index=index,
+                preference_type=preference.type,
+                amount=amount,
+                weighted_penalty=amount * preference.weight,
+            )
+        )
+    return DayPlanSolution(
+        status=SolveStatus.OPTIMAL if optimal else status,
+        assignments=materialized,
+        objective_value=sum(item.weighted_penalty for item in penalties),
+        preference_penalties=penalties,
+        optimal=optimal,
+        message=message,
     )
 
 

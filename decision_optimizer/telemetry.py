@@ -1,0 +1,119 @@
+"""Lightweight in-memory telemetry for research runs."""
+
+from contextlib import contextmanager
+from dataclasses import asdict, dataclass, field
+from time import perf_counter
+from typing import Any, Dict, Iterator, Optional
+
+from .experiment import ExperimentConfig
+
+
+# Standard processing, short-context text-token prices per 1M tokens.
+# Source checked 2026-09-29: https://platform.openai.com/pricing
+OPENAI_PRICING_USD_PER_MILLION: Dict[str, Dict[str, float]] = {
+    "gpt-6-luna": {"input": 0.10, "output": 0.50},
+    "gpt-6-sol": {"input": 2.00, "output": 10.00},
+}
+OPENAI_PRICING_AS_OF = "2026-09-29"
+
+
+def estimate_openai_cost(
+    model: str, input_tokens: int, output_tokens: int
+) -> float:
+    """Estimate standard-processing text cost using the dated table above."""
+
+    price = OPENAI_PRICING_USD_PER_MILLION.get(model)
+    if price is None:
+        return 0.0
+    return (
+        input_tokens * price["input"] + output_tokens * price["output"]
+    ) / 1_000_000
+
+
+@dataclass
+class RunTelemetry:
+    """One serializable record for an interpretation-and-solve run."""
+
+    architecture: str
+    problem_type: str
+    case_id: Optional[str]
+    model: str
+    use_jev: bool
+    solution_engine: str
+    latency_total_s: float = 0.0
+    latency_llm_s: float = 0.0
+    latency_jev_s: float = 0.0
+    latency_solver_s: float = 0.0
+    openai_input_tokens: int = 0
+    openai_output_tokens: int = 0
+    n_model_calls: int = 0
+    jev_input_tokens: int = 0
+    n_jev_questions: int = 0
+    success: bool = False
+    error: Optional[str] = None
+    estimated_cost: float = 0.0
+    _started_at: float = field(default_factory=perf_counter, repr=False, compare=False)
+
+    @classmethod
+    def start(
+        cls,
+        config: ExperimentConfig,
+        problem_type: str,
+        case_id: Optional[str] = None,
+    ) -> "RunTelemetry":
+        return cls(
+            architecture=config.label(),
+            problem_type=problem_type,
+            case_id=case_id,
+            model=config.model,
+            use_jev=config.use_jev,
+            solution_engine=config.solution_engine,
+        )
+
+    @contextmanager
+    def track(self, component: str) -> Iterator[None]:
+        """Accumulate wall time for ``llm``, ``jev``, or ``solver`` work."""
+
+        if component not in {"llm", "jev", "solver"}:
+            raise ValueError("telemetry component must be llm, jev, or solver")
+        started = perf_counter()
+        try:
+            yield
+        finally:
+            field_name = "latency_%s_s" % component
+            setattr(self, field_name, getattr(self, field_name) + perf_counter() - started)
+
+    def record_openai_response(self, response: Any) -> None:
+        """Record one Responses API call without depending on an SDK response type."""
+
+        usage = getattr(response, "usage", None)
+        self.openai_input_tokens += _usage_value(usage, "input_tokens")
+        self.openai_output_tokens += _usage_value(usage, "output_tokens")
+        self.n_model_calls += 1
+        self.estimated_cost = estimate_openai_cost(
+            self.model, self.openai_input_tokens, self.openai_output_tokens
+        )
+
+    def finish(self, error: Optional[BaseException] = None) -> "RunTelemetry":
+        self.latency_total_s = perf_counter() - self._started_at
+        self.success = error is None
+        self.error = None if error is None else "%s: %s" % (type(error).__name__, error)
+        self.estimated_cost = estimate_openai_cost(
+            self.model, self.openai_input_tokens, self.openai_output_tokens
+        )
+        return self
+
+    def to_dict(self) -> Dict[str, Any]:
+        payload = asdict(self)
+        payload.pop("_started_at", None)
+        return payload
+
+
+def _usage_value(usage: Any, key: str) -> int:
+    if usage is None:
+        return 0
+    if isinstance(usage, dict):
+        value = usage.get(key, 0)
+    else:
+        value = getattr(usage, key, 0)
+    return int(value or 0)

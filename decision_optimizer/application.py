@@ -8,6 +8,12 @@ from typing import Any, Optional
 from pydantic import ValidationError
 
 from .dayplan import DayPlan, DayPlanSolution, solve_day_plan, validate_solution as validate_dayplan
+from .direct_solver import (
+    DirectDayPlanSolution,
+    DirectShiftSolution,
+    solve_day_plan_direct,
+    solve_shift_schedule_direct,
+)
 from .diagnostics import InfeasibilityDiagnostic, diagnose_dayplan_infeasibility, diagnose_shift_schedule_infeasibility
 from .explanations import (
     DayPlanExplanationFacts,
@@ -20,8 +26,10 @@ from .parsing.shift_schedule import (
     ShiftScheduleExtraction,
     parse_shift_schedule,
 )
+from .experiment import ExperimentConfig
 from .shift_schedule import ShiftSchedule, ShiftScheduleSolution, solve_shift_schedule
 from .shift_schedule import validate_solution as validate_shift_schedule
+from .telemetry import RunTelemetry
 
 
 class EditedInterpretationError(ValueError):
@@ -35,6 +43,8 @@ class DayPlanRun:
     validation: Any
     diagnosis: Optional[InfeasibilityDiagnostic] = None
     explanation_facts: Optional[DayPlanExplanationFacts] = None
+    telemetry: Optional[RunTelemetry] = None
+    direct_output: Optional[DirectDayPlanSolution] = None
 
 
 @dataclass
@@ -44,6 +54,22 @@ class ShiftScheduleRun:
     validation: Any
     diagnosis: Optional[InfeasibilityDiagnostic] = None
     explanation_facts: Optional[ShiftScheduleExplanationFacts] = None
+    telemetry: Optional[RunTelemetry] = None
+    direct_output: Optional[DirectShiftSolution] = None
+
+
+@dataclass
+class DayPlanExperimentRun:
+    extraction: DayPlanExtraction
+    run: Optional[DayPlanRun]
+    telemetry: RunTelemetry
+
+
+@dataclass
+class ShiftScheduleExperimentRun:
+    extraction: ShiftScheduleExtraction
+    run: Optional[ShiftScheduleRun]
+    telemetry: RunTelemetry
 
 
 def validate_edited_dayplan_json(raw_json: str) -> DayPlan:
@@ -58,12 +84,97 @@ def validate_edited_shift_schedule_json(raw_json: str) -> ShiftSchedule:
     return _validate_json(raw_json, ShiftSchedule)
 
 
+def run_dayplan_experiment(
+    request: str,
+    config: ExperimentConfig,
+    *,
+    client: Any = None,
+    case_id: Optional[str] = None,
+    time_limit_seconds: Optional[float] = 10.0,
+) -> DayPlanExperimentRun:
+    """Interpret and solve one DayPlan arm with a single telemetry record."""
+
+    telemetry = RunTelemetry.start(config, "dayplan", case_id)
+    try:
+        extraction = parse_dayplan_request(
+            request, client=client, config=config, telemetry=telemetry
+        )
+        if extraction.plan is None:
+            telemetry.finish()
+            return DayPlanExperimentRun(extraction, None, telemetry)
+        run = solve_confirmed_dayplan(
+            extraction.plan,
+            config=config,
+            client=client,
+            telemetry=telemetry,
+            time_limit_seconds=time_limit_seconds,
+        )
+        return DayPlanExperimentRun(extraction, run, telemetry)
+    except Exception as error:
+        telemetry.finish(error)
+        raise
+
+
+def run_shift_schedule_experiment(
+    request: str,
+    config: ExperimentConfig,
+    *,
+    client: Any = None,
+    case_id: Optional[str] = None,
+    time_limit_seconds: Optional[float] = 10.0,
+) -> ShiftScheduleExperimentRun:
+    """Interpret and solve one workforce arm with a single telemetry record."""
+
+    telemetry = RunTelemetry.start(config, "shift_schedule", case_id)
+    try:
+        extraction = parse_shift_schedule_request(
+            request, client=client, config=config, telemetry=telemetry
+        )
+        if extraction.schedule is None:
+            telemetry.finish()
+            return ShiftScheduleExperimentRun(extraction, None, telemetry)
+        run = solve_confirmed_shift_schedule(
+            extraction.schedule,
+            config=config,
+            client=client,
+            telemetry=telemetry,
+            time_limit_seconds=time_limit_seconds,
+        )
+        return ShiftScheduleExperimentRun(extraction, run, telemetry)
+    except Exception as error:
+        telemetry.finish(error)
+        raise
+
+
 def solve_confirmed_dayplan(
-    plan: DayPlan, *, time_limit_seconds: Optional[float] = 10.0
+    plan: DayPlan,
+    *,
+    time_limit_seconds: Optional[float] = 10.0,
+    config: Optional[ExperimentConfig] = None,
+    client: Any = None,
+    telemetry: Optional[RunTelemetry] = None,
 ) -> DayPlanRun:
     """Solve, independently validate, diagnose if needed, and gate explanation facts."""
 
-    solution = solve_day_plan(plan, time_limit_seconds=time_limit_seconds)
+    config = config or ExperimentConfig()
+    telemetry = telemetry or RunTelemetry.start(config, "dayplan")
+    direct_output = None
+    try:
+        if config.solution_engine == "direct_llm":
+            direct_result = solve_day_plan_direct(
+                plan,
+                client=client,
+                model=config.model,
+                telemetry=telemetry,
+            )
+            solution = direct_result.solution
+            direct_output = direct_result.output
+        else:
+            with telemetry.track("solver"):
+                solution = solve_day_plan(plan, time_limit_seconds=time_limit_seconds)
+    except Exception as error:
+        telemetry.finish(error)
+        raise
     validation = validate_dayplan(plan, solution)
     diagnosis = None
     if solution.status.value == "infeasible":
@@ -71,23 +182,49 @@ def solve_confirmed_dayplan(
             plan, time_limit_seconds=min(time_limit_seconds or 2.0, 2.0)
         )
     explanation_facts = build_dayplan_explanation_payload(plan, solution, validation)
+    telemetry.finish()
     return DayPlanRun(
         plan=plan,
         solution=solution,
         validation=validation,
         diagnosis=diagnosis,
         explanation_facts=explanation_facts,
+        telemetry=telemetry,
+        direct_output=direct_output,
     )
 
 
 def solve_confirmed_shift_schedule(
-    schedule: ShiftSchedule, *, time_limit_seconds: Optional[float] = 10.0
+    schedule: ShiftSchedule,
+    *,
+    time_limit_seconds: Optional[float] = 10.0,
+    config: Optional[ExperimentConfig] = None,
+    client: Any = None,
+    telemetry: Optional[RunTelemetry] = None,
 ) -> ShiftScheduleRun:
     """Solve, independently validate, diagnose if needed, and gate explanation facts."""
 
-    solution = solve_shift_schedule(
-        schedule, time_limit_seconds=time_limit_seconds
-    )
+    config = config or ExperimentConfig()
+    telemetry = telemetry or RunTelemetry.start(config, "shift_schedule")
+    direct_output = None
+    try:
+        if config.solution_engine == "direct_llm":
+            direct_result = solve_shift_schedule_direct(
+                schedule,
+                client=client,
+                model=config.model,
+                telemetry=telemetry,
+            )
+            solution = direct_result.solution
+            direct_output = direct_result.output
+        else:
+            with telemetry.track("solver"):
+                solution = solve_shift_schedule(
+                    schedule, time_limit_seconds=time_limit_seconds
+                )
+    except Exception as error:
+        telemetry.finish(error)
+        raise
     validation = validate_shift_schedule(schedule, solution)
     diagnosis = None
     if solution.status.value == "infeasible":
@@ -97,21 +234,34 @@ def solve_confirmed_shift_schedule(
     explanation_facts = build_shift_schedule_explanation_payload(
         schedule, solution, validation
     )
+    telemetry.finish()
     return ShiftScheduleRun(
         schedule=schedule,
         solution=solution,
         validation=validation,
         diagnosis=diagnosis,
         explanation_facts=explanation_facts,
+        telemetry=telemetry,
+        direct_output=direct_output,
     )
 
 
 def parse_dayplan_request(
-    request: str, *, client: Any = None, model: Optional[str] = None
+    request: str,
+    *,
+    client: Any = None,
+    model: Optional[str] = None,
+    config: Optional[ExperimentConfig] = None,
+    telemetry: Optional[RunTelemetry] = None,
 ) -> DayPlanExtraction:
     """Small adapter used by the UI and deterministic tests."""
 
-    return parse_dayplan(request, client=client, model=model)
+    return parse_dayplan(
+        request,
+        client=client,
+        model=config.model if config is not None else model,
+        telemetry=telemetry,
+    )
 
 
 def clarify_dayplan_request(
@@ -121,6 +271,8 @@ def clarify_dayplan_request(
     *,
     client: Any = None,
     model: Optional[str] = None,
+    config: Optional[ExperimentConfig] = None,
+    telemetry: Optional[RunTelemetry] = None,
 ) -> DayPlanExtraction:
     """Run the single supported DayPlan clarification round."""
 
@@ -129,16 +281,27 @@ def clarify_dayplan_request(
         previous_extraction=previous,
         clarification=clarification,
         client=client,
-        model=model,
+        model=config.model if config is not None else model,
+        telemetry=telemetry,
     )
 
 
 def parse_shift_schedule_request(
-    request: str, *, client: Any = None, model: Optional[str] = None
+    request: str,
+    *,
+    client: Any = None,
+    model: Optional[str] = None,
+    config: Optional[ExperimentConfig] = None,
+    telemetry: Optional[RunTelemetry] = None,
 ) -> ShiftScheduleExtraction:
     """Small adapter used by the UI and deterministic tests."""
 
-    return parse_shift_schedule(request, client=client, model=model)
+    return parse_shift_schedule(
+        request,
+        client=client,
+        model=config.model if config is not None else model,
+        telemetry=telemetry,
+    )
 
 
 def clarify_shift_schedule_request(
@@ -148,6 +311,8 @@ def clarify_shift_schedule_request(
     *,
     client: Any = None,
     model: Optional[str] = None,
+    config: Optional[ExperimentConfig] = None,
+    telemetry: Optional[RunTelemetry] = None,
 ) -> ShiftScheduleExtraction:
     """Run the single supported ShiftSchedule clarification round."""
 
@@ -156,7 +321,8 @@ def clarify_shift_schedule_request(
         previous_extraction=previous,
         clarification=clarification,
         client=client,
-        model=model,
+        model=config.model if config is not None else model,
+        telemetry=telemetry,
     )
 
 

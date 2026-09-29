@@ -3,6 +3,7 @@
 import json
 from typing import Any, Dict, Optional
 
+from decision_optimizer import config as _config  # noqa: F401 - loads local .env
 from decision_optimizer.application import (
     DayPlanRun,
     ShiftScheduleRun,
@@ -16,6 +17,8 @@ from decision_optimizer.application import (
     validate_edited_shift_schedule_json,
 )
 from decision_optimizer.diagnostics import InfeasibilityDiagnostic
+from decision_optimizer.direct_solver import DirectSolverError
+from decision_optimizer.experiment import ExperimentConfig
 from decision_optimizer.parsing.dayplan import DayPlanError, DayPlanExtraction
 from decision_optimizer.parsing.shift_schedule import (
     ShiftScheduleError,
@@ -63,6 +66,31 @@ def main() -> None:
     _reset_for_problem_change(st, problem_type)
     prefix = _prefix(problem_type)
 
+    controls = st.columns(2)
+    with controls[0]:
+        model = st.selectbox(
+            "Base model",
+            ("gpt-6-luna", "gpt-6-sol"),
+            index=1,
+            format_func=lambda value: (
+                "GPT-6 Luna" if value == "gpt-6-luna" else "GPT-6 Sol"
+            ),
+        )
+    with controls[1]:
+        solution_engine = st.radio(
+            "Solution engine",
+            ("cp_sat", "direct_llm"),
+            horizontal=True,
+            format_func=lambda value: (
+                "OR-Tools CP-SAT" if value == "cp_sat" else "Direct LLM"
+            ),
+        )
+    experiment = ExperimentConfig(
+        model=model, use_jev=False, solution_engine=solution_engine
+    )
+    _reset_for_experiment_change(st, prefix, experiment)
+    st.caption("Architecture: " + experiment.label())
+
     request = st.text_area(
         "Natural-language problem",
         key=prefix + "_request",
@@ -75,7 +103,7 @@ def main() -> None:
     )
     _reset_for_request_change(st, prefix, request)
     if st.button("Interpret", type="primary", key=prefix + "_interpret"):
-        _interpret(st, problem_type, request)
+        _interpret(st, problem_type, request, experiment)
 
     extraction = st.session_state.get(prefix + "_extraction")
     if extraction is None:
@@ -87,20 +115,22 @@ def main() -> None:
         return
 
     if problem_type == "Day Planner":
-        _render_dayplan_flow(st, request, prefix, extraction)
+        _render_dayplan_flow(st, request, prefix, extraction, experiment)
     else:
-        _render_shift_schedule_flow(st, request, prefix, extraction)
+        _render_shift_schedule_flow(st, request, prefix, extraction, experiment)
 
 
-def _interpret(st: Any, problem_type: str, request: str) -> None:
+def _interpret(
+    st: Any, problem_type: str, request: str, config: ExperimentConfig
+) -> None:
     prefix = _prefix(problem_type)
     _clear_interpretation_state(st, prefix)
     st.session_state[prefix + "_source_request"] = request
     try:
         extraction = (
-            parse_dayplan_request(request)
+            parse_dayplan_request(request, config=config)
             if problem_type == "Day Planner"
-            else parse_shift_schedule_request(request)
+            else parse_shift_schedule_request(request, config=config)
         )
     except (DayPlanError, ShiftScheduleError) as error:
         st.session_state[prefix + "_error"] = str(error)
@@ -110,7 +140,13 @@ def _interpret(st: Any, problem_type: str, request: str) -> None:
     _store_extraction(st, prefix, extraction, clarification_used=False)
 
 
-def _render_dayplan_flow(st: Any, request: str, prefix: str, extraction: Any) -> None:
+def _render_dayplan_flow(
+    st: Any,
+    request: str,
+    prefix: str,
+    extraction: Any,
+    config: ExperimentConfig,
+) -> None:
     error = st.session_state.get(prefix + "_error")
     if error:
         st.error(error)
@@ -123,7 +159,9 @@ def _render_dayplan_flow(st: Any, request: str, prefix: str, extraction: Any) ->
             )
             if st.button("Submit clarification", key=prefix + "_clarify"):
                 try:
-                    extraction = clarify_dayplan_request(request, extraction, answer)
+                    extraction = clarify_dayplan_request(
+                        request, extraction, answer, config=config
+                    )
                     _store_extraction(st, prefix, extraction, clarification_used=True)
                 except (DayPlanError, ShiftScheduleError) as error:
                     st.error(str(error))
@@ -131,11 +169,15 @@ def _render_dayplan_flow(st: Any, request: str, prefix: str, extraction: Any) ->
         if extraction.plan is None:
             return
 
-    _render_dayplan_interpretation(st, request, prefix, extraction.plan)
+    _render_dayplan_interpretation(st, request, prefix, extraction.plan, config)
 
 
 def _render_shift_schedule_flow(
-    st: Any, request: str, prefix: str, extraction: Any
+    st: Any,
+    request: str,
+    prefix: str,
+    extraction: Any,
+    config: ExperimentConfig,
 ) -> None:
     error = st.session_state.get(prefix + "_error")
     if error:
@@ -150,7 +192,7 @@ def _render_shift_schedule_flow(
             if st.button("Submit clarification", key=prefix + "_clarify"):
                 try:
                     extraction = clarify_shift_schedule_request(
-                        request, extraction, answer
+                        request, extraction, answer, config=config
                     )
                     _store_extraction(st, prefix, extraction, clarification_used=True)
                 except (DayPlanError, ShiftScheduleError) as error:
@@ -159,11 +201,17 @@ def _render_shift_schedule_flow(
         if extraction.schedule is None:
             return
 
-    _render_shift_schedule_interpretation(st, request, prefix, extraction.schedule)
+    _render_shift_schedule_interpretation(
+        st, request, prefix, extraction.schedule, config
+    )
 
 
 def _render_dayplan_interpretation(
-    st: Any, request: str, prefix: str, plan: Any
+    st: Any,
+    request: str,
+    prefix: str,
+    plan: Any,
+    config: ExperimentConfig,
 ) -> None:
     st.subheader("Interpretation")
     st.caption("A readable summary of the confirmed planning problem.")
@@ -185,7 +233,11 @@ def _render_dayplan_interpretation(
         except ValueError as error:
             st.error("Edited interpretation is invalid: " + str(error))
             return
-        run = solve_confirmed_dayplan(confirmed_plan)
+        try:
+            run = solve_confirmed_dayplan(confirmed_plan, config=config)
+        except DirectSolverError as error:
+            st.error(str(error))
+            return
         st.session_state[prefix + "_run"] = run
         st.session_state[prefix + "_solved_json"] = edited_json
 
@@ -195,7 +247,11 @@ def _render_dayplan_interpretation(
 
 
 def _render_shift_schedule_interpretation(
-    st: Any, request: str, prefix: str, schedule: Any
+    st: Any,
+    request: str,
+    prefix: str,
+    schedule: Any,
+    config: ExperimentConfig,
 ) -> None:
     st.subheader("Interpretation")
     st.caption("A readable summary of the confirmed workforce problem.")
@@ -217,7 +273,11 @@ def _render_shift_schedule_interpretation(
         except ValueError as error:
             st.error("Edited interpretation is invalid: " + str(error))
             return
-        run = solve_confirmed_shift_schedule(confirmed_schedule)
+        try:
+            run = solve_confirmed_shift_schedule(confirmed_schedule, config=config)
+        except DirectSolverError as error:
+            st.error(str(error))
+            return
         st.session_state[prefix + "_run"] = run
         st.session_state[prefix + "_solved_json"] = edited_json
 
@@ -527,7 +587,8 @@ def _render_dayplan_result_summary(st: Any, run: DayPlanRun) -> None:
         dayplan_preference_summary(solution.preference_penalties),
     )
     st.caption(
-        "Schedule produced by deterministic OR-Tools CP-SAT and independently validated."
+        "Schedule produced by %s and independently validated."
+        % (run.telemetry.architecture if run.telemetry else "the selected architecture")
     )
 
 
@@ -545,7 +606,8 @@ def _render_shift_result_summary(st: Any, run: ShiftScheduleRun) -> None:
         format_minutes_duration(solution.objective_breakdown.fairness_minutes_spread),
     )
     st.caption(
-        "Assignments produced by deterministic OR-Tools CP-SAT and independently validated."
+        "Assignments produced by %s and independently validated."
+        % (run.telemetry.architecture if run.telemetry else "the selected architecture")
     )
 
 
@@ -919,6 +981,7 @@ def _reset_for_problem_change(st: Any, problem_type: str) -> None:
             "solved_json",
             "source_request",
             "error",
+            "experiment_config",
         ):
             st.session_state.pop(prefix + "_" + suffix, None)
         st.session_state.pop(prefix + "_clarification_used", None)
@@ -933,6 +996,24 @@ def _reset_for_request_change(st: Any, prefix: str, request: str) -> None:
         return
     _clear_interpretation_state(st, prefix)
     st.session_state.pop(prefix + "_source_request", None)
+
+
+def _reset_for_experiment_change(
+    st: Any, prefix: str, config: ExperimentConfig
+) -> None:
+    """Invalidate derived state when the model or solution engine changes."""
+
+    key = prefix + "_experiment_config"
+    previous = st.session_state.get(key)
+    current = config.model_dump()
+    if previous is not None and previous != current:
+        if previous.get("model") != current["model"]:
+            _clear_interpretation_state(st, prefix)
+            st.session_state.pop(prefix + "_source_request", None)
+        else:
+            st.session_state.pop(prefix + "_run", None)
+            st.session_state.pop(prefix + "_solved_json", None)
+    st.session_state[key] = current
 
 
 def _clear_interpretation_state(st: Any, prefix: str) -> None:

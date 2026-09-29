@@ -213,15 +213,10 @@ uv sync --extra test
 cp .env.example .env
 ```
 
-Edit `.env` and set `OPENAI_API_KEY`. The parser defaults to `gpt-6-sol`; set `OPENAI_MODEL` if you need to override it. The application reads these values from the process environment and does not automatically load `.env`.
-
-On macOS/Linux, export the values in the shell that will run the app or evaluations:
-
-```bash
-set -a
-source .env
-set +a
-```
+Edit `.env` and set `OPENAI_API_KEY`. The parser defaults to `gpt-6-sol`; set
+`OPENAI_MODEL` to `gpt-6-luna` or `gpt-6-sol` to override it. The application
+and evaluation scripts load `.env` automatically through
+`decision_optimizer.config`; no manual shell export is required.
 
 ### Run the Streamlit app
 
@@ -229,7 +224,11 @@ set +a
 uv run streamlit run app.py
 ```
 
-The app provides both the Day Planner and Workforce Scheduler flows. Each flow interprets the request, supports one clarification round when required, shows the typed interpretation, allows structured edits, and then confirms, solves, validates, and explains the result.
+The app provides both the Day Planner and Workforce Scheduler flows, with Luna
+or Sol and CP-SAT or Direct LLM selectable. Each flow interprets the request,
+supports one clarification round when required, shows the typed interpretation,
+allows structured edits, and then confirms, solves, validates, and explains the
+result.
 
 ## Testing
 
@@ -239,7 +238,7 @@ The app provides both the Day Planner and Workforce Scheduler flows. Each flow i
 uv run pytest
 ```
 
-Normal pytest requires no `OPENAI_API_KEY` and makes no paid OpenAI API calls. The final engineering review verified **128 passing tests**.
+Normal pytest requires no `OPENAI_API_KEY` and makes no paid OpenAI API calls.
 
 ### Live natural-language evaluation
 
@@ -250,7 +249,9 @@ uv run python scripts/evaluate_dayplan_nl.py
 uv run python scripts/evaluate_shift_schedule_nl.py
 ```
 
-Both scripts support `--model MODEL_NAME` to override `OPENAI_MODEL` for that run. Run them from a shell where the `.env` values have been exported. The checked-in fixtures live in `tests/fixtures/`.
+Both scripts support `--model MODEL_NAME` to override `OPENAI_MODEL` for that
+run. They load `.env` automatically. The checked-in fixtures live in
+`tests/fixtures/`.
 
 ## Current limitations
 
