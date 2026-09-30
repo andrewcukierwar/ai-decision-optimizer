@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "label_status": "draft_needs_human_review",
+  "notes": "Selection only. expected_jev labels must be generated and human-reviewed before calibration or benchmark claims.",
+  "cases": [
+    {"domain": "dayplan", "source": "dayplan_nl_eval.json", "name": "wfh_laundry_lift_groceries"},
+    {"domain": "dayplan", "source": "dayplan_nl_eval.json", "name": "active_and_passive"},
+    {"domain": "dayplan", "source": "dayplan_nl_eval.json", "name": "laundry_precedence"},
+    {"domain": "dayplan", "source": "dayplan_nl_eval.json", "name": "hard_timing"},
+    {"domain": "dayplan", "source": "dayplan_nl_eval.json", "name": "soft_finish_preference"},
+    {"domain": "dayplan", "source": "dayplan_jev_ambiguous.json", "name": "workout_before_four_soft"},
+    {"domain": "dayplan", "source": "dayplan_jev_ambiguous.json", "name": "workout_before_four_hard"},
+    {"domain": "dayplan", "source": "dayplan_jev_ambiguous.json", "name": "optional_walk_if_time"},
+    {"domain": "dayplan", "source": "dayplan_jev_ambiguous.json", "name": "impossible_hard_workout_window", "infeasible": true},
+    {"domain": "shift_schedule", "source": "shift_schedule_nl_eval.json", "name": "straightforward_staffing"},
+    {"domain": "shift_schedule", "source": "shift_schedule_nl_eval.json", "name": "preferences_and_availability"},
+    {"domain": "shift_schedule", "source": "shift_schedule_nl_eval.json", "name": "infeasible_staffing_is_extracted_not_repaired", "infeasible": true},
+    {"domain": "shift_schedule", "source": "generated_workforce_cases.json", "name": "regional_week", "generated": true},
+    {"domain": "shift_schedule", "source": "generated_workforce_cases.json", "name": "ten_day_rotation", "generated": true}
+  ]
+}

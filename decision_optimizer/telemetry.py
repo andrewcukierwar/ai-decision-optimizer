@@ -94,6 +94,13 @@ class RunTelemetry:
             self.model, self.openai_input_tokens, self.openai_output_tokens
         )
 
+    def record_jev_response(self, response: Any, question_count: int) -> None:
+        """Record one batched System One response and its logical decisions."""
+
+        usage = getattr(response, "usage", None)
+        self.jev_input_tokens += _usage_value(usage, "input_tokens")
+        self.n_jev_questions += question_count
+
     def finish(self, error: Optional[BaseException] = None) -> "RunTelemetry":
         self.latency_total_s = perf_counter() - self._started_at
         self.success = error is None

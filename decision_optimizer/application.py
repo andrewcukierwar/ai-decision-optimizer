@@ -1,7 +1,7 @@
 """UI-facing orchestration kept separate from Streamlit widgets."""
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from json import JSONDecodeError
 from typing import Any, Optional
 
@@ -27,6 +27,7 @@ from .parsing.shift_schedule import (
     parse_shift_schedule,
 )
 from .experiment import ExperimentConfig
+from .jev import JevDecision, apply_jev
 from .shift_schedule import ShiftSchedule, ShiftScheduleSolution, solve_shift_schedule
 from .shift_schedule import validate_solution as validate_shift_schedule
 from .telemetry import RunTelemetry
@@ -45,6 +46,7 @@ class DayPlanRun:
     explanation_facts: Optional[DayPlanExplanationFacts] = None
     telemetry: Optional[RunTelemetry] = None
     direct_output: Optional[DirectDayPlanSolution] = None
+    jev_decisions: list[JevDecision] = field(default_factory=list)
 
 
 @dataclass
@@ -56,6 +58,7 @@ class ShiftScheduleRun:
     explanation_facts: Optional[ShiftScheduleExplanationFacts] = None
     telemetry: Optional[RunTelemetry] = None
     direct_output: Optional[DirectShiftSolution] = None
+    jev_decisions: list[JevDecision] = field(default_factory=list)
 
 
 @dataclass
@@ -63,6 +66,7 @@ class DayPlanExperimentRun:
     extraction: DayPlanExtraction
     run: Optional[DayPlanRun]
     telemetry: RunTelemetry
+    jev_decisions: list[JevDecision] = field(default_factory=list)
 
 
 @dataclass
@@ -70,6 +74,7 @@ class ShiftScheduleExperimentRun:
     extraction: ShiftScheduleExtraction
     run: Optional[ShiftScheduleRun]
     telemetry: RunTelemetry
+    jev_decisions: list[JevDecision] = field(default_factory=list)
 
 
 def validate_edited_dayplan_json(raw_json: str) -> DayPlan:
@@ -89,6 +94,7 @@ def run_dayplan_experiment(
     config: ExperimentConfig,
     *,
     client: Any = None,
+    jev_client: Any = None,
     case_id: Optional[str] = None,
     time_limit_seconds: Optional[float] = 10.0,
 ) -> DayPlanExperimentRun:
@@ -102,14 +108,25 @@ def run_dayplan_experiment(
         if extraction.plan is None:
             telemetry.finish()
             return DayPlanExperimentRun(extraction, None, telemetry)
+        jev_decisions: list[JevDecision] = []
+        if config.use_jev:
+            jev_result = apply_jev(
+                request,
+                extraction.plan,
+                client=jev_client,
+                telemetry=telemetry,
+            )
+            extraction = extraction.model_copy(update={"plan": jev_result.problem})
+            jev_decisions = jev_result.decisions
         run = solve_confirmed_dayplan(
             extraction.plan,
             config=config,
             client=client,
             telemetry=telemetry,
+            jev_decisions=jev_decisions,
             time_limit_seconds=time_limit_seconds,
         )
-        return DayPlanExperimentRun(extraction, run, telemetry)
+        return DayPlanExperimentRun(extraction, run, telemetry, jev_decisions)
     except Exception as error:
         telemetry.finish(error)
         raise
@@ -120,6 +137,7 @@ def run_shift_schedule_experiment(
     config: ExperimentConfig,
     *,
     client: Any = None,
+    jev_client: Any = None,
     case_id: Optional[str] = None,
     time_limit_seconds: Optional[float] = 10.0,
 ) -> ShiftScheduleExperimentRun:
@@ -133,14 +151,25 @@ def run_shift_schedule_experiment(
         if extraction.schedule is None:
             telemetry.finish()
             return ShiftScheduleExperimentRun(extraction, None, telemetry)
+        jev_decisions: list[JevDecision] = []
+        if config.use_jev:
+            jev_result = apply_jev(
+                request,
+                extraction.schedule,
+                client=jev_client,
+                telemetry=telemetry,
+            )
+            extraction = extraction.model_copy(update={"schedule": jev_result.problem})
+            jev_decisions = jev_result.decisions
         run = solve_confirmed_shift_schedule(
             extraction.schedule,
             config=config,
             client=client,
             telemetry=telemetry,
+            jev_decisions=jev_decisions,
             time_limit_seconds=time_limit_seconds,
         )
-        return ShiftScheduleExperimentRun(extraction, run, telemetry)
+        return ShiftScheduleExperimentRun(extraction, run, telemetry, jev_decisions)
     except Exception as error:
         telemetry.finish(error)
         raise
@@ -153,6 +182,7 @@ def solve_confirmed_dayplan(
     config: Optional[ExperimentConfig] = None,
     client: Any = None,
     telemetry: Optional[RunTelemetry] = None,
+    jev_decisions: Optional[list[JevDecision]] = None,
 ) -> DayPlanRun:
     """Solve, independently validate, diagnose if needed, and gate explanation facts."""
 
@@ -191,6 +221,7 @@ def solve_confirmed_dayplan(
         explanation_facts=explanation_facts,
         telemetry=telemetry,
         direct_output=direct_output,
+        jev_decisions=list(jev_decisions or []),
     )
 
 
@@ -201,6 +232,7 @@ def solve_confirmed_shift_schedule(
     config: Optional[ExperimentConfig] = None,
     client: Any = None,
     telemetry: Optional[RunTelemetry] = None,
+    jev_decisions: Optional[list[JevDecision]] = None,
 ) -> ShiftScheduleRun:
     """Solve, independently validate, diagnose if needed, and gate explanation facts."""
 
@@ -243,6 +275,7 @@ def solve_confirmed_shift_schedule(
         explanation_facts=explanation_facts,
         telemetry=telemetry,
         direct_output=direct_output,
+        jev_decisions=list(jev_decisions or []),
     )
 
 

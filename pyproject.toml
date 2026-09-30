@@ -6,13 +6,14 @@ build-backend = "setuptools.build_meta"
 name = "ai-decision-optimizer"
 version = "0.1.0"
 description = "Deterministic scheduling core for the AI Decision Optimizer"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "openai>=1.66,<3",
     "ortools>=9.9,<10",
     "pydantic>=2.7,<3",
     "python-dotenv>=1.0,<2",
     "streamlit>=1.40,<2",
+    "typesafe-sdk>=0.7.2",
 ]
 
 [project.optional-dependencies]
