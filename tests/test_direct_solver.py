@@ -61,7 +61,7 @@ def load_schedule():
     )
 
 
-@pytest.mark.parametrize("model", ["gpt-6-luna", "gpt-6-sol"])
+@pytest.mark.parametrize("model", ["gpt-6-luna", "gpt-6.1-sol"])
 def test_selected_model_routes_through_existing_parsers(model):
     dayplan = load_dayplan()
     day_client = FakeClient(DayPlanExtraction(plan=dayplan, missing_info=[]))
@@ -84,7 +84,7 @@ def test_cp_sat_experiment_records_parse_and_solver_in_one_telemetry_record():
 
     result = run_dayplan_experiment(
         "Plan it",
-        ExperimentConfig(model="gpt-6-sol", solution_engine="cp_sat"),
+        ExperimentConfig(model="gpt-6.1-sol", solution_engine="cp_sat"),
         client=client,
         case_id="simple-active",
     )
@@ -98,7 +98,7 @@ def test_cp_sat_experiment_records_parse_and_solver_in_one_telemetry_record():
     assert result.telemetry.success is True
 
 
-@pytest.mark.parametrize("model", ["gpt-6-luna", "gpt-6-sol"])
+@pytest.mark.parametrize("model", ["gpt-6-luna", "gpt-6.1-sol"])
 def test_direct_dayplan_is_structured_materialized_and_validated(model):
     plan = load_dayplan()
     direct = DirectDayPlanSolution(
@@ -128,7 +128,7 @@ def test_direct_dayplan_is_structured_materialized_and_validated(model):
     assert run.telemetry.openai_input_tokens == 100
 
 
-@pytest.mark.parametrize("model", ["gpt-6-luna", "gpt-6-sol"])
+@pytest.mark.parametrize("model", ["gpt-6-luna", "gpt-6.1-sol"])
 def test_direct_shift_schedule_is_structured_materialized_and_validated(model):
     schedule = load_schedule()
     deterministic = __import__(

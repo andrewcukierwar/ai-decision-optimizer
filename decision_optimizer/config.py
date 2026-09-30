@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DEFAULT_OPENAI_MODEL = "gpt-6-sol"
+DEFAULT_OPENAI_MODEL = "gpt-6.1-sol"
 DEFAULT_TYPESAFE_MODEL = "jev-latest"
 DEFAULT_JEV_APPLY_THRESHOLD = 0.7
 

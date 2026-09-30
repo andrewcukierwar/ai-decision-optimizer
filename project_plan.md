@@ -26,7 +26,7 @@ Deterministic validators judge every architecture against canonical ground truth
 
 | Dimension | Options |
 |---|---|
-| Base model | `gpt-6-luna` / `gpt-6-sol` |
+| Base model | `gpt-6-luna` / `gpt-6.1-sol` |
 | Jev | Off / On |
 | Solution engine | Direct LLM / OR-Tools CP-SAT |
 
@@ -37,10 +37,10 @@ Luna 6 · Direct LLM
 Luna 6 · Jev · Direct LLM
 Luna 6 · CP-SAT
 Luna 6 · Jev · CP-SAT
-Sol 6 · Direct LLM
-Sol 6 · Jev · Direct LLM
-Sol 6 · CP-SAT
-Sol 6 · Jev · CP-SAT
+Sol 6.1 · Direct LLM
+Sol 6.1 · Jev · Direct LLM
+Sol 6.1 · CP-SAT
+Sol 6.1 · Jev · CP-SAT
 ```
 
 ### The target resume bullet
@@ -108,7 +108,7 @@ Add `python-dotenv`. Create `decision_optimizer/config.py` as the single bootstr
 ```dotenv
 # OpenAI
 OPENAI_API_KEY=
-OPENAI_MODEL=gpt-6-sol
+OPENAI_MODEL=gpt-6.1-sol
 
 # TypeSafe / Jev
 TYPESAFE_API_KEY=
@@ -122,7 +122,7 @@ JEV_APPLY_THRESHOLD=0.7
 
 ```python
 ExperimentConfig(
-    model="gpt-6-sol",          # gpt-6-luna | gpt-6-sol
+    model="gpt-6.1-sol",          # gpt-6-luna | gpt-6.1-sol
     use_jev=False,
     solution_engine="cp_sat",   # direct_llm | cp_sat
 )
@@ -173,13 +173,15 @@ For each benchmark run, `evaluation.py` produces:
 
 ```text
 valid_output                  structured output parsed and materialized
-hard_constraints_satisfied    k / n, checked against CANONICAL spec
-required_completed            all required tasks / shifts covered (canonical)
+canonical_validation_valid    binary primary validity, checked against CANONICAL spec
+hard_constraints_satisfied    k / n secondary diagnostic; N/A for infeasible canonical cases
+required_completed            all required tasks / shifts covered (canonical); N/A if infeasible
 feasible_correctly_reported   arm's feasible/infeasible verdict matches canonical
 objective_value               computed under CANONICAL spec
 optimal_objective             CP-SAT solve of the CANONICAL spec
 objective_gap
-formulation_match             reuse existing NL-eval semantic comparison
+formulation_match_structural  primary structural comparison, ignoring weights
+formulation_match             full semantic comparison including weights
 latency, tokens, estimated_cost
 ```
 
@@ -264,7 +266,7 @@ One function then:
 
 1. builds every applicable question for the request;
 2. sends them in a **single Jev call** (state = original request + relevant extracted context; questions = map of typed questions);
-3. applies each answer only when Jev's top probability ≥ `JEV_APPLY_THRESHOLD`, otherwise keeps GPT's value;
+3. applies each answer only when Jev's selected probability ≥ `JEV_APPLY_THRESHOLD`, otherwise keeps GPT's value; Score selects the modal level (lowest level on ties), maps 0–4 to weights 1–5, and keeps the expected score separately;
 4. logs, per question: key, item, GPT's value, Jev's answer, probability, applied yes/no.
 
 The rewritten problem must still pass the normal Pydantic boundary.
@@ -361,7 +363,7 @@ benchmark_results/
 └── latest_summary.csv
 ```
 
-- **Resumable:** skip (case, architecture) pairs already in `latest.jsonl`; one failed call records an error and moves on.
+- **Resumable:** skip completed compatible cells, including terminal invalid outputs and timeouts. Transport failures remain visible and can retry on explicit resume; automatic SDK retries are disabled.
 - Auto-loads `.env` via `config.py`.
 - No database.
 
@@ -375,7 +377,7 @@ Produce:
 
 1. **Architecture table:** validity, hard constraints, required completion, objective gap, latency, cost for all 8 arms.
 2. **Jev vs GPT decision accuracy** per question type, against the answer key.
-3. **Calibration:** reliability diagram (5 bins) and Brier score for Jev's probabilities across all labeled decisions. GPT has no probabilities, so it gets accuracy only.
+3. **Calibration:** reliability diagram (5 bins); report Choice/binary and Noul Brier separately from five-class Score Brier, using approved eligible labels. GPT has accuracy only. Report aligned accuracy, end-to-end accuracy including omissions, final applied accuracy, and coverage/unmatched counts (see `docs/benchmark_methodology.md`).
 4. **Jev effect on outcomes:** for Jev-on vs Jev-off pairs, how often Jev changed the formulation and whether that fixed or broke validity / objective.
 
 Save the plot to `docs/images/calibration.png` for the README.
@@ -390,7 +392,7 @@ A null Jev result is fine to report honestly, as long as the ambiguous cases wer
 
 ```text
 Problem            [Day Planner ▾]
-Base model         [GPT-6 Sol ▾]
+Base model         [GPT-6.1 Sol ▾]
 Decision layer     [x] TypeSafe Jev
 Solution engine    ( ) Direct LLM   (o) OR-Tools CP-SAT
 ```
@@ -398,7 +400,7 @@ Solution engine    ( ) Direct LLM   (o) OR-Tools CP-SAT
 ### Results header
 
 ```text
-Architecture      Sol 6 · Jev · CP-SAT
+Architecture      Sol 6.1 · Jev · CP-SAT
 Valid             ✓
 Hard constraints  12 / 12
 Objective         4

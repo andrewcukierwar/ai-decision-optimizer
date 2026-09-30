@@ -8,6 +8,7 @@
     "jev_answer": "Observed from TypeSafe for that extracted formulation.",
     "alignment": "Semantic identities align task/employee/shift names to canonical names and normalize equivalent hard/soft timing representations. Missing and unaligned questions are retained in coverage rather than dropped."
   },
+  "observation_source": "none",
   "observed_models": [],
   "jev_observed": false,
   "cases": [
@@ -26,10 +27,12 @@
           "canonical_item": "preference:0:lift",
           "primitive": "choice",
           "canonical_expected_answer": "soft",
-          "supporting_request_context": "Plan my work-from-home day from 08:00 to 21:00. I work 09:00-17:00. I have standup 10:00-10:30, planning 13:00-13:30, and a client call 15:30-16:00. Wash clothes for 30 minutes starting at 08:00, transfer them for 5 minutes within 15 minute",
+          "supporting_request_context": "Lift for 60 minutes and get groceries for 45 minutes; both are required, and groceries must finish by 20:30. I would like lifting finished by 16:00, priority 5, and prefer to minimize work interruptions, priority 3.",
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -42,6 +45,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -54,6 +59,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -66,6 +73,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -78,6 +87,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -90,6 +101,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -102,6 +115,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -114,6 +129,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -126,6 +143,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -138,6 +157,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -150,6 +171,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -162,6 +185,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -174,6 +199,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -182,10 +209,12 @@
           "canonical_item": "preference:0:finish_before",
           "primitive": "score",
           "canonical_expected_answer": 5,
-          "supporting_request_context": "I would like lifting finished by 16:00, priority 5, and prefer to minimize work interruptions, priority 3.",
+          "supporting_request_context": "Lift for 60 minutes and get groceries for 45 minutes; both are required, and groceries must finish by 20:30. I would like lifting finished by 16:00, priority 5, and prefer to minimize work interruptions, priority 3.",
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -198,6 +227,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         }
       ],
@@ -223,6 +254,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -235,6 +268,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -247,6 +282,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -259,6 +296,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         }
       ],
@@ -284,6 +323,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -296,6 +337,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -308,6 +351,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -320,6 +365,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -332,6 +379,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -344,6 +393,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         }
       ],
@@ -369,6 +420,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -381,6 +434,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -393,6 +448,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -405,6 +462,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -417,6 +476,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         }
       ],
@@ -442,6 +503,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -454,6 +517,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -466,6 +531,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -474,10 +541,12 @@
           "canonical_item": "preference:0:finish_before",
           "primitive": "score",
           "canonical_expected_answer": 1,
-          "supporting_request_context": "I would ideally like the report finished by 15:00, but that is only a preference.",
+          "supporting_request_context": "Plan a 09:00-17:00 day with a required 60-minute active report. I would ideally like the report finished by 15:00, but that is only a preference.",
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "subjective_preference_strength",
+          "primary_accuracy_calibration_eligible": false,
+          "primary_exclusion_reason": "subjective_weight_without_agreed_rubric",
           "observations": {}
         }
       ],
@@ -499,10 +568,12 @@
           "canonical_item": "preference:0:workout",
           "primitive": "choice",
           "canonical_expected_answer": "soft",
-          "supporting_request_context": "Plan my day from 09:00 to 18:00. I have a required 60-minute active workout. I'd really like to work out before four, but it's okay if I can't.",
+          "supporting_request_context": "I have a required 60-minute active workout.",
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "intentionally_ambiguous_language",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -515,6 +586,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "intentionally_ambiguous_language",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -527,6 +600,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "intentionally_ambiguous_language",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -535,10 +610,12 @@
           "canonical_item": "preference:0:finish_before",
           "primitive": "score",
           "canonical_expected_answer": 3,
-          "supporting_request_context": "Plan my day from 09:00 to 18:00. I have a required 60-minute active workout. I'd really like to work out before four, but it's okay if I can't.",
+          "supporting_request_context": "I have a required 60-minute active workout.",
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "subjective_preference_strength",
+          "primary_accuracy_calibration_eligible": false,
+          "primary_exclusion_reason": "subjective_weight_without_agreed_rubric",
           "observations": {}
         }
       ],
@@ -564,6 +641,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "intentionally_ambiguous_language",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -576,6 +655,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "intentionally_ambiguous_language",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -588,6 +669,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "intentionally_ambiguous_language",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         }
       ],
@@ -613,6 +696,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "intentionally_ambiguous_language",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -625,6 +710,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "intentionally_ambiguous_language",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -637,6 +724,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "intentionally_ambiguous_language",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -649,6 +738,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "intentionally_ambiguous_language",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         }
       ],
@@ -674,6 +765,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "intentionally_ambiguous_language",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -686,6 +779,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "intentionally_ambiguous_language",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -698,6 +793,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "intentionally_ambiguous_language",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         }
       ],
@@ -719,10 +816,12 @@
           "canonical_item": "employee:Bob:shift:front_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "Shift front_morning runs 09:00-13:00 at front_desk and needs one employee. Bob can work up to 4 hours, is eligible for front_desk, and is unavailable from 09:00 to 13:00 on 2026-10-05.",
+          "supporting_request_context": "Bob can work up to 4 hours, is eligible for front_desk, and is unavailable from 09:00 to 13:00 on 2026-10-05.",
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -731,10 +830,12 @@
           "canonical_item": "employee:Bob:shift:back_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "Shift back_evening runs 14:00-18:00 at backroom and needs one employee. Bob can work up to 4 hours, is eligible for front_desk, and is unavailable from 09:00 to 13:00 on 2026-10-05.",
+          "supporting_request_context": "Bob can work up to 4 hours, is eligible for front_desk, and is unavailable from 09:00 to 13:00 on 2026-10-05.",
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         }
       ],
@@ -760,6 +861,8 @@
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "subjective_preference_strength",
+          "primary_accuracy_calibration_eligible": false,
+          "primary_exclusion_reason": "subjective_weight_without_agreed_rubric",
           "observations": {}
         },
         {
@@ -768,10 +871,12 @@
           "canonical_item": "employee:Blair:shift:s1",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "For 2026-10-06, staff shift s1 from 09:00 to 13:00 at the clinic and shift s2 from 14:00 to 18:00 at the clinic; each needs one person. Alex can work 8 hours at the clinic and prefers s1.",
+          "supporting_request_context": "Blair can work 8 hours at the clinic, prefers s2, and is unavailable for s1.",
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -780,10 +885,12 @@
           "canonical_item": "employee:Blair:shift:s2",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "For 2026-10-06, staff shift s1 from 09:00 to 13:00 at the clinic and shift s2 from 14:00 to 18:00 at the clinic; each needs one person. Blair can work 8 hours at the clinic, prefers s2, and is unavailable for s1.",
+          "supporting_request_context": "Blair can work 8 hours at the clinic, prefers s2, and is unavailable for s1.",
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         }
       ],
@@ -795,7 +902,7 @@
       "domain": "shift_schedule",
       "source": "shift_schedule_nl_eval.json",
       "generated": false,
-      "prompt": "Front desk 09:00-13:00 requires 2; front desk 13:00-17:00 requires 2; back room 09:00-13:00 requires 1; back room 13:00-17:00 requires 1. Alice and Bob are front-desk-only and can each work up to 4 hours. Carla is back-room-only, can work up to 4 hours, and is unavailable 09:00-13:00. There are no other employees.",
+      "prompt": "On 2026-10-05, front_morning at front_desk 09:00-13:00 requires 2 staff; front_afternoon at front_desk 13:00-17:00 requires 2 staff; back_morning at back_room 09:00-13:00 requires 1 staff; back_afternoon at back_room 13:00-17:00 requires 1 staff. Alice and Bob are front_desk-only and can each work up to 4 hours. Carla is back_room-only, can work up to 4 hours, and is unavailable on 2026-10-05 from 09:00-13:00. There are no other employees.",
       "canonical_source": "fixture_intended_meaning",
       "expected_jev_review_status": "needs_human_review",
       "expected_jev": [
@@ -805,10 +912,12 @@
           "canonical_item": "employee:Carla:shift:back_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "Carla is back-room-only, can work up to 4 hours, and is unavailable 09:00-13:00.",
+          "supporting_request_context": "Carla is back_room-only, can work up to 4 hours, and is unavailable on 2026-10-05 from 09:00-13:00.",
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -817,10 +926,12 @@
           "canonical_item": "employee:Carla:shift:front_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "Carla is back-room-only, can work up to 4 hours, and is unavailable 09:00-13:00.",
+          "supporting_request_context": "Carla is back_room-only, can work up to 4 hours, and is unavailable on 2026-10-05 from 09:00-13:00.",
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -829,10 +940,12 @@
           "canonical_item": "employee:Carla:shift:back_afternoon",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "Carla is back-room-only, can work up to 4 hours, and is unavailable 09:00-13:00.",
+          "supporting_request_context": "Carla is back_room-only, can work up to 4 hours, and is unavailable on 2026-10-05 from 09:00-13:00.",
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -841,10 +954,12 @@
           "canonical_item": "employee:Carla:shift:front_afternoon",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "Carla is back-room-only, can work up to 4 hours, and is unavailable 09:00-13:00.",
+          "supporting_request_context": "Carla is back_room-only, can work up to 4 hours, and is unavailable on 2026-10-05 from 09:00-13:00.",
           "label_provenance": "fixture_intended_meaning",
           "review_status": "needs_human_review",
           "review_reason": "fixture_proposal_requires_human_confirmation",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         }
       ],
@@ -870,6 +985,8 @@
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -882,6 +999,8 @@
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -890,10 +1009,12 @@
           "canonical_item": "employee:Avery:shift:20261005_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261005_morning on 2026-10-05 from 08:00 to 12:00 at north needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning. - 20261005_morning on 2026-10-05 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -902,10 +1023,12 @@
           "canonical_item": "employee:Avery:shift:20261005_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261005_evening on 2026-10-05 from 16:00 to 20:00 at north needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning. - 20261005_evening on 2026-10-05 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -914,10 +1037,12 @@
           "canonical_item": "employee:Avery:shift:20261008_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261008_morning on 2026-10-08 from 08:00 to 12:00 at south needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning. - 20261008_morning on 2026-10-08 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -926,10 +1051,12 @@
           "canonical_item": "employee:Avery:shift:20261008_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261008_evening on 2026-10-08 from 16:00 to 20:00 at south needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning. - 20261008_evening on 2026-10-08 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -938,10 +1065,12 @@
           "canonical_item": "employee:Blake:shift:20261006_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261006_morning on 2026-10-06 from 08:00 to 12:00 at south needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening. - 20261006_morning on 2026-10-06 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -950,10 +1079,12 @@
           "canonical_item": "employee:Blake:shift:20261006_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261006_evening on 2026-10-06 from 16:00 to 20:00 at south needs 2 staff. - Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening.",
+          "supporting_request_context": "- Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening. - 20261006_evening on 2026-10-06 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -962,10 +1093,12 @@
           "canonical_item": "employee:Blake:shift:20261007_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261007_morning on 2026-10-07 from 08:00 to 12:00 at north needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening. - 20261007_morning on 2026-10-07 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -974,10 +1107,12 @@
           "canonical_item": "employee:Blake:shift:20261011_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261011_morning on 2026-10-11 from 08:00 to 12:00 at north needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening. - 20261011_morning on 2026-10-11 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -986,10 +1121,12 @@
           "canonical_item": "employee:Casey:shift:20261006_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261006_morning on 2026-10-06 from 08:00 to 12:00 at south needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Casey can work at most 32 hours; is eligible at north and south; is unavailable for 20261008_morning, 20261006_evening; prefers 20261006_morning, 20261007_morning, 20261010_morning, 20261011_morning. - 20261006_morning on 2026-10-06 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -998,10 +1135,12 @@
           "canonical_item": "employee:Casey:shift:20261006_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261006_evening on 2026-10-06 from 16:00 to 20:00 at south needs 2 staff. - Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening.",
+          "supporting_request_context": "- Casey can work at most 32 hours; is eligible at north and south; is unavailable for 20261008_morning, 20261006_evening; prefers 20261006_morning, 20261007_morning, 20261010_morning, 20261011_morning. - 20261006_evening on 2026-10-06 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1010,10 +1149,12 @@
           "canonical_item": "employee:Casey:shift:20261007_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261007_morning on 2026-10-07 from 08:00 to 12:00 at north needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Casey can work at most 32 hours; is eligible at north and south; is unavailable for 20261008_morning, 20261006_evening; prefers 20261006_morning, 20261007_morning, 20261010_morning, 20261011_morning. - 20261007_morning on 2026-10-07 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1022,10 +1163,12 @@
           "canonical_item": "employee:Casey:shift:20261008_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261008_morning on 2026-10-08 from 08:00 to 12:00 at south needs 2 staff. - Casey can work at most 32 hours; is eligible at north and south; is unavailable for 20261008_morning, 20261006_evening; prefers 20261006_morning, 20261007_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Casey can work at most 32 hours; is eligible at north and south; is unavailable for 20261008_morning, 20261006_evening; prefers 20261006_morning, 20261007_morning, 20261010_morning, 20261011_morning. - 20261008_morning on 2026-10-08 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1034,10 +1177,12 @@
           "canonical_item": "employee:Devon:shift:20261008_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261008_evening on 2026-10-08 from 16:00 to 20:00 at south needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Devon can work at most 32 hours; is eligible at north and south; is unavailable for 20261009_evening, 20261009_morning; prefers 20261006_evening, 20261007_evening, 20261008_evening, 20261010_evening, 20261011_evening. - 20261008_evening on 2026-10-08 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1046,10 +1191,12 @@
           "canonical_item": "employee:Devon:shift:20261009_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261009_morning on 2026-10-09 from 08:00 to 12:00 at north needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Devon can work at most 32 hours; is eligible at north and south; is unavailable for 20261009_evening, 20261009_morning; prefers 20261006_evening, 20261007_evening, 20261008_evening, 20261010_evening, 20261011_evening. - 20261009_morning on 2026-10-09 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1058,10 +1205,12 @@
           "canonical_item": "employee:Devon:shift:20261009_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261009_evening on 2026-10-09 from 16:00 to 20:00 at north needs 2 staff. - Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening.",
+          "supporting_request_context": "- Devon can work at most 32 hours; is eligible at north and south; is unavailable for 20261009_evening, 20261009_morning; prefers 20261006_evening, 20261007_evening, 20261008_evening, 20261010_evening, 20261011_evening. - 20261009_evening on 2026-10-09 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1070,10 +1219,12 @@
           "canonical_item": "employee:Devon:shift:20261010_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261010_morning on 2026-10-10 from 08:00 to 12:00 at south needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Devon can work at most 32 hours; is eligible at north and south; is unavailable for 20261009_evening, 20261009_morning; prefers 20261006_evening, 20261007_evening, 20261008_evening, 20261010_evening, 20261011_evening. - 20261010_morning on 2026-10-10 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1082,10 +1233,12 @@
           "canonical_item": "employee:Emery:shift:20261010_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261010_morning on 2026-10-10 from 08:00 to 12:00 at south needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Emery can work at most 32 hours; is eligible at north and south; is unavailable for 20261011_morning, 20261011_evening; prefers 20261005_morning, 20261007_morning, 20261008_morning, 20261009_morning. - 20261010_morning on 2026-10-10 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1094,10 +1247,12 @@
           "canonical_item": "employee:Emery:shift:20261010_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261010_evening on 2026-10-10 from 16:00 to 20:00 at south needs 2 staff. - Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening.",
+          "supporting_request_context": "- Emery can work at most 32 hours; is eligible at north and south; is unavailable for 20261011_morning, 20261011_evening; prefers 20261005_morning, 20261007_morning, 20261008_morning, 20261009_morning. - 20261010_evening on 2026-10-10 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1106,10 +1261,12 @@
           "canonical_item": "employee:Emery:shift:20261011_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261011_morning on 2026-10-11 from 08:00 to 12:00 at north needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Emery can work at most 32 hours; is eligible at north and south; is unavailable for 20261011_morning, 20261011_evening; prefers 20261005_morning, 20261007_morning, 20261008_morning, 20261009_morning. - 20261011_morning on 2026-10-11 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1118,10 +1275,12 @@
           "canonical_item": "employee:Emery:shift:20261011_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261011_evening on 2026-10-11 from 16:00 to 20:00 at north needs 2 staff. - Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening.",
+          "supporting_request_context": "- Emery can work at most 32 hours; is eligible at north and south; is unavailable for 20261011_morning, 20261011_evening; prefers 20261005_morning, 20261007_morning, 20261008_morning, 20261009_morning. - 20261011_evening on 2026-10-11 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1130,10 +1289,12 @@
           "canonical_item": "employee:Finley:shift:20261005_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261005_morning on 2026-10-05 from 08:00 to 12:00 at north needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Finley can work at most 32 hours; is eligible at north; is unavailable for 20261005_evening, 20261007_morning; prefers 20261007_evening, 20261008_evening, 20261009_evening, 20261011_evening. - 20261005_morning on 2026-10-05 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1142,10 +1303,12 @@
           "canonical_item": "employee:Finley:shift:20261005_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261005_evening on 2026-10-05 from 16:00 to 20:00 at north needs 2 staff. - Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening.",
+          "supporting_request_context": "- Finley can work at most 32 hours; is eligible at north; is unavailable for 20261005_evening, 20261007_morning; prefers 20261007_evening, 20261008_evening, 20261009_evening, 20261011_evening. - 20261005_evening on 2026-10-05 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1154,10 +1317,12 @@
           "canonical_item": "employee:Finley:shift:20261006_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261006_morning on 2026-10-06 from 08:00 to 12:00 at south needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Finley can work at most 32 hours; is eligible at north; is unavailable for 20261005_evening, 20261007_morning; prefers 20261007_evening, 20261008_evening, 20261009_evening, 20261011_evening. - 20261006_morning on 2026-10-06 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1166,10 +1331,12 @@
           "canonical_item": "employee:Finley:shift:20261007_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261007_morning on 2026-10-07 from 08:00 to 12:00 at north needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Finley can work at most 32 hours; is eligible at north; is unavailable for 20261005_evening, 20261007_morning; prefers 20261007_evening, 20261008_evening, 20261009_evening, 20261011_evening. - 20261007_morning on 2026-10-07 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1178,10 +1345,12 @@
           "canonical_item": "employee:Gray:shift:20261006_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261006_evening on 2026-10-06 from 16:00 to 20:00 at south needs 2 staff. - Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening.",
+          "supporting_request_context": "- Gray can work at most 32 hours; is eligible at south; is unavailable for 20261007_morning, 20261009_evening; prefers 20261005_morning, 20261006_morning, 20261008_morning, 20261009_morning, 20261010_morning. - 20261006_evening on 2026-10-06 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1190,10 +1359,12 @@
           "canonical_item": "employee:Gray:shift:20261007_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261007_morning on 2026-10-07 from 08:00 to 12:00 at north needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Gray can work at most 32 hours; is eligible at south; is unavailable for 20261007_morning, 20261009_evening; prefers 20261005_morning, 20261006_morning, 20261008_morning, 20261009_morning, 20261010_morning. - 20261007_morning on 2026-10-07 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1202,10 +1373,12 @@
           "canonical_item": "employee:Gray:shift:20261007_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261007_evening on 2026-10-07 from 16:00 to 20:00 at north needs 2 staff. - Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening.",
+          "supporting_request_context": "- Gray can work at most 32 hours; is eligible at south; is unavailable for 20261007_morning, 20261009_evening; prefers 20261005_morning, 20261006_morning, 20261008_morning, 20261009_morning, 20261010_morning. - 20261007_evening on 2026-10-07 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1214,10 +1387,12 @@
           "canonical_item": "employee:Gray:shift:20261009_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261009_evening on 2026-10-09 from 16:00 to 20:00 at north needs 2 staff. - Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening.",
+          "supporting_request_context": "- Gray can work at most 32 hours; is eligible at south; is unavailable for 20261007_morning, 20261009_evening; prefers 20261005_morning, 20261006_morning, 20261008_morning, 20261009_morning, 20261010_morning. - 20261009_evening on 2026-10-09 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1226,10 +1401,12 @@
           "canonical_item": "employee:Harper:shift:20261005_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261005_morning on 2026-10-05 from 08:00 to 12:00 at north needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Harper can work at most 32 hours; is eligible at north and south; is unavailable for 20261008_evening, 20261005_morning; prefers 20261005_evening, 20261006_evening, 20261009_evening, 20261010_evening. - 20261005_morning on 2026-10-05 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1238,10 +1415,12 @@
           "canonical_item": "employee:Harper:shift:20261005_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261005_evening on 2026-10-05 from 16:00 to 20:00 at north needs 2 staff. - Blake can work at most 32 hours; is eligible at south; is unavailable for 20261006_evening, 20261011_morning; prefers 20261005_evening, 20261007_evening, 20261009_evening, 20261010_evening, 20261011_evening.",
+          "supporting_request_context": "- Harper can work at most 32 hours; is eligible at north and south; is unavailable for 20261008_evening, 20261005_morning; prefers 20261005_evening, 20261006_evening, 20261009_evening, 20261010_evening. - 20261005_evening on 2026-10-05 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1250,10 +1429,12 @@
           "canonical_item": "employee:Harper:shift:20261008_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261008_morning on 2026-10-08 from 08:00 to 12:00 at south needs 2 staff. - Casey can work at most 32 hours; is eligible at north and south; is unavailable for 20261008_morning, 20261006_evening; prefers 20261006_morning, 20261007_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Harper can work at most 32 hours; is eligible at north and south; is unavailable for 20261008_evening, 20261005_morning; prefers 20261005_evening, 20261006_evening, 20261009_evening, 20261010_evening. - 20261008_morning on 2026-10-08 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1262,10 +1443,12 @@
           "canonical_item": "employee:Harper:shift:20261008_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261008_evening on 2026-10-08 from 16:00 to 20:00 at south needs 2 staff. - Avery can work at most 32 hours; is eligible at north; is unavailable for 20261005_morning, 20261008_evening; prefers 20261006_morning, 20261007_morning, 20261009_morning, 20261010_morning, 20261011_morning.",
+          "supporting_request_context": "- Harper can work at most 32 hours; is eligible at north and south; is unavailable for 20261008_evening, 20261005_morning; prefers 20261005_evening, 20261006_evening, 20261009_evening, 20261010_evening. - 20261008_evening on 2026-10-08 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         }
       ],
@@ -1277,7 +1460,7 @@
       "domain": "shift_schedule",
       "source": "generated_workforce_cases.json",
       "generated": true,
-      "prompt": "Create a fair workforce schedule for these shifts. Cover every shift exactly at its stated staffing level.\nShifts:\n- 20261026_morning on 2026-10-26 from 08:00 to 12:00 at north needs 2 staff.\n- 20261026_evening on 2026-10-26 from 16:00 to 20:00 at north needs 2 staff.\n- 20261027_morning on 2026-10-27 from 08:00 to 12:00 at south needs 2 staff.\n- 20261027_evening on 2026-10-27 from 16:00 to 20:00 at south needs 2 staff.\n- 20261028_morning on 2026-10-28 from 08:00 to 12:00 at north needs 2 staff.\n- 20261028_evening on 2026-10-28 from 16:00 to 20:00 at north needs 2 staff.\n- 20261029_morning on 2026-10-29 from 08:00 to 12:00 at south needs 2 staff.\n- 20261029_evening on 2026-10-29 from 16:00 to 20:00 at south needs 2 staff.\n- 20261030_morning on 2026-10-30 from 08:00 to 12:00 at north needs 2 staff.\n- 20261030_evening on 2026-10-30 from 16:00 to 20:00 at north needs 2 staff.\n- 20261031_morning on 2026-10-31 from 08:00 to 12:00 at south needs 2 staff.\n- 20261031_evening on 2026-10-31 from 16:00 to 20:00 at south needs 2 staff.\n- 20261101_morning on 2026-11-01 from 08:00 to 12:00 at north needs 2 staff.\n- 20261101_evening on 2026-11-01 from 16:00 to 20:00 at north needs 2 staff.\n- 20261102_morning on 2026-11-02 from 08:00 to 12:00 at south needs 2 staff.\n- 20261102_evening on 2026-11-02 from 16:00 to 20:00 at south needs 2 staff.\n- 20261103_morning on 2026-11-03 from 08:00 to 12:00 at north needs 2 staff.\n- 20261103_evening on 2026-11-03 from 16:00 to 20:00 at north needs 2 staff.\n- 20261104_morning on 2026-11-04 from 08:00 to 12:00 at south needs 2 staff.\n- 20261104_evening on 2026-11-04 from 16:00 to 20:00 at south needs 2 staff.\nEmployees:\n- Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.\n- Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening.\n- Casey can work at most 40 hours; is eligible at north and south; is unavailable for 20261029_evening, 20261103_evening; prefers 20261027_morning, 20261028_morning, 20261029_morning, 20261031_evening, 20261101_evening, 20261102_evening.\n- Devon can work at most 40 hours; is eligible at north and south; is unavailable for 20261031_morning, 20261027_morning; prefers 20261027_evening, 20261028_evening, 20261029_evening, 20261101_morning, 20261102_morning, 20261103_morning.\n- Emery can work at most 40 hours; is eligible at north and south; is unavailable for 20261101_evening, 20261029_evening; prefers 20261028_morning, 20261029_morning, 20261030_morning, 20261102_evening, 20261103_evening.\n- Finley can work at most 40 hours; is eligible at north; is unavailable for 20261103_morning, 20261101_morning; prefers 20261026_morning, 20261028_evening, 20261029_evening, 20261030_evening, 20261102_morning, 20261104_morning.\n- Gray can work at most 40 hours; is eligible at south; is unavailable for 20261104_evening, 20261103_evening; prefers 20261026_evening, 20261029_morning, 20261030_morning, 20261031_morning, 20261102_evening.\n- Harper can work at most 40 hours; is eligible at north and south; is unavailable for 20261027_morning, 20261027_morning; prefers 20261026_morning, 20261029_evening, 20261030_evening, 20261031_evening, 20261103_morning, 20261104_morning.\n- Indigo can work at most 40 hours; is eligible at north and south; is unavailable for 20261028_evening, 20261029_evening; prefers 20261026_evening, 20261027_evening, 20261030_morning, 20261031_morning, 20261101_morning, 20261103_evening, 20261104_evening.\nRequire at least 12 hours of rest between shifts.\nNo employee may work more than 4 consecutive days.\nCasey must have 2026-10-28 off.\nIndigo must have 2026-11-03 off.\nUse preference penalty weight 2 and fairness weight 1.",
+      "prompt": "Create a fair workforce schedule for these shifts. Cover every shift exactly at its stated staffing level.\nShifts:\n- 20261026_morning on 2026-10-26 from 08:00 to 12:00 at north needs 2 staff.\n- 20261026_evening on 2026-10-26 from 16:00 to 20:00 at north needs 2 staff.\n- 20261027_morning on 2026-10-27 from 08:00 to 12:00 at south needs 2 staff.\n- 20261027_evening on 2026-10-27 from 16:00 to 20:00 at south needs 2 staff.\n- 20261028_morning on 2026-10-28 from 08:00 to 12:00 at north needs 2 staff.\n- 20261028_evening on 2026-10-28 from 16:00 to 20:00 at north needs 2 staff.\n- 20261029_morning on 2026-10-29 from 08:00 to 12:00 at south needs 2 staff.\n- 20261029_evening on 2026-10-29 from 16:00 to 20:00 at south needs 2 staff.\n- 20261030_morning on 2026-10-30 from 08:00 to 12:00 at north needs 2 staff.\n- 20261030_evening on 2026-10-30 from 16:00 to 20:00 at north needs 2 staff.\n- 20261031_morning on 2026-10-31 from 08:00 to 12:00 at south needs 2 staff.\n- 20261031_evening on 2026-10-31 from 16:00 to 20:00 at south needs 2 staff.\n- 20261101_morning on 2026-11-01 from 08:00 to 12:00 at north needs 2 staff.\n- 20261101_evening on 2026-11-01 from 16:00 to 20:00 at north needs 2 staff.\n- 20261102_morning on 2026-11-02 from 08:00 to 12:00 at south needs 2 staff.\n- 20261102_evening on 2026-11-02 from 16:00 to 20:00 at south needs 2 staff.\n- 20261103_morning on 2026-11-03 from 08:00 to 12:00 at north needs 2 staff.\n- 20261103_evening on 2026-11-03 from 16:00 to 20:00 at north needs 2 staff.\n- 20261104_morning on 2026-11-04 from 08:00 to 12:00 at south needs 2 staff.\n- 20261104_evening on 2026-11-04 from 16:00 to 20:00 at south needs 2 staff.\nEmployees:\n- Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.\n- Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening.\n- Casey can work at most 40 hours; is eligible at north and south; is unavailable for 20261029_evening, 20261103_evening; prefers 20261027_morning, 20261028_morning, 20261029_morning, 20261031_evening, 20261101_evening, 20261102_evening.\n- Devon can work at most 40 hours; is eligible at north and south; is unavailable for 20261031_morning, 20261027_morning; prefers 20261027_evening, 20261028_evening, 20261029_evening, 20261101_morning, 20261102_morning, 20261103_morning.\n- Emery can work at most 40 hours; is eligible at north and south; is unavailable for 20261101_evening, 20261029_evening; prefers 20261028_morning, 20261029_morning, 20261030_morning, 20261102_evening, 20261103_evening.\n- Finley can work at most 40 hours; is eligible at north; is unavailable for 20261103_morning, 20261101_morning; prefers 20261026_morning, 20261028_evening, 20261029_evening, 20261030_evening, 20261102_morning, 20261104_morning.\n- Gray can work at most 40 hours; is eligible at south; is unavailable for 20261104_evening, 20261103_evening; prefers 20261026_evening, 20261029_morning, 20261030_morning, 20261031_morning, 20261102_evening.\n- Harper can work at most 40 hours; is eligible at north and south; is unavailable for 20261027_morning; prefers 20261026_morning, 20261029_evening, 20261030_evening, 20261031_evening, 20261103_morning, 20261104_morning.\n- Indigo can work at most 40 hours; is eligible at north and south; is unavailable for 20261028_evening, 20261029_evening; prefers 20261026_evening, 20261027_evening, 20261030_morning, 20261031_morning, 20261101_morning, 20261103_evening, 20261104_evening.\nRequire at least 12 hours of rest between shifts.\nNo employee may work more than 4 consecutive days.\nCasey must have 2026-10-28 off.\nIndigo must have 2026-11-03 off.\nUse preference penalty weight 2 and fairness weight 1.",
       "canonical_source": "generator_specification",
       "expected_jev_review_status": "generator_derived_not_human_reviewed",
       "expected_jev": [
@@ -1291,6 +1474,8 @@
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1303,6 +1488,8 @@
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1311,10 +1498,12 @@
           "canonical_item": "employee:Avery:shift:20261026_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261026_morning on 2026-10-26 from 08:00 to 12:00 at north needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning. - 20261026_morning on 2026-10-26 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1323,10 +1512,12 @@
           "canonical_item": "employee:Avery:shift:20261026_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261026_evening on 2026-10-26 from 16:00 to 20:00 at north needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning. - 20261026_evening on 2026-10-26 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1335,10 +1526,12 @@
           "canonical_item": "employee:Avery:shift:20261027_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261027_morning on 2026-10-27 from 08:00 to 12:00 at south needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning. - 20261027_morning on 2026-10-27 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1347,10 +1540,12 @@
           "canonical_item": "employee:Avery:shift:20261029_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261029_evening on 2026-10-29 from 16:00 to 20:00 at south needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning. - 20261029_evening on 2026-10-29 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1359,10 +1554,12 @@
           "canonical_item": "employee:Blake:shift:20261027_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261027_evening on 2026-10-27 from 16:00 to 20:00 at south needs 2 staff. - Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening.",
+          "supporting_request_context": "- Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening. - 20261027_evening on 2026-10-27 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1371,10 +1568,12 @@
           "canonical_item": "employee:Blake:shift:20261028_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261028_morning on 2026-10-28 from 08:00 to 12:00 at north needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening. - 20261028_morning on 2026-10-28 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1383,10 +1582,12 @@
           "canonical_item": "employee:Blake:shift:20261028_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261028_evening on 2026-10-28 from 16:00 to 20:00 at north needs 2 staff. - Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening.",
+          "supporting_request_context": "- Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening. - 20261028_evening on 2026-10-28 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1395,10 +1596,12 @@
           "canonical_item": "employee:Blake:shift:20261101_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261101_morning on 2026-11-01 from 08:00 to 12:00 at north needs 2 staff. - Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening.",
+          "supporting_request_context": "- Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening. - 20261101_morning on 2026-11-01 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1407,10 +1610,12 @@
           "canonical_item": "employee:Casey:shift:20261029_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261029_morning on 2026-10-29 from 08:00 to 12:00 at south needs 2 staff. - Casey can work at most 40 hours; is eligible at north and south; is unavailable for 20261029_evening, 20261103_evening; prefers 20261027_morning, 20261028_morning, 20261029_morning, 20261031_evening, 20261101_evening, 20261102_evening.",
+          "supporting_request_context": "- Casey can work at most 40 hours; is eligible at north and south; is unavailable for 20261029_evening, 20261103_evening; prefers 20261027_morning, 20261028_morning, 20261029_morning, 20261031_evening, 20261101_evening, 20261102_evening. - 20261029_morning on 2026-10-29 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1419,10 +1624,12 @@
           "canonical_item": "employee:Casey:shift:20261029_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261029_evening on 2026-10-29 from 16:00 to 20:00 at south needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Casey can work at most 40 hours; is eligible at north and south; is unavailable for 20261029_evening, 20261103_evening; prefers 20261027_morning, 20261028_morning, 20261029_morning, 20261031_evening, 20261101_evening, 20261102_evening. - 20261029_evening on 2026-10-29 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1431,10 +1638,12 @@
           "canonical_item": "employee:Casey:shift:20261030_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261030_morning on 2026-10-30 from 08:00 to 12:00 at north needs 2 staff. - Casey can work at most 40 hours; is eligible at north and south; is unavailable for 20261029_evening, 20261103_evening; prefers 20261027_morning, 20261028_morning, 20261029_morning, 20261031_evening, 20261101_evening, 20261102_evening.",
+          "supporting_request_context": "- Casey can work at most 40 hours; is eligible at north and south; is unavailable for 20261029_evening, 20261103_evening; prefers 20261027_morning, 20261028_morning, 20261029_morning, 20261031_evening, 20261101_evening, 20261102_evening. - 20261030_morning on 2026-10-30 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1443,10 +1652,12 @@
           "canonical_item": "employee:Casey:shift:20261103_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261103_evening on 2026-11-03 from 16:00 to 20:00 at north needs 2 staff. - Casey can work at most 40 hours; is eligible at north and south; is unavailable for 20261029_evening, 20261103_evening; prefers 20261027_morning, 20261028_morning, 20261029_morning, 20261031_evening, 20261101_evening, 20261102_evening.",
+          "supporting_request_context": "- Casey can work at most 40 hours; is eligible at north and south; is unavailable for 20261029_evening, 20261103_evening; prefers 20261027_morning, 20261028_morning, 20261029_morning, 20261031_evening, 20261101_evening, 20261102_evening. - 20261103_evening on 2026-11-03 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1455,10 +1666,12 @@
           "canonical_item": "employee:Devon:shift:20261026_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261026_evening on 2026-10-26 from 16:00 to 20:00 at north needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Devon can work at most 40 hours; is eligible at north and south; is unavailable for 20261031_morning, 20261027_morning; prefers 20261027_evening, 20261028_evening, 20261029_evening, 20261101_morning, 20261102_morning, 20261103_morning. - 20261026_evening on 2026-10-26 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1467,10 +1680,12 @@
           "canonical_item": "employee:Devon:shift:20261027_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261027_morning on 2026-10-27 from 08:00 to 12:00 at south needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Devon can work at most 40 hours; is eligible at north and south; is unavailable for 20261031_morning, 20261027_morning; prefers 20261027_evening, 20261028_evening, 20261029_evening, 20261101_morning, 20261102_morning, 20261103_morning. - 20261027_morning on 2026-10-27 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1479,10 +1694,12 @@
           "canonical_item": "employee:Devon:shift:20261027_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261027_evening on 2026-10-27 from 16:00 to 20:00 at south needs 2 staff. - Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening.",
+          "supporting_request_context": "- Devon can work at most 40 hours; is eligible at north and south; is unavailable for 20261031_morning, 20261027_morning; prefers 20261027_evening, 20261028_evening, 20261029_evening, 20261101_morning, 20261102_morning, 20261103_morning. - 20261027_evening on 2026-10-27 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1491,10 +1708,12 @@
           "canonical_item": "employee:Devon:shift:20261031_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261031_morning on 2026-10-31 from 08:00 to 12:00 at south needs 2 staff. - Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening.",
+          "supporting_request_context": "- Devon can work at most 40 hours; is eligible at north and south; is unavailable for 20261031_morning, 20261027_morning; prefers 20261027_evening, 20261028_evening, 20261029_evening, 20261101_morning, 20261102_morning, 20261103_morning. - 20261031_morning on 2026-10-31 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1503,10 +1722,12 @@
           "canonical_item": "employee:Emery:shift:20261029_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261029_morning on 2026-10-29 from 08:00 to 12:00 at south needs 2 staff. - Casey can work at most 40 hours; is eligible at north and south; is unavailable for 20261029_evening, 20261103_evening; prefers 20261027_morning, 20261028_morning, 20261029_morning, 20261031_evening, 20261101_evening, 20261102_evening.",
+          "supporting_request_context": "- Emery can work at most 40 hours; is eligible at north and south; is unavailable for 20261101_evening, 20261029_evening; prefers 20261028_morning, 20261029_morning, 20261030_morning, 20261102_evening, 20261103_evening. - 20261029_morning on 2026-10-29 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1515,10 +1736,12 @@
           "canonical_item": "employee:Emery:shift:20261029_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261029_evening on 2026-10-29 from 16:00 to 20:00 at south needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Emery can work at most 40 hours; is eligible at north and south; is unavailable for 20261101_evening, 20261029_evening; prefers 20261028_morning, 20261029_morning, 20261030_morning, 20261102_evening, 20261103_evening. - 20261029_evening on 2026-10-29 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1527,10 +1750,12 @@
           "canonical_item": "employee:Emery:shift:20261030_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261030_morning on 2026-10-30 from 08:00 to 12:00 at north needs 2 staff. - Emery can work at most 40 hours; is eligible at north and south; is unavailable for 20261101_evening, 20261029_evening; prefers 20261028_morning, 20261029_morning, 20261030_morning, 20261102_evening, 20261103_evening.",
+          "supporting_request_context": "- Emery can work at most 40 hours; is eligible at north and south; is unavailable for 20261101_evening, 20261029_evening; prefers 20261028_morning, 20261029_morning, 20261030_morning, 20261102_evening, 20261103_evening. - 20261030_morning on 2026-10-30 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1539,10 +1764,12 @@
           "canonical_item": "employee:Emery:shift:20261101_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261101_evening on 2026-11-01 from 16:00 to 20:00 at north needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Emery can work at most 40 hours; is eligible at north and south; is unavailable for 20261101_evening, 20261029_evening; prefers 20261028_morning, 20261029_morning, 20261030_morning, 20261102_evening, 20261103_evening. - 20261101_evening on 2026-11-01 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1551,10 +1778,12 @@
           "canonical_item": "employee:Finley:shift:20261031_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261031_evening on 2026-10-31 from 16:00 to 20:00 at south needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Finley can work at most 40 hours; is eligible at north; is unavailable for 20261103_morning, 20261101_morning; prefers 20261026_morning, 20261028_evening, 20261029_evening, 20261030_evening, 20261102_morning, 20261104_morning. - 20261031_evening on 2026-10-31 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1563,10 +1792,12 @@
           "canonical_item": "employee:Finley:shift:20261101_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261101_morning on 2026-11-01 from 08:00 to 12:00 at north needs 2 staff. - Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening.",
+          "supporting_request_context": "- Finley can work at most 40 hours; is eligible at north; is unavailable for 20261103_morning, 20261101_morning; prefers 20261026_morning, 20261028_evening, 20261029_evening, 20261030_evening, 20261102_morning, 20261104_morning. - 20261101_morning on 2026-11-01 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1575,10 +1806,12 @@
           "canonical_item": "employee:Finley:shift:20261101_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261101_evening on 2026-11-01 from 16:00 to 20:00 at north needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Finley can work at most 40 hours; is eligible at north; is unavailable for 20261103_morning, 20261101_morning; prefers 20261026_morning, 20261028_evening, 20261029_evening, 20261030_evening, 20261102_morning, 20261104_morning. - 20261101_evening on 2026-11-01 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1587,10 +1820,12 @@
           "canonical_item": "employee:Finley:shift:20261103_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261103_morning on 2026-11-03 from 08:00 to 12:00 at north needs 2 staff. - Devon can work at most 40 hours; is eligible at north and south; is unavailable for 20261031_morning, 20261027_morning; prefers 20261027_evening, 20261028_evening, 20261029_evening, 20261101_morning, 20261102_morning, 20261103_morning.",
+          "supporting_request_context": "- Finley can work at most 40 hours; is eligible at north; is unavailable for 20261103_morning, 20261101_morning; prefers 20261026_morning, 20261028_evening, 20261029_evening, 20261030_evening, 20261102_morning, 20261104_morning. - 20261103_morning on 2026-11-03 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1599,10 +1834,12 @@
           "canonical_item": "employee:Gray:shift:20261103_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261103_morning on 2026-11-03 from 08:00 to 12:00 at north needs 2 staff. - Devon can work at most 40 hours; is eligible at north and south; is unavailable for 20261031_morning, 20261027_morning; prefers 20261027_evening, 20261028_evening, 20261029_evening, 20261101_morning, 20261102_morning, 20261103_morning.",
+          "supporting_request_context": "- Gray can work at most 40 hours; is eligible at south; is unavailable for 20261104_evening, 20261103_evening; prefers 20261026_evening, 20261029_morning, 20261030_morning, 20261031_morning, 20261102_evening. - 20261103_morning on 2026-11-03 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1611,10 +1848,12 @@
           "canonical_item": "employee:Gray:shift:20261103_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261103_evening on 2026-11-03 from 16:00 to 20:00 at north needs 2 staff. - Casey can work at most 40 hours; is eligible at north and south; is unavailable for 20261029_evening, 20261103_evening; prefers 20261027_morning, 20261028_morning, 20261029_morning, 20261031_evening, 20261101_evening, 20261102_evening.",
+          "supporting_request_context": "- Gray can work at most 40 hours; is eligible at south; is unavailable for 20261104_evening, 20261103_evening; prefers 20261026_evening, 20261029_morning, 20261030_morning, 20261031_morning, 20261102_evening. - 20261103_evening on 2026-11-03 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1623,10 +1862,12 @@
           "canonical_item": "employee:Gray:shift:20261104_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261104_morning on 2026-11-04 from 08:00 to 12:00 at south needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Gray can work at most 40 hours; is eligible at south; is unavailable for 20261104_evening, 20261103_evening; prefers 20261026_evening, 20261029_morning, 20261030_morning, 20261031_morning, 20261102_evening. - 20261104_morning on 2026-11-04 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1635,10 +1876,12 @@
           "canonical_item": "employee:Gray:shift:20261104_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261104_evening on 2026-11-04 from 16:00 to 20:00 at south needs 2 staff. - Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening.",
+          "supporting_request_context": "- Gray can work at most 40 hours; is eligible at south; is unavailable for 20261104_evening, 20261103_evening; prefers 20261026_evening, 20261029_morning, 20261030_morning, 20261031_morning, 20261102_evening. - 20261104_evening on 2026-11-04 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1647,10 +1890,12 @@
           "canonical_item": "employee:Harper:shift:20261026_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261026_evening on 2026-10-26 from 16:00 to 20:00 at north needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Harper can work at most 40 hours; is eligible at north and south; is unavailable for 20261027_morning; prefers 20261026_morning, 20261029_evening, 20261030_evening, 20261031_evening, 20261103_morning, 20261104_morning. - 20261026_evening on 2026-10-26 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1659,10 +1904,12 @@
           "canonical_item": "employee:Harper:shift:20261027_morning",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261027_morning on 2026-10-27 from 08:00 to 12:00 at south needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Harper can work at most 40 hours; is eligible at north and south; is unavailable for 20261027_morning; prefers 20261026_morning, 20261029_evening, 20261030_evening, 20261031_evening, 20261103_morning, 20261104_morning. - 20261027_morning on 2026-10-27 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1671,10 +1918,12 @@
           "canonical_item": "employee:Harper:shift:20261027_evening",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261027_evening on 2026-10-27 from 16:00 to 20:00 at south needs 2 staff. - Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening.",
+          "supporting_request_context": "- Harper can work at most 40 hours; is eligible at north and south; is unavailable for 20261027_morning; prefers 20261026_morning, 20261029_evening, 20261030_evening, 20261031_evening, 20261103_morning, 20261104_morning. - 20261027_evening on 2026-10-27 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1683,10 +1932,12 @@
           "canonical_item": "employee:Indigo:shift:20261028_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261028_morning on 2026-10-28 from 08:00 to 12:00 at north needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Indigo can work at most 40 hours; is eligible at north and south; is unavailable for 20261028_evening, 20261029_evening; prefers 20261026_evening, 20261027_evening, 20261030_morning, 20261031_morning, 20261101_morning, 20261103_evening, 20261104_evening. - 20261028_morning on 2026-10-28 from 08:00 to 12:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1695,10 +1946,12 @@
           "canonical_item": "employee:Indigo:shift:20261028_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261028_evening on 2026-10-28 from 16:00 to 20:00 at north needs 2 staff. - Blake can work at most 40 hours; is eligible at south; is unavailable for 20261028_morning, 20261101_morning; prefers 20261026_evening, 20261027_evening, 20261028_evening, 20261031_morning, 20261102_morning, 20261104_evening.",
+          "supporting_request_context": "- Indigo can work at most 40 hours; is eligible at north and south; is unavailable for 20261028_evening, 20261029_evening; prefers 20261026_evening, 20261027_evening, 20261030_morning, 20261031_morning, 20261101_morning, 20261103_evening, 20261104_evening. - 20261028_evening on 2026-10-28 from 16:00 to 20:00 at north needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1707,10 +1960,12 @@
           "canonical_item": "employee:Indigo:shift:20261029_morning",
           "primitive": "noul",
           "canonical_expected_answer": false,
-          "supporting_request_context": "- 20261029_morning on 2026-10-29 from 08:00 to 12:00 at south needs 2 staff. - Casey can work at most 40 hours; is eligible at north and south; is unavailable for 20261029_evening, 20261103_evening; prefers 20261027_morning, 20261028_morning, 20261029_morning, 20261031_evening, 20261101_evening, 20261102_evening.",
+          "supporting_request_context": "- Indigo can work at most 40 hours; is eligible at north and south; is unavailable for 20261028_evening, 20261029_evening; prefers 20261026_evening, 20261027_evening, 20261030_morning, 20261031_morning, 20261101_morning, 20261103_evening, 20261104_evening. - 20261029_morning on 2026-10-29 from 08:00 to 12:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         },
         {
@@ -1719,10 +1974,12 @@
           "canonical_item": "employee:Indigo:shift:20261029_evening",
           "primitive": "noul",
           "canonical_expected_answer": true,
-          "supporting_request_context": "- 20261029_evening on 2026-10-29 from 16:00 to 20:00 at south needs 2 staff. - Avery can work at most 40 hours; is eligible at north; is unavailable for 20261026_evening, 20261029_evening; prefers 20261026_morning, 20261027_morning, 20261028_morning, 20261030_evening, 20261031_evening, 20261101_evening, 20261104_morning.",
+          "supporting_request_context": "- Indigo can work at most 40 hours; is eligible at north and south; is unavailable for 20261028_evening, 20261029_evening; prefers 20261026_evening, 20261027_evening, 20261030_morning, 20261031_morning, 20261101_morning, 20261103_evening, 20261104_evening. - 20261029_evening on 2026-10-29 from 16:00 to 20:00 at south needs 2 staff.",
           "label_provenance": "generator_specification",
           "review_status": "generator_derived_not_human_reviewed",
           "review_reason": "unambiguous_generator_template",
+          "primary_accuracy_calibration_eligible": true,
+          "primary_exclusion_reason": null,
           "observations": {}
         }
       ],

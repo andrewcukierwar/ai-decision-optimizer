@@ -26,10 +26,10 @@ def test_config_module_is_the_dotenv_bootstrap(monkeypatch):
         ("gpt-6-luna", True, "direct_llm", "Luna 6 · Jev · Direct LLM"),
         ("gpt-6-luna", False, "cp_sat", "Luna 6 · CP-SAT"),
         ("gpt-6-luna", True, "cp_sat", "Luna 6 · Jev · CP-SAT"),
-        ("gpt-6-sol", False, "direct_llm", "Sol 6 · Direct LLM"),
-        ("gpt-6-sol", True, "direct_llm", "Sol 6 · Jev · Direct LLM"),
-        ("gpt-6-sol", False, "cp_sat", "Sol 6 · CP-SAT"),
-        ("gpt-6-sol", True, "cp_sat", "Sol 6 · Jev · CP-SAT"),
+        ("gpt-6.1-sol", False, "direct_llm", "Sol 6.1 · Direct LLM"),
+        ("gpt-6.1-sol", True, "direct_llm", "Sol 6.1 · Jev · Direct LLM"),
+        ("gpt-6.1-sol", False, "cp_sat", "Sol 6.1 · CP-SAT"),
+        ("gpt-6.1-sol", True, "cp_sat", "Sol 6.1 · Jev · CP-SAT"),
     ],
 )
 def test_canonical_architecture_labels(model, use_jev, engine, label):
@@ -46,7 +46,7 @@ def test_experiment_config_rejects_unplanned_models_and_engines():
 
 
 def test_telemetry_accumulates_usage_and_estimates_cost():
-    experiment = ExperimentConfig(model="gpt-6-sol")
+    experiment = ExperimentConfig(model="gpt-6.1-sol")
     telemetry = RunTelemetry.start(experiment, "dayplan", "case-1")
     telemetry.record_openai_response(
         SimpleNamespace(
@@ -58,12 +58,12 @@ def test_telemetry_accumulates_usage_and_estimates_cost():
     )
     telemetry.finish()
 
-    assert telemetry.architecture == "Sol 6 · CP-SAT"
+    assert telemetry.architecture == "Sol 6.1 · CP-SAT"
     assert telemetry.n_model_calls == 2
     assert telemetry.openai_input_tokens == 1_000_050
     assert telemetry.openai_output_tokens == 100_020
     assert telemetry.estimated_cost == pytest.approx(
-        estimate_openai_cost("gpt-6-sol", 1_000_050, 100_020)
+        estimate_openai_cost("gpt-6.1-sol", 1_000_050, 100_020)
     )
     assert telemetry.success is True
     assert "_started_at" not in telemetry.to_dict()

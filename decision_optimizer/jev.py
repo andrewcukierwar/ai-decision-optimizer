@@ -10,13 +10,15 @@ the existing Pydantic model before reaching either solution engine.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from types import SimpleNamespace
 from datetime import time as datetime_time
 import math
 from typing import Any, Callable, Dict, FrozenSet, List, Literal, Mapping, Optional, Sequence, Union
 
-from pydantic import BaseModel, ConfigDict, Field
-from typesafe_sdk import Choice, Noul, RetryPolicy, Score, TypeSafeClient
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from typesafe_sdk import Choice, Noul, RetryPolicy, Score, TypeSafeClient, TypeSafeAPIResponseValidationError
 
+from .failures import ModelOutputFailure
 from .config import jev_apply_threshold, typesafe_api_key, typesafe_model
 from .dayplan import DayPlan, Preference, PreferenceType, TaskMode
 from .shift_schedule import Shift, ShiftSchedule, Unavailability, time_to_minutes
@@ -32,6 +34,10 @@ class JevError(Exception):
     """The Jev decision request could not produce a usable typed result."""
 
 
+class JevOutputError(JevError, ModelOutputFailure):
+    """A completed Jev response violates its answer contract."""
+
+
 class MissingTypeSafeAPIKeyError(JevError):
     """A live Jev call was requested without ``TYPESAFE_API_KEY``."""
 
@@ -42,6 +48,11 @@ class JevDecision(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     question_type: str
+    question_name: str = ""
+    semantic_question_id: str = ""
+    locator: Dict[str, Any] = Field(default_factory=dict)
+    context: Dict[str, Any] = Field(default_factory=dict)
+    final_value: Optional[Union[str, int, bool]] = None
     item: str
     primitive: Primitive
     gpt_value: Union[str, int, bool]
@@ -51,6 +62,7 @@ class JevDecision(BaseModel):
     model_confidence: Optional[float] = Field(default=None, ge=0, le=1)
     yes_probability: Optional[float] = Field(default=None, ge=0, le=1)
     expected_score: Optional[float] = None
+    final_value_status: str = "not_recorded"
     applied: bool
     changed: bool
 
@@ -111,16 +123,11 @@ PREFERENCE_STRENGTH_RUBRIC = (
 )
 
 
-def score_to_weight(expected_score: float) -> int:
-    """Map SDK score levels 0..4 to integer optimizer weights 1..5.
-
-    The SDK returns the probability-weighted expected zero-based rubric level.
-    We add one and round half upward (not Python's banker rounding), then clamp
-    to the schema's five supported weights.  The unrounded expected score and
-    full distribution remain in ``JevDecision`` for later calibration.
-    """
-
-    return max(1, min(5, int(math.floor(float(expected_score) + 1.5))))
+def score_to_weight(level: int) -> int:
+    """Map a selected SDK level 0..4 to optimizer weight 1..5."""
+    if level not in range(5) or int(level) != level:
+        raise ValueError("Score level must be an integer from 0 to 4")
+    return int(level) + 1
 
 
 def build_jev_questions(
@@ -198,12 +205,7 @@ def apply_jev(
             state = {
                 "original_request": request,
                 "extracted_context": [
-                    {
-                        "question": item.question_type.key,
-                        "item": item.target.item,
-                        "gpt_value": item.question_type.gpt_value(problem, item.target),
-                        **dict(item.target.context),
-                    }
+                    {"question_name": item.name, **_request_context(item)}
                     for item in chunk
                 ],
             }
@@ -221,24 +223,43 @@ def apply_jev(
                 if telemetry is None:
                     response = client.system_one(**call_kwargs)
                 else:
+                    telemetry.n_jev_call_attempts += 1
                     with telemetry.track("jev"):
                         response = client.system_one(**call_kwargs)
                     telemetry.record_jev_response(response, len(chunk))
+            except TypeSafeAPIResponseValidationError as exc:
+                if exc.field_path == "answers" or exc.field_path.startswith("answers."):
+                    if isinstance(exc.body, Mapping):
+                        raw_answers = exc.body.get("answers", {})
+                        if isinstance(raw_answers, Mapping):
+                            answers_by_name.update({q.name: raw_answers[q.name] for q in chunk if q.name in raw_answers})
+                        response_model = exc.body.get("model")
+                        if response_model and str(response_model) not in resolved_models:
+                            resolved_models.append(str(response_model))
+                        if telemetry is not None:
+                            telemetry.record_jev_response(SimpleNamespace(usage=exc.body.get("usage")), len(chunk))
+                    raise JevOutputError("Invalid TypeSafe answer data: %s" % exc) from exc
+                raise JevError("Invalid TypeSafe response envelope: %s" % exc) from exc
             except JevError:
                 raise
             except Exception as exc:
                 raise JevError("TypeSafe System One request failed: %s" % exc) from exc
 
-            answers = getattr(response, "answers", None)
-            if not isinstance(answers, Mapping):
-                raise JevError("TypeSafe response did not contain an answers mapping")
-            for question in chunk:
-                if question.name not in answers:
-                    raise JevError("TypeSafe response omitted answer %s" % question.name)
-                answers_by_name[question.name] = answers[question.name]
             response_model = getattr(response, "model", None)
             if response_model and str(response_model) not in resolved_models:
                 resolved_models.append(str(response_model))
+            answers = getattr(response, "answers", None)
+            if not isinstance(answers, Mapping):
+                raise JevOutputError("TypeSafe response did not contain an answers mapping")
+            answers_by_name.update({q.name: answers[q.name] for q in chunk if q.name in answers})
+            for question in chunk:
+                if question.name not in answers:
+                    raise JevOutputError("TypeSafe response omitted answer %s" % question.name)
+                answers_by_name[question.name] = answers[question.name]
+
+    except Exception as exc:
+        _attach_observed_answers(exc, questions, problem, answers_by_name, resolved_models)
+        raise
     finally:
         if owns_client and client is not None:
             client.close()
@@ -248,9 +269,16 @@ def apply_jev(
     for question in questions:
         answer = answers_by_name[question.name]
         gpt_value = question.question_type.gpt_value(problem, question.target)
-        jev_value, confidence, detail = _read_answer(
-            question.question_type.primitive, answer
-        )
+        try:
+            jev_value, confidence, detail = _read_answer(
+                question.question_type.primitive, answer
+            )
+            _validate_answer(question, jev_value, detail["probabilities"])
+            _validate_detail(detail)
+        except (KeyError, TypeError, ValueError, AttributeError) as exc:
+            error = JevOutputError("Invalid Jev answer for %s: %s" % (question.name, exc))
+            _attach_observed_answers(error, questions, problem, answers_by_name, resolved_models)
+            raise error from exc
         accepted = confidence >= selected_threshold
         if accepted:
             before = adjusted.model_dump(mode="json")
@@ -264,6 +292,10 @@ def apply_jev(
         decisions.append(
             JevDecision(
                 question_type=question.question_type.key,
+                question_name=question.name,
+                locator=dict(question.target.locator),
+                context=dict(question.target.context),
+                final_value=jev_value if accepted else gpt_value,
                 item=question.target.item,
                 primitive=question.question_type.primitive,
                 gpt_value=gpt_value,
@@ -278,13 +310,57 @@ def apply_jev(
             )
         )
 
+    from .jev_alignment import indexed_questions
+    identities = indexed_questions("dayplan" if isinstance(problem, DayPlan) else "shift_schedule", questions, problem, problem)
+    for (identity, _), decision in zip(identities, decisions):
+        decision.semantic_question_id = identity
     # This is the only output boundary: no parallel Jev planning schema.
-    validated = type(problem).model_validate(adjusted.model_dump(mode="python"))
+    try:
+        validated = type(problem).model_validate(adjusted.model_dump(mode="python"))
+    except ValidationError as exc:
+        error = JevOutputError("Jev decisions produced an invalid formulation: %s" % exc)
+        _attach_observed_answers(error, questions, problem, answers_by_name, resolved_models)
+        raise error from exc
+    for question, decision in zip(questions, decisions):
+        decision.final_value = final_question_value(validated, question)
+        decision.final_value_status = "represented" if decision.final_value is not None else "not_represented"
     return JevResult(
         problem=validated,
         decisions=decisions,
         resolved_model=",".join(resolved_models) or None,
     )
+
+
+def _preference_description(target: JevQuestionTarget) -> str:
+    signature = target.locator.get("signature")
+    if signature:
+        return str({key: value for key, value in signature.items() if key != "weight" and value is not None})
+    return str(target.context.get("objective", "the stated preference"))
+
+
+def _request_context(question: JevQuestion) -> Dict[str, Any]:
+    """Send facts for the target, excluding the judgment being tested."""
+    target = question.target
+    key = question.question_type.key
+    if key == "constraint_hardness":
+        if "signature" in target.locator:
+            timing = target.locator["signature"]
+            return {"task": timing["task"], "start": timing.get("start"), "end": timing.get("end") or timing.get("time")}
+        return {"task": target.locator["task"], "start": target.context.get("earliest_start"), "end": target.context.get("latest_end")}
+    if key in {"task_requirement", "task_mode"}:
+        return {"task": target.locator["task"], "duration_min": target.context["duration_min"]}
+    if key == "pref_weight":
+        return {"objective_description": _preference_description(target)}
+    return {"employee": target.locator["employee"], "candidate_shift": target.context["candidate_shift"]}
+
+
+def _validate_answer(question: JevQuestion, value: Any, probabilities: Dict[str, float]) -> None:
+    primitive = question.question_type.primitive
+    expected_keys = set(question.sdk_question.criteria) if primitive == "choice" else ({str(i) for i in range(5)} if primitive == "score" else {"yes", "no"})
+    if set(probabilities) != expected_keys or any(not math.isfinite(p) or p < 0 or p > 1 for p in probabilities.values()) or not math.isclose(sum(probabilities.values()), 1.0, abs_tol=1e-5):
+        raise ValueError("Expected a normalized complete probability distribution")
+    if primitive == "choice" and value not in expected_keys:
+        raise ValueError("Unknown Choice answer")
 
 
 def _sdk_question(
@@ -321,8 +397,8 @@ def _sdk_question(
         return Noul(
             instructions=instructions,
             criteria={
-                "true": "The stated unavailability rules out this candidate shift",
-                "false": "The stated unavailability does not rule out this shift",
+                "true": "The employee statement rules out this candidate shift",
+                "false": "The employee statement does not rule out this shift",
             },
         )
     raise JevError("No SDK question constructor for " + definition.key)
@@ -358,9 +434,8 @@ def _read_answer(
         str(key): float(value)
         for key, value in dict(_answer_value(answer, "probabilities")).items()
     }
-    return score_to_weight(expected_score), float(
-        _answer_value(answer, "confidence")
-    ), {
+    selected = min(range(5), key=lambda level: (-probabilities.get(str(level), 0.0), level))
+    return score_to_weight(selected), probabilities.get(str(selected), 0.0), {
         "probabilities": probabilities,
         "model_confidence": float(_answer_value(answer, "confidence")),
         "expected_score": expected_score,
@@ -414,7 +489,7 @@ def _constraint_targets(_: str, problem: Problem) -> Sequence[JevQuestionTarget]
 def _constraint_prompt(target: JevQuestionTarget) -> str:
     return (
         "For %s, is the user's timing language a firm requirement or a soft preference?"
-        % target.item
+        % (target.locator.get("task") or target.locator.get("signature", {}).get("task"))
     )
 
 
@@ -598,7 +673,7 @@ def _preference_targets(request: str, problem: Problem) -> Sequence[JevQuestionT
 
 
 def _preference_prompt(target: JevQuestionTarget) -> str:
-    return "How strongly does the user want %s satisfied?" % target.item
+    return "How strongly does the user want this objective satisfied: %s?" % _preference_description(target)
 
 
 def _preference_gpt_value(
@@ -736,7 +811,7 @@ def _availability_control_ids(
 
 def _availability_prompt(target: JevQuestionTarget) -> str:
     return (
-        "Does %s's unavailability statement rule out candidate shift %s?"
+        "Does the user's statement about %s rule out candidate shift %s?"
         % (target.locator["employee"], target.locator["shift"])
     )
 
@@ -885,3 +960,70 @@ JEV_QUESTION_TYPES: tuple[JevQuestionType, ...] = (
         apply=_apply_availability,
     ),
 )
+
+
+def final_question_value(problem: Problem, question: JevQuestion) -> Optional[Union[str, int, bool]]:
+    """Read the final represented answer, including targets removed by rewrites."""
+    key, target = question.question_type.key, question.target
+    if key == "pref_weight" and isinstance(problem, DayPlan):
+        signature = {k: v for k, v in target.locator["signature"].items() if k != "weight"}
+        for preference in problem.preferences:
+            if preference.model_dump(mode="json", exclude={"weight"}) == signature:
+                return preference.weight
+        return None
+    if key == "constraint_hardness":
+        assert isinstance(problem, DayPlan)
+        if "signature" in target.locator:
+            signature = target.locator["signature"]
+            task_name = signature["task"]
+            start, end = signature.get("start"), signature.get("end") or signature.get("time")
+        else:
+            task_name = target.locator["task"]
+            start, end = target.context.get("earliest_start"), target.context.get("latest_end")
+        task = _task(problem, str(task_name))
+        if _time_text(task.latest_end) == end and (start is None or _time_text(task.earliest_start) == start):
+            return "hard"
+        for preference in problem.preferences:
+            data = preference.model_dump(mode="json")
+            if data.get("task") == task_name and data.get("start") == start and (data.get("end") or data.get("time")) == end:
+                return "soft"
+        return None
+    return question.question_type.gpt_value(problem, target)
+
+
+def _attach_observed_answers(error: Exception, questions: Sequence[JevQuestion], problem: Problem, answers: Mapping[str, Any], models: Sequence[str]) -> None:
+    """Retain valid observations even when another answer/chunk fails the stage."""
+    from .jev_alignment import indexed_questions
+    identities = dict((q.name, identity) for identity, q in indexed_questions("dayplan" if isinstance(problem, DayPlan) else "shift_schedule", questions, problem, problem))
+    decisions = []
+    invalid = []
+    for question in questions:
+        if question.name not in answers:
+            continue
+        try:
+            value, confidence, detail = _read_answer(question.question_type.primitive, answers[question.name])
+            _validate_answer(question, value, detail["probabilities"])
+            _validate_detail(detail)
+            decisions.append(JevDecision(
+                question_type=question.question_type.key, question_name=question.name,
+                semantic_question_id=identities[question.name], item=question.target.item,
+                locator=dict(question.target.locator), context=dict(question.target.context),
+                primitive=question.question_type.primitive,
+                gpt_value=question.question_type.gpt_value(problem, question.target),
+                jev_value=value, confidence=confidence, probabilities=detail["probabilities"],
+                model_confidence=detail.get("model_confidence"), expected_score=detail.get("expected_score"),
+                yes_probability=detail.get("yes_probability"), applied=False, changed=False,
+                final_value_status="stage_failed_not_applied",
+            ))
+        except (ValueError, KeyError, TypeError, AttributeError):
+            invalid.append({"question_name": question.name, "semantic_question_id": identities[question.name], "locator": dict(question.target.locator), "context": dict(question.target.context)})
+    error.observed_decisions = decisions
+    error.invalid_questions = invalid
+    error.missing_question_names = [q.name for q in questions if q.name not in answers]
+    error.resolved_jev_model = ",".join(models) or None
+
+
+def _validate_detail(detail: Mapping[str, Any]) -> None:
+    for field in ("model_confidence", "expected_score"):
+        if field in detail and (not math.isfinite(detail[field]) or detail[field] < 0 or detail[field] > (4 if field == "expected_score" else 1)):
+            raise ValueError("Invalid " + field)

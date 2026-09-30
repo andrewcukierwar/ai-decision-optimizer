@@ -14,7 +14,7 @@
     {"domain": "dayplan", "source": "dayplan_jev_ambiguous.json", "name": "impossible_hard_workout_window", "infeasible": true},
     {"domain": "shift_schedule", "source": "shift_schedule_nl_eval.json", "name": "straightforward_staffing"},
     {"domain": "shift_schedule", "source": "shift_schedule_nl_eval.json", "name": "preferences_and_availability"},
-    {"domain": "shift_schedule", "source": "shift_schedule_nl_eval.json", "name": "infeasible_staffing_is_extracted_not_repaired", "infeasible": true},
+    {"domain": "shift_schedule", "source": "shift_schedule_nl_eval.json", "name": "infeasible_staffing_is_extracted_not_repaired", "infeasible": true, "benchmark_prompt_override": "On 2026-10-05, front_morning at front_desk 09:00-13:00 requires 2 staff; front_afternoon at front_desk 13:00-17:00 requires 2 staff; back_morning at back_room 09:00-13:00 requires 1 staff; back_afternoon at back_room 13:00-17:00 requires 1 staff. Alice and Bob are front_desk-only and can each work up to 4 hours. Carla is back_room-only, can work up to 4 hours, and is unavailable on 2026-10-05 from 09:00-13:00. There are no other employees."},
     {"domain": "shift_schedule", "source": "generated_workforce_cases.json", "name": "regional_week", "generated": true},
     {"domain": "shift_schedule", "source": "generated_workforce_cases.json", "name": "ten_day_rotation", "generated": true}
   ]

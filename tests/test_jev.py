@@ -116,12 +116,23 @@ class FakeJevClient:
         )
 
 
+def _is_workforce_state(state):
+    return any("candidate_shift" in c or "employee shift preferences" in str(c) for c in state["extracted_context"])
+
+
+def _reference_question(state, name):
+    fixture = sample_schedule() if _is_workforce_state(state) else sample_plan()
+    return next(q for q in build_jev_questions("Plan this day", fixture) if q.name == name)
+
+
 def _baseline_answers(state, questions):
     answers = {}
     for context, (name, question) in zip(
         state["extracted_context"], questions.items()
     ):
-        gpt_value = context["gpt_value"]
+        reference = _reference_question(state, name)
+        fixture = sample_schedule() if _is_workforce_state(state) else sample_plan()
+        gpt_value = reference.question_type.gpt_value(fixture, reference.target)
         if isinstance(question, Choice):
             choices = list(question.criteria)
             answers[name] = SimpleNamespace(
@@ -153,7 +164,8 @@ def _custom_answers(changes):
         for context, (name, question) in zip(
             state["extracted_context"], questions.items()
         ):
-            replacement = changes.get((context["question"], context["item"]))
+            reference = _reference_question(state, name)
+            replacement = changes.get((reference.question_type.key, reference.target.item))
             if replacement is None:
                 continue
             if isinstance(question, Choice):
@@ -296,9 +308,9 @@ def test_choice_uses_selected_probability_for_threshold_and_preserves_gpt_value(
 
 @pytest.mark.parametrize(
     ("expected", "weight"),
-    [(0.0, 1), (0.49, 1), (0.5, 2), (2.5, 4), (4.0, 5)],
+    [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5)],
 )
-def test_score_to_integer_mapping_is_half_up_and_clamped(expected, weight):
+def test_selected_score_level_maps_to_optimizer_weight(expected, weight):
     assert score_to_weight(expected) == weight
 
 
@@ -307,7 +319,7 @@ def test_score_below_confidence_threshold_keeps_existing_weight():
         ("pref_weight", "preference:1:minimize_work_interruptions"): (
             4.0,
             0.69,
-            {0: 0, 1: 0, 2: 0, 3: 0, 4: 1},
+            {0: 0.0, 1: 0.0, 2: 0.0, 3: 0.31, 4: 0.69},
         )
     }
     result = apply_jev(

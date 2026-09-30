@@ -8,6 +8,7 @@ from typing import Any, List, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_serializer, model_validator
 
+from .failures import ModelOutputFailure
 from .config import openai_api_key, openai_model
 from .dayplan import (
     DayPlan,
@@ -23,7 +24,7 @@ from .shift_schedule import (
     SolveStatus as ShiftSolveStatus,
     materialize_shift_schedule_solution,
 )
-from .telemetry import RunTelemetry
+from .telemetry import RunTelemetry, parse_openai_response
 
 
 DAYPLAN_DIRECT_INSTRUCTIONS = """You schedule the supplied typed DayPlan.
@@ -31,7 +32,8 @@ Satisfy every hard constraint, including required tasks, time bounds, fixed
 events, active-task non-overlap, and precedences. Optimize the stated soft
 preferences. Return only the provided structured result. If no assignment can
 satisfy all hard constraints, return infeasible with no assignments. Task names
-must exactly match the supplied typed problem. Do not write solver code or
+must exactly match the supplied typed problem. Return task assignments only;
+exclude fixed events from assignments (they are already supplied). Do not write solver code or
 describe an optimization algorithm.
 """
 
@@ -54,7 +56,7 @@ class DirectSolverAPIError(DirectSolverError):
     pass
 
 
-class DirectSolverOutputError(DirectSolverError):
+class DirectSolverOutputError(DirectSolverError, ModelOutputFailure):
     pass
 
 
@@ -229,13 +231,16 @@ def _request_structured_solution(
         }
         if request_timeout_seconds is not None:
             request_kwargs["timeout"] = request_timeout_seconds
+            if hasattr(client, "with_options"):
+                client = client.with_options(max_retries=0)
         if telemetry is None:
-            response = client.responses.parse(**request_kwargs)
+            response = parse_openai_response(client, request_kwargs, telemetry)
         else:
             with telemetry.track("llm"):
-                response = client.responses.parse(**request_kwargs)
-            telemetry.record_openai_response(response)
+                response = parse_openai_response(client, request_kwargs, telemetry)
     except ValidationError as exc:
+        if exc.title != output_schema.__name__:
+            raise DirectSolverAPIError("Non-output SDK validation failure: %s" % exc) from exc
         raise DirectSolverOutputError(
             "Direct solver returned invalid structured output: %s" % exc
         ) from exc

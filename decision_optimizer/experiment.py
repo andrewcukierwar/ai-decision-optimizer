@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict
 from .config import openai_model
 
 
-ModelId = Literal["gpt-6-luna", "gpt-6-sol"]
+ModelId = Literal["gpt-6-luna", "gpt-6.1-sol"]
 SolutionEngine = Literal["direct_llm", "cp_sat"]
 
 
@@ -16,7 +16,7 @@ class ExperimentConfig(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    model: ModelId = "gpt-6-sol"
+    model: ModelId = "gpt-6.1-sol"
     use_jev: bool = False
     solution_engine: SolutionEngine = "cp_sat"
 
@@ -33,7 +33,7 @@ class ExperimentConfig(BaseModel):
     def label(self) -> str:
         """Return the single canonical architecture label used everywhere."""
 
-        model_label = "Luna 6" if self.model == "gpt-6-luna" else "Sol 6"
+        model_label = "Luna 6" if self.model == "gpt-6-luna" else "Sol 6.1"
         engine_label = (
             "Direct LLM" if self.solution_engine == "direct_llm" else "CP-SAT"
         )

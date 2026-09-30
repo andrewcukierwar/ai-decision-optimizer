@@ -9,12 +9,13 @@ from .experiment import ExperimentConfig
 
 
 # Standard processing, short-context text-token prices per 1M tokens.
-# Source checked 2026-09-29: https://platform.openai.com/pricing
+# Source checked 2026-09-30: https://developers.openai.com/api/docs/models/gpt-6.1-sol
+# Luna: https://developers.openai.com/api/docs/models/gpt-6-luna
 OPENAI_PRICING_USD_PER_MILLION: Dict[str, Dict[str, float]] = {
     "gpt-6-luna": {"input": 0.10, "output": 0.50},
-    "gpt-6-sol": {"input": 2.00, "output": 10.00},
+    "gpt-6.1-sol": {"input": 2.00, "output": 10.00},
 }
-OPENAI_PRICING_AS_OF = "2026-09-29"
+OPENAI_PRICING_AS_OF = "2026-09-30"
 
 
 def estimate_openai_cost(
@@ -24,7 +25,7 @@ def estimate_openai_cost(
 
     price = OPENAI_PRICING_USD_PER_MILLION.get(model)
     if price is None:
-        return 0.0
+        raise ValueError("No OpenAI pricing configured for model: " + model)
     return (
         input_tokens * price["input"] + output_tokens * price["output"]
     ) / 1_000_000
@@ -47,9 +48,12 @@ class RunTelemetry:
     openai_input_tokens: int = 0
     openai_output_tokens: int = 0
     n_model_calls: int = 0
+    n_model_call_attempts: int = 0
+    resolved_openai_models: list[str] = field(default_factory=list)
     jev_input_tokens: int = 0
     n_jev_questions: int = 0
     n_jev_calls: int = 0
+    n_jev_call_attempts: int = 0
     success: bool = False
     error: Optional[str] = None
     estimated_cost: float = 0.0
@@ -87,6 +91,9 @@ class RunTelemetry:
     def record_openai_response(self, response: Any) -> None:
         """Record one Responses API call without depending on an SDK response type."""
 
+        resolved = getattr(response, "model", None)
+        if resolved and str(resolved) not in self.resolved_openai_models:
+            self.resolved_openai_models.append(str(resolved))
         usage = getattr(response, "usage", None)
         self.openai_input_tokens += _usage_value(usage, "input_tokens")
         self.openai_output_tokens += _usage_value(usage, "output_tokens")
@@ -126,3 +133,25 @@ def _usage_value(usage: Any, key: str) -> int:
     else:
         value = getattr(usage, key, 0)
     return int(value or 0)
+
+
+def parse_openai_response(client: Any, request_kwargs: Dict[str, Any], telemetry: Optional[RunTelemetry]) -> Any:
+    """Retain response metadata even if SDK output-schema parsing fails.
+
+    Real SDK raw responses defer structured-output parsing. Test clients and
+    older compatible clients can use the ordinary parse boundary.
+    """
+    from types import SimpleNamespace
+    if telemetry is not None:
+        telemetry.n_model_call_attempts += 1
+    if telemetry is not None and hasattr(client.responses, "with_raw_response"):
+        raw = client.responses.with_raw_response.parse(**request_kwargs)
+        payload = raw.http_response.json()
+        telemetry.record_openai_response(SimpleNamespace(
+            model=payload.get("model"), usage=payload.get("usage"),
+        ))
+        return raw.parse()
+    response = client.responses.parse(**request_kwargs)
+    if telemetry is not None:
+        telemetry.record_openai_response(response)
+    return response

@@ -19,6 +19,7 @@ from decision_optimizer import config as _config  # noqa: F401 - loads .env
 from decision_optimizer.config import openai_model
 from decision_optimizer.dayplan import DayPlan
 from decision_optimizer.evaluation import align_names
+from decision_optimizer.jev_alignment import indexed_questions as _indexed_questions
 from decision_optimizer.jev import JevQuestion, apply_jev, build_jev_questions
 from decision_optimizer.parsing.dayplan import parse_dayplan
 from decision_optimizer.parsing.shift_schedule import parse_shift_schedule
@@ -57,7 +58,7 @@ def load_selected_cases(path: Path = DEFAULT_SELECTION) -> List[Dict[str, Any]]:
                 "Missing selected case %s in %s"
                 % (reference["name"], source_name)
             )
-        selected.append({**source_case, **reference})
+        selected.append({**source_case, **reference, "prompt": reference.get("benchmark_prompt_override", source_case["prompt"])})
     return selected
 
 
@@ -86,7 +87,7 @@ def build_draft_answer_key(
 ) -> Dict[str, Any]:
     """Create canonical proposals and optionally attach observed model answers.
 
-    ``baseline='fixture'`` performs no paid calls. ``baseline='gpt'`` observes
+    ``baseline='fixture'`` performs no paid calls. ``baseline='gpt'`` is an independent development sample, not benchmark evidence, and observes
     each requested model's extraction; ``include_jev`` additionally records
     Jev's answers. Missing and unaligned questions remain explicit in coverage.
     """
@@ -132,6 +133,8 @@ def build_draft_answer_key(
                         else "needs_human_review"
                     ),
                     "review_reason": _review_reason(case, question),
+                    "primary_accuracy_calibration_eligible": not _excluded_subjective_label(case, question),
+                    "primary_exclusion_reason": "subjective_weight_without_agreed_rubric" if _excluded_subjective_label(case, question) else None,
                     "observations": {},
                 }
             )
@@ -264,6 +267,7 @@ def build_draft_answer_key(
                 "unaligned questions are retained in coverage rather than dropped."
             ),
         },
+        "observation_source": "independent_development_sample" if observed_models else "none",
         "observed_models": observed_models,
         "jev_observed": include_jev,
         "cases": output_cases,
@@ -284,11 +288,13 @@ def write_review_tsv(draft: Mapping[str, Any], path: Path) -> Path:
         "label_provenance",
         "review_status",
         "review_reason",
+        "primary_accuracy_calibration_eligible",
+        "primary_exclusion_reason",
         "model_observations",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames, dialect="excel-tab")
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, dialect="excel-tab", lineterminator="\n")
         writer.writeheader()
         for case in draft["cases"]:
             for label in case["expected_jev"]:
@@ -308,6 +314,8 @@ def write_review_tsv(draft: Mapping[str, Any], path: Path) -> Path:
                         "label_provenance": label["label_provenance"],
                         "review_status": label["review_status"],
                         "review_reason": label["review_reason"],
+                        "primary_accuracy_calibration_eligible": label["primary_accuracy_calibration_eligible"],
+                        "primary_exclusion_reason": label["primary_exclusion_reason"],
                         "model_observations": json.dumps(
                             label["observations"], sort_keys=True
                         ),
@@ -340,115 +348,24 @@ def _extract_problem(
     return parse_shift_schedule(case["prompt"], model=model).schedule
 
 
-def _indexed_questions(
-    domain: str,
-    questions: Sequence[JevQuestion],
-    problem: DayPlan | ShiftSchedule,
-    canonical: DayPlan | ShiftSchedule,
-) -> List[tuple[str, JevQuestion]]:
-    task_mapping: Dict[str, str] = {}
-    employee_mapping: Dict[str, str] = {}
-    shift_mapping: Dict[str, str] = {}
-    if domain == "dayplan":
-        assert isinstance(problem, DayPlan) and isinstance(canonical, DayPlan)
-        task_mapping = align_names(
-            [item.name for item in problem.tasks],
-            [item.name for item in canonical.tasks],
-        ).mapping
-    else:
-        assert isinstance(problem, ShiftSchedule) and isinstance(
-            canonical, ShiftSchedule
-        )
-        employee_mapping = align_names(
-            [item.name for item in problem.employees],
-            [item.name for item in canonical.employees],
-        ).mapping
-        shift_mapping = align_names(
-            [item.id for item in problem.shifts],
-            [item.id for item in canonical.shifts],
-        ).mapping
-
-    occurrences: Dict[str, int] = {}
-    indexed = []
-    for question in questions:
-        base = _semantic_question_identity(
-            question,
-            task_mapping=task_mapping,
-            employee_mapping=employee_mapping,
-            shift_mapping=shift_mapping,
-        )
-        occurrence = occurrences.get(base, 0)
-        occurrences[base] = occurrence + 1
-        indexed.append(("%s#%d" % (base, occurrence), question))
-    return indexed
-
-
-def _semantic_question_identity(
-    question: JevQuestion,
-    *,
-    task_mapping: Mapping[str, str],
-    employee_mapping: Mapping[str, str],
-    shift_mapping: Mapping[str, str],
-) -> str:
-    key = question.question_type.key
-    locator = question.target.locator
-    context = question.target.context
-    identity: Dict[str, Any]
-    if key in {"task_requirement", "task_mode"}:
-        task = str(locator["task"])
-        identity = {"task": task_mapping.get(task, task)}
-    elif key == "constraint_hardness":
-        if locator["kind"] == "soft_preference":
-            timing = locator["signature"]
-            task = str(timing.get("task"))
-            identity = {
-                "task": task_mapping.get(task, task),
-                "start": timing.get("start"),
-                "end": timing.get("end") or timing.get("time"),
-            }
-        else:
-            task = str(locator["task"])
-            identity = {
-                "task": task_mapping.get(task, task),
-                "start": context.get("earliest_start"),
-                "end": context.get("latest_end"),
-            }
-    elif key == "pref_weight" and locator["domain"] == "dayplan":
-        preference = locator["signature"]
-        task = preference.get("task")
-        identity = {
-            "type": preference["type"],
-            "task": task_mapping.get(str(task), task) if task is not None else None,
-            "time": preference.get("time"),
-            "start": preference.get("start"),
-            "end": preference.get("end"),
-        }
-    elif key == "pref_weight":
-        identity = {"objective": locator["field"]}
-    else:
-        employee = str(locator["employee"])
-        shift = str(locator["shift"])
-        identity = {
-            "employee": employee_mapping.get(employee, employee),
-            "shift": shift_mapping.get(shift, shift),
-        }
-    return "%s:%s" % (
-        key,
-        json.dumps(identity, sort_keys=True, separators=(",", ":")),
-    )
-
-
 def _supporting_context(prompt: str, question: JevQuestion) -> str:
     names = [
         str(value)
         for key, value in question.target.locator.items()
         if key in {"task", "employee", "shift"} and value
     ]
+    if question.target.locator.get("signature", {}).get("task"):
+        names.append(str(question.target.locator["signature"]["task"]))
     fragments = [
         part.strip()
         for part in re.split(r"(?<=[.!?])\s+|\n+", prompt)
         if part.strip()
     ]
+    if question.question_type.key == "availability_applies":
+        employee, shift = str(question.target.locator["employee"]), str(question.target.locator["shift"])
+        employee_facts = [f for f in fragments if re.search(r"\b" + re.escape(employee) + r"\b", f, re.I)]
+        shift_facts = [f for f in fragments if f.lstrip("- ").startswith(shift + " on ")]
+        return " ".join((employee_facts[:1] + shift_facts[:1])) or prompt[:240]
     matches = [
         fragment
         for fragment in fragments
@@ -461,6 +378,14 @@ def _supporting_context(prompt: str, question: JevQuestion) -> str:
             if re.search(r"\b(prefer|priority|weight|fair)\w*\b", fragment, re.I)
         ]
     return " ".join(matches[:2]) or prompt[:240]
+
+
+def _excluded_subjective_label(case: Mapping[str, Any], question: JevQuestion) -> bool:
+    if question.question_type.key != "pref_weight":
+        return False
+    if case["name"] in {"workout_before_four_soft", "soft_finish_preference"}:
+        return True
+    return case["name"] == "preferences_and_availability" and question.target.locator.get("field") == "preference_penalty"
 
 
 def _review_reason(case: Mapping[str, Any], question: JevQuestion) -> str:
@@ -554,33 +479,96 @@ def _shift_expected_to_schema(expected: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+def attach_benchmark_observations(
+    draft: Dict[str, Any], cases: Sequence[Dict[str, Any]], results_dir: Path,
+    models: Optional[Sequence[str]] = None,
+) -> None:
+    """Attach the original experimental observations from verified stage caches.
+
+    No GPT or Jev calls, and no second extraction sample. Missing caches and
+    failed stages are reported separately from model omissions.
+    """
+    import hashlib
+    from decision_optimizer.benchmark import (
+        BenchmarkCase, _extraction_fingerprint, _jev_fingerprint,
+        _problem_from_json, _problem_hash, _read_cache, question_observations,
+    )
+    from decision_optimizer.jev import JevDecision
+    selected_models = list(models or ("gpt-6-luna", "gpt-6.1-sol"))
+    by_name = {case["name"]: case for case in cases}
+    any_jev = False
+    for output_case in draft["cases"]:
+        raw = by_name[output_case["name"]]
+        case = BenchmarkCase(raw["name"], raw["domain"], raw["prompt"], canonical_problem(raw), raw["source"], raw.get("clarification"))
+        slug = hashlib.sha256(case.case_id.encode()).hexdigest()[:12]
+        label_by_id = {label["question_id"]: label for label in output_case["expected_jev"]}
+        for model in selected_models:
+            path = results_dir / "cache" / ("%s_%s_extraction.json" % (slug, model))
+            if not path.exists():
+                output_case["observation_coverage"][model] = {"observation_source": "benchmark_cache", "cache_status": "missing_extraction_cache"}
+                for label in label_by_id.values():
+                    label["observations"][model] = {"alignment_status": "not_observed", "gpt_baseline_answer": None, "jev_answer": None}
+                continue
+            raw_cache = json.loads(path.read_text())
+            fingerprint = _extraction_fingerprint(case, model, raw_cache.get("runtime_configuration"))
+            cache = _read_cache(path, fingerprint)
+            if cache is None:
+                raise ValueError("Incompatible extraction cache: " + str(path))
+            extracted = _problem_from_json(case.domain, cache.get("problem"))
+            if "terminal_error" not in cache and cache.get("problem_hash") != _problem_hash(extracted):
+                raise ValueError("Extraction cache problem hash mismatch: " + str(path))
+            decisions = []
+            jev_status = "not_observed"
+            jev_fingerprint = None
+            jev_path = path.with_name("%s_%s_jev.json" % (slug, model))
+            if extracted is not None and jev_path.exists():
+                raw_jev = json.loads(jev_path.read_text())
+                jev_fingerprint = _jev_fingerprint(fingerprint, raw_jev["jev_batch_size"], raw_jev["jev_apply_threshold"], raw_jev["requested_jev_model"], problem_hash=_problem_hash(extracted), runtime=raw_jev["runtime_configuration"])
+                jev_cache = _read_cache(jev_path, jev_fingerprint)
+                if jev_cache is None:
+                    raise ValueError("Incompatible Jev cache: " + str(jev_path))
+                jev_status = "terminal_failure" if "terminal_error" in jev_cache else "observed"
+                decisions = [JevDecision.model_validate(item) for item in jev_cache.get("decisions", [])]
+                any_jev = any_jev or bool(decisions)
+            observations = question_observations(case, extracted, decisions)
+            for label in label_by_id.values():
+                label["observations"][model] = {"alignment_status": "not_generated", "gpt_baseline_answer": None, "jev_answer": None}
+            for observation in observations["observed_questions"]:
+                if observation["canonical_question_id"] in label_by_id:
+                    label_by_id[observation["canonical_question_id"]]["observations"][model] = {**observation, "observation_source": "benchmark_cache", "extraction_fingerprint": fingerprint, "jev_fingerprint": jev_fingerprint}
+            output_case["observation_coverage"][model] = {
+                **{key: value for key, value in observations.items() if key not in {"observed_questions", "unaligned_jev_decisions"}},
+                "observation_source": "benchmark_cache", "cache_status": "terminal_failure" if "terminal_error" in cache else "observed",
+                "jev_cache_status": jev_status, "extraction_fingerprint": fingerprint,
+                "extraction_problem_hash": _problem_hash(extracted), "jev_fingerprint": jev_fingerprint,
+            }
+            output_case["unaligned_observed_questions"][model] = [item for item in observations["observed_questions"] if item["alignment_status"] != "aligned"] + observations["unaligned_jev_decisions"]
+    draft["observed_models"] = selected_models
+    draft["jev_observed"] = any_jev
+    draft["observation_source"] = "benchmark_cache"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--selection", type=Path, default=DEFAULT_SELECTION)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--review-output", type=Path, default=DEFAULT_REVIEW_OUTPUT)
-    parser.add_argument("--baseline", choices=("fixture", "gpt"), default="fixture")
+    parser.add_argument("--baseline", choices=("fixture", "benchmark"), default="fixture")
+    parser.add_argument("--benchmark-results-dir", type=Path, help="Attach the actual benchmark extraction/Jev cache; makes no API calls.")
     parser.add_argument(
         "--model",
         action="append",
-        choices=("gpt-6-luna", "gpt-6-sol"),
-        help="Model to observe; repeat to capture both (paid with --baseline gpt).",
-    )
-    parser.add_argument(
-        "--include-jev",
-        action="store_true",
-        help="Also make paid Jev calls for each observed extraction.",
+        choices=("gpt-6-luna", "gpt-6.1-sol"),
+        help="Model cached observations to attach; repeat for both.",
     )
     args = parser.parse_args()
-    if args.include_jev and args.baseline != "gpt":
-        parser.error("--include-jev requires --baseline gpt")
+    if args.baseline == "benchmark" and args.benchmark_results_dir is None:
+        parser.error("--baseline benchmark requires --benchmark-results-dir")
+    cases = load_selected_cases(args.selection)
+    draft = build_draft_answer_key(cases, baseline="fixture")
+    if args.baseline == "benchmark":
+        attach_benchmark_observations(draft, cases, args.benchmark_results_dir, args.model)
 
-    draft = build_draft_answer_key(
-        load_selected_cases(args.selection),
-        baseline=args.baseline,
-        models=args.model,
-        include_jev=args.include_jev,
-    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(draft, indent=2) + "\n")
     write_review_tsv(draft, args.review_output)

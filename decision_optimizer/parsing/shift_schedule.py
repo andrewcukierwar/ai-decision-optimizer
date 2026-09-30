@@ -17,8 +17,9 @@ from decision_optimizer.shift_schedule import (
     solve_shift_schedule,
     validate_solution,
 )
+from decision_optimizer.failures import ModelOutputFailure
 from decision_optimizer.config import DEFAULT_OPENAI_MODEL, openai_api_key, openai_model
-from decision_optimizer.telemetry import RunTelemetry
+from decision_optimizer.telemetry import RunTelemetry, parse_openai_response
 
 
 DEFAULT_MODEL = DEFAULT_OPENAI_MODEL
@@ -62,11 +63,11 @@ class ShiftScheduleAPIError(ShiftScheduleError):
     """The model request failed before a usable result was returned."""
 
 
-class ShiftScheduleRefusalError(ShiftScheduleError):
+class ShiftScheduleRefusalError(ShiftScheduleError, ModelOutputFailure):
     """The model explicitly refused the extraction request."""
 
 
-class ShiftScheduleOutputError(ShiftScheduleError):
+class ShiftScheduleOutputError(ShiftScheduleError, ModelOutputFailure):
     """The model response was absent or invalid for the extraction boundary."""
 
 
@@ -134,13 +135,16 @@ def parse_shift_schedule(
         }
         if request_timeout_seconds is not None:
             request_kwargs["timeout"] = request_timeout_seconds
+            if hasattr(client, "with_options"):
+                client = client.with_options(max_retries=0)
         if telemetry is None:
-            response = client.responses.parse(**request_kwargs)
+            response = parse_openai_response(client, request_kwargs, telemetry)
         else:
             with telemetry.track("llm"):
-                response = client.responses.parse(**request_kwargs)
-            telemetry.record_openai_response(response)
+                response = parse_openai_response(client, request_kwargs, telemetry)
     except ValidationError as exc:
+        if exc.title != ShiftScheduleExtraction.__name__:
+            raise ShiftScheduleAPIError("Non-output SDK validation failure: %s" % exc) from exc
         raise ShiftScheduleOutputError(
             "OpenAI returned structured data that failed ShiftScheduleExtraction validation: %s"
             % _format_validation_error(exc)

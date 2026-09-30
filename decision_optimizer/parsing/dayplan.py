@@ -18,8 +18,9 @@ from decision_optimizer.dayplan import (
     solve_day_plan,
     validate_solution,
 )
+from decision_optimizer.failures import ModelOutputFailure
 from decision_optimizer.config import DEFAULT_OPENAI_MODEL, openai_api_key, openai_model
-from decision_optimizer.telemetry import RunTelemetry
+from decision_optimizer.telemetry import RunTelemetry, parse_openai_response
 
 
 DEFAULT_MODEL = DEFAULT_OPENAI_MODEL
@@ -65,11 +66,11 @@ class DayPlanAPIError(DayPlanError):
     """The model request failed before a usable structured result was returned."""
 
 
-class DayPlanRefusalError(DayPlanError):
+class DayPlanRefusalError(DayPlanError, ModelOutputFailure):
     """The model explicitly refused the extraction request."""
 
 
-class DayPlanOutputError(DayPlanError):
+class DayPlanOutputError(DayPlanError, ModelOutputFailure):
     """The model response was absent or could not be validated as a DayPlan."""
 
 
@@ -149,13 +150,16 @@ def parse_dayplan(
         }
         if request_timeout_seconds is not None:
             request_kwargs["timeout"] = request_timeout_seconds
+            if hasattr(client, "with_options"):
+                client = client.with_options(max_retries=0)
         if telemetry is None:
-            response = client.responses.parse(**request_kwargs)
+            response = parse_openai_response(client, request_kwargs, telemetry)
         else:
             with telemetry.track("llm"):
-                response = client.responses.parse(**request_kwargs)
-            telemetry.record_openai_response(response)
+                response = parse_openai_response(client, request_kwargs, telemetry)
     except ValidationError as exc:
+        if exc.title != DayPlanExtraction.__name__:
+            raise DayPlanAPIError("Non-output SDK validation failure: %s" % exc) from exc
         raise DayPlanOutputError(
             "OpenAI returned structured data that failed DayPlanExtraction validation: %s"
             % _format_validation_error(exc)

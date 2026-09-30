@@ -153,7 +153,7 @@ def test_complete_eight_architecture_flow_is_paired_scored_and_persisted(tmp_pat
     assert len(backend.decide_calls) == 2  # once per case/model, shared by engines
     assert len(backend.solve_calls) == 8
 
-    for model in ("gpt-6-luna", "gpt-6-sol"):
+    for model in ("gpt-6-luna", "gpt-6.1-sol"):
         model_solves = [item for item in backend.solve_calls if item[0].model == model]
         off_specs = [item[1] for item in model_solves if not item[0].use_jev]
         on_specs = [item[1] for item in model_solves if item[0].use_jev]
@@ -211,7 +211,7 @@ def test_interruption_keeps_completed_rows_and_resume_skips_them(tmp_path):
     assert counts == {"succeeded": 6, "failed": 0, "skipped": 2}
     # Luna's shared stages survived; Sol had not started when interrupted.
     assert len(resumed.extract_calls) == 1
-    assert resumed.extract_calls[0][0] == "gpt-6-sol"
+    assert resumed.extract_calls[0][0] == "gpt-6.1-sol"
     assert len(resumed.decide_calls) == 1
     assert len(resumed.solve_calls) == 6
     assert len(read_jsonl(tmp_path / "latest.jsonl")) == 8
@@ -219,7 +219,7 @@ def test_interruption_keeps_completed_rows_and_resume_skips_them(tmp_path):
 
 
 def test_failure_is_recorded_not_completed_and_only_failed_cell_retries(tmp_path):
-    failed_key = ("gpt-6-sol", True, "direct_llm")
+    failed_key = ("gpt-6.1-sol", True, "direct_llm")
     backend = FakeBenchmarkBackend(fail_config=failed_key)
     first = BenchmarkRunner(tmp_path, backend).run(
         [benchmark_case()], ALL_EXPERIMENT_CONFIGS

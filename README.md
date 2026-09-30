@@ -4,7 +4,7 @@ Turn natural-language planning problems into validated, optimized recommendation
 
 > **The LLM interprets the problem; OR-Tools chooses the solution.**
 
-Python · GPT-6 Sol · OpenAI Structured Outputs · Pydantic · OR-Tools CP-SAT · Streamlit · pytest · uv
+Python · GPT-6.1 Sol · OpenAI Structured Outputs · Pydantic · OR-Tools CP-SAT · Streamlit · pytest · uv
 
 [Live Demo](https://ai-decision-optimizer.streamlit.app/) · [GitHub Repository](https://github.com/andrewcukierwar/ai-decision-optimizer)
 
@@ -37,7 +37,7 @@ flowchart LR
     U[User request] --> E
 
     subgraph LLM["LLM interpretation"]
-        E[GPT-6 Sol<br/>OpenAI Structured Outputs] --> X{Complete extraction?}
+        E[GPT-6.1 Sol<br/>OpenAI Structured Outputs] --> X{Complete extraction?}
         X -- No --> C[One clarification round]
         C --> E
         X -- Yes --> P[Typed Pydantic<br/>problem schema]
@@ -67,14 +67,14 @@ flowchart LR
     class U,I,K,S human;
 ```
 
-- GPT-6 Sol performs semantic extraction into one of the typed problem schemas.
+- GPT-6.1 Sol performs semantic extraction into one of the typed problem schemas.
 - CP-SAT determines feasibility and the optimized decisions; it does not receive a free-form request.
 - The independent validator checks the materialized result against the confirmed schema and recomputes the relevant hard-constraint and objective semantics.
 - Explanations use structured solver and validator facts. They do not claim formal verification or rely on hidden reasoning about what the optimizer “wanted.”
 
 ## Design decisions
 
-1. **Separate interpretation from optimization.** GPT-6 Sol extracts structured intent; CP-SAT chooses the schedule.
+1. **Separate interpretation from optimization.** GPT-6.1 Sol extracts structured intent; CP-SAT chooses the schedule.
 2. **Use two concrete schemas.** `DayPlan` and `ShiftSchedule` keep the MVP bounded and testable instead of pretending to support arbitrary optimization problems.
 3. **Validate independently of the compiler.** Materialized solver results are checked against the confirmed schema by separate plain-Python validators.
 4. **Require user confirmation.** The parsed interpretation is visible and editable before it becomes an optimization problem.
@@ -195,7 +195,45 @@ The following are curated MVP evaluation cases designed to exercise the supporte
 | Workforce Scheduler | 3 / 3 | 2 / 2 | 2 / 2 |
 | **Combined** | **16 / 16** | **13 / 13** | **13 / 13** |
 
-These reported live results use the configured OpenAI model and API; the evaluation cases are curated to exercise the MVP’s supported semantics. The deterministic suite is separate and documented below.
+These are historical pre-migration MVP results, not Sol 6.1 benchmark observations. They used the configured OpenAI model and API; the evaluation cases are curated to exercise the MVP’s supported semantics. The deterministic suite is separate and documented below.
+
+## Eight-architecture benchmark pilot
+
+The two active models are Luna 6 (`gpt-6-luna`) and Sol 6.1
+(`gpt-6.1-sol`), crossed with Jev off/on and Direct LLM/CP-SAT. The 14-case
+selection produces 112 cells. All paired arms share one extraction per
+case/model; the Jev arms share one adjusted formulation.
+
+```bash
+uv run python scripts/run_benchmark.py --all-configurations --dry-run
+uv run python scripts/label_jev_fixtures.py --baseline fixture
+```
+
+Live benchmark execution additionally requires `--allow-paid`. Pilot artifacts
+use `benchmark_results/pilot_sol61_v2/`; reserve a fresh explicit
+`--results-dir benchmark_results/final_sol61_v2` for the subsequent final run.
+Do not reuse Sol 6 or pilot artifacts as final Sol 6.1 observations.
+
+Completed invalid outputs and request timeouts are terminal, scored failures
+and are skipped on resume. SDK retries are disabled. Transport failures are
+separately visible and retryable on explicit resume. Feasible cases use binary
+canonical validity; infeasible cases use correctness of the infeasibility
+report with constraint counts and required completion marked N/A. Structural
+formulation matching is primary; subjective weights are analyzed separately.
+
+The draft answer key remains pending human review, including generator-derived
+labels. Three subjective weight labels are excluded from primary exact-answer
+accuracy/calibration until a rubric is agreed upon. Attach actual experimental
+observations without creating a second sample:
+
+```bash
+uv run python scripts/label_jev_fixtures.py --baseline benchmark \
+  --benchmark-results-dir benchmark_results/pilot_sol61_v2
+```
+
+See [benchmark methodology](docs/benchmark_methodology.md) for scoring,
+probability gating, label provenance, cache fingerprints, and subsequent
+analysis requirements. No paid benchmark results are claimed yet.
 
 ## Running locally
 
@@ -213,8 +251,8 @@ uv sync --extra test
 cp .env.example .env
 ```
 
-Edit `.env` and set `OPENAI_API_KEY`. The parser defaults to `gpt-6-sol`; set
-`OPENAI_MODEL` to `gpt-6-luna` or `gpt-6-sol` to override it. The application
+Edit `.env` and set `OPENAI_API_KEY`. The parser defaults to `gpt-6.1-sol`; set
+`OPENAI_MODEL` to `gpt-6-luna` or `gpt-6.1-sol` to override it. The application
 and evaluation scripts load `.env` automatically through
 `decision_optimizer.config`; no manual shell export is required.
 

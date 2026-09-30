@@ -70,10 +70,10 @@ def main() -> None:
     with controls[0]:
         model = st.selectbox(
             "Base model",
-            ("gpt-6-luna", "gpt-6-sol"),
+            ("gpt-6-luna", "gpt-6.1-sol"),
             index=1,
             format_func=lambda value: (
-                "GPT-6 Luna" if value == "gpt-6-luna" else "GPT-6 Sol"
+                "GPT-6 Luna" if value == "gpt-6-luna" else "GPT-6.1 Sol"
             ),
         )
     with controls[1]:

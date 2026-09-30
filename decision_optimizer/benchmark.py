@@ -18,12 +18,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Protocol, Sequence
 
+from .failures import CachedTerminalFailure, failure_category, terminal_failure
+from .jev_alignment import indexed_questions
 from .config import jev_apply_threshold, typesafe_model
 from .dayplan import DayPlan, DayPlanSolution, solve_day_plan
 from .direct_solver import solve_day_plan_direct, solve_shift_schedule_direct
 from .evaluation import evaluate_dayplan, evaluate_shift_schedule
 from .experiment import ExperimentConfig
-from .jev import DEFAULT_JEV_BATCH_SIZE, JevDecision, JevResult, apply_jev, build_jev_questions
+from .jev import DEFAULT_JEV_BATCH_SIZE, JevDecision, JevResult, apply_jev, build_jev_questions, final_question_value
 from .parsing.dayplan import parse_dayplan
 from .parsing.shift_schedule import parse_shift_schedule
 from .shift_schedule import ShiftSchedule, ShiftScheduleSolution, solve_shift_schedule
@@ -33,13 +35,13 @@ from .telemetry import RunTelemetry
 Domain = Literal["dayplan", "shift_schedule"]
 Problem = DayPlan | ShiftSchedule
 Solution = DayPlanSolution | ShiftScheduleSolution
-CACHE_SCHEMA_VERSION = 1
-RESULT_SCHEMA_VERSION = 1
+CACHE_SCHEMA_VERSION = 2
+RESULT_SCHEMA_VERSION = 2
 
 
 ALL_EXPERIMENT_CONFIGS: tuple[ExperimentConfig, ...] = tuple(
     ExperimentConfig(model=model, use_jev=use_jev, solution_engine=engine)
-    for model in ("gpt-6-luna", "gpt-6-sol")
+    for model in ("gpt-6-luna", "gpt-6.1-sol")
     for use_jev in (False, True)
     for engine in ("direct_llm", "cp_sat")
 )
@@ -259,8 +261,8 @@ class BenchmarkRunner:
             raise ValueError("solver_timeout_seconds must be positive")
         if jev_batch_size < 1:
             raise ValueError("jev_batch_size must be at least 1")
-        if api_retries < 0:
-            raise ValueError("api_retries must be nonnegative")
+        if api_retries != 0:
+            raise ValueError("Benchmark policy requires api_retries=0; transport failures may be retried on explicit resume")
         self.results_dir = results_dir
         self.backend = backend
         self.request_timeout_seconds = request_timeout_seconds
@@ -280,7 +282,7 @@ class BenchmarkRunner:
         cases: Sequence[BenchmarkCase],
         configs: Sequence[ExperimentConfig],
     ) -> Dict[str, int]:
-        """Run every pending cell once; failures are append-only and retryable."""
+        """Run pending cells; completed output failures/timeouts are terminal."""
 
         counts = {"succeeded": 0, "failed": 0, "skipped": 0}
         for case in cases:
@@ -288,7 +290,7 @@ class BenchmarkRunner:
                 pair_configs = [config for config in configs if config.model == model]
                 pending = []
                 for config in pair_configs:
-                    key = result_key(case.case_id, config)
+                    key = self._result_key(case, config)
                     if key in self.successful_keys:
                         counts["skipped"] += 1
                     else:
@@ -306,7 +308,7 @@ class BenchmarkRunner:
                             "extraction",
                             error,
                             actual_paid={
-                                "openai_call_attempts": 1 if index == 0 else 0,
+                                "openai_call_attempts": (_attempts(getattr(error, "telemetry", None), "openai", minimum=1) if index == 0 and not getattr(error, "cache_hit", False) else 0),
                                 "jev_call_attempts": 0,
                             },
                         )
@@ -335,14 +337,15 @@ class BenchmarkRunner:
                             config,
                             "jev",
                             jev_error,
+                            extraction=extraction,
                             actual_paid={
                                 "openai_call_attempts": (
-                                    extraction.payload.telemetry.n_model_calls
+                                    _attempts(extraction.payload.telemetry, "openai")
                                     if extraction_charge_available
                                     else 0
                                 ),
-                                "jev_call_attempts": 1
-                                if jev_failure_charge_available
+                                "jev_call_attempts": _attempts(getattr(jev_error, "telemetry", None), "jev", minimum=1)
+                                if jev_failure_charge_available and not getattr(jev_error, "cache_hit", False)
                                 else 0,
                             },
                         )
@@ -390,11 +393,11 @@ class BenchmarkRunner:
                         )
                         actual_paid = {
                             "openai_call_attempts": (
-                                (extraction.payload.telemetry.n_model_calls if extraction_charge_available else 0)
-                                + (1 if config.solution_engine == "direct_llm" and solve_stage is not None else 0)
+                                (_attempts(extraction.payload.telemetry, "openai") if extraction_charge_available else 0)
+                                + (_attempts(solve_stage.telemetry, "openai") if config.solution_engine == "direct_llm" and solve_stage is not None else 0)
                             ),
                             "jev_call_attempts": (
-                                jev_telemetry.n_jev_calls
+                                _attempts(jev_telemetry, "jev")
                                 if config.use_jev and jev_charge_available and jev_telemetry
                                 else 0
                             ),
@@ -476,22 +479,27 @@ class BenchmarkRunner:
                         if config.use_jev:
                             jev_charge_available = False
                     except Exception as error:
+                        if final_problem is not None:
+                            solve_telemetry.finish(error)
                         self._append_failure(
                             case,
                             config,
                             "solve_or_evaluate",
                             error,
+                            extraction=extraction,
+                            final_problem=final_problem,
+                            telemetry=_combine_telemetry(config, case, extraction.payload.telemetry, jev_telemetry, solve_telemetry if final_problem is not None else None),
                             actual_paid={
                                 "openai_call_attempts": (
                                     (
-                                        extraction.payload.telemetry.n_model_calls
+                                        _attempts(extraction.payload.telemetry, "openai")
                                         if extraction_charge_available
                                         else 0
                                     )
-                                    + int(config.solution_engine == "direct_llm")
+                                    + (_attempts(solve_telemetry, "openai", minimum=1) if config.solution_engine == "direct_llm" else 0)
                                 ),
                                 "jev_call_attempts": (
-                                    jev_stage.payload["telemetry"].n_jev_calls
+                                    _attempts(jev_stage.payload["telemetry"], "jev")
                                     if config.use_jev
                                     and jev_charge_available
                                     and jev_stage is not None
@@ -518,7 +526,7 @@ class BenchmarkRunner:
             (case, config)
             for case in cases
             for config in configs
-            if result_key(case.case_id, config) not in self.successful_keys
+            if self._result_key(case, config) not in self.successful_keys
         ]
         pairs = {
             (case.case_id, config.model)
@@ -530,7 +538,7 @@ class BenchmarkRunner:
         estimated_jev_questions = 0
         for case_id, model in pairs:
             case = next(item for item in cases if item.case_id == case_id)
-            extraction_fingerprint = _extraction_fingerprint(case, model)
+            extraction_fingerprint = _extraction_fingerprint(case, model, self._runtime_config())
             extraction_path = self._cache_path(case, model, "extraction")
             extraction_cached = _valid_cache(extraction_path, extraction_fingerprint)
             if not extraction_cached:
@@ -547,6 +555,8 @@ class BenchmarkRunner:
                     self.jev_batch_size,
                     jev_apply_threshold(),
                     typesafe_model(),
+                    problem_hash=(_read_cache(extraction_path, extraction_fingerprint) or {}).get("problem_hash"),
+                    runtime=self._runtime_config(),
                 )
                 jev_path = self._cache_path(case, model, "jev")
                 if not _valid_cache(jev_path, jev_fingerprint):
@@ -581,11 +591,14 @@ class BenchmarkRunner:
         }
 
     def _load_or_extract(self, case: BenchmarkCase, model: str) -> _LoadedStage:
-        fingerprint = _extraction_fingerprint(case, model)
+        fingerprint = _extraction_fingerprint(case, model, self._runtime_config())
         path = self._cache_path(case, model, "extraction")
         cached = _read_cache(path, fingerprint)
         if cached is not None:
+            _raise_cached_failure(cached)
             problem = _problem_from_json(case.domain, cached.get("problem"))
+            if cached.get("problem_hash") != _problem_hash(problem):
+                raise ValueError("Extraction cache problem hash mismatch")
             telemetry = _telemetry_from_dict(cached["telemetry"])
             return _LoadedStage(
                 ExtractionStage(problem, cached["missing_info"], telemetry),
@@ -609,12 +622,25 @@ class BenchmarkRunner:
             )
         except Exception as error:
             telemetry.finish(error)
+            if terminal_failure(error):
+                _atomic_json(path, {
+                    "schema_version": CACHE_SCHEMA_VERSION,
+                    "stage": "extraction",
+                    "fingerprint": fingerprint,
+                    "runtime_configuration": self._runtime_config(),
+                    "case_id": case.case_id, "model": model,
+                    "terminal_error": str(error), "failure_category": failure_category(error),
+                    "telemetry": telemetry.to_dict(),
+                })
+            error.telemetry = telemetry
             raise
         _atomic_json(
             path,
             {
                 "schema_version": CACHE_SCHEMA_VERSION,
                 "stage": "extraction",
+                "runtime_configuration": self._runtime_config(),
+                "problem_hash": _problem_hash(stage.problem),
                 "fingerprint": fingerprint,
                 "case_id": case.case_id,
                 "model": model,
@@ -635,10 +661,15 @@ class BenchmarkRunner:
             self.jev_batch_size,
             jev_apply_threshold(),
             typesafe_model(),
+            problem_hash=_problem_hash(extraction.payload.problem),
+            runtime=self._runtime_config(),
         )
         path = self._cache_path(case, model, "jev")
         cached = _read_cache(path, fingerprint)
         if cached is not None:
+            if "terminal_error" in cached:
+                self._record_jev_decisions(case, model, fingerprint, {"decisions": [JevDecision.model_validate(d) for d in cached.get("decisions", [])], "resolved_model": cached.get("resolved_jev_model")}, extraction.payload.problem)
+            _raise_cached_failure(cached)
             payload = {
                 "problem": _problem_from_json(case.domain, cached["problem"]),
                 "decisions": [
@@ -647,7 +678,7 @@ class BenchmarkRunner:
                 "resolved_model": cached.get("resolved_jev_model"),
                 "telemetry": _telemetry_from_dict(cached["telemetry"]),
             }
-            self._record_jev_decisions(case, model, fingerprint, payload)
+            self._record_jev_decisions(case, model, fingerprint, payload, extraction.payload.problem)
             return _LoadedStage(payload, True, fingerprint)
 
         problem = extraction.payload.problem
@@ -668,7 +699,40 @@ class BenchmarkRunner:
             )
         except Exception as error:
             telemetry.finish(error)
+            if terminal_failure(error):
+                _atomic_json(path, {
+                    "schema_version": CACHE_SCHEMA_VERSION,
+                    "stage": "jev",
+                    "jev_batch_size": self.jev_batch_size,
+                    "jev_apply_threshold": jev_apply_threshold(),
+                    "requested_jev_model": typesafe_model(),
+                    "extraction_fingerprint": extraction.fingerprint,
+                    "extraction_problem_hash": _problem_hash(problem),
+                    "decisions": [d.model_dump(mode="json") for d in getattr(error, "observed_decisions", [])],
+                    "invalid_questions": getattr(error, "invalid_questions", []),
+                    "missing_question_names": getattr(error, "missing_question_names", []),
+                    "resolved_jev_model": getattr(error, "resolved_jev_model", None),
+                    "fingerprint": fingerprint,
+                    "runtime_configuration": self._runtime_config(),
+                    "case_id": case.case_id, "model": model,
+                    "terminal_error": str(error), "failure_category": failure_category(error),
+                    "telemetry": telemetry.to_dict(),
+                })
+            error.telemetry = telemetry
+            self._record_jev_decisions(case, model, fingerprint, {"decisions": getattr(error, "observed_decisions", []), "resolved_model": getattr(error, "resolved_jev_model", None)}, problem)
             raise
+        questions = build_jev_questions(case.prompt, problem)
+        question_by_item = {(q.question_type.key, q.target.item): (identity, q) for identity, q in indexed_questions(case.domain, questions, problem, problem)}
+        for decision in result.decisions:
+            matched = question_by_item.get((decision.question_type, decision.item))
+            if matched:
+                identity, question = matched
+                decision.question_name = question.name
+                decision.semantic_question_id = identity
+                decision.locator = dict(question.target.locator)
+                decision.context = dict(question.target.context)
+                decision.final_value = final_question_value(result.problem, question)
+                decision.final_value_status = "represented" if decision.final_value is not None else "not_represented"
         payload = {
             "problem": result.problem,
             "decisions": result.decisions,
@@ -680,6 +744,11 @@ class BenchmarkRunner:
             {
                 "schema_version": CACHE_SCHEMA_VERSION,
                 "stage": "jev",
+                "jev_batch_size": self.jev_batch_size,
+                "jev_apply_threshold": jev_apply_threshold(),
+                "runtime_configuration": self._runtime_config(),
+                "extraction_fingerprint": extraction.fingerprint,
+                "extraction_problem_hash": _problem_hash(extraction.payload.problem),
                 "fingerprint": fingerprint,
                 "case_id": case.case_id,
                 "model": model,
@@ -692,7 +761,7 @@ class BenchmarkRunner:
                 "telemetry": telemetry.to_dict(),
             },
         )
-        self._record_jev_decisions(case, model, fingerprint, payload)
+        self._record_jev_decisions(case, model, fingerprint, payload, extraction.payload.problem)
         return _LoadedStage(payload, False, fingerprint)
 
     def _success_record(self, **values: Any) -> Dict[str, Any]:
@@ -704,7 +773,7 @@ class BenchmarkRunner:
         final_problem: Optional[Problem] = values["final_problem"]
         return {
             "schema_version": RESULT_SCHEMA_VERSION,
-            "result_key": result_key(case.case_id, config),
+            "result_key": self._result_key(case, config),
             "status": "success",
             "recorded_at": _utc_now(),
             "case_id": case.case_id,
@@ -713,9 +782,7 @@ class BenchmarkRunner:
             "architecture": config.label(),
             "configuration": config.model_dump(mode="json"),
             "runtime_configuration": {
-                "request_timeout_seconds": self.request_timeout_seconds,
-                "solver_timeout_seconds": self.solver_timeout_seconds,
-                "api_retries": self.api_retries,
+                **self._runtime_config(),
                 "jev_batch_size": self.jev_batch_size,
                 "jev_apply_threshold": jev_apply_threshold(),
                 "requested_jev_model": typesafe_model()
@@ -723,6 +790,9 @@ class BenchmarkRunner:
                 else None,
             },
             "model": config.model,
+            "resolved_openai_models": values["telemetry"].resolved_openai_models,
+            "extraction_problem_hash": _problem_hash(extraction.payload.problem),
+            "question_alignment": question_observations(case, extraction.payload.problem, values["decisions"]),
             "resolved_jev_model": values["resolved_jev_model"],
             "intermediate_reuse": {
                 "extraction_fingerprint": extraction.fingerprint,
@@ -739,6 +809,7 @@ class BenchmarkRunner:
                 if extraction.payload.problem is None
                 else extraction.payload.problem.model_dump(mode="json"),
                 "missing_info": extraction.payload.missing_info,
+                "problem_hash": _problem_hash(extraction.payload.problem),
             },
             "final_problem": None
             if final_problem is None
@@ -757,36 +828,72 @@ class BenchmarkRunner:
         }
 
     def _append_failure(
-        self,
-        case: BenchmarkCase,
-        config: ExperimentConfig,
-        stage: str,
-        error: Exception,
-        actual_paid: Optional[Dict[str, Any]] = None,
+        self, case: BenchmarkCase, config: ExperimentConfig, stage: str,
+        error: Exception, actual_paid: Optional[Dict[str, Any]] = None,
+        extraction: Optional[_LoadedStage] = None,
+        final_problem: Optional[Problem] = None,
+        telemetry: Optional[RunTelemetry] = None,
     ) -> None:
-        self._append_result(
-            {
-                "schema_version": RESULT_SCHEMA_VERSION,
-                "result_key": result_key(case.case_id, config),
-                "status": "failure",
-                "recorded_at": _utc_now(),
-                "case_id": case.case_id,
-                "domain": case.domain,
-                "source": case.source,
-                "architecture": config.label(),
-                "configuration": config.model_dump(mode="json"),
-                "model": config.model,
-                "resolved_jev_model": None,
-                "failure_stage": stage,
-                "actual_paid_call_attempts_created_for_this_row": actual_paid
-                or {"openai_call_attempts": 0, "jev_call_attempts": 0},
-                "canonical_evaluation": None,
-                "jev_decisions": [],
-                "error": "%s: %s" % (type(error).__name__, error),
-            }
-        )
+        terminal = terminal_failure(error)
+        if telemetry is None and extraction is not None:
+            telemetry = _combine_telemetry(config, case, extraction.payload.telemetry, getattr(error, "telemetry", None))
+        telemetry = telemetry or getattr(error, "telemetry", None)
+        if telemetry is not None:
+            telemetry.success = False
+            telemetry.error = str(error)
+        evaluation = _evaluate(case, None, final_problem, telemetry).model_dump(mode="json") if terminal else None
+        record = {
+            "schema_version": RESULT_SCHEMA_VERSION,
+            "result_key": self._result_key(case, config),
+            "status": "terminal_failure" if terminal else "failure",
+            "failure_category": failure_category(error), "retryable": not terminal,
+            "recorded_at": _utc_now(), "case_id": case.case_id,
+            "domain": case.domain, "source": case.source,
+            "architecture": config.label(), "configuration": config.model_dump(mode="json"),
+            "model": config.model, "resolved_jev_model": None,
+            "runtime_configuration": self._runtime_config(),
+            "failure_stage": stage,
+            "actual_paid_call_attempts_created_for_this_row": actual_paid or {"openai_call_attempts": 0, "jev_call_attempts": 0},
+            "standalone_architecture_telemetry_estimate": None if telemetry is None else telemetry.to_dict(),
+            "canonical_evaluation": evaluation,
+            "jev_decisions": [d.model_dump(mode="json") for d in getattr(error, "observed_decisions", [])],
+            "jev_invalid_questions": getattr(error, "invalid_questions", []),
+            "jev_missing_question_names": getattr(error, "missing_question_names", []),
+            "extraction_problem_hash": None if extraction is None else _problem_hash(extraction.payload.problem),
+            "question_alignment": question_observations(case, None if extraction is None else extraction.payload.problem, getattr(error, "observed_decisions", [])),
+            "resolved_openai_models": [] if telemetry is None else telemetry.resolved_openai_models,
+            "intermediate_reuse": None if extraction is None else {"extraction_fingerprint": extraction.fingerprint},
+            "error": "%s: %s" % (type(error).__name__, error),
+        }
+        self._append_result(record)
+        if terminal:
+            self.successful_keys.add(record["result_key"])
+
+    def _runtime_config(self) -> Dict[str, Any]:
+        return {"request_timeout_seconds": self.request_timeout_seconds,
+                "solver_timeout_seconds": self.solver_timeout_seconds,
+                "api_retries": self.api_retries,
+                "timeout_policy": "terminal_no_retry_v1"}
+
+    def _result_key(self, case: BenchmarkCase, config: ExperimentConfig) -> str:
+        return result_key(case.case_id, config) + "|" + _fingerprint({
+            "schema": RESULT_SCHEMA_VERSION, "case_prompt": case.prompt,
+            "extraction_fingerprint": _extraction_fingerprint(case, config.model, self._runtime_config()),
+            "canonical": case.canonical.model_dump(mode="json"), "clarification": case.clarification,
+            "runtime": self._runtime_config(), "threshold": jev_apply_threshold(),
+            "jev_model": typesafe_model(), "batch_size": self.jev_batch_size,
+            "implementation": _implementation_hash(),
+        })
 
     def _append_result(self, record: Dict[str, Any]) -> None:
+        # Compare hashes, never assume a common model/prompt implies identical extraction.
+        reuse = record.get("intermediate_reuse") or {}
+        fingerprint = reuse.get("extraction_fingerprint")
+        if fingerprint and record.get("extraction_problem_hash"):
+            for previous in _read_jsonl(self.results_path):
+                previous_reuse = previous.get("intermediate_reuse") or {}
+                if previous_reuse.get("extraction_fingerprint") == fingerprint and previous.get("extraction_problem_hash") != record["extraction_problem_hash"]:
+                    raise ValueError("Paired architecture rows have different extraction outputs")
         _append_jsonl(self.results_path, record)
 
     def _record_jev_decisions(
@@ -795,7 +902,10 @@ class BenchmarkRunner:
         model: str,
         fingerprint: str,
         payload: Dict[str, Any],
+        extracted: Problem,
     ) -> None:
+        observations = question_observations(case, extracted, payload["decisions"])
+        by_item = {(item["question_type"], item["generated_item"]): item for item in observations["observed_questions"]}
         for index, decision in enumerate(payload["decisions"]):
             decision_id = hashlib.sha256(
                 ("%s|%s|%s|%d" % (case.case_id, model, fingerprint, index)).encode()
@@ -805,7 +915,7 @@ class BenchmarkRunner:
             _append_jsonl(
                 self.decisions_path,
                 {
-                    "schema_version": 1,
+                    "schema_version": 2,
                     "decision_id": decision_id,
                     "case_id": case.case_id,
                     "domain": case.domain,
@@ -814,6 +924,7 @@ class BenchmarkRunner:
                     "resolved_jev_model": payload["resolved_model"],
                     "jev_fingerprint": fingerprint,
                     **decision.model_dump(mode="json"),
+                    "answer_key_alignment": by_item.get((decision.question_type, decision.item), {"alignment_status": "unaligned_observed_decision", "canonical_question_id": None}),
                 },
             )
             self.decision_ids.add(decision_id)
@@ -826,7 +937,7 @@ class BenchmarkRunner:
         return {
             item["result_key"]
             for item in _read_jsonl(self.results_path)
-            if item.get("status") == "success"
+            if item.get("status") in {"success", "terminal_failure"}
         }
 
     def _existing_decision_ids(self) -> set[str]:
@@ -841,8 +952,7 @@ class BenchmarkRunner:
         for item in _read_jsonl(self.results_path):
             key = item.get("result_key")
             if key:
-                if key not in latest or item.get("status") == "success":
-                    latest[key] = item
+                latest[key] = item
         fieldnames = [
             "case_id",
             "domain",
@@ -857,6 +967,8 @@ class BenchmarkRunner:
             "hard_constraints_total",
             "required_completed",
             "formulation_match",
+            "formulation_match_structural",
+            "feasible_correctly_reported",
             "objective_gap",
             "standalone_estimated_cost",
             "actual_openai_call_attempts_created_for_row",
@@ -897,6 +1009,8 @@ class BenchmarkRunner:
                         ),
                         "required_completed": evaluation.get("required_completed"),
                         "formulation_match": evaluation.get("formulation_match"),
+                        "formulation_match_structural": evaluation.get("formulation_match_structural"),
+                        "feasible_correctly_reported": evaluation.get("feasible_correctly_reported"),
                         "objective_gap": evaluation.get("objective_gap"),
                         "standalone_estimated_cost": telemetry.get("estimated_cost"),
                         "actual_openai_call_attempts_created_for_row": paid.get(
@@ -927,7 +1041,7 @@ def _evaluate(
     case: BenchmarkCase,
     solution: Optional[Solution],
     final_problem: Optional[Problem],
-    telemetry: RunTelemetry,
+    telemetry: Optional[RunTelemetry],
 ) -> Any:
     if case.domain == "dayplan":
         assert isinstance(case.canonical, DayPlan)
@@ -964,9 +1078,11 @@ def _combine_telemetry(
         "openai_input_tokens",
         "openai_output_tokens",
         "n_model_calls",
+        "n_model_call_attempts",
         "jev_input_tokens",
         "n_jev_questions",
         "n_jev_calls",
+        "n_jev_call_attempts",
         "estimated_cost",
     )
     for stage in stages:
@@ -974,16 +1090,25 @@ def _combine_telemetry(
             continue
         for field in fields:
             setattr(combined, field, getattr(combined, field) + getattr(stage, field))
+        for model in stage.resolved_openai_models:
+            if model not in combined.resolved_openai_models:
+                combined.resolved_openai_models.append(model)
     combined.success = True
     combined.error = None
     return combined
 
 
-def _extraction_fingerprint(case: BenchmarkCase, model: str) -> str:
+def _extraction_fingerprint(case: BenchmarkCase, model: str, runtime: Optional[Dict[str, Any]] = None) -> str:
+    from .parsing.dayplan import DAYPLAN_EXTRACTION_INSTRUCTIONS
+    from .parsing.shift_schedule import SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS
     return _fingerprint(
         {
+            "openai_base_url": os.getenv("OPENAI_BASE_URL"),
+            "instructions": DAYPLAN_EXTRACTION_INSTRUCTIONS if case.domain == "dayplan" else SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS,
             "schema": CACHE_SCHEMA_VERSION,
             "stage": "extraction",
+            "implementation": _implementation_hash(),
+            "runtime": runtime,
             "domain": case.domain,
             "prompt": case.prompt,
             "clarification": case.clarification,
@@ -997,11 +1122,16 @@ def _jev_fingerprint(
     batch_size: int,
     threshold: float,
     requested_model: str,
+    *, problem_hash: Optional[str] = None, runtime: Optional[Dict[str, Any]] = None,
 ) -> str:
     return _fingerprint(
         {
             "schema": CACHE_SCHEMA_VERSION,
             "stage": "jev",
+            "typesafe_base_url": os.getenv("TYPESAFE_BASE_URL"),
+            "implementation": _implementation_hash(),
+            "problem_hash": problem_hash,
+            "runtime": runtime,
             "extraction_fingerprint": extraction_fingerprint,
             "batch_size": batch_size,
             "threshold": threshold,
@@ -1042,7 +1172,7 @@ def _read_cache(path: Path, fingerprint: str) -> Optional[Dict[str, Any]]:
         payload = json.loads(path.read_text())
     except (OSError, json.JSONDecodeError):
         return None
-    return payload if payload.get("fingerprint") == fingerprint else None
+    return payload if payload.get("schema_version") == CACHE_SCHEMA_VERSION and payload.get("fingerprint") == fingerprint else None
 
 
 def _valid_cache(path: Path, fingerprint: str) -> bool:
@@ -1082,3 +1212,89 @@ def _read_jsonl(path: Path) -> List[Dict[str, Any]]:
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+def _problem_hash(problem: Optional[Problem]) -> str:
+    return _fingerprint({"problem": None if problem is None else problem.model_dump(mode="json")})
+
+
+def _implementation_hash() -> str:
+    """Source and dependency provenance; no manual version bump can be forgotten."""
+    from importlib.metadata import version
+    root = Path(__file__).parent
+    digest = hashlib.sha256()
+    for path in sorted(root.rglob("*.py")):
+        digest.update(str(path.relative_to(root)).encode())
+        digest.update(path.read_bytes())
+    for dependency in ("openai", "typesafe-sdk", "pydantic", "ortools"):
+        digest.update((dependency + version(dependency)).encode())
+    return digest.hexdigest()
+
+
+def _raise_cached_failure(payload: Dict[str, Any]) -> None:
+    if "terminal_error" in payload:
+        error = CachedTerminalFailure(payload["terminal_error"], payload["failure_category"])
+        error.cache_hit = True
+        error.telemetry = _telemetry_from_dict(payload["telemetry"])
+        error.observed_decisions = [JevDecision.model_validate(d) for d in payload.get("decisions", [])]
+        error.invalid_questions = payload.get("invalid_questions", [])
+        error.missing_question_names = payload.get("missing_question_names", [])
+        error.resolved_jev_model = payload.get("resolved_jev_model")
+        raise error
+
+
+def question_observations(
+    case: BenchmarkCase, extracted: Optional[Problem], decisions: Sequence[JevDecision],
+) -> Dict[str, Any]:
+    """Join the actual shared extraction/Jev sample to proposed canonical questions.
+
+    Canonical context is used only for post-response evaluation, never requests.
+    Unaligned observations and canonical omissions both remain explicit.
+    """
+    canonical_questions = build_jev_questions(case.prompt, case.canonical)
+    canonical_ids = {identity for identity, _ in indexed_questions(case.domain, canonical_questions, case.canonical, case.canonical)}
+    questions = [] if extracted is None else build_jev_questions(case.prompt, extracted)
+    indexed = [] if extracted is None else indexed_questions(case.domain, questions, extracted, case.canonical)
+    decisions_by_item = {(d.question_type, d.item): d for d in decisions}
+    matched = set()
+    observed = []
+    for candidate_id, question in indexed:
+        aligned = candidate_id in canonical_ids and candidate_id not in matched
+        if aligned:
+            matched.add(candidate_id)
+        decision = decisions_by_item.get((question.question_type.key, question.target.item))
+        gpt_value = question.question_type.gpt_value(extracted, question.target)
+        observed.append({
+            "canonical_question_id": candidate_id if aligned else None,
+            "semantic_candidate_id": candidate_id,
+            "question_type": question.question_type.key,
+            "generated_item": question.target.item,
+            "locator": dict(question.target.locator), "context": dict(question.target.context),
+            "alignment_status": "aligned" if aligned else "unaligned_generated",
+            "gpt_baseline_answer": gpt_value,
+            "jev_answer": None if decision is None else decision.jev_value,
+            "jev_probability": None if decision is None else decision.confidence,
+            "probabilities": {} if decision is None else decision.probabilities,
+            "applied": False if decision is None else decision.applied,
+            "changed": False if decision is None else decision.changed,
+            "final_applied_answer": decision.final_value if decision is not None else gpt_value,
+            "final_value_status": "gpt_baseline" if decision is None else decision.final_value_status,
+            "jev_observation_status": "not_observed" if decision is None else "observed",
+        })
+    unaligned_decisions = [d.model_dump(mode="json") for d in decisions if (d.question_type, d.item) not in {(q.question_type.key, q.target.item) for q in questions}]
+    missing = sorted(canonical_ids - matched)
+    return {
+        "canonical_questions": len(canonical_ids), "aligned_questions": len(matched),
+        "not_generated": len(missing), "missing_canonical_question_ids": missing,
+        "unaligned_generated": sum(item["alignment_status"] != "aligned" for item in observed),
+        "unaligned_jev_decisions": unaligned_decisions,
+        "observed_questions": observed,
+    }
+
+
+def _attempts(telemetry: Optional[RunTelemetry], provider: str, *, minimum: int = 0) -> int:
+    if telemetry is None:
+        return minimum
+    if provider == "openai":
+        return max(minimum, telemetry.n_model_call_attempts, telemetry.n_model_calls)
+    return max(minimum, telemetry.n_jev_call_attempts, telemetry.n_jev_calls)

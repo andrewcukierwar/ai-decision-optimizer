@@ -77,14 +77,17 @@ class EvaluationRecord(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     valid_output: bool
-    hard_constraints_satisfied: int
-    hard_constraints_total: int
-    required_completed: bool
+    hard_constraints_satisfied: Optional[int]
+    hard_constraints_total: Optional[int]
+    required_completed: Optional[bool]
     feasible_correctly_reported: bool
     objective_value: Optional[int]
     optimal_objective: Optional[int]
     objective_gap: Optional[int]
     formulation_match: bool
+    formulation_match_structural: bool
+    canonical_feasible: bool
+    constraint_violations: List[str] = Field(default_factory=list)
     canonical_validation_valid: bool
     alignment_errors: List[str] = Field(default_factory=list)
     latency_total_s: Optional[float] = None
@@ -116,7 +119,7 @@ def align_names(
         exact = [
             target
             for target in remaining_canonical
-            if _normal_name(source) == _normal_name(target)
+            if _normal_name(source) == _normal_name(target) and _numeric_identity(source) == _numeric_identity(target)
         ]
         if len(exact) == 1:
             mapping[source] = exact[0]
@@ -171,6 +174,8 @@ def evaluate_dayplan(
     """Score a DayPlan output exclusively against ``canonical``."""
 
     canonical_result = solve_day_plan(canonical)
+    if canonical_result.status == DaySolveStatus.UNKNOWN:
+        raise RuntimeError("Canonical feasibility was not established; evaluation cannot proceed")
     canonical_feasible = canonical_result.status in {
         DaySolveStatus.OPTIMAL,
         DaySolveStatus.FEASIBLE,
@@ -189,6 +194,8 @@ def evaluate_dayplan(
                 if formulation_match is not None
                 else arm_spec is not None and dayplan_formulation_matches(canonical, arm_spec)
             ),
+            canonical_feasible=canonical_feasible,
+            formulation_match_structural=arm_spec is not None and dayplan_formulation_matches(canonical, arm_spec, structural=True),
             telemetry=telemetry,
         )
 
@@ -239,7 +246,7 @@ def evaluate_dayplan(
         valid_output=True,
         score=score,
         required_completed=required_names.issubset(completed_names),
-        feasible_correctly_reported=reported_feasible == canonical_feasible,
+        feasible_correctly_reported=(reported_feasible if canonical_feasible else solution.status == DaySolveStatus.INFEASIBLE),
         objective_value=objective_value,
         optimal_objective=optimal_objective,
         formulation_match=(
@@ -248,11 +255,13 @@ def evaluate_dayplan(
             else arm_spec is not None and dayplan_formulation_matches(canonical, arm_spec)
         ),
         canonical_validation_valid=(
-            validation.valid
-            and not alignment_errors
-            and reported_feasible == canonical_feasible
+            (validation.valid and not alignment_errors and reported_feasible)
+            if canonical_feasible else solution.status == DaySolveStatus.INFEASIBLE and not solution.assignments
         ),
         alignment_errors=alignment_errors,
+        canonical_feasible=canonical_feasible,
+        formulation_match_structural=arm_spec is not None and dayplan_formulation_matches(canonical, arm_spec, structural=True),
+        constraint_violations=[str(item) for item in validation.errors] + alignment_errors,
         telemetry=telemetry,
     )
 
@@ -268,6 +277,8 @@ def evaluate_shift_schedule(
     """Score a workforce output exclusively against ``canonical``."""
 
     canonical_result = solve_shift_schedule(canonical)
+    if canonical_result.status == ShiftSolveStatus.UNKNOWN:
+        raise RuntimeError("Canonical feasibility was not established; evaluation cannot proceed")
     canonical_feasible = canonical_result.status in {
         ShiftSolveStatus.OPTIMAL,
         ShiftSolveStatus.FEASIBLE,
@@ -287,6 +298,8 @@ def evaluate_shift_schedule(
                 else arm_spec is not None
                 and shift_formulation_matches(canonical, arm_spec)
             ),
+            canonical_feasible=canonical_feasible,
+            formulation_match_structural=arm_spec is not None and shift_formulation_matches(canonical, arm_spec, structural=True),
             telemetry=telemetry,
         )
 
@@ -349,8 +362,8 @@ def evaluate_shift_schedule(
     return _record(
         valid_output=True,
         score=score,
-        required_completed=required_completed,
-        feasible_correctly_reported=reported_feasible == canonical_feasible,
+        required_completed=required_completed if canonical_feasible else None,
+        feasible_correctly_reported=(reported_feasible if canonical_feasible else solution.status == ShiftSolveStatus.INFEASIBLE),
         objective_value=objective_value,
         optimal_objective=optimal_objective,
         formulation_match=(
@@ -359,16 +372,18 @@ def evaluate_shift_schedule(
             else arm_spec is not None and shift_formulation_matches(canonical, arm_spec)
         ),
         canonical_validation_valid=(
-            validation.valid
-            and not alignment_errors
-            and reported_feasible == canonical_feasible
+            (validation.valid and not alignment_errors and reported_feasible)
+            if canonical_feasible else solution.status == ShiftSolveStatus.INFEASIBLE and not solution.assignments
         ),
         alignment_errors=alignment_errors,
+        canonical_feasible=canonical_feasible,
+        formulation_match_structural=arm_spec is not None and shift_formulation_matches(canonical, arm_spec, structural=True),
+        constraint_violations=[str(item) for item in validation.errors] + alignment_errors,
         telemetry=telemetry,
     )
 
 
-def dayplan_formulation_matches(canonical: DayPlan, arm: DayPlan) -> bool:
+def dayplan_formulation_matches(canonical: DayPlan, arm: DayPlan, *, structural: bool = False) -> bool:
     alignment = align_names(
         [task.name for task in arm.tasks], [task.name for task in canonical.tasks]
     )
@@ -399,15 +414,15 @@ def dayplan_formulation_matches(canonical: DayPlan, arm: DayPlan) -> bool:
     if actual_precedences != expected_precedences:
         return False
     actual_preferences = sorted(
-        _day_preference_key(item, alignment.mapping) for item in arm.preferences
+        _day_preference_key(item, alignment.mapping)[:-1] if structural else _day_preference_key(item, alignment.mapping) for item in arm.preferences
     )
     expected_preferences = sorted(
-        _day_preference_key(item, {}) for item in canonical.preferences
+        _day_preference_key(item, {})[:-1] if structural else _day_preference_key(item, {}) for item in canonical.preferences
     )
     return actual_preferences == expected_preferences
 
 
-def shift_formulation_matches(canonical: ShiftSchedule, arm: ShiftSchedule) -> bool:
+def shift_formulation_matches(canonical: ShiftSchedule, arm: ShiftSchedule, *, structural: bool = False) -> bool:
     employee_alignment = align_names(
         [item.name for item in arm.employees],
         [item.name for item in canonical.employees],
@@ -436,11 +451,11 @@ def shift_formulation_matches(canonical: ShiftSchedule, arm: ShiftSchedule) -> b
             return False
         if sorted(employee.eligible_locations) != sorted(expected.eligible_locations):
             return False
-        actual_unavailable = sorted(
+        actual_unavailable = set(
             _unavailability_key(item, shift_alignment.mapping)
             for item in employee.unavailable
         )
-        expected_unavailable = sorted(
+        expected_unavailable = set(
             _unavailability_key(item, {}) for item in expected.unavailable
         )
         if actual_unavailable != expected_unavailable:
@@ -449,7 +464,7 @@ def shift_formulation_matches(canonical: ShiftSchedule, arm: ShiftSchedule) -> b
             expected.preferred_shifts
         ):
             return False
-    if arm.objective_weights != canonical.objective_weights:
+    if not structural and arm.objective_weights != canonical.objective_weights:
         return False
     actual_rules = sorted(
         _rule_key(item, employee_alignment.mapping) for item in arm.rules
@@ -628,15 +643,18 @@ def _record(
     optimal_objective: Optional[int],
     formulation_match: bool,
     canonical_validation_valid: bool,
+    canonical_feasible: bool,
+    formulation_match_structural: bool,
+    constraint_violations: List[str],
     alignment_errors: List[str],
     telemetry: Optional[RunTelemetry],
 ) -> EvaluationRecord:
     metric = _telemetry_metrics(telemetry)
     return EvaluationRecord(
         valid_output=valid_output,
-        hard_constraints_satisfied=score[0],
-        hard_constraints_total=score[1],
-        required_completed=required_completed,
+        hard_constraints_satisfied=score[0] if canonical_feasible else None,
+        hard_constraints_total=score[1] if canonical_feasible else None,
+        required_completed=required_completed if canonical_feasible else None,
         feasible_correctly_reported=feasible_correctly_reported,
         objective_value=objective_value,
         optimal_objective=optimal_objective,
@@ -648,6 +666,9 @@ def _record(
             else None
         ),
         formulation_match=formulation_match,
+        formulation_match_structural=formulation_match_structural,
+        canonical_feasible=canonical_feasible,
+        constraint_violations=constraint_violations if canonical_feasible else [],
         canonical_validation_valid=canonical_validation_valid,
         alignment_errors=alignment_errors,
         **metric,
@@ -659,6 +680,8 @@ def _empty_record(
     score: Tuple[int, int],
     optimal_objective: Optional[int],
     formulation_match: bool,
+    canonical_feasible: bool,
+    formulation_match_structural: bool,
     telemetry: Optional[RunTelemetry],
 ) -> EvaluationRecord:
     return _record(
@@ -669,8 +692,11 @@ def _empty_record(
         objective_value=None,
         optimal_objective=optimal_objective,
         formulation_match=formulation_match,
+        formulation_match_structural=formulation_match_structural,
+        canonical_feasible=canonical_feasible,
         canonical_validation_valid=False,
         alignment_errors=[],
+        constraint_violations=["No usable model output"],
         telemetry=telemetry,
     )
 
@@ -690,7 +716,14 @@ def _telemetry_metrics(telemetry: Optional[RunTelemetry]) -> Dict[str, Any]:
     }
 
 
+def _numeric_identity(value: str) -> List[str]:
+    value = re.sub(r"(\d{4})[- /](\d{2})[- /](\d{2})", r"\1\2\3", value)
+    return re.findall(r"\d+", value)
+
+
 def _name_score(left: str, right: str) -> Optional[Tuple[int, float]]:
+    if _numeric_identity(left) != _numeric_identity(right):
+        return None
     left_tokens = _name_tokens(left)
     right_tokens = _name_tokens(right)
     if left_tokens and left_tokens == right_tokens:

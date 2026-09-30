@@ -145,6 +145,7 @@ def _build_schedule(
             {"shift_id": shift_ids[(employee_index * 3 + case_index) % len(shift_ids)]},
             {"shift_id": shift_ids[(employee_index * 5 + 7) % len(shift_ids)]},
         ]
+        unavailable = list({item["shift_id"]: item for item in unavailable}.values())
         unavailable_ids = {item["shift_id"] for item in unavailable}
         preferred = [
             shift_id

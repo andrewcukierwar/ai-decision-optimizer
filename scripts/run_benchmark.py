@@ -6,8 +6,8 @@ Examples:
       --engine direct_llm --case active_and_passive --allow-paid
 
 Live execution is refused unless ``--allow-paid`` is explicit. Results append
-incrementally under ``benchmark_results/``; successful cells are skipped on
-resume, while failed cells remain retryable on the next invocation.
+incrementally under ``benchmark_results/pilot_sol61_v2/``. Successful cells and
+terminal output failures/timeouts are skipped on resume; transport failures can retry.
 """
 
 from __future__ import annotations
@@ -41,7 +41,7 @@ except ModuleNotFoundError:  # direct ``python scripts/run_benchmark.py`` execut
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_RESULTS_DIR = ROOT / "benchmark_results"
+DEFAULT_RESULTS_DIR = ROOT / "benchmark_results" / "pilot_sol61_v2"
 
 
 def load_benchmark_cases(
@@ -108,14 +108,14 @@ def build_live_backend(args: argparse.Namespace) -> LiveBenchmarkBackend:
     openai_client = OpenAI(
         api_key=openai_api_key(),
         timeout=args.request_timeout,
-        max_retries=args.api_retries,
+        max_retries=0,
     )
     jev_client = None
     if any(config.use_jev for config in selected_configs(args)):
         jev_client = TypeSafeClient(
             api_key=typesafe_api_key(),
             timeout=args.request_timeout,
-            retry=RetryPolicy(max_retries=args.api_retries),
+            retry=RetryPolicy(max_retries=0),
         )
     return LiveBenchmarkBackend(
         openai_client=openai_client,
@@ -128,7 +128,7 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument("--selection", type=Path, default=DEFAULT_SELECTION)
     parser.add_argument("--results-dir", type=Path, default=DEFAULT_RESULTS_DIR)
     parser.add_argument("--all-configurations", action="store_true")
-    parser.add_argument("--model", choices=("gpt-6-luna", "gpt-6-sol"))
+    parser.add_argument("--model", choices=("gpt-6-luna", "gpt-6.1-sol"))
     parser.add_argument("--jev", choices=("on", "off"))
     parser.add_argument("--engine", choices=("direct_llm", "cp_sat"))
     parser.add_argument(
@@ -141,7 +141,7 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument("--allow-paid", action="store_true")
     parser.add_argument("--request-timeout", type=float, default=180.0)
     parser.add_argument("--solver-timeout", type=float, default=10.0)
-    parser.add_argument("--api-retries", type=int, default=0)
+    parser.add_argument("--api-retries", type=int, choices=(0,), default=0, help="Fixed benchmark policy: SDK retries disabled; explicitly resume transport failures.")
     parser.add_argument("--jev-batch-size", type=int, default=64)
     return parser
 
