@@ -212,6 +212,25 @@ def test_final_weight_decision_reports_target_removed_by_hardness_rewrite():
     assert weight.applied and weight.final_value is None and weight.final_value_status == 'not_represented'
 
 
+def test_dayplan_formulation_match_is_stable_across_timezone_serialization():
+    from datetime import timezone
+
+    canonical = sample_plan()
+    arm = canonical.model_copy(deep=True)
+    arm.horizon.start = arm.horizon.start.replace(tzinfo=timezone.utc)
+    arm.horizon.end = arm.horizon.end.replace(tzinfo=timezone.utc)
+    arm.preferences[0].time = arm.preferences[0].time.replace(tzinfo=timezone.utc)
+    persisted = DayPlan.model_validate(arm.model_dump(mode="json"))
+    for structural in (False, True):
+        assert dayplan_formulation_matches(canonical, arm, structural=structural)
+        assert dayplan_formulation_matches(canonical, persisted, structural=structural)
+    arm.preferences[0].weight += 1
+    assert dayplan_formulation_matches(canonical, arm, structural=True)
+    assert not dayplan_formulation_matches(canonical, arm)
+    arm.horizon.end = arm.horizon.end.replace(hour=17)
+    assert not dayplan_formulation_matches(canonical, arm, structural=True)
+
+
 def test_structural_match_ignores_weights_but_preserves_hard_soft_and_requirements():
     canonical = sample_plan()
     arm = canonical.model_copy(deep=True)

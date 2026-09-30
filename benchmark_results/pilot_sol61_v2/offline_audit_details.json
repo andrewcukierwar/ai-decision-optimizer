@@ -1,0 +1,990 @@
+{
+  "summary_matches_latest": true,
+  "pre_fix_implementation_hash": "3e768055d46522fabdb31adcb216d6fbfe7285f3dcc9bab30adaa6dee0f47b38",
+  "openai_calls": [
+    {
+      "case": "workout_before_four_soft",
+      "requested": "gpt-6-luna",
+      "stage": "extraction",
+      "resolved": [
+        "gpt-6-luna"
+      ],
+      "input_tokens": 1488,
+      "output_tokens": 240,
+      "cost": 0.00026880000000000003
+    },
+    {
+      "case": "workout_before_four_soft",
+      "requested": "gpt-6-luna",
+      "stage": "direct_jev_false",
+      "resolved": [
+        "gpt-6-luna"
+      ],
+      "input_tokens": 449,
+      "output_tokens": 131,
+      "cost": 0.00011039999999999997
+    },
+    {
+      "case": "workout_before_four_soft",
+      "requested": "gpt-6-luna",
+      "stage": "direct_jev_true",
+      "resolved": [
+        "gpt-6-luna"
+      ],
+      "input_tokens": 449,
+      "output_tokens": 169,
+      "cost": 0.0001294
+    },
+    {
+      "case": "workout_before_four_soft",
+      "requested": "gpt-6.1-sol",
+      "stage": "extraction",
+      "resolved": [
+        "gpt-6.1-sol"
+      ],
+      "input_tokens": 1488,
+      "output_tokens": 187,
+      "cost": 0.004846
+    },
+    {
+      "case": "workout_before_four_soft",
+      "requested": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "resolved": [
+        "gpt-6.1-sol"
+      ],
+      "input_tokens": 449,
+      "output_tokens": 75,
+      "cost": 0.0016480000000000002
+    },
+    {
+      "case": "workout_before_four_soft",
+      "requested": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "resolved": [
+        "gpt-6.1-sol"
+      ],
+      "input_tokens": 449,
+      "output_tokens": 68,
+      "cost": 0.0015779999999999995
+    },
+    {
+      "case": "regional_week",
+      "requested": "gpt-6-luna",
+      "stage": "extraction",
+      "resolved": [
+        "gpt-6-luna"
+      ],
+      "input_tokens": 2236,
+      "output_tokens": 1578,
+      "cost": 0.0010126
+    },
+    {
+      "case": "regional_week",
+      "requested": "gpt-6-luna",
+      "stage": "direct_jev_false",
+      "resolved": [
+        "gpt-6-luna"
+      ],
+      "input_tokens": 2500,
+      "output_tokens": 2329,
+      "cost": 0.0014144999999999997
+    },
+    {
+      "case": "regional_week",
+      "requested": "gpt-6-luna",
+      "stage": "direct_jev_true",
+      "resolved": [
+        "gpt-6-luna"
+      ],
+      "input_tokens": 2568,
+      "output_tokens": 4959,
+      "cost": 0.0027363000000000005
+    },
+    {
+      "case": "regional_week",
+      "requested": "gpt-6.1-sol",
+      "stage": "extraction",
+      "resolved": [
+        "gpt-6.1-sol"
+      ],
+      "input_tokens": 2236,
+      "output_tokens": 1684,
+      "cost": 0.021312
+    },
+    {
+      "case": "regional_week",
+      "requested": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "resolved": [
+        "gpt-6.1-sol"
+      ],
+      "input_tokens": 2500,
+      "output_tokens": 1599,
+      "cost": 0.020990000000000005
+    },
+    {
+      "case": "regional_week",
+      "requested": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "resolved": [
+        "gpt-6.1-sol"
+      ],
+      "input_tokens": 2602,
+      "output_tokens": 2055,
+      "cost": 0.025753999999999996
+    }
+  ],
+  "pairs": [
+    {
+      "case": "workout_before_four_soft",
+      "model": "gpt-6-luna",
+      "extraction_hash": "1369c22b0079db916a89209e6a18f6fafabcb34e32b39c81d2918475aa24f1c7",
+      "questions": 4,
+      "question_types": {
+        "constraint_hardness": 1,
+        "task_requirement": 1,
+        "task_mode": 1,
+        "pref_weight": 1
+      },
+      "applied": 3,
+      "changed": 0,
+      "requested_jev": "jev-latest",
+      "resolved_jev": "jev-1.13.0",
+      "jev_input_tokens": 825,
+      "request_contexts": [
+        {
+          "task": "Workout",
+          "start": null,
+          "end": "16:00"
+        },
+        {
+          "task": "Workout",
+          "duration_min": 60
+        },
+        {
+          "task": "Workout",
+          "duration_min": 60
+        },
+        {
+          "objective_description": "{'type': 'finish_before', 'task': 'Workout', 'time': '16:00'}"
+        }
+      ]
+    },
+    {
+      "case": "workout_before_four_soft",
+      "model": "gpt-6.1-sol",
+      "extraction_hash": "1369c22b0079db916a89209e6a18f6fafabcb34e32b39c81d2918475aa24f1c7",
+      "questions": 4,
+      "question_types": {
+        "constraint_hardness": 1,
+        "task_requirement": 1,
+        "task_mode": 1,
+        "pref_weight": 1
+      },
+      "applied": 3,
+      "changed": 0,
+      "requested_jev": "jev-latest",
+      "resolved_jev": "jev-1.13.0",
+      "jev_input_tokens": 825,
+      "request_contexts": [
+        {
+          "task": "Workout",
+          "start": null,
+          "end": "16:00"
+        },
+        {
+          "task": "Workout",
+          "duration_min": 60
+        },
+        {
+          "task": "Workout",
+          "duration_min": 60
+        },
+        {
+          "objective_description": "{'type': 'finish_before', 'task': 'Workout', 'time': '16:00'}"
+        }
+      ]
+    },
+    {
+      "case": "regional_week",
+      "model": "gpt-6-luna",
+      "extraction_hash": "de0022980a25540858124b42d5badefc53786a38968dbb9f65cd86a57ef28463",
+      "questions": 34,
+      "question_types": {
+        "pref_weight": 2,
+        "availability_applies": 32
+      },
+      "applied": 28,
+      "changed": 2,
+      "requested_jev": "jev-latest",
+      "resolved_jev": "jev-1.13.0",
+      "jev_input_tokens": 7719,
+      "request_contexts": [
+        {
+          "objective_description": "employee shift preferences"
+        },
+        {
+          "objective_description": "fair distribution of work"
+        },
+        {
+          "employee": "Avery",
+          "candidate_shift": {
+            "id": "20261005_morning",
+            "day": "2026-10-05",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Avery",
+          "candidate_shift": {
+            "id": "20261005_evening",
+            "day": "2026-10-05",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Avery",
+          "candidate_shift": {
+            "id": "20261008_morning",
+            "day": "2026-10-08",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Avery",
+          "candidate_shift": {
+            "id": "20261008_evening",
+            "day": "2026-10-08",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Blake",
+          "candidate_shift": {
+            "id": "20261006_morning",
+            "day": "2026-10-06",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Blake",
+          "candidate_shift": {
+            "id": "20261006_evening",
+            "day": "2026-10-06",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Blake",
+          "candidate_shift": {
+            "id": "20261007_morning",
+            "day": "2026-10-07",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Blake",
+          "candidate_shift": {
+            "id": "20261011_morning",
+            "day": "2026-10-11",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Casey",
+          "candidate_shift": {
+            "id": "20261006_morning",
+            "day": "2026-10-06",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Casey",
+          "candidate_shift": {
+            "id": "20261006_evening",
+            "day": "2026-10-06",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Casey",
+          "candidate_shift": {
+            "id": "20261007_morning",
+            "day": "2026-10-07",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Casey",
+          "candidate_shift": {
+            "id": "20261008_morning",
+            "day": "2026-10-08",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Devon",
+          "candidate_shift": {
+            "id": "20261008_evening",
+            "day": "2026-10-08",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Devon",
+          "candidate_shift": {
+            "id": "20261009_morning",
+            "day": "2026-10-09",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Devon",
+          "candidate_shift": {
+            "id": "20261009_evening",
+            "day": "2026-10-09",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Devon",
+          "candidate_shift": {
+            "id": "20261010_morning",
+            "day": "2026-10-10",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Emery",
+          "candidate_shift": {
+            "id": "20261010_morning",
+            "day": "2026-10-10",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Emery",
+          "candidate_shift": {
+            "id": "20261010_evening",
+            "day": "2026-10-10",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Emery",
+          "candidate_shift": {
+            "id": "20261011_morning",
+            "day": "2026-10-11",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Emery",
+          "candidate_shift": {
+            "id": "20261011_evening",
+            "day": "2026-10-11",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Finley",
+          "candidate_shift": {
+            "id": "20261005_morning",
+            "day": "2026-10-05",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Finley",
+          "candidate_shift": {
+            "id": "20261005_evening",
+            "day": "2026-10-05",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Finley",
+          "candidate_shift": {
+            "id": "20261006_morning",
+            "day": "2026-10-06",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Finley",
+          "candidate_shift": {
+            "id": "20261007_morning",
+            "day": "2026-10-07",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Gray",
+          "candidate_shift": {
+            "id": "20261006_evening",
+            "day": "2026-10-06",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Gray",
+          "candidate_shift": {
+            "id": "20261007_morning",
+            "day": "2026-10-07",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Gray",
+          "candidate_shift": {
+            "id": "20261007_evening",
+            "day": "2026-10-07",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Gray",
+          "candidate_shift": {
+            "id": "20261009_evening",
+            "day": "2026-10-09",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Harper",
+          "candidate_shift": {
+            "id": "20261005_morning",
+            "day": "2026-10-05",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Harper",
+          "candidate_shift": {
+            "id": "20261005_evening",
+            "day": "2026-10-05",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Harper",
+          "candidate_shift": {
+            "id": "20261008_morning",
+            "day": "2026-10-08",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Harper",
+          "candidate_shift": {
+            "id": "20261008_evening",
+            "day": "2026-10-08",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        }
+      ]
+    },
+    {
+      "case": "regional_week",
+      "model": "gpt-6.1-sol",
+      "extraction_hash": "de0022980a25540858124b42d5badefc53786a38968dbb9f65cd86a57ef28463",
+      "questions": 34,
+      "question_types": {
+        "pref_weight": 2,
+        "availability_applies": 32
+      },
+      "applied": 30,
+      "changed": 3,
+      "requested_jev": "jev-latest",
+      "resolved_jev": "jev-1.13.0",
+      "jev_input_tokens": 7719,
+      "request_contexts": [
+        {
+          "objective_description": "employee shift preferences"
+        },
+        {
+          "objective_description": "fair distribution of work"
+        },
+        {
+          "employee": "Avery",
+          "candidate_shift": {
+            "id": "20261005_morning",
+            "day": "2026-10-05",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Avery",
+          "candidate_shift": {
+            "id": "20261005_evening",
+            "day": "2026-10-05",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Avery",
+          "candidate_shift": {
+            "id": "20261008_morning",
+            "day": "2026-10-08",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Avery",
+          "candidate_shift": {
+            "id": "20261008_evening",
+            "day": "2026-10-08",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Blake",
+          "candidate_shift": {
+            "id": "20261006_morning",
+            "day": "2026-10-06",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Blake",
+          "candidate_shift": {
+            "id": "20261006_evening",
+            "day": "2026-10-06",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Blake",
+          "candidate_shift": {
+            "id": "20261007_morning",
+            "day": "2026-10-07",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Blake",
+          "candidate_shift": {
+            "id": "20261011_morning",
+            "day": "2026-10-11",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Casey",
+          "candidate_shift": {
+            "id": "20261006_morning",
+            "day": "2026-10-06",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Casey",
+          "candidate_shift": {
+            "id": "20261006_evening",
+            "day": "2026-10-06",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Casey",
+          "candidate_shift": {
+            "id": "20261007_morning",
+            "day": "2026-10-07",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Casey",
+          "candidate_shift": {
+            "id": "20261008_morning",
+            "day": "2026-10-08",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Devon",
+          "candidate_shift": {
+            "id": "20261008_evening",
+            "day": "2026-10-08",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Devon",
+          "candidate_shift": {
+            "id": "20261009_morning",
+            "day": "2026-10-09",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Devon",
+          "candidate_shift": {
+            "id": "20261009_evening",
+            "day": "2026-10-09",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Devon",
+          "candidate_shift": {
+            "id": "20261010_morning",
+            "day": "2026-10-10",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Emery",
+          "candidate_shift": {
+            "id": "20261010_morning",
+            "day": "2026-10-10",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Emery",
+          "candidate_shift": {
+            "id": "20261010_evening",
+            "day": "2026-10-10",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Emery",
+          "candidate_shift": {
+            "id": "20261011_morning",
+            "day": "2026-10-11",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Emery",
+          "candidate_shift": {
+            "id": "20261011_evening",
+            "day": "2026-10-11",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Finley",
+          "candidate_shift": {
+            "id": "20261005_morning",
+            "day": "2026-10-05",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Finley",
+          "candidate_shift": {
+            "id": "20261005_evening",
+            "day": "2026-10-05",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Finley",
+          "candidate_shift": {
+            "id": "20261006_morning",
+            "day": "2026-10-06",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Finley",
+          "candidate_shift": {
+            "id": "20261007_morning",
+            "day": "2026-10-07",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Gray",
+          "candidate_shift": {
+            "id": "20261006_evening",
+            "day": "2026-10-06",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Gray",
+          "candidate_shift": {
+            "id": "20261007_morning",
+            "day": "2026-10-07",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Gray",
+          "candidate_shift": {
+            "id": "20261007_evening",
+            "day": "2026-10-07",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Gray",
+          "candidate_shift": {
+            "id": "20261009_evening",
+            "day": "2026-10-09",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Harper",
+          "candidate_shift": {
+            "id": "20261005_morning",
+            "day": "2026-10-05",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Harper",
+          "candidate_shift": {
+            "id": "20261005_evening",
+            "day": "2026-10-05",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "north",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Harper",
+          "candidate_shift": {
+            "id": "20261008_morning",
+            "day": "2026-10-08",
+            "start": "08:00",
+            "end": "12:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        },
+        {
+          "employee": "Harper",
+          "candidate_shift": {
+            "id": "20261008_evening",
+            "day": "2026-10-08",
+            "start": "16:00",
+            "end": "20:00",
+            "location": "south",
+            "required_staff": 2
+          }
+        }
+      ]
+    }
+  ],
+  "offline_metric_corrections": [
+    {
+      "case": "workout_before_four_soft",
+      "architecture": "Luna 6 \u00b7 Direct LLM",
+      "metric": "formulation_match_structural",
+      "recorded": false,
+      "offline": true
+    },
+    {
+      "case": "workout_before_four_soft",
+      "architecture": "Luna 6 \u00b7 CP-SAT",
+      "metric": "formulation_match_structural",
+      "recorded": false,
+      "offline": true
+    },
+    {
+      "case": "workout_before_four_soft",
+      "architecture": "Sol 6.1 \u00b7 Direct LLM",
+      "metric": "formulation_match_structural",
+      "recorded": false,
+      "offline": true
+    },
+    {
+      "case": "workout_before_four_soft",
+      "architecture": "Sol 6.1 \u00b7 CP-SAT",
+      "metric": "formulation_match_structural",
+      "recorded": false,
+      "offline": true
+    }
+  ]
+}

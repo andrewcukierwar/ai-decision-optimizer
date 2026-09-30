@@ -384,6 +384,11 @@ def evaluate_shift_schedule(
 
 
 def dayplan_formulation_matches(canonical: DayPlan, arm: DayPlan, *, structural: bool = False) -> bool:
+    # DayPlan uses local clock minutes, and its time serializers discard timezone
+    # metadata. Compare the same representation that is persisted and solved,
+    # so a provider time suffix cannot change scoring after a Jev/cache roundtrip.
+    canonical = DayPlan.model_validate(canonical.model_dump(mode="json"))
+    arm = DayPlan.model_validate(arm.model_dump(mode="json"))
     alignment = align_names(
         [task.name for task in arm.tasks], [task.name for task in canonical.tasks]
     )
