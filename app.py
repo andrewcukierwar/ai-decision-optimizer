@@ -1,6 +1,8 @@
-"""Small Streamlit MVP for the AI Decision Optimizer."""
+"""Research MVP: single custom architectures and a strictly offline comparison."""
 
+from copy import deepcopy
 import json
+from time import perf_counter
 from typing import Any, Dict, Optional
 
 from decision_optimizer import config as _config  # noqa: F401 - loads local .env
@@ -19,6 +21,13 @@ from decision_optimizer.application import (
 from decision_optimizer.diagnostics import InfeasibilityDiagnostic
 from decision_optimizer.direct_solver import DirectSolverError
 from decision_optimizer.experiment import ExperimentConfig
+from decision_optimizer.jev import JevError, apply_jev
+from decision_optimizer.telemetry import RunTelemetry
+from decision_optimizer.research_presentation import (
+    CALIBRATION_IMAGE, CUSTOM_VALIDATION_NOTE, architecture_summary_rows,
+    case_outcome_rows, jev_decision_rows, load_final_benchmark,
+    research_findings, runtime_summary,
+)
 from decision_optimizer.parsing.dayplan import DayPlanError, DayPlanExtraction
 from decision_optimizer.parsing.shift_schedule import (
     ShiftScheduleError,
@@ -59,14 +68,32 @@ def main() -> None:
     )
     st.title("AI Decision Optimizer")
     st.caption(
-        "Turn a natural-language planning problem into a validated, optimized recommendation."
+        "An interactive research platform for AI decision-making on constrained scheduling problems."
     )
+    mode = st.radio(
+        "Explore", ("Custom problem", "Benchmark / Compare", "Research findings"),
+        horizontal=True, key="research_mode",
+    )
+    st.caption("2 base models × 2 decision layers × 2 solution engines = 8 benchmarked architectures")
+    if mode != "Custom problem":
+        try:
+            view = load_final_benchmark()
+        except (OSError, ValueError, KeyError) as error:
+            st.error("Committed final benchmark artifacts could not be loaded: " + str(error))
+            return
+        if mode == "Benchmark / Compare":
+            _render_benchmark(st, view)
+        else:
+            _render_research_findings(st, view)
+        return
+
+    st.info("Custom mode executes only the single architecture you select. Interpret and Confirm & Solve can incur API cost.")
 
     problem_type = st.selectbox("Problem type", PROBLEM_TYPES, key="problem_type")
     _reset_for_problem_change(st, problem_type)
     prefix = _prefix(problem_type)
 
-    controls = st.columns(2)
+    controls = st.columns(3)
     with controls[0]:
         model = st.selectbox(
             "Base model",
@@ -77,6 +104,8 @@ def main() -> None:
             ),
         )
     with controls[1]:
+        use_jev = _jev_control(st)
+    with controls[2]:
         solution_engine = st.radio(
             "Solution engine",
             ("cp_sat", "direct_llm"),
@@ -86,10 +115,15 @@ def main() -> None:
             ),
         )
     experiment = ExperimentConfig(
-        model=model, use_jev=False, solution_engine=solution_engine
+        model=model, use_jev=use_jev, solution_engine=solution_engine
     )
     _reset_for_experiment_change(st, prefix, experiment)
     st.caption("Architecture: " + experiment.label())
+    with st.expander("View the eight architecture configurations"):
+        st.dataframe(
+            [{"Architecture": config.label()} for config in architecture_configurations()],
+            hide_index=True, use_container_width=True,
+        )
 
     request = st.text_area(
         "Natural-language problem",
@@ -114,6 +148,9 @@ def main() -> None:
             _show_api_hint(st)
         return
 
+    if experiment.use_jev:
+        _render_jev_decisions(st, st.session_state.get(prefix + "_jev_decisions", []))
+
     if problem_type == "Day Planner":
         _render_dayplan_flow(st, request, prefix, extraction, experiment)
     else:
@@ -126,18 +163,168 @@ def _interpret(
     prefix = _prefix(problem_type)
     _clear_interpretation_state(st, prefix)
     st.session_state[prefix + "_source_request"] = request
+    telemetry = RunTelemetry.start(config, prefix)
     try:
         extraction = (
-            parse_dayplan_request(request, config=config)
+            parse_dayplan_request(request, config=config, telemetry=telemetry)
             if problem_type == "Day Planner"
-            else parse_shift_schedule_request(request, config=config)
+            else parse_shift_schedule_request(request, config=config, telemetry=telemetry)
         )
+        _accept_extraction(st, prefix, extraction, request, config, telemetry, False)
+    except JevError:
+        telemetry.finish()
+        st.session_state[prefix + "_error"] = "Jev review failed. Check the TypeSafe configuration, retry, or select Jev off and Interpret again."
+        return
     except (DayPlanError, ShiftScheduleError) as error:
+        telemetry.finish(error)
         st.session_state[prefix + "_error"] = str(error)
         st.session_state.pop(prefix + "_extraction", None)
         return
     st.session_state.pop(prefix + "_error", None)
-    _store_extraction(st, prefix, extraction, clarification_used=False)
+
+
+def architecture_configurations() -> tuple[ExperimentConfig, ...]:
+    return tuple(
+        ExperimentConfig(model=model, use_jev=jev, solution_engine=engine)
+        for model in ("gpt-6-luna", "gpt-6.1-sol")
+        for jev in (False, True)
+        for engine in ("direct_llm", "cp_sat")
+    )
+
+
+def _jev_control(st: Any) -> bool:
+    st.write("Decision layer")
+    available = bool(_config.typesafe_api_key())
+    # Keep a stale widget selection from enabling Jev after configuration loss.
+    if not available:
+        st.session_state["use_jev"] = False
+    selected = st.toggle("Jev on", value=available, disabled=not available, key="use_jev")
+    st.caption("Decision layer · TypeSafe Jev" if available else "Jev off: TYPESAFE_API_KEY is not configured on the server.")
+    return bool(selected and available)
+
+
+def _accept_extraction(st: Any, prefix: str, extraction: Any, request: str,
+                       config: ExperimentConfig, telemetry: RunTelemetry,
+                       clarification_used: bool, prior_elapsed: float = 0.0) -> Any:
+    field = "plan" if prefix == "dayplan" else "schedule"
+    problem = getattr(extraction, field)
+    decisions = []
+    if problem is not None and config.use_jev:
+        result = apply_jev(request, problem, telemetry=telemetry, request_timeout_seconds=60.0)
+        extraction = extraction.model_copy(update={field: result.problem})
+        decisions = result.decisions
+    telemetry.finish()
+    telemetry.latency_total_s += prior_elapsed
+    _store_extraction(st, prefix, extraction, clarification_used)
+    st.session_state[prefix + "_interpretation_telemetry"] = telemetry
+    st.session_state[prefix + "_jev_decisions"] = decisions
+    return extraction
+
+
+def _resume_telemetry(st: Any, prefix: str, config: ExperimentConfig) -> tuple[RunTelemetry, float]:
+    prior = st.session_state.get(prefix + "_interpretation_telemetry")
+    telemetry = deepcopy(prior) if prior is not None else RunTelemetry.start(config, prefix)
+    elapsed = telemetry.latency_total_s
+    telemetry._started_at = perf_counter()
+    telemetry.architecture = config.label()
+    telemetry.solution_engine = config.solution_engine
+    return telemetry, elapsed
+
+
+def _render_runtime_header(st: Any, run: Any) -> None:
+    st.subheader("Custom run · research summary")
+    summary = runtime_summary(run)
+    st.markdown("**" + summary.pop("Architecture") + "**")
+    st.caption("Execution: " + summary.pop("Execution") + " · Solve status: " + summary.pop("Solve status"))
+    items = list(summary.items())
+    for start in range(0, len(items), 4):
+        for column, (label, value) in zip(st.columns(4), items[start:start + 4]):
+            column.metric(label, value)
+    st.caption(CUSTOM_VALIDATION_NOTE)
+    st.caption(
+        "Pipeline latency includes interpretation, Jev review, and this solve; it excludes time spent reviewing input. "
+        "OpenAI cost is a token-based estimate; TypeSafe cost is not included. "
+        "An infeasible Direct LLM verdict is not an infeasibility proof."
+    )
+
+
+def _render_jev_decisions(st: Any, decisions: list) -> None:
+    st.subheader("Jev semantic decisions")
+    st.caption(
+        "Jev reviews selected semantic decisions from LLM-extracted content; it does not regenerate the full problem. "
+        "Answers below the configured confidence threshold retain the GPT interpretation. "
+        "Final represented values describe the Jev-reviewed formulation before manual JSON edits."
+    )
+    if not decisions:
+        st.info("No eligible decisions recorded. A complete typed extraction is required for Jev review.")
+        return
+    st.dataframe(jev_decision_rows(decisions), hide_index=True, use_container_width=True)
+    with st.expander("Inspect probability distributions and recorded decision evidence"):
+        st.caption("Score distributions use levels 0–4, mapped to preference weights 1–5. Selected probability controls thresholding.")
+        st.json([d.model_dump(mode="json") if hasattr(d, "model_dump") else d for d in decisions])
+
+
+def _render_benchmark(st: Any, view: Any) -> None:
+    st.subheader("Final benchmark · Compare architectures")
+    st.info("Precomputed results only · 14 curated cases · 112 architecture cells · No live provider calls")
+    case_id = st.selectbox("Curated benchmark case", view.case_ids, format_func=lambda c: c.replace("_", " ").capitalize())
+    cells = [cell for cell in view.cells if cell["case_id"] == case_id]
+    st.caption(
+        ("Day Planner" if cells[0]["domain"] == "dayplan" else "Workforce Scheduler")
+        + " · Canonically " + ("feasible" if cells[0]["canonical_evaluation"]["canonical_feasible"] else "infeasible")
+    )
+    st.dataframe(
+        case_outcome_rows(view, case_id), hide_index=True, use_container_width=True,
+        column_config={"Architecture": st.column_config.TextColumn(width="medium")},
+    )
+    st.caption(
+        "🔴 Terminal failure · 🟠 Abstention (no usable output) · ⚠️ Incorrect canonical outcome · 🟢 Correct canonical outcome. "
+        "Outcome correctness checks canonical validity for feasible cases and the infeasibility verdict for infeasible cases. "
+        "Usable structured output can still violate canonical constraints. Objective gaps are meaningful only within this case."
+    )
+    with st.expander("Inspect a recorded architecture outcome"):
+        architecture = st.selectbox("Recorded architecture", [row["Architecture"] for row in case_outcome_rows(view, case_id)])
+        cell = next(c for c in cells if c["architecture"] == architecture)
+        if cell["status"] == "terminal_failure":
+            st.error("Terminal failure: " + " / ".join(filter(None, (cell.get("failure_stage"), cell.get("failure_category")))))
+        elif not cell["canonical_evaluation"]["valid_output"]:
+            st.warning("Abstention: no usable output. " + " ".join((cell.get("extraction") or {}).get("missing_info", [])))
+        st.json({key: cell.get(key) for key in ("canonical_evaluation", "extraction", "final_problem", "solution", "jev_decisions")})
+    st.subheader("Eight-architecture summary")
+    st.dataframe(
+        architecture_summary_rows(view), hide_index=True, use_container_width=True,
+        column_config={"Architecture": st.column_config.TextColumn(width="medium")},
+    )
+    st.caption(
+        "Exact Phase 10 counts; failures and abstentions remain in denominators. Optimum attainment uses valid feasible outputs only. "
+        "Latency and cost are standalone architecture estimates under the shared-extraction design. "
+        "Timeout billing is unknown; displayed costs include known usage only and exclude TypeSafe costs. No composite ranking is used."
+    )
+    with st.expander("Read the benchmark findings and calibration"):
+        _render_research_findings(st, view)
+
+
+def _render_research_findings(st: Any, view: Any) -> None:
+    st.subheader("Research findings · finalized Phase 10")
+    st.caption("14 curated cases; one extraction sample per case/model, shared across variants. Descriptive findings, with no significance claims.")
+    for title, finding in research_findings(view).items():
+        st.markdown("**" + title + "**")
+        st.write(finding)
+    st.markdown("**Calibration · separate primitive-specific metrics**")
+    groups = view.calibration["groups"]
+    columns = st.columns(3)
+    columns[0].metric("Pooled Choice Brier", f'{groups["pooled_choice"]["binary_brier"]:.6f}')
+    columns[1].metric("Availability / Noul Brier", f'{groups["availability_applies"]["binary_brier"]:.6f}')
+    columns[2].metric("Preference five-class Brier", f'{groups["pref_weight"]["multiclass_brier"]:.6f}')
+    st.caption("Choice and Noul use binary Brier (0–1); preference weight uses a five-class sum (0–2). These definitions are not pooled. Preference weight n=10: a small sample, insufficient for a broad calibration claim.")
+    if CALIBRATION_IMAGE.is_file():
+        st.image(str(CALIBRATION_IMAGE), caption="Committed Phase 10 calibration · selected confidence versus empirical correctness", use_container_width=True)
+    else:
+        st.warning("The committed calibration image is unavailable.")
+    with st.expander("Methodology, limitations, and provenance"):
+        for limitation in view.summary["limitations"]:
+            st.write("• " + limitation)
+        st.json(view.summary["provenance"])
 
 
 def _render_dayplan_flow(
@@ -159,10 +346,19 @@ def _render_dayplan_flow(
             )
             if st.button("Submit clarification", key=prefix + "_clarify"):
                 try:
+                    telemetry, elapsed = _resume_telemetry(st, prefix, config)
                     extraction = clarify_dayplan_request(
-                        request, extraction, answer, config=config
+                        request, extraction, answer, config=config, telemetry=telemetry
                     )
-                    _store_extraction(st, prefix, extraction, clarification_used=True)
+                    extraction = _accept_extraction(
+                        st, prefix, extraction, request + "\nClarification: " + answer,
+                        config, telemetry, True, elapsed,
+                    )
+                    if config.use_jev:
+                        _render_jev_decisions(st, st.session_state[prefix + "_jev_decisions"])
+                except JevError:
+                    st.error("Jev review failed. Retry or select Jev off and Interpret again.")
+                    return
                 except (DayPlanError, ShiftScheduleError) as error:
                     st.error(str(error))
                     return
@@ -191,10 +387,19 @@ def _render_shift_schedule_flow(
             )
             if st.button("Submit clarification", key=prefix + "_clarify"):
                 try:
+                    telemetry, elapsed = _resume_telemetry(st, prefix, config)
                     extraction = clarify_shift_schedule_request(
-                        request, extraction, answer, config=config
+                        request, extraction, answer, config=config, telemetry=telemetry
                     )
-                    _store_extraction(st, prefix, extraction, clarification_used=True)
+                    extraction = _accept_extraction(
+                        st, prefix, extraction, request + "\nClarification: " + answer,
+                        config, telemetry, True, elapsed,
+                    )
+                    if config.use_jev:
+                        _render_jev_decisions(st, st.session_state[prefix + "_jev_decisions"])
+                except JevError:
+                    st.error("Jev review failed. Retry or select Jev off and Interpret again.")
+                    return
                 except (DayPlanError, ShiftScheduleError) as error:
                     st.error(str(error))
                     return
@@ -234,7 +439,13 @@ def _render_dayplan_interpretation(
             st.error("Edited interpretation is invalid: " + str(error))
             return
         try:
-            run = solve_confirmed_dayplan(confirmed_plan, config=config)
+            telemetry, elapsed = _resume_telemetry(st, prefix, config)
+            run = solve_confirmed_dayplan(
+                confirmed_plan, config=config, telemetry=telemetry,
+                jev_decisions=st.session_state.get(prefix + "_jev_decisions", []),
+                request_timeout_seconds=60.0,
+            )
+            run.telemetry.latency_total_s += elapsed
         except DirectSolverError as error:
             st.error(str(error))
             return
@@ -274,7 +485,13 @@ def _render_shift_schedule_interpretation(
             st.error("Edited interpretation is invalid: " + str(error))
             return
         try:
-            run = solve_confirmed_shift_schedule(confirmed_schedule, config=config)
+            telemetry, elapsed = _resume_telemetry(st, prefix, config)
+            run = solve_confirmed_shift_schedule(
+                confirmed_schedule, config=config, telemetry=telemetry,
+                jev_decisions=st.session_state.get(prefix + "_jev_decisions", []),
+                request_timeout_seconds=60.0,
+            )
+            run.telemetry.latency_total_s += elapsed
         except DirectSolverError as error:
             st.error(str(error))
             return
@@ -287,6 +504,7 @@ def _render_shift_schedule_interpretation(
 
 
 def _render_dayplan_run(st: Any, run: DayPlanRun) -> None:
+    _render_runtime_header(st, run)
     solution = run.solution
     if solution.status.value == "infeasible":
         _render_dayplan_result_summary(st, run)
@@ -334,6 +552,7 @@ def _render_dayplan_run(st: Any, run: DayPlanRun) -> None:
 
 
 def _render_shift_schedule_run(st: Any, run: ShiftScheduleRun) -> None:
+    _render_runtime_header(st, run)
     solution = run.solution
     if solution.status.value == "infeasible":
         _render_shift_infeasible_result(st, run)
@@ -982,6 +1201,8 @@ def _reset_for_problem_change(st: Any, problem_type: str) -> None:
             "source_request",
             "error",
             "experiment_config",
+            "interpretation_telemetry",
+            "jev_decisions",
         ):
             st.session_state.pop(prefix + "_" + suffix, None)
         st.session_state.pop(prefix + "_clarification_used", None)
@@ -1007,7 +1228,7 @@ def _reset_for_experiment_change(
     previous = st.session_state.get(key)
     current = config.model_dump()
     if previous is not None and previous != current:
-        if previous.get("model") != current["model"]:
+        if any(previous.get(key) != current[key] for key in ("model", "use_jev")):
             _clear_interpretation_state(st, prefix)
             st.session_state.pop(prefix + "_source_request", None)
         else:
@@ -1025,6 +1246,8 @@ def _clear_interpretation_state(st: Any, prefix: str) -> None:
         "run",
         "solved_json",
         "error",
+        "interpretation_telemetry",
+        "jev_decisions",
     ):
         st.session_state.pop(prefix + "_" + suffix, None)
 

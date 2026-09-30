@@ -122,9 +122,9 @@ JEV_APPLY_THRESHOLD=0.7
 
 ```python
 ExperimentConfig(
-    model="gpt-6.1-sol",          # gpt-6-luna | gpt-6.1-sol
+    model="gpt-6.1-sol",  # gpt-6-luna | gpt-6.1-sol
     use_jev=False,
-    solution_engine="cp_sat",   # direct_llm | cp_sat
+    solution_engine="cp_sat",  # direct_llm | cp_sat
 )
 ```
 
@@ -253,12 +253,12 @@ Each question type is a registry entry in `jev.py`:
 ```python
 JevQuestionType(
     key="pref_weight",
-    primitive="score",               # choice | score | noul
+    primitive="score",  # choice | score | noul
     domains={"dayplan"},
-    applies_to=...,                  # items in the problem this question is asked about
-    prompt=...,                      # question text for one item
-    gpt_value=...,                   # what GPT's extraction already says (Jev-off baseline)
-    apply=...,                       # deterministic rewrite of the typed problem
+    applies_to=...,  # items in the problem this question is asked about
+    prompt=...,  # question text for one item
+    gpt_value=...,  # what GPT's extraction already says (Jev-off baseline)
+    apply=...,  # deterministic rewrite of the typed problem
 )
 ```
 
