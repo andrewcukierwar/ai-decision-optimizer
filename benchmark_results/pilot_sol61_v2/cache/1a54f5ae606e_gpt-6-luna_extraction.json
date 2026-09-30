@@ -1,0 +1,411 @@
+{
+  "case_id": "regional_week",
+  "fingerprint": "30c70b9b6589d8bd0b6046ea9361b08d4372090cc78ad54640b38b6742c8ce08",
+  "missing_info": [],
+  "model": "gpt-6-luna",
+  "problem": {
+    "employees": [
+      {
+        "eligible_locations": [
+          "north"
+        ],
+        "max_hours": 32,
+        "name": "Avery",
+        "preferred_shifts": [
+          "20261006_morning",
+          "20261007_morning",
+          "20261009_morning",
+          "20261010_morning",
+          "20261011_morning"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_evening",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "south"
+        ],
+        "max_hours": 32,
+        "name": "Blake",
+        "preferred_shifts": [
+          "20261005_evening",
+          "20261007_evening",
+          "20261009_evening",
+          "20261010_evening",
+          "20261011_evening"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261006_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_morning",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "north",
+          "south"
+        ],
+        "max_hours": 32,
+        "name": "Casey",
+        "preferred_shifts": [
+          "20261006_morning",
+          "20261007_morning",
+          "20261010_morning",
+          "20261011_morning"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261006_evening",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "north",
+          "south"
+        ],
+        "max_hours": 32,
+        "name": "Devon",
+        "preferred_shifts": [
+          "20261006_evening",
+          "20261007_evening",
+          "20261008_evening",
+          "20261010_evening",
+          "20261011_evening"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_morning",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "north",
+          "south"
+        ],
+        "max_hours": 32,
+        "name": "Emery",
+        "preferred_shifts": [
+          "20261005_morning",
+          "20261007_morning",
+          "20261008_morning",
+          "20261009_morning"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_evening",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "north"
+        ],
+        "max_hours": 32,
+        "name": "Finley",
+        "preferred_shifts": [
+          "20261007_evening",
+          "20261008_evening",
+          "20261009_evening",
+          "20261011_evening"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "south"
+        ],
+        "max_hours": 32,
+        "name": "Gray",
+        "preferred_shifts": [
+          "20261005_morning",
+          "20261006_morning",
+          "20261008_morning",
+          "20261009_morning",
+          "20261010_morning"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_evening",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "north",
+          "south"
+        ],
+        "max_hours": 32,
+        "name": "Harper",
+        "preferred_shifts": [
+          "20261005_evening",
+          "20261006_evening",
+          "20261009_evening",
+          "20261010_evening"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_morning",
+            "start": null
+          }
+        ]
+      }
+    ],
+    "objective_weights": {
+      "fairness": 1,
+      "preference_penalty": 2
+    },
+    "rules": [
+      {
+        "min_rest_hours": 12,
+        "type": "minimum_rest"
+      },
+      {
+        "max_days": 4,
+        "type": "maximum_consecutive_days"
+      },
+      {
+        "days": [
+          "2026-10-07"
+        ],
+        "employee_name": "Casey",
+        "type": "required_days_off"
+      },
+      {
+        "days": [
+          "2026-10-10"
+        ],
+        "employee_name": "Harper",
+        "type": "required_days_off"
+      }
+    ],
+    "shifts": [
+      {
+        "day": "2026-10-05",
+        "end": "12:00",
+        "id": "20261005_morning",
+        "location": "north",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-05",
+        "end": "20:00",
+        "id": "20261005_evening",
+        "location": "north",
+        "required_staff": 2,
+        "start": "16:00"
+      },
+      {
+        "day": "2026-10-06",
+        "end": "12:00",
+        "id": "20261006_morning",
+        "location": "south",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-06",
+        "end": "20:00",
+        "id": "20261006_evening",
+        "location": "south",
+        "required_staff": 2,
+        "start": "16:00"
+      },
+      {
+        "day": "2026-10-07",
+        "end": "12:00",
+        "id": "20261007_morning",
+        "location": "north",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-07",
+        "end": "20:00",
+        "id": "20261007_evening",
+        "location": "north",
+        "required_staff": 2,
+        "start": "16:00"
+      },
+      {
+        "day": "2026-10-08",
+        "end": "12:00",
+        "id": "20261008_morning",
+        "location": "south",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-08",
+        "end": "20:00",
+        "id": "20261008_evening",
+        "location": "south",
+        "required_staff": 2,
+        "start": "16:00"
+      },
+      {
+        "day": "2026-10-09",
+        "end": "12:00",
+        "id": "20261009_morning",
+        "location": "north",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-09",
+        "end": "20:00",
+        "id": "20261009_evening",
+        "location": "north",
+        "required_staff": 2,
+        "start": "16:00"
+      },
+      {
+        "day": "2026-10-10",
+        "end": "12:00",
+        "id": "20261010_morning",
+        "location": "south",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-10",
+        "end": "20:00",
+        "id": "20261010_evening",
+        "location": "south",
+        "required_staff": 2,
+        "start": "16:00"
+      },
+      {
+        "day": "2026-10-11",
+        "end": "12:00",
+        "id": "20261011_morning",
+        "location": "north",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-11",
+        "end": "20:00",
+        "id": "20261011_evening",
+        "location": "north",
+        "required_staff": 2,
+        "start": "16:00"
+      }
+    ]
+  },
+  "problem_hash": "de0022980a25540858124b42d5badefc53786a38968dbb9f65cd86a57ef28463",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Luna 6 \u00b7 CP-SAT",
+    "case_id": "regional_week",
+    "error": null,
+    "estimated_cost": 0.0010126,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 12.669785834033974,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 12.669904832961038,
+    "model": "gpt-6-luna",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 2236,
+    "openai_output_tokens": 1578,
+    "problem_type": "shift_schedule",
+    "resolved_openai_models": [
+      "gpt-6-luna"
+    ],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": false
+  }
+}

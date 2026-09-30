@@ -1,0 +1,2129 @@
+{
+  "case_id": "regional_week",
+  "decisions": [
+    {
+      "applied": false,
+      "changed": false,
+      "confidence": 0.67,
+      "context": {
+        "objective": "employee shift preferences",
+        "weight": 2
+      },
+      "expected_score": 1.5,
+      "final_value": 2,
+      "final_value_status": "represented",
+      "gpt_value": 2,
+      "item": "objective:preference_penalty",
+      "jev_value": 2,
+      "locator": {
+        "domain": "shift_schedule",
+        "field": "preference_penalty"
+      },
+      "model_confidence": 0.58,
+      "primitive": "score",
+      "probabilities": {
+        "0": 0.0,
+        "1": 0.67,
+        "2": 0.23,
+        "3": 0.04,
+        "4": 0.06
+      },
+      "question_name": "q000_pref_weight",
+      "question_type": "pref_weight",
+      "semantic_question_id": "pref_weight:{\"objective\":\"preference_penalty\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": false,
+      "changed": false,
+      "confidence": 0.42,
+      "context": {
+        "objective": "fair distribution of work",
+        "weight": 1
+      },
+      "expected_score": 0.96,
+      "final_value": 1,
+      "final_value_status": "represented",
+      "gpt_value": 1,
+      "item": "objective:fairness",
+      "jev_value": 1,
+      "locator": {
+        "domain": "shift_schedule",
+        "field": "fairness"
+      },
+      "model_confidence": 0.2,
+      "primitive": "score",
+      "probabilities": {
+        "0": 0.42,
+        "1": 0.29,
+        "2": 0.23,
+        "3": 0.03,
+        "4": 0.03
+      },
+      "question_name": "q001_pref_weight",
+      "question_type": "pref_weight",
+      "semantic_question_id": "pref_weight:{\"objective\":\"fairness\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.98,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-05",
+          "end": "12:00",
+          "id": "20261005_morning",
+          "location": "north",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Avery",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Avery:shift:20261005_morning",
+      "jev_value": true,
+      "locator": {
+        "employee": "Avery",
+        "shift": "20261005_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.020000000000000018,
+        "yes": 0.98
+      },
+      "question_name": "q002_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Avery\",\"shift\":\"20261005_morning\"}#0",
+      "yes_probability": 0.98
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.89,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-05",
+          "end": "20:00",
+          "id": "20261005_evening",
+          "location": "north",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Avery",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Avery:shift:20261005_evening",
+      "jev_value": false,
+      "locator": {
+        "employee": "Avery",
+        "shift": "20261005_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.89,
+        "yes": 0.11
+      },
+      "question_name": "q003_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Avery\",\"shift\":\"20261005_evening\"}#0",
+      "yes_probability": 0.11
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.85,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-08",
+          "end": "12:00",
+          "id": "20261008_morning",
+          "location": "south",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Avery",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Avery:shift:20261008_morning",
+      "jev_value": false,
+      "locator": {
+        "employee": "Avery",
+        "shift": "20261008_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.85,
+        "yes": 0.15
+      },
+      "question_name": "q004_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Avery\",\"shift\":\"20261008_morning\"}#0",
+      "yes_probability": 0.15
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.95,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-08",
+          "end": "20:00",
+          "id": "20261008_evening",
+          "location": "south",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Avery",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Avery:shift:20261008_evening",
+      "jev_value": true,
+      "locator": {
+        "employee": "Avery",
+        "shift": "20261008_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.050000000000000044,
+        "yes": 0.95
+      },
+      "question_name": "q005_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Avery\",\"shift\":\"20261008_evening\"}#0",
+      "yes_probability": 0.95
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.89,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-06",
+          "end": "12:00",
+          "id": "20261006_morning",
+          "location": "south",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Blake",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261006_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Blake:shift:20261006_morning",
+      "jev_value": false,
+      "locator": {
+        "employee": "Blake",
+        "shift": "20261006_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.89,
+        "yes": 0.11
+      },
+      "question_name": "q006_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Blake\",\"shift\":\"20261006_morning\"}#0",
+      "yes_probability": 0.11
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.97,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-06",
+          "end": "20:00",
+          "id": "20261006_evening",
+          "location": "south",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Blake",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261006_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Blake:shift:20261006_evening",
+      "jev_value": true,
+      "locator": {
+        "employee": "Blake",
+        "shift": "20261006_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.030000000000000027,
+        "yes": 0.97
+      },
+      "question_name": "q007_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Blake\",\"shift\":\"20261006_evening\"}#0",
+      "yes_probability": 0.97
+    },
+    {
+      "applied": true,
+      "changed": true,
+      "confidence": 0.74,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-07",
+          "end": "12:00",
+          "id": "20261007_morning",
+          "location": "north",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Blake",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261006_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Blake:shift:20261007_morning",
+      "jev_value": true,
+      "locator": {
+        "employee": "Blake",
+        "shift": "20261007_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.26,
+        "yes": 0.74
+      },
+      "question_name": "q008_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Blake\",\"shift\":\"20261007_morning\"}#0",
+      "yes_probability": 0.74
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.92,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-11",
+          "end": "12:00",
+          "id": "20261011_morning",
+          "location": "north",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Blake",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261006_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Blake:shift:20261011_morning",
+      "jev_value": true,
+      "locator": {
+        "employee": "Blake",
+        "shift": "20261011_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.07999999999999996,
+        "yes": 0.92
+      },
+      "question_name": "q009_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Blake\",\"shift\":\"20261011_morning\"}#0",
+      "yes_probability": 0.92
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.9,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-06",
+          "end": "12:00",
+          "id": "20261006_morning",
+          "location": "south",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Casey",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261006_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Casey:shift:20261006_morning",
+      "jev_value": false,
+      "locator": {
+        "employee": "Casey",
+        "shift": "20261006_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.9,
+        "yes": 0.1
+      },
+      "question_name": "q010_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Casey\",\"shift\":\"20261006_morning\"}#0",
+      "yes_probability": 0.1
+    },
+    {
+      "applied": false,
+      "changed": false,
+      "confidence": 0.5700000000000001,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-06",
+          "end": "20:00",
+          "id": "20261006_evening",
+          "location": "south",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Casey",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261006_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Casey:shift:20261006_evening",
+      "jev_value": false,
+      "locator": {
+        "employee": "Casey",
+        "shift": "20261006_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.5700000000000001,
+        "yes": 0.43
+      },
+      "question_name": "q011_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Casey\",\"shift\":\"20261006_evening\"}#0",
+      "yes_probability": 0.43
+    },
+    {
+      "applied": true,
+      "changed": true,
+      "confidence": 0.97,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-07",
+          "end": "12:00",
+          "id": "20261007_morning",
+          "location": "north",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Casey",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261006_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Casey:shift:20261007_morning",
+      "jev_value": true,
+      "locator": {
+        "employee": "Casey",
+        "shift": "20261007_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.030000000000000027,
+        "yes": 0.97
+      },
+      "question_name": "q012_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Casey\",\"shift\":\"20261007_morning\"}#0",
+      "yes_probability": 0.97
+    },
+    {
+      "applied": false,
+      "changed": false,
+      "confidence": 0.5800000000000001,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-08",
+          "end": "12:00",
+          "id": "20261008_morning",
+          "location": "south",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Casey",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261006_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Casey:shift:20261008_morning",
+      "jev_value": false,
+      "locator": {
+        "employee": "Casey",
+        "shift": "20261008_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.5800000000000001,
+        "yes": 0.42
+      },
+      "question_name": "q013_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Casey\",\"shift\":\"20261008_morning\"}#0",
+      "yes_probability": 0.42
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.89,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-08",
+          "end": "20:00",
+          "id": "20261008_evening",
+          "location": "south",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Devon",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Devon:shift:20261008_evening",
+      "jev_value": false,
+      "locator": {
+        "employee": "Devon",
+        "shift": "20261008_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.89,
+        "yes": 0.11
+      },
+      "question_name": "q014_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Devon\",\"shift\":\"20261008_evening\"}#0",
+      "yes_probability": 0.11
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.97,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-09",
+          "end": "12:00",
+          "id": "20261009_morning",
+          "location": "north",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Devon",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Devon:shift:20261009_morning",
+      "jev_value": true,
+      "locator": {
+        "employee": "Devon",
+        "shift": "20261009_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.030000000000000027,
+        "yes": 0.97
+      },
+      "question_name": "q015_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Devon\",\"shift\":\"20261009_morning\"}#0",
+      "yes_probability": 0.97
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.97,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-09",
+          "end": "20:00",
+          "id": "20261009_evening",
+          "location": "north",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Devon",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Devon:shift:20261009_evening",
+      "jev_value": true,
+      "locator": {
+        "employee": "Devon",
+        "shift": "20261009_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.030000000000000027,
+        "yes": 0.97
+      },
+      "question_name": "q016_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Devon\",\"shift\":\"20261009_evening\"}#0",
+      "yes_probability": 0.97
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.89,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-10",
+          "end": "12:00",
+          "id": "20261010_morning",
+          "location": "south",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Devon",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Devon:shift:20261010_morning",
+      "jev_value": false,
+      "locator": {
+        "employee": "Devon",
+        "shift": "20261010_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.89,
+        "yes": 0.11
+      },
+      "question_name": "q017_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Devon\",\"shift\":\"20261010_morning\"}#0",
+      "yes_probability": 0.11
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.89,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-10",
+          "end": "12:00",
+          "id": "20261010_morning",
+          "location": "south",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Emery",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Emery:shift:20261010_morning",
+      "jev_value": false,
+      "locator": {
+        "employee": "Emery",
+        "shift": "20261010_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.89,
+        "yes": 0.11
+      },
+      "question_name": "q018_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Emery\",\"shift\":\"20261010_morning\"}#0",
+      "yes_probability": 0.11
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.9,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-10",
+          "end": "20:00",
+          "id": "20261010_evening",
+          "location": "south",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Emery",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Emery:shift:20261010_evening",
+      "jev_value": false,
+      "locator": {
+        "employee": "Emery",
+        "shift": "20261010_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.9,
+        "yes": 0.1
+      },
+      "question_name": "q019_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Emery\",\"shift\":\"20261010_evening\"}#0",
+      "yes_probability": 0.1
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.97,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-11",
+          "end": "12:00",
+          "id": "20261011_morning",
+          "location": "north",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Emery",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Emery:shift:20261011_morning",
+      "jev_value": true,
+      "locator": {
+        "employee": "Emery",
+        "shift": "20261011_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.030000000000000027,
+        "yes": 0.97
+      },
+      "question_name": "q020_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Emery\",\"shift\":\"20261011_morning\"}#0",
+      "yes_probability": 0.97
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.97,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-11",
+          "end": "20:00",
+          "id": "20261011_evening",
+          "location": "north",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Emery",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Emery:shift:20261011_evening",
+      "jev_value": true,
+      "locator": {
+        "employee": "Emery",
+        "shift": "20261011_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.030000000000000027,
+        "yes": 0.97
+      },
+      "question_name": "q021_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Emery\",\"shift\":\"20261011_evening\"}#0",
+      "yes_probability": 0.97
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.88,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-05",
+          "end": "12:00",
+          "id": "20261005_morning",
+          "location": "north",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Finley",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Finley:shift:20261005_morning",
+      "jev_value": false,
+      "locator": {
+        "employee": "Finley",
+        "shift": "20261005_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.88,
+        "yes": 0.12
+      },
+      "question_name": "q022_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Finley\",\"shift\":\"20261005_morning\"}#0",
+      "yes_probability": 0.12
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.97,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-05",
+          "end": "20:00",
+          "id": "20261005_evening",
+          "location": "north",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Finley",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Finley:shift:20261005_evening",
+      "jev_value": true,
+      "locator": {
+        "employee": "Finley",
+        "shift": "20261005_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.030000000000000027,
+        "yes": 0.97
+      },
+      "question_name": "q023_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Finley\",\"shift\":\"20261005_evening\"}#0",
+      "yes_probability": 0.97
+    },
+    {
+      "applied": true,
+      "changed": true,
+      "confidence": 0.71,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-06",
+          "end": "12:00",
+          "id": "20261006_morning",
+          "location": "south",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Finley",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Finley:shift:20261006_morning",
+      "jev_value": true,
+      "locator": {
+        "employee": "Finley",
+        "shift": "20261006_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.29000000000000004,
+        "yes": 0.71
+      },
+      "question_name": "q024_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Finley\",\"shift\":\"20261006_morning\"}#0",
+      "yes_probability": 0.71
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.97,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-07",
+          "end": "12:00",
+          "id": "20261007_morning",
+          "location": "north",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Finley",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Finley:shift:20261007_morning",
+      "jev_value": true,
+      "locator": {
+        "employee": "Finley",
+        "shift": "20261007_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.030000000000000027,
+        "yes": 0.97
+      },
+      "question_name": "q025_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Finley\",\"shift\":\"20261007_morning\"}#0",
+      "yes_probability": 0.97
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.84,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-06",
+          "end": "20:00",
+          "id": "20261006_evening",
+          "location": "south",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Gray",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Gray:shift:20261006_evening",
+      "jev_value": false,
+      "locator": {
+        "employee": "Gray",
+        "shift": "20261006_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.84,
+        "yes": 0.16
+      },
+      "question_name": "q026_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Gray\",\"shift\":\"20261006_evening\"}#0",
+      "yes_probability": 0.16
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.88,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-07",
+          "end": "12:00",
+          "id": "20261007_morning",
+          "location": "north",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Gray",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Gray:shift:20261007_morning",
+      "jev_value": true,
+      "locator": {
+        "employee": "Gray",
+        "shift": "20261007_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.12,
+        "yes": 0.88
+      },
+      "question_name": "q027_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Gray\",\"shift\":\"20261007_morning\"}#0",
+      "yes_probability": 0.88
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.76,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-07",
+          "end": "20:00",
+          "id": "20261007_evening",
+          "location": "north",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Gray",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Gray:shift:20261007_evening",
+      "jev_value": false,
+      "locator": {
+        "employee": "Gray",
+        "shift": "20261007_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.76,
+        "yes": 0.24
+      },
+      "question_name": "q028_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Gray\",\"shift\":\"20261007_evening\"}#0",
+      "yes_probability": 0.24
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.83,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-09",
+          "end": "20:00",
+          "id": "20261009_evening",
+          "location": "north",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Gray",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_evening",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Gray:shift:20261009_evening",
+      "jev_value": true,
+      "locator": {
+        "employee": "Gray",
+        "shift": "20261009_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.17000000000000004,
+        "yes": 0.83
+      },
+      "question_name": "q029_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Gray\",\"shift\":\"20261009_evening\"}#0",
+      "yes_probability": 0.83
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.81,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-05",
+          "end": "12:00",
+          "id": "20261005_morning",
+          "location": "north",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Harper",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Harper:shift:20261005_morning",
+      "jev_value": true,
+      "locator": {
+        "employee": "Harper",
+        "shift": "20261005_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.18999999999999995,
+        "yes": 0.81
+      },
+      "question_name": "q030_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Harper\",\"shift\":\"20261005_morning\"}#0",
+      "yes_probability": 0.81
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.89,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-05",
+          "end": "20:00",
+          "id": "20261005_evening",
+          "location": "north",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Harper",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Harper:shift:20261005_evening",
+      "jev_value": false,
+      "locator": {
+        "employee": "Harper",
+        "shift": "20261005_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.89,
+        "yes": 0.11
+      },
+      "question_name": "q031_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Harper\",\"shift\":\"20261005_evening\"}#0",
+      "yes_probability": 0.11
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.88,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-08",
+          "end": "12:00",
+          "id": "20261008_morning",
+          "location": "south",
+          "required_staff": 2,
+          "start": "08:00"
+        },
+        "employee": "Harper",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Harper:shift:20261008_morning",
+      "jev_value": false,
+      "locator": {
+        "employee": "Harper",
+        "shift": "20261008_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.88,
+        "yes": 0.12
+      },
+      "question_name": "q032_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Harper\",\"shift\":\"20261008_morning\"}#0",
+      "yes_probability": 0.12
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.74,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-08",
+          "end": "20:00",
+          "id": "20261008_evening",
+          "location": "south",
+          "required_staff": 2,
+          "start": "16:00"
+        },
+        "employee": "Harper",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_morning",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Harper:shift:20261008_evening",
+      "jev_value": true,
+      "locator": {
+        "employee": "Harper",
+        "shift": "20261008_evening"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.26,
+        "yes": 0.74
+      },
+      "question_name": "q033_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Harper\",\"shift\":\"20261008_evening\"}#0",
+      "yes_probability": 0.74
+    }
+  ],
+  "extraction_fingerprint": "a10b015fe203fe2ac0491181453eeaffa6a4a8c9bf5e648b606d59399b9af41a",
+  "extraction_problem_hash": "de0022980a25540858124b42d5badefc53786a38968dbb9f65cd86a57ef28463",
+  "fingerprint": "ceb04794b636b710e52e8f2c6c5b1c4537a2c2c02dc58eab016d60eb5ab7ae3b",
+  "jev_apply_threshold": 0.7,
+  "jev_batch_size": 64,
+  "model": "gpt-6.1-sol",
+  "problem": {
+    "employees": [
+      {
+        "eligible_locations": [
+          "north"
+        ],
+        "max_hours": 32,
+        "name": "Avery",
+        "preferred_shifts": [
+          "20261006_morning",
+          "20261007_morning",
+          "20261009_morning",
+          "20261010_morning",
+          "20261011_morning"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_evening",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "south"
+        ],
+        "max_hours": 32,
+        "name": "Blake",
+        "preferred_shifts": [
+          "20261005_evening",
+          "20261007_evening",
+          "20261009_evening",
+          "20261010_evening",
+          "20261011_evening"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261006_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "north",
+          "south"
+        ],
+        "max_hours": 32,
+        "name": "Casey",
+        "preferred_shifts": [
+          "20261006_morning",
+          "20261007_morning",
+          "20261010_morning",
+          "20261011_morning"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261006_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "north",
+          "south"
+        ],
+        "max_hours": 32,
+        "name": "Devon",
+        "preferred_shifts": [
+          "20261006_evening",
+          "20261007_evening",
+          "20261008_evening",
+          "20261010_evening",
+          "20261011_evening"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_morning",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "north",
+          "south"
+        ],
+        "max_hours": 32,
+        "name": "Emery",
+        "preferred_shifts": [
+          "20261005_morning",
+          "20261007_morning",
+          "20261008_morning",
+          "20261009_morning"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261011_evening",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "north"
+        ],
+        "max_hours": 32,
+        "name": "Finley",
+        "preferred_shifts": [
+          "20261007_evening",
+          "20261008_evening",
+          "20261009_evening",
+          "20261011_evening"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261006_morning",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "south"
+        ],
+        "max_hours": 32,
+        "name": "Gray",
+        "preferred_shifts": [
+          "20261005_morning",
+          "20261006_morning",
+          "20261008_morning",
+          "20261009_morning",
+          "20261010_morning"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261007_morning",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261009_evening",
+            "start": null
+          }
+        ]
+      },
+      {
+        "eligible_locations": [
+          "north",
+          "south"
+        ],
+        "max_hours": 32,
+        "name": "Harper",
+        "preferred_shifts": [
+          "20261005_evening",
+          "20261006_evening",
+          "20261009_evening",
+          "20261010_evening"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261008_evening",
+            "start": null
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "20261005_morning",
+            "start": null
+          }
+        ]
+      }
+    ],
+    "objective_weights": {
+      "fairness": 1,
+      "preference_penalty": 2
+    },
+    "rules": [
+      {
+        "min_rest_hours": 12,
+        "type": "minimum_rest"
+      },
+      {
+        "max_days": 4,
+        "type": "maximum_consecutive_days"
+      },
+      {
+        "days": [
+          "2026-10-07"
+        ],
+        "employee_name": "Casey",
+        "type": "required_days_off"
+      },
+      {
+        "days": [
+          "2026-10-10"
+        ],
+        "employee_name": "Harper",
+        "type": "required_days_off"
+      }
+    ],
+    "shifts": [
+      {
+        "day": "2026-10-05",
+        "end": "12:00",
+        "id": "20261005_morning",
+        "location": "north",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-05",
+        "end": "20:00",
+        "id": "20261005_evening",
+        "location": "north",
+        "required_staff": 2,
+        "start": "16:00"
+      },
+      {
+        "day": "2026-10-06",
+        "end": "12:00",
+        "id": "20261006_morning",
+        "location": "south",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-06",
+        "end": "20:00",
+        "id": "20261006_evening",
+        "location": "south",
+        "required_staff": 2,
+        "start": "16:00"
+      },
+      {
+        "day": "2026-10-07",
+        "end": "12:00",
+        "id": "20261007_morning",
+        "location": "north",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-07",
+        "end": "20:00",
+        "id": "20261007_evening",
+        "location": "north",
+        "required_staff": 2,
+        "start": "16:00"
+      },
+      {
+        "day": "2026-10-08",
+        "end": "12:00",
+        "id": "20261008_morning",
+        "location": "south",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-08",
+        "end": "20:00",
+        "id": "20261008_evening",
+        "location": "south",
+        "required_staff": 2,
+        "start": "16:00"
+      },
+      {
+        "day": "2026-10-09",
+        "end": "12:00",
+        "id": "20261009_morning",
+        "location": "north",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-09",
+        "end": "20:00",
+        "id": "20261009_evening",
+        "location": "north",
+        "required_staff": 2,
+        "start": "16:00"
+      },
+      {
+        "day": "2026-10-10",
+        "end": "12:00",
+        "id": "20261010_morning",
+        "location": "south",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-10",
+        "end": "20:00",
+        "id": "20261010_evening",
+        "location": "south",
+        "required_staff": 2,
+        "start": "16:00"
+      },
+      {
+        "day": "2026-10-11",
+        "end": "12:00",
+        "id": "20261011_morning",
+        "location": "north",
+        "required_staff": 2,
+        "start": "08:00"
+      },
+      {
+        "day": "2026-10-11",
+        "end": "20:00",
+        "id": "20261011_evening",
+        "location": "north",
+        "required_staff": 2,
+        "start": "16:00"
+      }
+    ]
+  },
+  "requested_jev_model": "jev-latest",
+  "resolved_jev_model": "jev-1.13.0",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "jev",
+  "telemetry": {
+    "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+    "case_id": "regional_week",
+    "error": null,
+    "estimated_cost": 0.0,
+    "jev_input_tokens": 7719,
+    "latency_jev_s": 0.2713960420805961,
+    "latency_llm_s": 0.0,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 0.28421379206702113,
+    "model": "gpt-6.1-sol",
+    "n_jev_call_attempts": 1,
+    "n_jev_calls": 1,
+    "n_jev_questions": 34,
+    "n_model_call_attempts": 0,
+    "n_model_calls": 0,
+    "openai_input_tokens": 0,
+    "openai_output_tokens": 0,
+    "problem_type": "shift_schedule",
+    "resolved_openai_models": [],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": true
+  }
+}
