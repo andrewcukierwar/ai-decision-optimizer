@@ -428,6 +428,9 @@ def dayplan_formulation_matches(canonical: DayPlan, arm: DayPlan, *, structural:
 
 
 def shift_formulation_matches(canonical: ShiftSchedule, arm: ShiftSchedule, *, structural: bool = False) -> bool:
+    # Scheduling uses local clock time; normalize exactly as persistence does.
+    canonical = ShiftSchedule.model_validate(canonical.model_dump(mode="json"))
+    arm = ShiftSchedule.model_validate(arm.model_dump(mode="json"))
     employee_alignment = align_names(
         [item.name for item in arm.employees],
         [item.name for item in canonical.employees],

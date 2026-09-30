@@ -307,10 +307,10 @@ class BenchmarkRunner:
                             config,
                             "extraction",
                             error,
-                            actual_paid={
-                                "openai_call_attempts": (_attempts(getattr(error, "telemetry", None), "openai", minimum=1) if index == 0 and not getattr(error, "cache_hit", False) else 0),
-                                "jev_call_attempts": 0,
-                            },
+                            actual_paid=_stage_accounting(
+                                (getattr(error, "telemetry", None), "openai", 1)
+                                if index == 0 and not getattr(error, "cache_hit", False) else None,
+                            ),
                         )
                         counts["failed"] += 1
                     continue
@@ -338,16 +338,11 @@ class BenchmarkRunner:
                             "jev",
                             jev_error,
                             extraction=extraction,
-                            actual_paid={
-                                "openai_call_attempts": (
-                                    _attempts(extraction.payload.telemetry, "openai")
-                                    if extraction_charge_available
-                                    else 0
-                                ),
-                                "jev_call_attempts": _attempts(getattr(jev_error, "telemetry", None), "jev", minimum=1)
-                                if jev_failure_charge_available and not getattr(jev_error, "cache_hit", False)
-                                else 0,
-                            },
+                            actual_paid=_stage_accounting(
+                                (extraction.payload.telemetry, "openai", 0) if extraction_charge_available else None,
+                                (getattr(jev_error, "telemetry", None), "jev", 1)
+                                if jev_failure_charge_available and not getattr(jev_error, "cache_hit", False) else None,
+                            ),
                         )
                         extraction_charge_available = False
                         jev_failure_charge_available = False
@@ -391,74 +386,11 @@ class BenchmarkRunner:
                             final_problem,
                             combined,
                         )
-                        actual_paid = {
-                            "openai_call_attempts": (
-                                (_attempts(extraction.payload.telemetry, "openai") if extraction_charge_available else 0)
-                                + (_attempts(solve_stage.telemetry, "openai") if config.solution_engine == "direct_llm" and solve_stage is not None else 0)
-                            ),
-                            "jev_call_attempts": (
-                                _attempts(jev_telemetry, "jev")
-                                if config.use_jev and jev_charge_available and jev_telemetry
-                                else 0
-                            ),
-                            "openai_estimated_cost_usd": (
-                                extraction.payload.telemetry.estimated_cost
-                                if extraction_charge_available
-                                else 0.0
-                            )
-                            + (
-                                solve_stage.telemetry.estimated_cost
-                                if config.solution_engine == "direct_llm"
-                                and solve_stage is not None
-                                else 0.0
-                            ),
-                            "openai_input_tokens": (
-                                extraction.payload.telemetry.openai_input_tokens
-                                if extraction_charge_available
-                                else 0
-                            )
-                            + (
-                                solve_stage.telemetry.openai_input_tokens
-                                if config.solution_engine == "direct_llm"
-                                and solve_stage is not None
-                                else 0
-                            ),
-                            "openai_output_tokens": (
-                                extraction.payload.telemetry.openai_output_tokens
-                                if extraction_charge_available
-                                else 0
-                            )
-                            + (
-                                solve_stage.telemetry.openai_output_tokens
-                                if config.solution_engine == "direct_llm"
-                                and solve_stage is not None
-                                else 0
-                            ),
-                            "jev_input_tokens": (
-                                jev_telemetry.jev_input_tokens
-                                if config.use_jev
-                                and jev_charge_available
-                                and jev_telemetry
-                                else 0
-                            ),
-                            "new_stage_latency_s": (
-                                extraction.payload.telemetry.latency_total_s
-                                if extraction_charge_available
-                                else 0.0
-                            )
-                            + (
-                                jev_telemetry.latency_total_s
-                                if config.use_jev
-                                and jev_charge_available
-                                and jev_telemetry
-                                else 0.0
-                            )
-                            + (
-                                solve_stage.telemetry.latency_total_s
-                                if solve_stage is not None
-                                else 0.0
-                            ),
-                        }
+                        actual_paid = _stage_accounting(
+                            (extraction.payload.telemetry, "openai", 0) if extraction_charge_available else None,
+                            (jev_telemetry, "jev", 0) if config.use_jev and jev_charge_available else None,
+                            (solve_stage.telemetry, "openai", 0) if solve_stage is not None else None,
+                        )
                         record = self._success_record(
                             case=case,
                             config=config,
@@ -488,24 +420,13 @@ class BenchmarkRunner:
                             error,
                             extraction=extraction,
                             final_problem=final_problem,
+                            jev_stage=jev_stage if config.use_jev else None,
                             telemetry=_combine_telemetry(config, case, extraction.payload.telemetry, jev_telemetry, solve_telemetry if final_problem is not None else None),
-                            actual_paid={
-                                "openai_call_attempts": (
-                                    (
-                                        _attempts(extraction.payload.telemetry, "openai")
-                                        if extraction_charge_available
-                                        else 0
-                                    )
-                                    + (_attempts(solve_telemetry, "openai", minimum=1) if config.solution_engine == "direct_llm" else 0)
-                                ),
-                                "jev_call_attempts": (
-                                    _attempts(jev_stage.payload["telemetry"], "jev")
-                                    if config.use_jev
-                                    and jev_charge_available
-                                    and jev_stage is not None
-                                    else 0
-                                ),
-                            },
+                            actual_paid=_stage_accounting(
+                                (extraction.payload.telemetry, "openai", 0) if extraction_charge_available else None,
+                                (jev_telemetry, "jev", 0) if config.use_jev and jev_charge_available else None,
+                                (solve_telemetry, "openai", int(config.solution_engine == "direct_llm")) if final_problem is not None else None,
+                            ),
                         )
                         extraction_charge_available = False
                         if config.use_jev:
@@ -833,7 +754,12 @@ class BenchmarkRunner:
         extraction: Optional[_LoadedStage] = None,
         final_problem: Optional[Problem] = None,
         telemetry: Optional[RunTelemetry] = None,
+        jev_stage: Optional[_LoadedStage] = None,
     ) -> None:
+        decisions = (jev_stage.payload["decisions"] if jev_stage is not None
+                     else getattr(error, "observed_decisions", []))
+        resolved_jev_model = (jev_stage.payload["resolved_model"] if jev_stage is not None
+                              else getattr(error, "resolved_jev_model", None))
         terminal = terminal_failure(error)
         if telemetry is None and extraction is not None:
             telemetry = _combine_telemetry(config, case, extraction.payload.telemetry, getattr(error, "telemetry", None))
@@ -850,19 +776,26 @@ class BenchmarkRunner:
             "recorded_at": _utc_now(), "case_id": case.case_id,
             "domain": case.domain, "source": case.source,
             "architecture": config.label(), "configuration": config.model_dump(mode="json"),
-            "model": config.model, "resolved_jev_model": None,
+            "model": config.model, "resolved_jev_model": resolved_jev_model,
             "runtime_configuration": self._runtime_config(),
             "failure_stage": stage,
             "actual_paid_call_attempts_created_for_this_row": actual_paid or {"openai_call_attempts": 0, "jev_call_attempts": 0},
             "standalone_architecture_telemetry_estimate": None if telemetry is None else telemetry.to_dict(),
             "canonical_evaluation": evaluation,
-            "jev_decisions": [d.model_dump(mode="json") for d in getattr(error, "observed_decisions", [])],
+            "jev_decisions": [d.model_dump(mode="json") for d in decisions],
+            "final_problem": None if final_problem is None else final_problem.model_dump(mode="json"),
+            "extraction": None if extraction is None else {
+                "problem": None if extraction.payload.problem is None else extraction.payload.problem.model_dump(mode="json"),
+                "missing_info": extraction.payload.missing_info,
+                "problem_hash": _problem_hash(extraction.payload.problem),
+            },
             "jev_invalid_questions": getattr(error, "invalid_questions", []),
             "jev_missing_question_names": getattr(error, "missing_question_names", []),
             "extraction_problem_hash": None if extraction is None else _problem_hash(extraction.payload.problem),
-            "question_alignment": question_observations(case, None if extraction is None else extraction.payload.problem, getattr(error, "observed_decisions", [])),
+            "question_alignment": question_observations(case, None if extraction is None else extraction.payload.problem, decisions),
             "resolved_openai_models": [] if telemetry is None else telemetry.resolved_openai_models,
-            "intermediate_reuse": None if extraction is None else {"extraction_fingerprint": extraction.fingerprint},
+            "intermediate_reuse": None if extraction is None else {"extraction_fingerprint": extraction.fingerprint,
+                "jev_fingerprint": None if jev_stage is None else jev_stage.fingerprint},
             "error": "%s: %s" % (type(error).__name__, error),
         }
         self._append_result(record)
@@ -1298,3 +1231,37 @@ def _attempts(telemetry: Optional[RunTelemetry], provider: str, *, minimum: int 
     if provider == "openai":
         return max(minimum, telemetry.n_model_call_attempts, telemetry.n_model_calls)
     return max(minimum, telemetry.n_jev_call_attempts, telemetry.n_jev_calls)
+
+
+def _stage_accounting(*stages: Optional[tuple[Optional[RunTelemetry], str, int]]) -> Dict[str, Any]:
+    """Charge only new stages, retaining known usage and explicitly unknown calls.
+
+    Zero recorded tokens is never a billing assertion for an unanswered request.
+    The minimum attempt is used at a failed provider boundary only.
+    """
+    paid = {"openai_call_attempts": 0, "jev_call_attempts": 0,
+            "openai_responses_with_metadata": 0, "jev_completed_calls": 0,
+            "openai_input_tokens": 0, "openai_output_tokens": 0,
+            "openai_estimated_cost_usd": 0.0, "jev_input_tokens": 0,
+            "jev_questions": 0, "new_stage_latency_s": 0.0,
+            "openai_usage_unknown_calls": 0, "jev_usage_unknown_calls": 0,
+            "unknown_usage_billing_usd": None}
+    for stage in stages:
+        if stage is None:
+            continue
+        telemetry, provider, minimum = stage
+        attempts = _attempts(telemetry, provider, minimum=minimum)
+        paid[provider + "_call_attempts"] += attempts
+        responses = 0 if telemetry is None else (telemetry.n_model_calls if provider == "openai" else telemetry.n_jev_calls)
+        paid[provider + "_usage_unknown_calls"] += max(0, attempts - responses)
+        if telemetry is None:
+            continue
+        paid["openai_responses_with_metadata"] += telemetry.n_model_calls
+        paid["jev_completed_calls"] += telemetry.n_jev_calls
+        paid["openai_input_tokens"] += telemetry.openai_input_tokens
+        paid["openai_output_tokens"] += telemetry.openai_output_tokens
+        paid["openai_estimated_cost_usd"] += telemetry.estimated_cost
+        paid["jev_input_tokens"] += telemetry.jev_input_tokens
+        paid["jev_questions"] += telemetry.n_jev_questions
+        paid["new_stage_latency_s"] += telemetry.latency_total_s
+    return paid

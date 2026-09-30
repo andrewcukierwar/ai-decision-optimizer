@@ -1,0 +1,3994 @@
+{
+  "after": {
+    "execution_success_without_usable_output": 8,
+    "rows": 112,
+    "status": {
+      "success": 103,
+      "terminal_failure": 9
+    },
+    "terminal_failure_classifications": {
+      "extraction/invalid_model_output": 4,
+      "extraction/timeout": 4,
+      "solve_or_evaluate/timeout": 1
+    }
+  },
+  "authoritative_phase_10_input": "reconciled.jsonl",
+  "auxiliary_input_sha256": {
+    "docs/benchmark_methodology.md": "8fe32250f0e2242896a9f6c0c034d3bb101e0589fa8e1180e7b53f053df8c119",
+    "project_plan.md": "a46c0cb91580e63c0435844164da12fb141299a85c6fe531c594ffa1e871e32f",
+    "tests/fixtures/dayplan_jev_ambiguous.json": "f002bb14e31661d4dcbabce807255fa46d89836233478b36ab5bc7c8e72569e1",
+    "tests/fixtures/dayplan_nl_eval.json": "8c790d63e2477fc33818c9052b1057543fd6ae07d59bee5cb916f47f1ce850bb",
+    "tests/fixtures/generated_workforce_cases.json": "5be59fe85314c2ef90025903777d905881416be52811105e8713ff0fad23f619",
+    "tests/fixtures/jev_benchmark_selection.json": "ed982c1575132eb4f15d61be5a30b0db0f2a63a49c75a3d90a1808e241315e3e",
+    "tests/fixtures/jev_expected_draft.json": "17f408a714821385b0910b8fc1440c087d4aa516c4c60d93cf1be677e7797ed0",
+    "tests/fixtures/jev_expected_review.tsv": "1e43242f35e9c55f3ff66536460e69d8053eb78ccdb1c9e653fa547f9a2e7860",
+    "tests/fixtures/shift_schedule_cases/basic.json": "5b8730570786add73db3e4771e20e39d878928a4f293753df359053869852596",
+    "tests/fixtures/shift_schedule_cases/infeasible.json": "b1cf2afabb364167babb6571336ed1a420e27bda9c479a18856d1e3d49dfb949",
+    "tests/fixtures/shift_schedule_cases/preferences.json": "b886f768ebea05d18e6aa19dd9be4542fdabca58b9df8facb179f8f25338139e",
+    "tests/fixtures/shift_schedule_nl_eval.json": "ce81f8bedc67185252eb4a5409a138c2a11f120165aa9a1933e0a6485209c267"
+  },
+  "before": {
+    "execution_success_without_usable_output": 8,
+    "rows": 112,
+    "status": {
+      "success": 103,
+      "terminal_failure": 9
+    },
+    "terminal_failure_classifications": {
+      "extraction/invalid_model_output": 4,
+      "extraction/timeout": 4,
+      "solve_or_evaluate/timeout": 1
+    }
+  },
+  "correction_rules": [
+    {
+      "affected_result_keys": [
+        "straightforward_staffing|gpt-6-luna|jev=false|engine=direct_llm|983fc75b3516647fa6dc2c65d5cccaa58050f3f760d95c347a12571acb1cc7b0",
+        "straightforward_staffing|gpt-6-luna|jev=false|engine=cp_sat|983fc75b3516647fa6dc2c65d5cccaa58050f3f760d95c347a12571acb1cc7b0",
+        "straightforward_staffing|gpt-6.1-sol|jev=false|engine=direct_llm|29d2e69bee48025064b2b1676adaab11d95c5a0a2bab27f11907b9496185210a",
+        "straightforward_staffing|gpt-6.1-sol|jev=false|engine=cp_sat|29d2e69bee48025064b2b1676adaab11d95c5a0a2bab27f11907b9496185210a",
+        "infeasible_staffing_is_extracted_not_repaired|gpt-6-luna|jev=false|engine=direct_llm|dd522a203d774067ff815bc02fde1639d33636e5fed9c024b21b3d3c990a026a",
+        "infeasible_staffing_is_extracted_not_repaired|gpt-6-luna|jev=false|engine=cp_sat|dd522a203d774067ff815bc02fde1639d33636e5fed9c024b21b3d3c990a026a",
+        "infeasible_staffing_is_extracted_not_repaired|gpt-6.1-sol|jev=false|engine=direct_llm|e2de591553b981b2fc8fba76abb2e831497fada9d486003db291119e51a20788",
+        "infeasible_staffing_is_extracted_not_repaired|gpt-6.1-sol|jev=false|engine=cp_sat|e2de591553b981b2fc8fba76abb2e831497fada9d486003db291119e51a20788"
+      ],
+      "rule": "normalize_shift_json_pydantic_before_formulation_comparison"
+    },
+    {
+      "affected_result_keys": [
+        "wfh_laundry_lift_groceries|gpt-6-luna|jev=false|engine=direct_llm|658089dd9a45f1ec437d49e4150b6539caa97682d8319d08945abaa74bd54809",
+        "wfh_laundry_lift_groceries|gpt-6-luna|jev=false|engine=cp_sat|658089dd9a45f1ec437d49e4150b6539caa97682d8319d08945abaa74bd54809",
+        "wfh_laundry_lift_groceries|gpt-6-luna|jev=true|engine=direct_llm|658089dd9a45f1ec437d49e4150b6539caa97682d8319d08945abaa74bd54809",
+        "wfh_laundry_lift_groceries|gpt-6-luna|jev=true|engine=cp_sat|658089dd9a45f1ec437d49e4150b6539caa97682d8319d08945abaa74bd54809",
+        "wfh_laundry_lift_groceries|gpt-6.1-sol|jev=false|engine=direct_llm|52eb675e68f2fe2b1abca56b871a21e9913c6bd2eb2306a3b1430911c6496987",
+        "wfh_laundry_lift_groceries|gpt-6.1-sol|jev=false|engine=cp_sat|52eb675e68f2fe2b1abca56b871a21e9913c6bd2eb2306a3b1430911c6496987",
+        "wfh_laundry_lift_groceries|gpt-6.1-sol|jev=true|engine=direct_llm|52eb675e68f2fe2b1abca56b871a21e9913c6bd2eb2306a3b1430911c6496987",
+        "wfh_laundry_lift_groceries|gpt-6.1-sol|jev=true|engine=cp_sat|52eb675e68f2fe2b1abca56b871a21e9913c6bd2eb2306a3b1430911c6496987",
+        "active_and_passive|gpt-6-luna|jev=false|engine=direct_llm|c0dbeb762cd38d85c0fc35ffa7521bde28f57fb18f592c2b3a6bbebbba13065a",
+        "active_and_passive|gpt-6-luna|jev=false|engine=cp_sat|c0dbeb762cd38d85c0fc35ffa7521bde28f57fb18f592c2b3a6bbebbba13065a",
+        "active_and_passive|gpt-6-luna|jev=true|engine=direct_llm|c0dbeb762cd38d85c0fc35ffa7521bde28f57fb18f592c2b3a6bbebbba13065a",
+        "active_and_passive|gpt-6-luna|jev=true|engine=cp_sat|c0dbeb762cd38d85c0fc35ffa7521bde28f57fb18f592c2b3a6bbebbba13065a",
+        "active_and_passive|gpt-6.1-sol|jev=false|engine=direct_llm|251f4f1c1ac39f668e56b7fd457151e57a5dace28c76d8b9f8e7ab15476aaded",
+        "active_and_passive|gpt-6.1-sol|jev=false|engine=cp_sat|251f4f1c1ac39f668e56b7fd457151e57a5dace28c76d8b9f8e7ab15476aaded",
+        "active_and_passive|gpt-6.1-sol|jev=true|engine=direct_llm|251f4f1c1ac39f668e56b7fd457151e57a5dace28c76d8b9f8e7ab15476aaded",
+        "active_and_passive|gpt-6.1-sol|jev=true|engine=cp_sat|251f4f1c1ac39f668e56b7fd457151e57a5dace28c76d8b9f8e7ab15476aaded",
+        "laundry_precedence|gpt-6-luna|jev=false|engine=direct_llm|e5f7f8bf3c626460fb316fcca1ccfe847225c7c5b71ce917f6b5bcfcea489abe",
+        "laundry_precedence|gpt-6-luna|jev=false|engine=cp_sat|e5f7f8bf3c626460fb316fcca1ccfe847225c7c5b71ce917f6b5bcfcea489abe",
+        "laundry_precedence|gpt-6-luna|jev=true|engine=direct_llm|e5f7f8bf3c626460fb316fcca1ccfe847225c7c5b71ce917f6b5bcfcea489abe",
+        "laundry_precedence|gpt-6-luna|jev=true|engine=cp_sat|e5f7f8bf3c626460fb316fcca1ccfe847225c7c5b71ce917f6b5bcfcea489abe",
+        "laundry_precedence|gpt-6.1-sol|jev=false|engine=direct_llm|835024ba7b8d6730e31236fbdd6f5600500dc626a7bcfb7ddf0489649bb744e3",
+        "laundry_precedence|gpt-6.1-sol|jev=false|engine=cp_sat|835024ba7b8d6730e31236fbdd6f5600500dc626a7bcfb7ddf0489649bb744e3",
+        "laundry_precedence|gpt-6.1-sol|jev=true|engine=direct_llm|835024ba7b8d6730e31236fbdd6f5600500dc626a7bcfb7ddf0489649bb744e3",
+        "laundry_precedence|gpt-6.1-sol|jev=true|engine=cp_sat|835024ba7b8d6730e31236fbdd6f5600500dc626a7bcfb7ddf0489649bb744e3",
+        "hard_timing|gpt-6-luna|jev=false|engine=direct_llm|7e42175bb1aa289b6188187e69f878420961b2f9d24f81b04ee8fa499e207e2c",
+        "hard_timing|gpt-6-luna|jev=false|engine=cp_sat|7e42175bb1aa289b6188187e69f878420961b2f9d24f81b04ee8fa499e207e2c",
+        "hard_timing|gpt-6-luna|jev=true|engine=direct_llm|7e42175bb1aa289b6188187e69f878420961b2f9d24f81b04ee8fa499e207e2c",
+        "hard_timing|gpt-6-luna|jev=true|engine=cp_sat|7e42175bb1aa289b6188187e69f878420961b2f9d24f81b04ee8fa499e207e2c",
+        "hard_timing|gpt-6.1-sol|jev=false|engine=direct_llm|9e6c60800ea8e26943c44fd56a0ec6b7473f313c4b4c969260f21800baae02c0",
+        "hard_timing|gpt-6.1-sol|jev=false|engine=cp_sat|9e6c60800ea8e26943c44fd56a0ec6b7473f313c4b4c969260f21800baae02c0",
+        "hard_timing|gpt-6.1-sol|jev=true|engine=direct_llm|9e6c60800ea8e26943c44fd56a0ec6b7473f313c4b4c969260f21800baae02c0",
+        "hard_timing|gpt-6.1-sol|jev=true|engine=cp_sat|9e6c60800ea8e26943c44fd56a0ec6b7473f313c4b4c969260f21800baae02c0",
+        "soft_finish_preference|gpt-6-luna|jev=false|engine=direct_llm|04ffac2954d284a2b228631e7908c56bbb358fa4b554fcddb157e288981d0646",
+        "soft_finish_preference|gpt-6-luna|jev=false|engine=cp_sat|04ffac2954d284a2b228631e7908c56bbb358fa4b554fcddb157e288981d0646",
+        "soft_finish_preference|gpt-6-luna|jev=true|engine=direct_llm|04ffac2954d284a2b228631e7908c56bbb358fa4b554fcddb157e288981d0646",
+        "soft_finish_preference|gpt-6-luna|jev=true|engine=cp_sat|04ffac2954d284a2b228631e7908c56bbb358fa4b554fcddb157e288981d0646",
+        "soft_finish_preference|gpt-6.1-sol|jev=false|engine=direct_llm|342e712a693e35e24e51f800fe1d9e85aba489d9a2698a739c4a8c8117d7a3e7",
+        "soft_finish_preference|gpt-6.1-sol|jev=false|engine=cp_sat|342e712a693e35e24e51f800fe1d9e85aba489d9a2698a739c4a8c8117d7a3e7",
+        "soft_finish_preference|gpt-6.1-sol|jev=true|engine=direct_llm|342e712a693e35e24e51f800fe1d9e85aba489d9a2698a739c4a8c8117d7a3e7",
+        "soft_finish_preference|gpt-6.1-sol|jev=true|engine=cp_sat|342e712a693e35e24e51f800fe1d9e85aba489d9a2698a739c4a8c8117d7a3e7",
+        "workout_before_four_soft|gpt-6-luna|jev=false|engine=direct_llm|b7830875d207f65fdcadc9733c7398d9ad6f0d095d846034fd0f7355a04583e6",
+        "workout_before_four_soft|gpt-6-luna|jev=false|engine=cp_sat|b7830875d207f65fdcadc9733c7398d9ad6f0d095d846034fd0f7355a04583e6",
+        "workout_before_four_soft|gpt-6-luna|jev=true|engine=direct_llm|b7830875d207f65fdcadc9733c7398d9ad6f0d095d846034fd0f7355a04583e6",
+        "workout_before_four_soft|gpt-6-luna|jev=true|engine=cp_sat|b7830875d207f65fdcadc9733c7398d9ad6f0d095d846034fd0f7355a04583e6",
+        "workout_before_four_soft|gpt-6.1-sol|jev=false|engine=direct_llm|df25b8c87bc29edcab011b1368094a1e1bd55814714aff0c244032ee74b2416b",
+        "workout_before_four_soft|gpt-6.1-sol|jev=false|engine=cp_sat|df25b8c87bc29edcab011b1368094a1e1bd55814714aff0c244032ee74b2416b",
+        "workout_before_four_soft|gpt-6.1-sol|jev=true|engine=direct_llm|df25b8c87bc29edcab011b1368094a1e1bd55814714aff0c244032ee74b2416b",
+        "workout_before_four_soft|gpt-6.1-sol|jev=true|engine=cp_sat|df25b8c87bc29edcab011b1368094a1e1bd55814714aff0c244032ee74b2416b",
+        "workout_before_four_hard|gpt-6-luna|jev=false|engine=direct_llm|2e5e61926c8b3e41fcb77adba50a0257d3957f793df6695253b95195b07af80d",
+        "workout_before_four_hard|gpt-6-luna|jev=false|engine=cp_sat|2e5e61926c8b3e41fcb77adba50a0257d3957f793df6695253b95195b07af80d",
+        "workout_before_four_hard|gpt-6-luna|jev=true|engine=direct_llm|2e5e61926c8b3e41fcb77adba50a0257d3957f793df6695253b95195b07af80d",
+        "workout_before_four_hard|gpt-6-luna|jev=true|engine=cp_sat|2e5e61926c8b3e41fcb77adba50a0257d3957f793df6695253b95195b07af80d",
+        "workout_before_four_hard|gpt-6.1-sol|jev=false|engine=direct_llm|caf2f70d467b5c30b697a046e5552c9ad1749750f924c53a2026b91b9a9ffc91",
+        "workout_before_four_hard|gpt-6.1-sol|jev=false|engine=cp_sat|caf2f70d467b5c30b697a046e5552c9ad1749750f924c53a2026b91b9a9ffc91",
+        "workout_before_four_hard|gpt-6.1-sol|jev=true|engine=direct_llm|caf2f70d467b5c30b697a046e5552c9ad1749750f924c53a2026b91b9a9ffc91",
+        "workout_before_four_hard|gpt-6.1-sol|jev=true|engine=cp_sat|caf2f70d467b5c30b697a046e5552c9ad1749750f924c53a2026b91b9a9ffc91",
+        "optional_walk_if_time|gpt-6-luna|jev=false|engine=direct_llm|aca7dd6cec8941d35b4cd250040c2279558da86243c565d3c624ee2e4a74076f",
+        "optional_walk_if_time|gpt-6-luna|jev=false|engine=cp_sat|aca7dd6cec8941d35b4cd250040c2279558da86243c565d3c624ee2e4a74076f",
+        "optional_walk_if_time|gpt-6-luna|jev=true|engine=direct_llm|aca7dd6cec8941d35b4cd250040c2279558da86243c565d3c624ee2e4a74076f",
+        "optional_walk_if_time|gpt-6-luna|jev=true|engine=cp_sat|aca7dd6cec8941d35b4cd250040c2279558da86243c565d3c624ee2e4a74076f",
+        "optional_walk_if_time|gpt-6.1-sol|jev=false|engine=direct_llm|d77af345b9c871836de475f90e259a1676a03036659fb27b94abe059154416e2",
+        "optional_walk_if_time|gpt-6.1-sol|jev=false|engine=cp_sat|d77af345b9c871836de475f90e259a1676a03036659fb27b94abe059154416e2",
+        "optional_walk_if_time|gpt-6.1-sol|jev=true|engine=direct_llm|d77af345b9c871836de475f90e259a1676a03036659fb27b94abe059154416e2",
+        "optional_walk_if_time|gpt-6.1-sol|jev=true|engine=cp_sat|d77af345b9c871836de475f90e259a1676a03036659fb27b94abe059154416e2",
+        "impossible_hard_workout_window|gpt-6-luna|jev=false|engine=direct_llm|b17a31762c79378fe09a8cd45a461894976b24d4ad2d50ae1616449ca7132cee",
+        "impossible_hard_workout_window|gpt-6-luna|jev=false|engine=cp_sat|b17a31762c79378fe09a8cd45a461894976b24d4ad2d50ae1616449ca7132cee",
+        "impossible_hard_workout_window|gpt-6-luna|jev=true|engine=direct_llm|b17a31762c79378fe09a8cd45a461894976b24d4ad2d50ae1616449ca7132cee",
+        "impossible_hard_workout_window|gpt-6-luna|jev=true|engine=cp_sat|b17a31762c79378fe09a8cd45a461894976b24d4ad2d50ae1616449ca7132cee",
+        "impossible_hard_workout_window|gpt-6.1-sol|jev=false|engine=direct_llm|9746d6559c45f834ff5689d729c5951a452e371810ceb3c57e9d0d6834b9592d",
+        "impossible_hard_workout_window|gpt-6.1-sol|jev=false|engine=cp_sat|9746d6559c45f834ff5689d729c5951a452e371810ceb3c57e9d0d6834b9592d",
+        "impossible_hard_workout_window|gpt-6.1-sol|jev=true|engine=direct_llm|9746d6559c45f834ff5689d729c5951a452e371810ceb3c57e9d0d6834b9592d",
+        "impossible_hard_workout_window|gpt-6.1-sol|jev=true|engine=cp_sat|9746d6559c45f834ff5689d729c5951a452e371810ceb3c57e9d0d6834b9592d",
+        "straightforward_staffing|gpt-6-luna|jev=false|engine=direct_llm|983fc75b3516647fa6dc2c65d5cccaa58050f3f760d95c347a12571acb1cc7b0",
+        "straightforward_staffing|gpt-6-luna|jev=false|engine=cp_sat|983fc75b3516647fa6dc2c65d5cccaa58050f3f760d95c347a12571acb1cc7b0",
+        "straightforward_staffing|gpt-6-luna|jev=true|engine=direct_llm|983fc75b3516647fa6dc2c65d5cccaa58050f3f760d95c347a12571acb1cc7b0",
+        "straightforward_staffing|gpt-6-luna|jev=true|engine=cp_sat|983fc75b3516647fa6dc2c65d5cccaa58050f3f760d95c347a12571acb1cc7b0",
+        "straightforward_staffing|gpt-6.1-sol|jev=false|engine=direct_llm|29d2e69bee48025064b2b1676adaab11d95c5a0a2bab27f11907b9496185210a",
+        "straightforward_staffing|gpt-6.1-sol|jev=false|engine=cp_sat|29d2e69bee48025064b2b1676adaab11d95c5a0a2bab27f11907b9496185210a",
+        "straightforward_staffing|gpt-6.1-sol|jev=true|engine=direct_llm|29d2e69bee48025064b2b1676adaab11d95c5a0a2bab27f11907b9496185210a",
+        "straightforward_staffing|gpt-6.1-sol|jev=true|engine=cp_sat|29d2e69bee48025064b2b1676adaab11d95c5a0a2bab27f11907b9496185210a",
+        "preferences_and_availability|gpt-6-luna|jev=false|engine=direct_llm|1f001f792f7c0c3391add58caa3ca893d43670bbbe12aa6b1cdcd6e184258b6a",
+        "preferences_and_availability|gpt-6-luna|jev=false|engine=cp_sat|1f001f792f7c0c3391add58caa3ca893d43670bbbe12aa6b1cdcd6e184258b6a",
+        "preferences_and_availability|gpt-6-luna|jev=true|engine=direct_llm|1f001f792f7c0c3391add58caa3ca893d43670bbbe12aa6b1cdcd6e184258b6a",
+        "preferences_and_availability|gpt-6-luna|jev=true|engine=cp_sat|1f001f792f7c0c3391add58caa3ca893d43670bbbe12aa6b1cdcd6e184258b6a",
+        "preferences_and_availability|gpt-6.1-sol|jev=false|engine=direct_llm|22f3024de8108b8538084d66344657d982c85a020c37f8c1b3426b42209ba0cf",
+        "preferences_and_availability|gpt-6.1-sol|jev=false|engine=cp_sat|22f3024de8108b8538084d66344657d982c85a020c37f8c1b3426b42209ba0cf",
+        "preferences_and_availability|gpt-6.1-sol|jev=true|engine=direct_llm|22f3024de8108b8538084d66344657d982c85a020c37f8c1b3426b42209ba0cf",
+        "preferences_and_availability|gpt-6.1-sol|jev=true|engine=cp_sat|22f3024de8108b8538084d66344657d982c85a020c37f8c1b3426b42209ba0cf",
+        "infeasible_staffing_is_extracted_not_repaired|gpt-6-luna|jev=false|engine=direct_llm|dd522a203d774067ff815bc02fde1639d33636e5fed9c024b21b3d3c990a026a",
+        "infeasible_staffing_is_extracted_not_repaired|gpt-6-luna|jev=false|engine=cp_sat|dd522a203d774067ff815bc02fde1639d33636e5fed9c024b21b3d3c990a026a",
+        "infeasible_staffing_is_extracted_not_repaired|gpt-6-luna|jev=true|engine=direct_llm|dd522a203d774067ff815bc02fde1639d33636e5fed9c024b21b3d3c990a026a",
+        "infeasible_staffing_is_extracted_not_repaired|gpt-6-luna|jev=true|engine=cp_sat|dd522a203d774067ff815bc02fde1639d33636e5fed9c024b21b3d3c990a026a",
+        "infeasible_staffing_is_extracted_not_repaired|gpt-6.1-sol|jev=false|engine=direct_llm|e2de591553b981b2fc8fba76abb2e831497fada9d486003db291119e51a20788",
+        "infeasible_staffing_is_extracted_not_repaired|gpt-6.1-sol|jev=false|engine=cp_sat|e2de591553b981b2fc8fba76abb2e831497fada9d486003db291119e51a20788",
+        "infeasible_staffing_is_extracted_not_repaired|gpt-6.1-sol|jev=true|engine=direct_llm|e2de591553b981b2fc8fba76abb2e831497fada9d486003db291119e51a20788",
+        "infeasible_staffing_is_extracted_not_repaired|gpt-6.1-sol|jev=true|engine=cp_sat|e2de591553b981b2fc8fba76abb2e831497fada9d486003db291119e51a20788",
+        "regional_week|gpt-6-luna|jev=false|engine=direct_llm|fadd2048300b02073f7eb0cac31478a7dd3193f905846e9643d4d3aa14b98d2f",
+        "regional_week|gpt-6-luna|jev=false|engine=cp_sat|fadd2048300b02073f7eb0cac31478a7dd3193f905846e9643d4d3aa14b98d2f",
+        "regional_week|gpt-6-luna|jev=true|engine=direct_llm|fadd2048300b02073f7eb0cac31478a7dd3193f905846e9643d4d3aa14b98d2f",
+        "regional_week|gpt-6-luna|jev=true|engine=cp_sat|fadd2048300b02073f7eb0cac31478a7dd3193f905846e9643d4d3aa14b98d2f",
+        "regional_week|gpt-6.1-sol|jev=false|engine=direct_llm|e06242b966d153e349f6ebbe2ff0e3b3f6242bb3d65c5bade2b9835249b30944",
+        "regional_week|gpt-6.1-sol|jev=false|engine=cp_sat|e06242b966d153e349f6ebbe2ff0e3b3f6242bb3d65c5bade2b9835249b30944",
+        "regional_week|gpt-6.1-sol|jev=true|engine=direct_llm|e06242b966d153e349f6ebbe2ff0e3b3f6242bb3d65c5bade2b9835249b30944",
+        "regional_week|gpt-6.1-sol|jev=true|engine=cp_sat|e06242b966d153e349f6ebbe2ff0e3b3f6242bb3d65c5bade2b9835249b30944",
+        "ten_day_rotation|gpt-6-luna|jev=false|engine=direct_llm|218a1686a076f53231929f20f7fa740d12fc2ca6760fe37ac2aa954127e0dcad",
+        "ten_day_rotation|gpt-6-luna|jev=false|engine=cp_sat|218a1686a076f53231929f20f7fa740d12fc2ca6760fe37ac2aa954127e0dcad",
+        "ten_day_rotation|gpt-6-luna|jev=true|engine=direct_llm|218a1686a076f53231929f20f7fa740d12fc2ca6760fe37ac2aa954127e0dcad",
+        "ten_day_rotation|gpt-6-luna|jev=true|engine=cp_sat|218a1686a076f53231929f20f7fa740d12fc2ca6760fe37ac2aa954127e0dcad",
+        "ten_day_rotation|gpt-6.1-sol|jev=false|engine=direct_llm|08906dbc64d467842e5505fadb1f02edde03dbf085af710ec4782a7221649efe",
+        "ten_day_rotation|gpt-6.1-sol|jev=false|engine=cp_sat|08906dbc64d467842e5505fadb1f02edde03dbf085af710ec4782a7221649efe",
+        "ten_day_rotation|gpt-6.1-sol|jev=true|engine=direct_llm|08906dbc64d467842e5505fadb1f02edde03dbf085af710ec4782a7221649efe",
+        "ten_day_rotation|gpt-6.1-sol|jev=true|engine=cp_sat|08906dbc64d467842e5505fadb1f02edde03dbf085af710ec4782a7221649efe"
+      ],
+      "rule": "unique_stage_accounting_supersedes_incomplete_incremental_fields; shared stages charged once; unknown timeout usage stays unknown"
+    },
+    {
+      "affected_result_keys": [
+        "workout_before_four_hard|gpt-6-luna|jev=true|engine=direct_llm|2e5e61926c8b3e41fcb77adba50a0257d3957f793df6695253b95195b07af80d"
+      ],
+      "rule": "attach_completed_shared_jev_cache_and_logs_to_downstream_failure"
+    }
+  ],
+  "corrections": [
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "wfh_laundry_lift_groceries|gpt-6-luna|jev=false|engine=direct_llm|658089dd9a45f1ec437d49e4150b6539caa97682d8319d08945abaa74bd54809"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "wfh_laundry_lift_groceries|gpt-6-luna|jev=false|engine=cp_sat|658089dd9a45f1ec437d49e4150b6539caa97682d8319d08945abaa74bd54809"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "wfh_laundry_lift_groceries|gpt-6-luna|jev=true|engine=direct_llm|658089dd9a45f1ec437d49e4150b6539caa97682d8319d08945abaa74bd54809"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "wfh_laundry_lift_groceries|gpt-6-luna|jev=true|engine=cp_sat|658089dd9a45f1ec437d49e4150b6539caa97682d8319d08945abaa74bd54809"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "wfh_laundry_lift_groceries|gpt-6.1-sol|jev=false|engine=direct_llm|52eb675e68f2fe2b1abca56b871a21e9913c6bd2eb2306a3b1430911c6496987"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "wfh_laundry_lift_groceries|gpt-6.1-sol|jev=false|engine=cp_sat|52eb675e68f2fe2b1abca56b871a21e9913c6bd2eb2306a3b1430911c6496987"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "wfh_laundry_lift_groceries|gpt-6.1-sol|jev=true|engine=direct_llm|52eb675e68f2fe2b1abca56b871a21e9913c6bd2eb2306a3b1430911c6496987"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "wfh_laundry_lift_groceries|gpt-6.1-sol|jev=true|engine=cp_sat|52eb675e68f2fe2b1abca56b871a21e9913c6bd2eb2306a3b1430911c6496987"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "active_and_passive|gpt-6-luna|jev=false|engine=direct_llm|c0dbeb762cd38d85c0fc35ffa7521bde28f57fb18f592c2b3a6bbebbba13065a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "active_and_passive|gpt-6-luna|jev=false|engine=cp_sat|c0dbeb762cd38d85c0fc35ffa7521bde28f57fb18f592c2b3a6bbebbba13065a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "active_and_passive|gpt-6-luna|jev=true|engine=direct_llm|c0dbeb762cd38d85c0fc35ffa7521bde28f57fb18f592c2b3a6bbebbba13065a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "active_and_passive|gpt-6-luna|jev=true|engine=cp_sat|c0dbeb762cd38d85c0fc35ffa7521bde28f57fb18f592c2b3a6bbebbba13065a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "active_and_passive|gpt-6.1-sol|jev=false|engine=direct_llm|251f4f1c1ac39f668e56b7fd457151e57a5dace28c76d8b9f8e7ab15476aaded"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "active_and_passive|gpt-6.1-sol|jev=false|engine=cp_sat|251f4f1c1ac39f668e56b7fd457151e57a5dace28c76d8b9f8e7ab15476aaded"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "active_and_passive|gpt-6.1-sol|jev=true|engine=direct_llm|251f4f1c1ac39f668e56b7fd457151e57a5dace28c76d8b9f8e7ab15476aaded"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "active_and_passive|gpt-6.1-sol|jev=true|engine=cp_sat|251f4f1c1ac39f668e56b7fd457151e57a5dace28c76d8b9f8e7ab15476aaded"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "laundry_precedence|gpt-6-luna|jev=false|engine=direct_llm|e5f7f8bf3c626460fb316fcca1ccfe847225c7c5b71ce917f6b5bcfcea489abe"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "laundry_precedence|gpt-6-luna|jev=false|engine=cp_sat|e5f7f8bf3c626460fb316fcca1ccfe847225c7c5b71ce917f6b5bcfcea489abe"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "laundry_precedence|gpt-6-luna|jev=true|engine=direct_llm|e5f7f8bf3c626460fb316fcca1ccfe847225c7c5b71ce917f6b5bcfcea489abe"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "laundry_precedence|gpt-6-luna|jev=true|engine=cp_sat|e5f7f8bf3c626460fb316fcca1ccfe847225c7c5b71ce917f6b5bcfcea489abe"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "laundry_precedence|gpt-6.1-sol|jev=false|engine=direct_llm|835024ba7b8d6730e31236fbdd6f5600500dc626a7bcfb7ddf0489649bb744e3"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "laundry_precedence|gpt-6.1-sol|jev=false|engine=cp_sat|835024ba7b8d6730e31236fbdd6f5600500dc626a7bcfb7ddf0489649bb744e3"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "laundry_precedence|gpt-6.1-sol|jev=true|engine=direct_llm|835024ba7b8d6730e31236fbdd6f5600500dc626a7bcfb7ddf0489649bb744e3"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "laundry_precedence|gpt-6.1-sol|jev=true|engine=cp_sat|835024ba7b8d6730e31236fbdd6f5600500dc626a7bcfb7ddf0489649bb744e3"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "hard_timing|gpt-6-luna|jev=false|engine=direct_llm|7e42175bb1aa289b6188187e69f878420961b2f9d24f81b04ee8fa499e207e2c"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "hard_timing|gpt-6-luna|jev=false|engine=cp_sat|7e42175bb1aa289b6188187e69f878420961b2f9d24f81b04ee8fa499e207e2c"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "hard_timing|gpt-6-luna|jev=true|engine=direct_llm|7e42175bb1aa289b6188187e69f878420961b2f9d24f81b04ee8fa499e207e2c"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "hard_timing|gpt-6-luna|jev=true|engine=cp_sat|7e42175bb1aa289b6188187e69f878420961b2f9d24f81b04ee8fa499e207e2c"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "hard_timing|gpt-6.1-sol|jev=false|engine=direct_llm|9e6c60800ea8e26943c44fd56a0ec6b7473f313c4b4c969260f21800baae02c0"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "hard_timing|gpt-6.1-sol|jev=false|engine=cp_sat|9e6c60800ea8e26943c44fd56a0ec6b7473f313c4b4c969260f21800baae02c0"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "hard_timing|gpt-6.1-sol|jev=true|engine=direct_llm|9e6c60800ea8e26943c44fd56a0ec6b7473f313c4b4c969260f21800baae02c0"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "hard_timing|gpt-6.1-sol|jev=true|engine=cp_sat|9e6c60800ea8e26943c44fd56a0ec6b7473f313c4b4c969260f21800baae02c0"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "soft_finish_preference|gpt-6-luna|jev=false|engine=direct_llm|04ffac2954d284a2b228631e7908c56bbb358fa4b554fcddb157e288981d0646"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "soft_finish_preference|gpt-6-luna|jev=false|engine=cp_sat|04ffac2954d284a2b228631e7908c56bbb358fa4b554fcddb157e288981d0646"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "soft_finish_preference|gpt-6-luna|jev=true|engine=direct_llm|04ffac2954d284a2b228631e7908c56bbb358fa4b554fcddb157e288981d0646"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "soft_finish_preference|gpt-6-luna|jev=true|engine=cp_sat|04ffac2954d284a2b228631e7908c56bbb358fa4b554fcddb157e288981d0646"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "soft_finish_preference|gpt-6.1-sol|jev=false|engine=direct_llm|342e712a693e35e24e51f800fe1d9e85aba489d9a2698a739c4a8c8117d7a3e7"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "soft_finish_preference|gpt-6.1-sol|jev=false|engine=cp_sat|342e712a693e35e24e51f800fe1d9e85aba489d9a2698a739c4a8c8117d7a3e7"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "soft_finish_preference|gpt-6.1-sol|jev=true|engine=direct_llm|342e712a693e35e24e51f800fe1d9e85aba489d9a2698a739c4a8c8117d7a3e7"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "soft_finish_preference|gpt-6.1-sol|jev=true|engine=cp_sat|342e712a693e35e24e51f800fe1d9e85aba489d9a2698a739c4a8c8117d7a3e7"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_soft|gpt-6-luna|jev=false|engine=direct_llm|b7830875d207f65fdcadc9733c7398d9ad6f0d095d846034fd0f7355a04583e6"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_soft|gpt-6-luna|jev=false|engine=cp_sat|b7830875d207f65fdcadc9733c7398d9ad6f0d095d846034fd0f7355a04583e6"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_soft|gpt-6-luna|jev=true|engine=direct_llm|b7830875d207f65fdcadc9733c7398d9ad6f0d095d846034fd0f7355a04583e6"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_soft|gpt-6-luna|jev=true|engine=cp_sat|b7830875d207f65fdcadc9733c7398d9ad6f0d095d846034fd0f7355a04583e6"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_soft|gpt-6.1-sol|jev=false|engine=direct_llm|df25b8c87bc29edcab011b1368094a1e1bd55814714aff0c244032ee74b2416b"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_soft|gpt-6.1-sol|jev=false|engine=cp_sat|df25b8c87bc29edcab011b1368094a1e1bd55814714aff0c244032ee74b2416b"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_soft|gpt-6.1-sol|jev=true|engine=direct_llm|df25b8c87bc29edcab011b1368094a1e1bd55814714aff0c244032ee74b2416b"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_soft|gpt-6.1-sol|jev=true|engine=cp_sat|df25b8c87bc29edcab011b1368094a1e1bd55814714aff0c244032ee74b2416b"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_hard|gpt-6-luna|jev=false|engine=direct_llm|2e5e61926c8b3e41fcb77adba50a0257d3957f793df6695253b95195b07af80d"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_hard|gpt-6-luna|jev=false|engine=cp_sat|2e5e61926c8b3e41fcb77adba50a0257d3957f793df6695253b95195b07af80d"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row",
+        "final_problem",
+        "intermediate_reuse",
+        "jev_decisions",
+        "question_alignment",
+        "resolved_jev_model"
+      ],
+      "result_key": "workout_before_four_hard|gpt-6-luna|jev=true|engine=direct_llm|2e5e61926c8b3e41fcb77adba50a0257d3957f793df6695253b95195b07af80d"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_hard|gpt-6-luna|jev=true|engine=cp_sat|2e5e61926c8b3e41fcb77adba50a0257d3957f793df6695253b95195b07af80d"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_hard|gpt-6.1-sol|jev=false|engine=direct_llm|caf2f70d467b5c30b697a046e5552c9ad1749750f924c53a2026b91b9a9ffc91"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_hard|gpt-6.1-sol|jev=false|engine=cp_sat|caf2f70d467b5c30b697a046e5552c9ad1749750f924c53a2026b91b9a9ffc91"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_hard|gpt-6.1-sol|jev=true|engine=direct_llm|caf2f70d467b5c30b697a046e5552c9ad1749750f924c53a2026b91b9a9ffc91"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "workout_before_four_hard|gpt-6.1-sol|jev=true|engine=cp_sat|caf2f70d467b5c30b697a046e5552c9ad1749750f924c53a2026b91b9a9ffc91"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "optional_walk_if_time|gpt-6-luna|jev=false|engine=direct_llm|aca7dd6cec8941d35b4cd250040c2279558da86243c565d3c624ee2e4a74076f"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "optional_walk_if_time|gpt-6-luna|jev=false|engine=cp_sat|aca7dd6cec8941d35b4cd250040c2279558da86243c565d3c624ee2e4a74076f"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "optional_walk_if_time|gpt-6-luna|jev=true|engine=direct_llm|aca7dd6cec8941d35b4cd250040c2279558da86243c565d3c624ee2e4a74076f"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "optional_walk_if_time|gpt-6-luna|jev=true|engine=cp_sat|aca7dd6cec8941d35b4cd250040c2279558da86243c565d3c624ee2e4a74076f"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "optional_walk_if_time|gpt-6.1-sol|jev=false|engine=direct_llm|d77af345b9c871836de475f90e259a1676a03036659fb27b94abe059154416e2"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "optional_walk_if_time|gpt-6.1-sol|jev=false|engine=cp_sat|d77af345b9c871836de475f90e259a1676a03036659fb27b94abe059154416e2"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "optional_walk_if_time|gpt-6.1-sol|jev=true|engine=direct_llm|d77af345b9c871836de475f90e259a1676a03036659fb27b94abe059154416e2"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "optional_walk_if_time|gpt-6.1-sol|jev=true|engine=cp_sat|d77af345b9c871836de475f90e259a1676a03036659fb27b94abe059154416e2"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "impossible_hard_workout_window|gpt-6-luna|jev=false|engine=direct_llm|b17a31762c79378fe09a8cd45a461894976b24d4ad2d50ae1616449ca7132cee"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "impossible_hard_workout_window|gpt-6-luna|jev=false|engine=cp_sat|b17a31762c79378fe09a8cd45a461894976b24d4ad2d50ae1616449ca7132cee"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "impossible_hard_workout_window|gpt-6-luna|jev=true|engine=direct_llm|b17a31762c79378fe09a8cd45a461894976b24d4ad2d50ae1616449ca7132cee"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "impossible_hard_workout_window|gpt-6-luna|jev=true|engine=cp_sat|b17a31762c79378fe09a8cd45a461894976b24d4ad2d50ae1616449ca7132cee"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "impossible_hard_workout_window|gpt-6.1-sol|jev=false|engine=direct_llm|9746d6559c45f834ff5689d729c5951a452e371810ceb3c57e9d0d6834b9592d"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "impossible_hard_workout_window|gpt-6.1-sol|jev=false|engine=cp_sat|9746d6559c45f834ff5689d729c5951a452e371810ceb3c57e9d0d6834b9592d"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "impossible_hard_workout_window|gpt-6.1-sol|jev=true|engine=direct_llm|9746d6559c45f834ff5689d729c5951a452e371810ceb3c57e9d0d6834b9592d"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "impossible_hard_workout_window|gpt-6.1-sol|jev=true|engine=cp_sat|9746d6559c45f834ff5689d729c5951a452e371810ceb3c57e9d0d6834b9592d"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row",
+        "canonical_evaluation"
+      ],
+      "result_key": "straightforward_staffing|gpt-6-luna|jev=false|engine=direct_llm|983fc75b3516647fa6dc2c65d5cccaa58050f3f760d95c347a12571acb1cc7b0"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row",
+        "canonical_evaluation"
+      ],
+      "result_key": "straightforward_staffing|gpt-6-luna|jev=false|engine=cp_sat|983fc75b3516647fa6dc2c65d5cccaa58050f3f760d95c347a12571acb1cc7b0"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "straightforward_staffing|gpt-6-luna|jev=true|engine=direct_llm|983fc75b3516647fa6dc2c65d5cccaa58050f3f760d95c347a12571acb1cc7b0"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "straightforward_staffing|gpt-6-luna|jev=true|engine=cp_sat|983fc75b3516647fa6dc2c65d5cccaa58050f3f760d95c347a12571acb1cc7b0"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row",
+        "canonical_evaluation"
+      ],
+      "result_key": "straightforward_staffing|gpt-6.1-sol|jev=false|engine=direct_llm|29d2e69bee48025064b2b1676adaab11d95c5a0a2bab27f11907b9496185210a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row",
+        "canonical_evaluation"
+      ],
+      "result_key": "straightforward_staffing|gpt-6.1-sol|jev=false|engine=cp_sat|29d2e69bee48025064b2b1676adaab11d95c5a0a2bab27f11907b9496185210a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "straightforward_staffing|gpt-6.1-sol|jev=true|engine=direct_llm|29d2e69bee48025064b2b1676adaab11d95c5a0a2bab27f11907b9496185210a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "straightforward_staffing|gpt-6.1-sol|jev=true|engine=cp_sat|29d2e69bee48025064b2b1676adaab11d95c5a0a2bab27f11907b9496185210a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "preferences_and_availability|gpt-6-luna|jev=false|engine=direct_llm|1f001f792f7c0c3391add58caa3ca893d43670bbbe12aa6b1cdcd6e184258b6a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "preferences_and_availability|gpt-6-luna|jev=false|engine=cp_sat|1f001f792f7c0c3391add58caa3ca893d43670bbbe12aa6b1cdcd6e184258b6a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "preferences_and_availability|gpt-6-luna|jev=true|engine=direct_llm|1f001f792f7c0c3391add58caa3ca893d43670bbbe12aa6b1cdcd6e184258b6a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "preferences_and_availability|gpt-6-luna|jev=true|engine=cp_sat|1f001f792f7c0c3391add58caa3ca893d43670bbbe12aa6b1cdcd6e184258b6a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "preferences_and_availability|gpt-6.1-sol|jev=false|engine=direct_llm|22f3024de8108b8538084d66344657d982c85a020c37f8c1b3426b42209ba0cf"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "preferences_and_availability|gpt-6.1-sol|jev=false|engine=cp_sat|22f3024de8108b8538084d66344657d982c85a020c37f8c1b3426b42209ba0cf"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "preferences_and_availability|gpt-6.1-sol|jev=true|engine=direct_llm|22f3024de8108b8538084d66344657d982c85a020c37f8c1b3426b42209ba0cf"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "preferences_and_availability|gpt-6.1-sol|jev=true|engine=cp_sat|22f3024de8108b8538084d66344657d982c85a020c37f8c1b3426b42209ba0cf"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row",
+        "canonical_evaluation"
+      ],
+      "result_key": "infeasible_staffing_is_extracted_not_repaired|gpt-6-luna|jev=false|engine=direct_llm|dd522a203d774067ff815bc02fde1639d33636e5fed9c024b21b3d3c990a026a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row",
+        "canonical_evaluation"
+      ],
+      "result_key": "infeasible_staffing_is_extracted_not_repaired|gpt-6-luna|jev=false|engine=cp_sat|dd522a203d774067ff815bc02fde1639d33636e5fed9c024b21b3d3c990a026a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "infeasible_staffing_is_extracted_not_repaired|gpt-6-luna|jev=true|engine=direct_llm|dd522a203d774067ff815bc02fde1639d33636e5fed9c024b21b3d3c990a026a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "infeasible_staffing_is_extracted_not_repaired|gpt-6-luna|jev=true|engine=cp_sat|dd522a203d774067ff815bc02fde1639d33636e5fed9c024b21b3d3c990a026a"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row",
+        "canonical_evaluation"
+      ],
+      "result_key": "infeasible_staffing_is_extracted_not_repaired|gpt-6.1-sol|jev=false|engine=direct_llm|e2de591553b981b2fc8fba76abb2e831497fada9d486003db291119e51a20788"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row",
+        "canonical_evaluation"
+      ],
+      "result_key": "infeasible_staffing_is_extracted_not_repaired|gpt-6.1-sol|jev=false|engine=cp_sat|e2de591553b981b2fc8fba76abb2e831497fada9d486003db291119e51a20788"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "infeasible_staffing_is_extracted_not_repaired|gpt-6.1-sol|jev=true|engine=direct_llm|e2de591553b981b2fc8fba76abb2e831497fada9d486003db291119e51a20788"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "infeasible_staffing_is_extracted_not_repaired|gpt-6.1-sol|jev=true|engine=cp_sat|e2de591553b981b2fc8fba76abb2e831497fada9d486003db291119e51a20788"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "regional_week|gpt-6-luna|jev=false|engine=direct_llm|fadd2048300b02073f7eb0cac31478a7dd3193f905846e9643d4d3aa14b98d2f"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "regional_week|gpt-6-luna|jev=false|engine=cp_sat|fadd2048300b02073f7eb0cac31478a7dd3193f905846e9643d4d3aa14b98d2f"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "regional_week|gpt-6-luna|jev=true|engine=direct_llm|fadd2048300b02073f7eb0cac31478a7dd3193f905846e9643d4d3aa14b98d2f"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "regional_week|gpt-6-luna|jev=true|engine=cp_sat|fadd2048300b02073f7eb0cac31478a7dd3193f905846e9643d4d3aa14b98d2f"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "regional_week|gpt-6.1-sol|jev=false|engine=direct_llm|e06242b966d153e349f6ebbe2ff0e3b3f6242bb3d65c5bade2b9835249b30944"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "regional_week|gpt-6.1-sol|jev=false|engine=cp_sat|e06242b966d153e349f6ebbe2ff0e3b3f6242bb3d65c5bade2b9835249b30944"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "regional_week|gpt-6.1-sol|jev=true|engine=direct_llm|e06242b966d153e349f6ebbe2ff0e3b3f6242bb3d65c5bade2b9835249b30944"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "regional_week|gpt-6.1-sol|jev=true|engine=cp_sat|e06242b966d153e349f6ebbe2ff0e3b3f6242bb3d65c5bade2b9835249b30944"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "ten_day_rotation|gpt-6-luna|jev=false|engine=direct_llm|218a1686a076f53231929f20f7fa740d12fc2ca6760fe37ac2aa954127e0dcad"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "ten_day_rotation|gpt-6-luna|jev=false|engine=cp_sat|218a1686a076f53231929f20f7fa740d12fc2ca6760fe37ac2aa954127e0dcad"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "ten_day_rotation|gpt-6-luna|jev=true|engine=direct_llm|218a1686a076f53231929f20f7fa740d12fc2ca6760fe37ac2aa954127e0dcad"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "ten_day_rotation|gpt-6-luna|jev=true|engine=cp_sat|218a1686a076f53231929f20f7fa740d12fc2ca6760fe37ac2aa954127e0dcad"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "ten_day_rotation|gpt-6.1-sol|jev=false|engine=direct_llm|08906dbc64d467842e5505fadb1f02edde03dbf085af710ec4782a7221649efe"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "ten_day_rotation|gpt-6.1-sol|jev=false|engine=cp_sat|08906dbc64d467842e5505fadb1f02edde03dbf085af710ec4782a7221649efe"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "ten_day_rotation|gpt-6.1-sol|jev=true|engine=direct_llm|08906dbc64d467842e5505fadb1f02edde03dbf085af710ec4782a7221649efe"
+    },
+    {
+      "fields": [
+        "actual_paid_call_attempts_created_for_this_row"
+      ],
+      "result_key": "ten_day_rotation|gpt-6.1-sol|jev=true|engine=cp_sat|08906dbc64d467842e5505fadb1f02edde03dbf085af710ec4782a7221649efe"
+    }
+  ],
+  "coverage_by_pair": [
+    {
+      "aligned": 4,
+      "canonical": 4,
+      "case_id": "active_and_passive",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6-luna",
+      "primary": 4,
+      "primary_aligned": 4,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 1,
+      "unaligned_questions": [
+        {
+          "alignment_status": "unaligned_generated",
+          "applied": true,
+          "canonical_question_id": null,
+          "changed": false,
+          "context": {
+            "earliest_start": "09:00",
+            "latest_end": "10:30",
+            "task": "Dishwasher run"
+          },
+          "final_applied_answer": "hard",
+          "final_value_status": "represented",
+          "generated_item": "task:Dishwasher run:hard_window",
+          "gpt_baseline_answer": "hard",
+          "jev_answer": "hard",
+          "jev_observation_status": "observed",
+          "jev_probability": 0.99,
+          "locator": {
+            "kind": "hard_window",
+            "task": "Dishwasher run"
+          },
+          "probabilities": {
+            "hard": 0.99,
+            "soft": 0.01
+          },
+          "question_type": "constraint_hardness",
+          "semantic_candidate_id": "constraint_hardness:{\"end\":\"10:30\",\"start\":\"09:00\",\"task\":\"dishwasher\"}#0"
+        }
+      ]
+    },
+    {
+      "aligned": 4,
+      "canonical": 4,
+      "case_id": "active_and_passive",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6.1-sol",
+      "primary": 4,
+      "primary_aligned": 4,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 1,
+      "unaligned_questions": [
+        {
+          "alignment_status": "unaligned_generated",
+          "applied": true,
+          "canonical_question_id": null,
+          "changed": false,
+          "context": {
+            "earliest_start": "09:00",
+            "latest_end": "10:30",
+            "task": "Dishwasher"
+          },
+          "final_applied_answer": "hard",
+          "final_value_status": "represented",
+          "generated_item": "task:Dishwasher:hard_window",
+          "gpt_baseline_answer": "hard",
+          "jev_answer": "hard",
+          "jev_observation_status": "observed",
+          "jev_probability": 0.99,
+          "locator": {
+            "kind": "hard_window",
+            "task": "Dishwasher"
+          },
+          "probabilities": {
+            "hard": 0.99,
+            "soft": 0.01
+          },
+          "question_type": "constraint_hardness",
+          "semantic_candidate_id": "constraint_hardness:{\"end\":\"10:30\",\"start\":\"09:00\",\"task\":\"dishwasher\"}#0"
+        }
+      ]
+    },
+    {
+      "aligned": 5,
+      "canonical": 5,
+      "case_id": "hard_timing",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6-luna",
+      "primary": 5,
+      "primary_aligned": 5,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 5,
+      "canonical": 5,
+      "case_id": "hard_timing",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6.1-sol",
+      "primary": 5,
+      "primary_aligned": 5,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 0,
+      "canonical": 3,
+      "case_id": "impossible_hard_workout_window",
+      "missing": 3,
+      "missing_ids": [
+        "constraint_hardness:{\"end\":\"16:00\",\"start\":null,\"task\":\"workout\"}#0",
+        "task_mode:{\"task\":\"workout\"}#0",
+        "task_requirement:{\"task\":\"workout\"}#0"
+      ],
+      "model": "gpt-6-luna",
+      "primary": 3,
+      "primary_aligned": 0,
+      "primary_missing": 3,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 3,
+      "canonical": 3,
+      "case_id": "impossible_hard_workout_window",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6.1-sol",
+      "primary": 3,
+      "primary_aligned": 3,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 4,
+      "canonical": 4,
+      "case_id": "infeasible_staffing_is_extracted_not_repaired",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6-luna",
+      "primary": 4,
+      "primary_aligned": 4,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 4,
+      "canonical": 4,
+      "case_id": "infeasible_staffing_is_extracted_not_repaired",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6.1-sol",
+      "primary": 4,
+      "primary_aligned": 4,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 6,
+      "canonical": 6,
+      "case_id": "laundry_precedence",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6-luna",
+      "primary": 6,
+      "primary_aligned": 6,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 6,
+      "canonical": 6,
+      "case_id": "laundry_precedence",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6.1-sol",
+      "primary": 6,
+      "primary_aligned": 6,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 2,
+      "canonical": 4,
+      "case_id": "optional_walk_if_time",
+      "missing": 2,
+      "missing_ids": [
+        "task_mode:{\"task\":\"walk\"}#0",
+        "task_requirement:{\"task\":\"walk\"}#0"
+      ],
+      "model": "gpt-6-luna",
+      "primary": 4,
+      "primary_aligned": 2,
+      "primary_missing": 2,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 0,
+      "canonical": 4,
+      "case_id": "optional_walk_if_time",
+      "missing": 4,
+      "missing_ids": [
+        "task_mode:{\"task\":\"report\"}#0",
+        "task_mode:{\"task\":\"walk\"}#0",
+        "task_requirement:{\"task\":\"report\"}#0",
+        "task_requirement:{\"task\":\"walk\"}#0"
+      ],
+      "model": "gpt-6.1-sol",
+      "primary": 4,
+      "primary_aligned": 0,
+      "primary_missing": 4,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 3,
+      "canonical": 3,
+      "case_id": "preferences_and_availability",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6-luna",
+      "primary": 2,
+      "primary_aligned": 2,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 3,
+      "canonical": 3,
+      "case_id": "preferences_and_availability",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6.1-sol",
+      "primary": 2,
+      "primary_aligned": 2,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 34,
+      "canonical": 34,
+      "case_id": "regional_week",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6-luna",
+      "primary": 34,
+      "primary_aligned": 34,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 34,
+      "canonical": 34,
+      "case_id": "regional_week",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6.1-sol",
+      "primary": 34,
+      "primary_aligned": 34,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 4,
+      "canonical": 4,
+      "case_id": "soft_finish_preference",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6-luna",
+      "primary": 3,
+      "primary_aligned": 3,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 4,
+      "canonical": 4,
+      "case_id": "soft_finish_preference",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6.1-sol",
+      "primary": 3,
+      "primary_aligned": 3,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 2,
+      "canonical": 2,
+      "case_id": "straightforward_staffing",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6-luna",
+      "primary": 2,
+      "primary_aligned": 2,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 2,
+      "canonical": 2,
+      "case_id": "straightforward_staffing",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6.1-sol",
+      "primary": 2,
+      "primary_aligned": 2,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 37,
+      "canonical": 37,
+      "case_id": "ten_day_rotation",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6-luna",
+      "primary": 37,
+      "primary_aligned": 37,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 37,
+      "canonical": 37,
+      "case_id": "ten_day_rotation",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6.1-sol",
+      "primary": 37,
+      "primary_aligned": 37,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 0,
+      "canonical": 15,
+      "case_id": "wfh_laundry_lift_groceries",
+      "missing": 15,
+      "missing_ids": [
+        "constraint_hardness:{\"end\":\"08:30\",\"start\":\"08:00\",\"task\":\"wash\"}#0",
+        "constraint_hardness:{\"end\":\"16:00\",\"start\":null,\"task\":\"lift\"}#0",
+        "constraint_hardness:{\"end\":\"20:30\",\"start\":null,\"task\":\"groceries\"}#0",
+        "pref_weight:{\"end\":null,\"start\":null,\"task\":\"lift\",\"time\":\"16:00\",\"type\":\"finish_before\"}#0",
+        "pref_weight:{\"end\":null,\"start\":null,\"task\":null,\"time\":null,\"type\":\"minimize_work_interruptions\"}#0",
+        "task_mode:{\"task\":\"dry\"}#0",
+        "task_mode:{\"task\":\"groceries\"}#0",
+        "task_mode:{\"task\":\"lift\"}#0",
+        "task_mode:{\"task\":\"transfer\"}#0",
+        "task_mode:{\"task\":\"wash\"}#0",
+        "task_requirement:{\"task\":\"dry\"}#0",
+        "task_requirement:{\"task\":\"groceries\"}#0",
+        "task_requirement:{\"task\":\"lift\"}#0",
+        "task_requirement:{\"task\":\"transfer\"}#0",
+        "task_requirement:{\"task\":\"wash\"}#0"
+      ],
+      "model": "gpt-6-luna",
+      "primary": 15,
+      "primary_aligned": 0,
+      "primary_missing": 15,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 15,
+      "canonical": 15,
+      "case_id": "wfh_laundry_lift_groceries",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6.1-sol",
+      "primary": 15,
+      "primary_aligned": 15,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 3,
+      "canonical": 3,
+      "case_id": "workout_before_four_hard",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6-luna",
+      "primary": 3,
+      "primary_aligned": 3,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 3,
+      "canonical": 3,
+      "case_id": "workout_before_four_hard",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6.1-sol",
+      "primary": 3,
+      "primary_aligned": 3,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 0,
+      "canonical": 4,
+      "case_id": "workout_before_four_soft",
+      "missing": 4,
+      "missing_ids": [
+        "constraint_hardness:{\"end\":\"16:00\",\"start\":null,\"task\":\"workout\"}#0",
+        "pref_weight:{\"end\":null,\"start\":null,\"task\":\"workout\",\"time\":\"16:00\",\"type\":\"finish_before\"}#0",
+        "task_mode:{\"task\":\"workout\"}#0",
+        "task_requirement:{\"task\":\"workout\"}#0"
+      ],
+      "model": "gpt-6-luna",
+      "primary": 3,
+      "primary_aligned": 0,
+      "primary_missing": 3,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    },
+    {
+      "aligned": 4,
+      "canonical": 4,
+      "case_id": "workout_before_four_soft",
+      "missing": 0,
+      "missing_ids": [],
+      "model": "gpt-6.1-sol",
+      "primary": 3,
+      "primary_aligned": 3,
+      "primary_missing": 0,
+      "unaligned_decisions": 0,
+      "unaligned_generated": 0,
+      "unaligned_questions": []
+    }
+  ],
+  "coverage_totals": {
+    "aligned": 228,
+    "canonical": 256,
+    "missing": 28,
+    "primary": 250,
+    "primary_aligned": 223,
+    "primary_missing": 27,
+    "unaligned_decisions": 0,
+    "unaligned_generated": 2
+  },
+  "derived_sha256": {
+    "reconciled.jsonl": "0ea7bda8c1c9d2f81291b8ce75f0206019ba913f3f8bb5223d76870cfb8b348d",
+    "reconciled_summary.csv": "e193292eb3d097adee3843cfa26b3cb68bd873fd6d5be848a418e90e10113571"
+  },
+  "experiment_totals": {
+    "jev_call_attempts": 24,
+    "jev_completed_calls": 24,
+    "jev_cost_usd": null,
+    "jev_input_tokens": 50946,
+    "jev_questions": 230,
+    "jev_usage_unknown_calls": 0,
+    "openai_call_attempts": 76,
+    "openai_estimated_cost_usd": 0.2874103,
+    "openai_input_tokens": 86583,
+    "openai_output_tokens": 46461,
+    "openai_responses_with_metadata": 74,
+    "openai_usage_unknown_calls": 2,
+    "timeout_billing_usd": null
+  },
+  "field_counts_before_after": {
+    "formulation_match": {
+      "after": 72,
+      "before": 64
+    },
+    "formulation_match_structural": {
+      "after": 76,
+      "before": 68
+    }
+  },
+  "input_sha256": {
+    "audit_details": "59cd02e200c42660187e14bd5196c84c192ff99bcdf22ef3adc371dd0a2d8e95",
+    "audit_report": "2faa008c2bc2b10afb1ea8450003677f07b02c78cfa6bf3432dbf55f91d7b95d",
+    "cache/0c2b7e4a7837_gpt-6-luna_extraction.json": "59547a3d5a818c7c61a26fdc539844a3bc03d72356674bdfec2545a46c1a5a0a",
+    "cache/0c2b7e4a7837_gpt-6-luna_jev.json": "d95b79704da390403c0ca90f3471685967e14f28b44ccae351d4886e3239f9dc",
+    "cache/0c2b7e4a7837_gpt-6.1-sol_extraction.json": "8bf6580e3f84b7cd05f3bfc7bd45755a382428a343198b988a989389dd596df0",
+    "cache/0c2b7e4a7837_gpt-6.1-sol_jev.json": "fb04ac6e1f23983c8c5500dc9f783199040e509bb6ca1e7db5619ebcca20ba16",
+    "cache/1a54f5ae606e_gpt-6-luna_extraction.json": "7d222d5ba868efd82bf59daffe3269d187cdbdd611fd9e82f27e9debf5f177f8",
+    "cache/1a54f5ae606e_gpt-6-luna_jev.json": "4de7eda7b49c75be41d362e7ccfeddf4ad6f91357989f35df8ce7ff756d6214e",
+    "cache/1a54f5ae606e_gpt-6.1-sol_extraction.json": "44e2920c112900ef0949ee2eacf98f9cef1fa5da3b26635c80e60d087400f9c5",
+    "cache/1a54f5ae606e_gpt-6.1-sol_jev.json": "a46a8c06c12af4f338f44fd2f6f0d8ce63044aa33399c61c8e18f2fc4aa2a5f5",
+    "cache/1e9f1ffed414_gpt-6-luna_extraction.json": "6391442673eb9ed9225913b8d90b4f6939350c6ef7adf21288a5e759f831d688",
+    "cache/1e9f1ffed414_gpt-6.1-sol_extraction.json": "dbecc064fa55ff07cef16f140381a967cc52dd8842ed22264486317de6932793",
+    "cache/1e9f1ffed414_gpt-6.1-sol_jev.json": "75bbd18b54fce4e7da869fad9531497d1ae0896ee6ab1066eeea936caaafccb3",
+    "cache/370b0c6bb67d_gpt-6-luna_extraction.json": "561b6fbb9ff7940741d35c71bb2c650990de613a88c12383254bdd506f49d787",
+    "cache/370b0c6bb67d_gpt-6.1-sol_extraction.json": "e8d343ba8b252d5778354375bbd3d6e466f7424796e2351340cb44427ab1e36a",
+    "cache/370b0c6bb67d_gpt-6.1-sol_jev.json": "0f9e7d8b02bfaa4b62bb024e7d191cec26543a2754bc817083c42bdee2cbea3f",
+    "cache/5242d736b559_gpt-6-luna_extraction.json": "2e2d4cc0045055ba75495d0353e9d2d2e0df3d49d1569277b0ea49f3079113b8",
+    "cache/5242d736b559_gpt-6-luna_jev.json": "28faa9f7721be4b3678a243e1274d1013eeb137de34ebf000c323b379c5073db",
+    "cache/5242d736b559_gpt-6.1-sol_extraction.json": "fdd4976a744500783c504fe70bdf97af90b3ab35de61fb7f13d5f28899650661",
+    "cache/5242d736b559_gpt-6.1-sol_jev.json": "4bb16c2e89da7ce3915ad4940cdf39cc382a47a1ebf342dd6a7de701a0c9c27a",
+    "cache/6fde234e6c8e_gpt-6-luna_extraction.json": "cec4d3becce4e0b47ac27d411d4a306816267745c9a00a3835b448ed43521250",
+    "cache/6fde234e6c8e_gpt-6-luna_jev.json": "35ac043af3ac231e779c6525a8d9cc4156601d2a1b1c5dce53c0040369e116b3",
+    "cache/6fde234e6c8e_gpt-6.1-sol_extraction.json": "de39e2119686b9790f77d9a024aabe0d6f74fda319f46645cffc94be09b7e314",
+    "cache/6fde234e6c8e_gpt-6.1-sol_jev.json": "4cfea22ac4aaea11ca91d2650177e5de65928b262b7acbf388b8667d9a3f4a70",
+    "cache/91622a944854_gpt-6-luna_extraction.json": "823aad67800b2633dd127395a7dbc27f4be75019ba47bf8939155efc84451af0",
+    "cache/91622a944854_gpt-6-luna_jev.json": "229b794e3b8a2d2dd5a51c19e79bc2b87e1fa8f89a8495a2695b0b369f238b04",
+    "cache/91622a944854_gpt-6.1-sol_extraction.json": "73061d24b89a57510a15eb54e15d41ae5b394887b48c1d37ca31a1e2b4bf42b5",
+    "cache/91622a944854_gpt-6.1-sol_jev.json": "5cbb3b89f2da1752797934e8dcf2bea47ccdac92b2bd4ca29a71ec7027c33243",
+    "cache/a0d919c50eb3_gpt-6-luna_extraction.json": "b544c73064418e86b34cd026a0237de39911e22bac5a8681ed55155359c60987",
+    "cache/a0d919c50eb3_gpt-6-luna_jev.json": "ce5a3f62da684e40e612492c5a52411884c86b90ab7276671d7e8bf7e3710362",
+    "cache/a0d919c50eb3_gpt-6.1-sol_extraction.json": "b51f8db0fe6ad0b513ff6449d213acd69fca2d026a125d927124dd08682bd029",
+    "cache/a0d919c50eb3_gpt-6.1-sol_jev.json": "103766bf3d5a3bca9e34dff50546c1af177992b0319aed356edef00bc9708c70",
+    "cache/b4d51a0f8c40_gpt-6-luna_extraction.json": "a262c0b52d00ffa3beb14cd1c439789de44f1d2ffb11aca71704c2bc450f8b8c",
+    "cache/b4d51a0f8c40_gpt-6-luna_jev.json": "7037223bd752f50d41a4ffa84b8210a7125a31dffcebc472008e7ae600f7b939",
+    "cache/b4d51a0f8c40_gpt-6.1-sol_extraction.json": "0e3c5fb383ba770d57fe7fefc6590017231729d66b435a420a391db77f41dfa6",
+    "cache/b4d51a0f8c40_gpt-6.1-sol_jev.json": "bd557c8c1c8020a1466b281f190e816714693dcea2c386b15cc8757c621e1366",
+    "cache/bfb9f9f0a649_gpt-6-luna_extraction.json": "ea1c69ab4525085f4f6602b3a144ad9591a26df01dbcb803ea220d731d210a40",
+    "cache/bfb9f9f0a649_gpt-6-luna_jev.json": "dccbb219aab41c7afbe3c9f595400feb0a82185a19a6adaaac4baeef5d9ef2ac",
+    "cache/bfb9f9f0a649_gpt-6.1-sol_extraction.json": "44ee8df6968afd6906e65837f1c950abf6887e30ff49fd030745f61b5a6e3992",
+    "cache/bfb9f9f0a649_gpt-6.1-sol_jev.json": "d90a685865546d9785d3f5a49d4e9f99adc926554c9140ea22ebb0ef87520430",
+    "cache/c07b7beecfec_gpt-6-luna_extraction.json": "97def49637789ebf46e55e1041b6b4c26cfd8f67bd9cde4f7837974cf9ff8008",
+    "cache/c07b7beecfec_gpt-6.1-sol_extraction.json": "db6900c575ea319c812f6b360c52d6a0fc0449cc72bdacad575495c8c075e337",
+    "cache/c07b7beecfec_gpt-6.1-sol_jev.json": "1eb21073a02234b54dab12bb737a5db1a62ba0fa1da05fcd612908d7659f40ba",
+    "cache/c83c78df6127_gpt-6-luna_extraction.json": "7fc836a4303cc55253ab934e71229dd6da882dfb4286fa428eb5039aa21b1ab6",
+    "cache/c83c78df6127_gpt-6-luna_jev.json": "2b5f6cf4b631d3c8e26fe3ede9f8914e26971e72e2b90954ae4f807a02e29bce",
+    "cache/c83c78df6127_gpt-6.1-sol_extraction.json": "5f5b49ad9d0fcb29531ef78f20d7801d576065b4a8103e037b7b2d95bc70cbbc",
+    "cache/c83c78df6127_gpt-6.1-sol_jev.json": "ca24b3e42e03c81b65ce43f0c353c621c0368a33943e2a998805753b6b230efc",
+    "cache/f0cd123854f3_gpt-6-luna_extraction.json": "b808fcf8ffc4a03b0e51f527ac01484c50f7c07e6b2be308e97ba4a3b6940495",
+    "cache/f0cd123854f3_gpt-6-luna_jev.json": "d4274469b73caa11d5d6fc924321532f897fdf5858e9b33efbd9fbffd58ebcc9",
+    "cache/f0cd123854f3_gpt-6.1-sol_extraction.json": "2866f532b5ff5feb99860a28599232be2388bf086ac6aa7ef0cdda9e92a55f88",
+    "cache/f0cd123854f3_gpt-6.1-sol_jev.json": "5d22e5c7c7585b8952b4933b3023fb6b8da21dc59fd2d4d9be125ada8b2ccdcf",
+    "cache/fbc4e5e6dc3e_gpt-6-luna_extraction.json": "78cfc80be1f99b47b9eeafdf4b42c78dab6bc134104ce0ab89c5f5cd29bc90c3",
+    "cache/fbc4e5e6dc3e_gpt-6-luna_jev.json": "cd6255990ea9b7a60bfb0a27868ca5f7f1f406c50d331b1121abe8bc98cb1f39",
+    "cache/fbc4e5e6dc3e_gpt-6.1-sol_extraction.json": "13913816a4127678c6e938311efb83ba8e86af49d73574025ba55bdf5fabdb14",
+    "jev_decisions.jsonl": "0f80a016b185e86c463e99ff3ae98ac6f440f46811f0a79ce3cbbbdba19278cb",
+    "latest.jsonl": "fe82d789c2e05d7cfd1d9be5dbdd07c6c595a3e70396be1e7d3276e96703b88d",
+    "latest_summary.csv": "556d4e6d8c0893997dc046c0b45c70eaef07a04d05c3f32e5d0ec1ae68dec95b"
+  },
+  "label_counts": {
+    "generator_derived_scored": 71,
+    "human_reviewed_approved": 54,
+    "labels_total": 128,
+    "primary_scored_total": 125,
+    "subjective_excluded": 3
+  },
+  "limitations": [
+    "Token costs are recorded estimates, not invoices; two timeout requests have unknown usage and billing.",
+    "Recovered failed Direct formulation is shared upstream evidence; the exact timed-out request body was not persisted.",
+    "No Jev dollar pricing is assigned."
+  ],
+  "paid_observations_generated_or_replaced": false,
+  "recovered_accounting_on_terminal_rows": [
+    {
+      "known_usage": {
+        "jev_call_attempts": 1,
+        "jev_completed_calls": 1,
+        "jev_input_tokens": 644,
+        "jev_questions": 3,
+        "jev_usage_unknown_calls": 0,
+        "openai_call_attempts": 1,
+        "openai_estimated_cost_usd": 0.0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "openai_responses_with_metadata": 0,
+        "openai_usage_unknown_calls": 1,
+        "unknown_usage_billing_usd": null
+      },
+      "result_key": "workout_before_four_hard|gpt-6-luna|jev=true|engine=direct_llm|2e5e61926c8b3e41fcb77adba50a0257d3957f793df6695253b95195b07af80d"
+    },
+    {
+      "known_usage": {
+        "jev_call_attempts": 0,
+        "jev_completed_calls": 0,
+        "jev_input_tokens": 0,
+        "jev_questions": 0,
+        "jev_usage_unknown_calls": 0,
+        "openai_call_attempts": 1,
+        "openai_estimated_cost_usd": 0.00038439999999999997,
+        "openai_input_tokens": 1484,
+        "openai_output_tokens": 472,
+        "openai_responses_with_metadata": 1,
+        "openai_usage_unknown_calls": 0,
+        "unknown_usage_billing_usd": null
+      },
+      "result_key": "impossible_hard_workout_window|gpt-6-luna|jev=false|engine=direct_llm|b17a31762c79378fe09a8cd45a461894976b24d4ad2d50ae1616449ca7132cee"
+    }
+  ],
+  "source": {
+    "derived_schema_version": 1,
+    "implementation_hash": "60b97ef1239ff2d0a7e2808696548fe40bc5adf18af3918870528b8a5008ad4b",
+    "observed_implementation_hash": "d1724b8770cb49b1b51f96870fdc07311d439938fd9197d76a282c0a7cbd8330",
+    "raw_schema_version": 2,
+    "script_sha256": "037d179ce7d9134a565f8eacc2c341a54016bcd2f33419547012bd353374eac8",
+    "version": "final-offline-reconciliation-v1"
+  },
+  "timestamp": "2026-09-30T19:24:24.928710+00:00",
+  "unique_stage_ledger": [
+    {
+      "case_id": "active_and_passive",
+      "model": "gpt-6-luna",
+      "source": "cache/bfb9f9f0a649_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "active_and_passive",
+        "error": null,
+        "estimated_cost": 0.000497,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 8.05336979101412,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 8.053511291043833,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1505,
+        "openai_output_tokens": 693,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6-luna"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "active_and_passive",
+      "model": "gpt-6-luna",
+      "source": "cache/bfb9f9f0a649_gpt-6-luna_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "active_and_passive",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 905,
+        "latency_jev_s": 0.21164774999488145,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.2126422500004992,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 5,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "active_and_passive",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#active_and_passive|gpt-6-luna|jev=false|engine=direct_llm|c0dbeb762cd38d85c0fc35ffa7521bde28f57fb18f592c2b3a6bbebbba13065a",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.0001396,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 491,
+        "openai_output_tokens": 181
+      }
+    },
+    {
+      "case_id": "active_and_passive",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#active_and_passive|gpt-6-luna|jev=true|engine=direct_llm|c0dbeb762cd38d85c0fc35ffa7521bde28f57fb18f592c2b3a6bbebbba13065a",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.0001496,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 491,
+        "openai_output_tokens": 201
+      }
+    },
+    {
+      "case_id": "active_and_passive",
+      "model": "gpt-6.1-sol",
+      "source": "cache/bfb9f9f0a649_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "active_and_passive",
+        "error": null,
+        "estimated_cost": 0.006,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 7.80613279202953,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 7.8062062920071185,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1505,
+        "openai_output_tokens": 299,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "active_and_passive",
+      "model": "gpt-6.1-sol",
+      "source": "cache/bfb9f9f0a649_gpt-6.1-sol_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "active_and_passive",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 899,
+        "latency_jev_s": 0.26589887496083975,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.2668712920276448,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 5,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "active_and_passive",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#active_and_passive|gpt-6.1-sol|jev=false|engine=direct_llm|251f4f1c1ac39f668e56b7fd457151e57a5dace28c76d8b9f8e7ab15476aaded",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.00237,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 490,
+        "openai_output_tokens": 139
+      }
+    },
+    {
+      "case_id": "active_and_passive",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#active_and_passive|gpt-6.1-sol|jev=true|engine=direct_llm|251f4f1c1ac39f668e56b7fd457151e57a5dace28c76d8b9f8e7ab15476aaded",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.00218,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 490,
+        "openai_output_tokens": 120
+      }
+    },
+    {
+      "case_id": "hard_timing",
+      "model": "gpt-6-luna",
+      "source": "cache/0c2b7e4a7837_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "hard_timing",
+        "error": null,
+        "estimated_cost": 0.00030839999999999996,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 3.400428459048271,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 3.4004870830103755,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1504,
+        "openai_output_tokens": 316,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6-luna"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "hard_timing",
+      "model": "gpt-6-luna",
+      "source": "cache/0c2b7e4a7837_gpt-6-luna_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "hard_timing",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 886,
+        "latency_jev_s": 0.22906062507536262,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.23005020897835493,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 5,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "hard_timing",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#hard_timing|gpt-6-luna|jev=false|engine=direct_llm|7e42175bb1aa289b6188187e69f878420961b2f9d24f81b04ee8fa499e207e2c",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.0001257,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 492,
+        "openai_output_tokens": 153
+      }
+    },
+    {
+      "case_id": "hard_timing",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#hard_timing|gpt-6-luna|jev=true|engine=direct_llm|7e42175bb1aa289b6188187e69f878420961b2f9d24f81b04ee8fa499e207e2c",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.0001317,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 492,
+        "openai_output_tokens": 165
+      }
+    },
+    {
+      "case_id": "hard_timing",
+      "model": "gpt-6.1-sol",
+      "source": "cache/0c2b7e4a7837_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "hard_timing",
+        "error": null,
+        "estimated_cost": 0.008118,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 12.511904082959518,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 12.511990749975666,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1504,
+        "openai_output_tokens": 511,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "hard_timing",
+      "model": "gpt-6.1-sol",
+      "source": "cache/0c2b7e4a7837_gpt-6.1-sol_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "hard_timing",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 883,
+        "latency_jev_s": 0.18064616702031344,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.18160574999637902,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 5,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "hard_timing",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#hard_timing|gpt-6.1-sol|jev=false|engine=direct_llm|9e6c60800ea8e26943c44fd56a0ec6b7473f313c4b4c969260f21800baae02c0",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.002308,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 494,
+        "openai_output_tokens": 132
+      }
+    },
+    {
+      "case_id": "hard_timing",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#hard_timing|gpt-6.1-sol|jev=true|engine=direct_llm|9e6c60800ea8e26943c44fd56a0ec6b7473f313c4b4c969260f21800baae02c0",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.002348,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 494,
+        "openai_output_tokens": 136
+      }
+    },
+    {
+      "case_id": "impossible_hard_workout_window",
+      "model": "gpt-6-luna",
+      "source": "cache/1e9f1ffed414_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "impossible_hard_workout_window",
+        "error": "DayPlanOutputError: OpenAI returned structured data that failed DayPlanExtraction validation: plan: Value error, task names must be unique",
+        "estimated_cost": 0.00038439999999999997,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 4.939656000002287,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 4.943230999982916,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1484,
+        "openai_output_tokens": 472,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6-luna"
+        ],
+        "solution_engine": "cp_sat",
+        "success": false,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "impossible_hard_workout_window",
+      "model": "gpt-6.1-sol",
+      "source": "cache/1e9f1ffed414_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "impossible_hard_workout_window",
+        "error": null,
+        "estimated_cost": 0.004538,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 4.98389179201331,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 4.983952208072878,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1484,
+        "openai_output_tokens": 157,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "impossible_hard_workout_window",
+      "model": "gpt-6.1-sol",
+      "source": "cache/1e9f1ffed414_gpt-6.1-sol_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "impossible_hard_workout_window",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 648,
+        "latency_jev_s": 0.20658333296887577,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.20719841704703867,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 3,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "impossible_hard_workout_window",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#impossible_hard_workout_window|gpt-6.1-sol|jev=false|engine=direct_llm|9746d6559c45f834ff5689d729c5951a452e371810ceb3c57e9d0d6834b9592d",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.001356,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 403,
+        "openai_output_tokens": 55
+      }
+    },
+    {
+      "case_id": "impossible_hard_workout_window",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#impossible_hard_workout_window|gpt-6.1-sol|jev=true|engine=direct_llm|9746d6559c45f834ff5689d729c5951a452e371810ceb3c57e9d0d6834b9592d",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.001356,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 403,
+        "openai_output_tokens": 55
+      }
+    },
+    {
+      "case_id": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6-luna",
+      "source": "cache/6fde234e6c8e_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "infeasible_staffing_is_extracted_not_repaired",
+        "error": null,
+        "estimated_cost": 0.0003155,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 3.328997042030096,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 3.329064124962315,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1325,
+        "openai_output_tokens": 366,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [
+          "gpt-6-luna"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6-luna",
+      "source": "cache/6fde234e6c8e_gpt-6-luna_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "infeasible_staffing_is_extracted_not_repaired",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 1098,
+        "latency_jev_s": 0.16089875006582588,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.1619924589758739,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 4,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "infeasible_staffing_is_extracted_not_repaired",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#infeasible_staffing_is_extracted_not_repaired|gpt-6-luna|jev=false|engine=direct_llm|dd522a203d774067ff815bc02fde1639d33636e5fed9c024b21b3d3c990a026a",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.0001434,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 719,
+        "openai_output_tokens": 143
+      }
+    },
+    {
+      "case_id": "infeasible_staffing_is_extracted_not_repaired",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#infeasible_staffing_is_extracted_not_repaired|gpt-6-luna|jev=true|engine=direct_llm|dd522a203d774067ff815bc02fde1639d33636e5fed9c024b21b3d3c990a026a",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.0001691,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 751,
+        "openai_output_tokens": 188
+      }
+    },
+    {
+      "case_id": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6.1-sol",
+      "source": "cache/6fde234e6c8e_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "infeasible_staffing_is_extracted_not_repaired",
+        "error": null,
+        "estimated_cost": 0.00614,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 7.679929959005676,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 7.679991416982375,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1325,
+        "openai_output_tokens": 349,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6.1-sol",
+      "source": "cache/6fde234e6c8e_gpt-6.1-sol_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "infeasible_staffing_is_extracted_not_repaired",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 1098,
+        "latency_jev_s": 0.210240334039554,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.21134174999315292,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 4,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "infeasible_staffing_is_extracted_not_repaired",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#infeasible_staffing_is_extracted_not_repaired|gpt-6.1-sol|jev=false|engine=direct_llm|e2de591553b981b2fc8fba76abb2e831497fada9d486003db291119e51a20788",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.002198,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 719,
+        "openai_output_tokens": 76
+      }
+    },
+    {
+      "case_id": "infeasible_staffing_is_extracted_not_repaired",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#infeasible_staffing_is_extracted_not_repaired|gpt-6.1-sol|jev=true|engine=direct_llm|e2de591553b981b2fc8fba76abb2e831497fada9d486003db291119e51a20788",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.002252,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 751,
+        "openai_output_tokens": 75
+      }
+    },
+    {
+      "case_id": "laundry_precedence",
+      "model": "gpt-6-luna",
+      "source": "cache/5242d736b559_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "laundry_precedence",
+        "error": null,
+        "estimated_cost": 0.00038260000000000003,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 4.78903674997855,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 4.789126583957113,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1511,
+        "openai_output_tokens": 463,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6-luna"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "laundry_precedence",
+      "model": "gpt-6-luna",
+      "source": "cache/5242d736b559_gpt-6-luna_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "laundry_precedence",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 963,
+        "latency_jev_s": 0.19060641701798886,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.19146154099144042,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 6,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "laundry_precedence",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#laundry_precedence|gpt-6-luna|jev=false|engine=direct_llm|e5f7f8bf3c626460fb316fcca1ccfe847225c7c5b71ce917f6b5bcfcea489abe",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.0001695,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 570,
+        "openai_output_tokens": 225
+      }
+    },
+    {
+      "case_id": "laundry_precedence",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#laundry_precedence|gpt-6-luna|jev=true|engine=direct_llm|e5f7f8bf3c626460fb316fcca1ccfe847225c7c5b71ce917f6b5bcfcea489abe",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.000197,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 570,
+        "openai_output_tokens": 280
+      }
+    },
+    {
+      "case_id": "laundry_precedence",
+      "model": "gpt-6.1-sol",
+      "source": "cache/5242d736b559_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "laundry_precedence",
+        "error": null,
+        "estimated_cost": 0.005562,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 9.668148332973942,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 9.668299000011757,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1511,
+        "openai_output_tokens": 254,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "laundry_precedence",
+      "model": "gpt-6.1-sol",
+      "source": "cache/5242d736b559_gpt-6.1-sol_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "laundry_precedence",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 963,
+        "latency_jev_s": 0.21164662495721132,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.21347466600127518,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 6,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "laundry_precedence",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#laundry_precedence|gpt-6.1-sol|jev=false|engine=direct_llm|835024ba7b8d6730e31236fbdd6f5600500dc626a7bcfb7ddf0489649bb744e3",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.00259,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 570,
+        "openai_output_tokens": 145
+      }
+    },
+    {
+      "case_id": "laundry_precedence",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#laundry_precedence|gpt-6.1-sol|jev=true|engine=direct_llm|835024ba7b8d6730e31236fbdd6f5600500dc626a7bcfb7ddf0489649bb744e3",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.00236,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 570,
+        "openai_output_tokens": 122
+      }
+    },
+    {
+      "case_id": "optional_walk_if_time",
+      "model": "gpt-6-luna",
+      "source": "cache/fbc4e5e6dc3e_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "optional_walk_if_time",
+        "error": null,
+        "estimated_cost": 0.000497,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 7.353281541960314,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 7.353373124962673,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1490,
+        "openai_output_tokens": 696,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6-luna"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "optional_walk_if_time",
+      "model": "gpt-6-luna",
+      "source": "cache/fbc4e5e6dc3e_gpt-6-luna_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "optional_walk_if_time",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 533,
+        "latency_jev_s": 0.19519274996127933,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.19587041600607336,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 2,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "optional_walk_if_time",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#optional_walk_if_time|gpt-6-luna|jev=false|engine=direct_llm|aca7dd6cec8941d35b4cd250040c2279558da86243c565d3c624ee2e4a74076f",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 9.06e-05,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 401,
+        "openai_output_tokens": 101
+      }
+    },
+    {
+      "case_id": "optional_walk_if_time",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#optional_walk_if_time|gpt-6-luna|jev=true|engine=direct_llm|aca7dd6cec8941d35b4cd250040c2279558da86243c565d3c624ee2e4a74076f",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 9.26e-05,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 401,
+        "openai_output_tokens": 105
+      }
+    },
+    {
+      "case_id": "optional_walk_if_time",
+      "model": "gpt-6.1-sol",
+      "source": "cache/fbc4e5e6dc3e_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "optional_walk_if_time",
+        "error": null,
+        "estimated_cost": 0.00453,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 6.81397891708184,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 6.814065541955642,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1490,
+        "openai_output_tokens": 155,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "preferences_and_availability",
+      "model": "gpt-6-luna",
+      "source": "cache/c83c78df6127_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "preferences_and_availability",
+        "error": null,
+        "estimated_cost": 0.0002613,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 3.25683762494009,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 3.256895291036926,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1273,
+        "openai_output_tokens": 268,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [
+          "gpt-6-luna"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "preferences_and_availability",
+      "model": "gpt-6-luna",
+      "source": "cache/c83c78df6127_gpt-6-luna_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "preferences_and_availability",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 820,
+        "latency_jev_s": 0.19758637493941933,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.19828545802738518,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 3,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "preferences_and_availability",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#preferences_and_availability|gpt-6-luna|jev=false|engine=direct_llm|1f001f792f7c0c3391add58caa3ca893d43670bbbe12aa6b1cdcd6e184258b6a",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.0001133,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 573,
+        "openai_output_tokens": 112
+      }
+    },
+    {
+      "case_id": "preferences_and_availability",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#preferences_and_availability|gpt-6-luna|jev=true|engine=direct_llm|1f001f792f7c0c3391add58caa3ca893d43670bbbe12aa6b1cdcd6e184258b6a",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.0001138,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 573,
+        "openai_output_tokens": 113
+      }
+    },
+    {
+      "case_id": "preferences_and_availability",
+      "model": "gpt-6.1-sol",
+      "source": "cache/c83c78df6127_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "preferences_and_availability",
+        "error": null,
+        "estimated_cost": 0.004786,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 6.468209250015207,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 6.468300541979261,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1273,
+        "openai_output_tokens": 224,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "preferences_and_availability",
+      "model": "gpt-6.1-sol",
+      "source": "cache/c83c78df6127_gpt-6.1-sol_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "preferences_and_availability",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 820,
+        "latency_jev_s": 0.21487008302938193,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.2156863750424236,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 3,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "preferences_and_availability",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#preferences_and_availability|gpt-6.1-sol|jev=false|engine=direct_llm|22f3024de8108b8538084d66344657d982c85a020c37f8c1b3426b42209ba0cf",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.002016,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 573,
+        "openai_output_tokens": 87
+      }
+    },
+    {
+      "case_id": "preferences_and_availability",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#preferences_and_availability|gpt-6.1-sol|jev=true|engine=direct_llm|22f3024de8108b8538084d66344657d982c85a020c37f8c1b3426b42209ba0cf",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.001876,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 573,
+        "openai_output_tokens": 73
+      }
+    },
+    {
+      "case_id": "regional_week",
+      "model": "gpt-6-luna",
+      "source": "cache/1a54f5ae606e_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "regional_week",
+        "error": null,
+        "estimated_cost": 0.0013081,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 13.512442416977137,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 13.512503083911724,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2236,
+        "openai_output_tokens": 2169,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [
+          "gpt-6-luna"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "regional_week",
+      "model": "gpt-6-luna",
+      "source": "cache/1a54f5ae606e_gpt-6-luna_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "regional_week",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 7719,
+        "latency_jev_s": 0.3541529169306159,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.3632021660450846,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 34,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "regional_week",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#regional_week|gpt-6-luna|jev=false|engine=direct_llm|fadd2048300b02073f7eb0cac31478a7dd3193f905846e9643d4d3aa14b98d2f",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.001824,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2500,
+        "openai_output_tokens": 3148
+      }
+    },
+    {
+      "case_id": "regional_week",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#regional_week|gpt-6-luna|jev=true|engine=direct_llm|fadd2048300b02073f7eb0cac31478a7dd3193f905846e9643d4d3aa14b98d2f",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.0022534,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2534,
+        "openai_output_tokens": 4000
+      }
+    },
+    {
+      "case_id": "regional_week",
+      "model": "gpt-6.1-sol",
+      "source": "cache/1a54f5ae606e_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "regional_week",
+        "error": null,
+        "estimated_cost": 0.020512,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 23.085048457956873,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 23.085104625090025,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2236,
+        "openai_output_tokens": 1604,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "regional_week",
+      "model": "gpt-6.1-sol",
+      "source": "cache/1a54f5ae606e_gpt-6.1-sol_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "regional_week",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 7719,
+        "latency_jev_s": 0.2444370420416817,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.25357149995397776,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 34,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "regional_week",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#regional_week|gpt-6.1-sol|jev=false|engine=direct_llm|e06242b966d153e349f6ebbe2ff0e3b3f6242bb3d65c5bade2b9835249b30944",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.02398,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2500,
+        "openai_output_tokens": 1898
+      }
+    },
+    {
+      "case_id": "regional_week",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#regional_week|gpt-6.1-sol|jev=true|engine=direct_llm|e06242b966d153e349f6ebbe2ff0e3b3f6242bb3d65c5bade2b9835249b30944",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.022706,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2568,
+        "openai_output_tokens": 1757
+      }
+    },
+    {
+      "case_id": "soft_finish_preference",
+      "model": "gpt-6-luna",
+      "source": "cache/f0cd123854f3_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "soft_finish_preference",
+        "error": null,
+        "estimated_cost": 0.0002813,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 2.8614431250607595,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 2.8615472499514,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1488,
+        "openai_output_tokens": 265,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6-luna"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "soft_finish_preference",
+      "model": "gpt-6-luna",
+      "source": "cache/f0cd123854f3_gpt-6-luna_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "soft_finish_preference",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 814,
+        "latency_jev_s": 0.2047474579885602,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.20564016699790955,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 4,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "soft_finish_preference",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#soft_finish_preference|gpt-6-luna|jev=false|engine=direct_llm|04ffac2954d284a2b228631e7908c56bbb358fa4b554fcddb157e288981d0646",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.0001079,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 449,
+        "openai_output_tokens": 126
+      }
+    },
+    {
+      "case_id": "soft_finish_preference",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#soft_finish_preference|gpt-6-luna|jev=true|engine=direct_llm|04ffac2954d284a2b228631e7908c56bbb358fa4b554fcddb157e288981d0646",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.0001079,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 449,
+        "openai_output_tokens": 126
+      }
+    },
+    {
+      "case_id": "soft_finish_preference",
+      "model": "gpt-6.1-sol",
+      "source": "cache/f0cd123854f3_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "soft_finish_preference",
+        "error": null,
+        "estimated_cost": 0.004696,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 5.816843707929365,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 5.816922249970958,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1488,
+        "openai_output_tokens": 172,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "soft_finish_preference",
+      "model": "gpt-6.1-sol",
+      "source": "cache/f0cd123854f3_gpt-6.1-sol_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "soft_finish_preference",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 814,
+        "latency_jev_s": 0.29303420800715685,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.2937849999871105,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 4,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "soft_finish_preference",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#soft_finish_preference|gpt-6.1-sol|jev=false|engine=direct_llm|342e712a693e35e24e51f800fe1d9e85aba489d9a2698a739c4a8c8117d7a3e7",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.001698,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 449,
+        "openai_output_tokens": 80
+      }
+    },
+    {
+      "case_id": "soft_finish_preference",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#soft_finish_preference|gpt-6.1-sol|jev=true|engine=direct_llm|342e712a693e35e24e51f800fe1d9e85aba489d9a2698a739c4a8c8117d7a3e7",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.001638,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 449,
+        "openai_output_tokens": 74
+      }
+    },
+    {
+      "case_id": "straightforward_staffing",
+      "model": "gpt-6-luna",
+      "source": "cache/b4d51a0f8c40_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "straightforward_staffing",
+        "error": null,
+        "estimated_cost": 0.000269,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 4.931272999965586,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 4.931373875006102,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1300,
+        "openai_output_tokens": 278,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [
+          "gpt-6-luna"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "straightforward_staffing",
+      "model": "gpt-6-luna",
+      "source": "cache/b4d51a0f8c40_gpt-6-luna_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "straightforward_staffing",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 741,
+        "latency_jev_s": 0.1975457079242915,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.19864524994045496,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 2,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "straightforward_staffing",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#straightforward_staffing|gpt-6-luna|jev=false|engine=direct_llm|983fc75b3516647fa6dc2c65d5cccaa58050f3f760d95c347a12571acb1cc7b0",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.0001357,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 582,
+        "openai_output_tokens": 155
+      }
+    },
+    {
+      "case_id": "straightforward_staffing",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#straightforward_staffing|gpt-6-luna|jev=true|engine=direct_llm|983fc75b3516647fa6dc2c65d5cccaa58050f3f760d95c347a12571acb1cc7b0",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.0001177,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 582,
+        "openai_output_tokens": 119
+      }
+    },
+    {
+      "case_id": "straightforward_staffing",
+      "model": "gpt-6.1-sol",
+      "source": "cache/b4d51a0f8c40_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "straightforward_staffing",
+        "error": null,
+        "estimated_cost": 0.00491,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 5.671171708032489,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 5.67124795797281,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1300,
+        "openai_output_tokens": 231,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "straightforward_staffing",
+      "model": "gpt-6.1-sol",
+      "source": "cache/b4d51a0f8c40_gpt-6.1-sol_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "straightforward_staffing",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 741,
+        "latency_jev_s": 0.18924495903775096,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.19016724999528378,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 2,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "straightforward_staffing",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#straightforward_staffing|gpt-6.1-sol|jev=false|engine=direct_llm|29d2e69bee48025064b2b1676adaab11d95c5a0a2bab27f11907b9496185210a",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.001974,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 582,
+        "openai_output_tokens": 81
+      }
+    },
+    {
+      "case_id": "straightforward_staffing",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#straightforward_staffing|gpt-6.1-sol|jev=true|engine=direct_llm|29d2e69bee48025064b2b1676adaab11d95c5a0a2bab27f11907b9496185210a",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.002064,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 582,
+        "openai_output_tokens": 90
+      }
+    },
+    {
+      "case_id": "ten_day_rotation",
+      "model": "gpt-6-luna",
+      "source": "cache/91622a944854_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "ten_day_rotation",
+        "error": null,
+        "estimated_cost": 0.0015587,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 17.63642616593279,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 17.636518582934514,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2582,
+        "openai_output_tokens": 2601,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [
+          "gpt-6-luna"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "ten_day_rotation",
+      "model": "gpt-6-luna",
+      "source": "cache/91622a944854_gpt-6-luna_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "ten_day_rotation",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 8794,
+        "latency_jev_s": 0.24092358304187655,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.25362370896618813,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 37,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "ten_day_rotation",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#ten_day_rotation|gpt-6-luna|jev=false|engine=direct_llm|218a1686a076f53231929f20f7fa740d12fc2ca6760fe37ac2aa954127e0dcad",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.0019691,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 3091,
+        "openai_output_tokens": 3320
+      }
+    },
+    {
+      "case_id": "ten_day_rotation",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#ten_day_rotation|gpt-6-luna|jev=true|engine=direct_llm|218a1686a076f53231929f20f7fa740d12fc2ca6760fe37ac2aa954127e0dcad",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.0032211,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 3091,
+        "openai_output_tokens": 5824
+      }
+    },
+    {
+      "case_id": "ten_day_rotation",
+      "model": "gpt-6.1-sol",
+      "source": "cache/91622a944854_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "ten_day_rotation",
+        "error": null,
+        "estimated_cost": 0.026624,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 29.87410120794084,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 29.874226417043246,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2582,
+        "openai_output_tokens": 2146,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "ten_day_rotation",
+      "model": "gpt-6.1-sol",
+      "source": "cache/91622a944854_gpt-6.1-sol_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "ten_day_rotation",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 8794,
+        "latency_jev_s": 0.26139724999666214,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.27362991706468165,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 37,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "shift_schedule",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "ten_day_rotation",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#ten_day_rotation|gpt-6.1-sol|jev=false|engine=direct_llm|08906dbc64d467842e5505fadb1f02edde03dbf085af710ec4782a7221649efe",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.028652,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 3091,
+        "openai_output_tokens": 2247
+      }
+    },
+    {
+      "case_id": "ten_day_rotation",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#ten_day_rotation|gpt-6.1-sol|jev=true|engine=direct_llm|08906dbc64d467842e5505fadb1f02edde03dbf085af710ec4782a7221649efe",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.029052,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 3091,
+        "openai_output_tokens": 2287
+      }
+    },
+    {
+      "case_id": "wfh_laundry_lift_groceries",
+      "model": "gpt-6-luna",
+      "source": "cache/370b0c6bb67d_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "wfh_laundry_lift_groceries",
+        "error": null,
+        "estimated_cost": 0.0006188,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 11.629841292044148,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 11.62989145796746,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1603,
+        "openai_output_tokens": 917,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6-luna"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "wfh_laundry_lift_groceries",
+      "model": "gpt-6.1-sol",
+      "source": "cache/370b0c6bb67d_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "wfh_laundry_lift_groceries",
+        "error": null,
+        "estimated_cost": 0.008876,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 11.217912166961469,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 11.21799741697032,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1603,
+        "openai_output_tokens": 567,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "wfh_laundry_lift_groceries",
+      "model": "gpt-6.1-sol",
+      "source": "cache/370b0c6bb67d_gpt-6.1-sol_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "wfh_laundry_lift_groceries",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 2189,
+        "latency_jev_s": 0.2630669999634847,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.26599391701165587,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 15,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "wfh_laundry_lift_groceries",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#wfh_laundry_lift_groceries|gpt-6.1-sol|jev=false|engine=direct_llm|52eb675e68f2fe2b1abca56b871a21e9913c6bd2eb2306a3b1430911c6496987",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.005432,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 886,
+        "openai_output_tokens": 366
+      }
+    },
+    {
+      "case_id": "wfh_laundry_lift_groceries",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#wfh_laundry_lift_groceries|gpt-6.1-sol|jev=true|engine=direct_llm|52eb675e68f2fe2b1abca56b871a21e9913c6bd2eb2306a3b1430911c6496987",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.005742,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 886,
+        "openai_output_tokens": 397
+      }
+    },
+    {
+      "case_id": "workout_before_four_hard",
+      "model": "gpt-6-luna",
+      "source": "cache/a0d919c50eb3_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "workout_before_four_hard",
+        "error": null,
+        "estimated_cost": 0.00029020000000000006,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 4.0862484170356765,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 4.08629941707477,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1482,
+        "openai_output_tokens": 284,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6-luna"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "workout_before_four_hard",
+      "model": "gpt-6-luna",
+      "source": "cache/a0d919c50eb3_gpt-6-luna_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "workout_before_four_hard",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 644,
+        "latency_jev_s": 0.18086120893713087,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.18130887497682124,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 3,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "workout_before_four_hard",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#workout_before_four_hard|gpt-6-luna|jev=false|engine=direct_llm|2e5e61926c8b3e41fcb77adba50a0257d3957f793df6695253b95195b07af80d",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 9.53e-05,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 403,
+        "openai_output_tokens": 110
+      }
+    },
+    {
+      "case_id": "workout_before_four_hard",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6-luna",
+      "source": "latest.jsonl#workout_before_four_hard|gpt-6-luna|jev=true|engine=direct_llm|2e5e61926c8b3e41fcb77adba50a0257d3957f793df6695253b95195b07af80d",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0
+      }
+    },
+    {
+      "case_id": "workout_before_four_hard",
+      "model": "gpt-6.1-sol",
+      "source": "cache/a0d919c50eb3_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "workout_before_four_hard",
+        "error": null,
+        "estimated_cost": 0.004274,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 5.628496624995023,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 5.62870399991516,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1482,
+        "openai_output_tokens": 131,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "workout_before_four_hard",
+      "model": "gpt-6.1-sol",
+      "source": "cache/a0d919c50eb3_gpt-6.1-sol_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "workout_before_four_hard",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 641,
+        "latency_jev_s": 0.19893524993676692,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.19961137499194592,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 3,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "workout_before_four_hard",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#workout_before_four_hard|gpt-6.1-sol|jev=false|engine=direct_llm|caf2f70d467b5c30b697a046e5552c9ad1749750f924c53a2026b91b9a9ffc91",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.001588,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 404,
+        "openai_output_tokens": 78
+      }
+    },
+    {
+      "case_id": "workout_before_four_hard",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#workout_before_four_hard|gpt-6.1-sol|jev=true|engine=direct_llm|caf2f70d467b5c30b697a046e5552c9ad1749750f924c53a2026b91b9a9ffc91",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.001578,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 404,
+        "openai_output_tokens": 77
+      }
+    },
+    {
+      "case_id": "workout_before_four_soft",
+      "model": "gpt-6-luna",
+      "source": "cache/c07b7beecfec_gpt-6-luna_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Luna 6 \u00b7 CP-SAT",
+        "case_id": "workout_before_four_soft",
+        "error": "DayPlanAPIError: DayPlan parsing request failed: Request timed out.",
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 240.00626716692932,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 240.0064170419937,
+        "model": "gpt-6-luna",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": false,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "workout_before_four_soft",
+      "model": "gpt-6.1-sol",
+      "source": "cache/c07b7beecfec_gpt-6.1-sol_extraction.json",
+      "stage": "extraction",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 CP-SAT",
+        "case_id": "workout_before_four_soft",
+        "error": null,
+        "estimated_cost": 0.004576,
+        "jev_input_tokens": 0,
+        "latency_jev_s": 0.0,
+        "latency_llm_s": 7.712092583999038,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 7.712301291059703,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1488,
+        "openai_output_tokens": 160,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [
+          "gpt-6.1-sol"
+        ],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": false
+      }
+    },
+    {
+      "case_id": "workout_before_four_soft",
+      "model": "gpt-6.1-sol",
+      "source": "cache/c07b7beecfec_gpt-6.1-sol_jev.json",
+      "stage": "jev",
+      "telemetry": {
+        "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+        "case_id": "workout_before_four_soft",
+        "error": null,
+        "estimated_cost": 0.0,
+        "jev_input_tokens": 820,
+        "latency_jev_s": 0.2971511249197647,
+        "latency_llm_s": 0.0,
+        "latency_solver_s": 0.0,
+        "latency_total_s": 0.29791025002487004,
+        "model": "gpt-6.1-sol",
+        "n_jev_call_attempts": 1,
+        "n_jev_calls": 1,
+        "n_jev_questions": 4,
+        "n_model_call_attempts": 0,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0,
+        "problem_type": "dayplan",
+        "resolved_openai_models": [],
+        "solution_engine": "cp_sat",
+        "success": true,
+        "use_jev": true
+      }
+    },
+    {
+      "case_id": "workout_before_four_soft",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#workout_before_four_soft|gpt-6.1-sol|jev=false|engine=direct_llm|df25b8c87bc29edcab011b1368094a1e1bd55814714aff0c244032ee74b2416b",
+      "stage": "direct_jev_false",
+      "telemetry": {
+        "estimated_cost": 0.001722,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 451,
+        "openai_output_tokens": 82
+      }
+    },
+    {
+      "case_id": "workout_before_four_soft",
+      "derivation": "Standalone row less shared extraction and Jev; accounting fields only.",
+      "model": "gpt-6.1-sol",
+      "source": "latest.jsonl#workout_before_four_soft|gpt-6.1-sol|jev=true|engine=direct_llm|df25b8c87bc29edcab011b1368094a1e1bd55814714aff0c244032ee74b2416b",
+      "stage": "direct_jev_true",
+      "telemetry": {
+        "estimated_cost": 0.001792,
+        "jev_input_tokens": 0,
+        "n_jev_call_attempts": 0,
+        "n_jev_calls": 0,
+        "n_jev_questions": 0,
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 451,
+        "openai_output_tokens": 89
+      }
+    }
+  ],
+  "validation": {
+    "offline_replayed_rows": 112,
+    "raw_hashes_verified_before_and_after": 55,
+    "unexpected_discrepancies": 0
+  }
+}
