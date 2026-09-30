@@ -49,6 +49,7 @@ class RunTelemetry:
     n_model_calls: int = 0
     jev_input_tokens: int = 0
     n_jev_questions: int = 0
+    n_jev_calls: int = 0
     success: bool = False
     error: Optional[str] = None
     estimated_cost: float = 0.0
@@ -100,6 +101,7 @@ class RunTelemetry:
         usage = getattr(response, "usage", None)
         self.jev_input_tokens += _usage_value(usage, "input_tokens")
         self.n_jev_questions += question_count
+        self.n_jev_calls += 1
 
     def finish(self, error: Optional[BaseException] = None) -> "RunTelemetry":
         self.latency_total_s = perf_counter() - self._started_at

@@ -106,6 +106,7 @@ def parse_shift_schedule(
     client: Any = None,
     model: Optional[str] = None,
     telemetry: Optional[RunTelemetry] = None,
+    request_timeout_seconds: Optional[float] = None,
 ) -> ShiftScheduleExtraction:
     """Parse natural language into a complete schedule or one clarification request."""
 
@@ -123,25 +124,21 @@ def parse_shift_schedule(
         client = _create_openai_client()
 
     try:
+        request_kwargs = {
+            "model": model or openai_model(),
+            "input": [
+                {"role": "system", "content": SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS},
+                {"role": "user", "content": request},
+            ],
+            "text_format": ShiftScheduleExtraction,
+        }
+        if request_timeout_seconds is not None:
+            request_kwargs["timeout"] = request_timeout_seconds
         if telemetry is None:
-            response = client.responses.parse(
-                model=model or openai_model(),
-                input=[
-                    {"role": "system", "content": SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS},
-                    {"role": "user", "content": request},
-                ],
-                text_format=ShiftScheduleExtraction,
-            )
+            response = client.responses.parse(**request_kwargs)
         else:
             with telemetry.track("llm"):
-                response = client.responses.parse(
-                    model=model or openai_model(),
-                    input=[
-                        {"role": "system", "content": SHIFTSCHEDULE_EXTRACTION_INSTRUCTIONS},
-                        {"role": "user", "content": request},
-                    ],
-                    text_format=ShiftScheduleExtraction,
-                )
+                response = client.responses.parse(**request_kwargs)
             telemetry.record_openai_response(response)
     except ValidationError as exc:
         raise ShiftScheduleOutputError(

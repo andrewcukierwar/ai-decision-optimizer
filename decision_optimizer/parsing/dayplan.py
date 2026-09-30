@@ -111,6 +111,7 @@ def parse_dayplan(
     client: Any = None,
     model: Optional[str] = None,
     telemetry: Optional[RunTelemetry] = None,
+    request_timeout_seconds: Optional[float] = None,
 ) -> DayPlanExtraction:
     """Parse natural language into a complete plan or one clarification request.
 
@@ -138,25 +139,21 @@ def parse_dayplan(
         client = _create_openai_client()
 
     try:
+        request_kwargs = {
+            "model": model or openai_model(),
+            "input": [
+                {"role": "system", "content": DAYPLAN_EXTRACTION_INSTRUCTIONS},
+                {"role": "user", "content": request},
+            ],
+            "text_format": DayPlanExtraction,
+        }
+        if request_timeout_seconds is not None:
+            request_kwargs["timeout"] = request_timeout_seconds
         if telemetry is None:
-            response = client.responses.parse(
-                model=model or openai_model(),
-                input=[
-                    {"role": "system", "content": DAYPLAN_EXTRACTION_INSTRUCTIONS},
-                    {"role": "user", "content": request},
-                ],
-                text_format=DayPlanExtraction,
-            )
+            response = client.responses.parse(**request_kwargs)
         else:
             with telemetry.track("llm"):
-                response = client.responses.parse(
-                    model=model or openai_model(),
-                    input=[
-                        {"role": "system", "content": DAYPLAN_EXTRACTION_INSTRUCTIONS},
-                        {"role": "user", "content": request},
-                    ],
-                    text_format=DayPlanExtraction,
-                )
+                response = client.responses.parse(**request_kwargs)
             telemetry.record_openai_response(response)
     except ValidationError as exc:
         raise DayPlanOutputError(

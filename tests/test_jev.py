@@ -378,6 +378,94 @@ def test_workforce_scaling_guard_only_fans_out_flagged_employees():
     assert not any("Bob" in item.target.item for item in availability)
 
 
+def test_preferred_shift_alone_is_not_availability_evidence():
+    schedule = sample_schedule().model_copy(deep=True)
+    alice = schedule.employees[0].model_copy(update={"unavailable": []})
+    schedule.employees[0] = alice
+
+    availability = [
+        item
+        for item in build_jev_questions("Alice prefers s2.", schedule)
+        if item.question_type.key == "availability_applies"
+    ]
+
+    assert availability == []
+
+
+def test_availability_targets_all_covered_shifts_and_two_deterministic_controls():
+    schedule = ShiftSchedule.model_validate(
+        {
+            "shifts": [
+                {
+                    "id": "morning",
+                    "day": "2026-10-05",
+                    "start": "08:00",
+                    "end": "12:00",
+                    "location": "store",
+                    "required_staff": 1,
+                },
+                {
+                    "id": "afternoon",
+                    "day": "2026-10-05",
+                    "start": "12:00",
+                    "end": "16:00",
+                    "location": "store",
+                    "required_staff": 1,
+                },
+                {
+                    "id": "evening",
+                    "day": "2026-10-05",
+                    "start": "16:00",
+                    "end": "20:00",
+                    "location": "store",
+                    "required_staff": 1,
+                },
+                {
+                    "id": "next_day",
+                    "day": "2026-10-06",
+                    "start": "08:00",
+                    "end": "12:00",
+                    "location": "store",
+                    "required_staff": 1,
+                },
+            ],
+            "employees": [
+                {
+                    "name": "Alice",
+                    "max_hours": 16,
+                    "eligible_locations": ["store"],
+                    "unavailable": [
+                        {
+                            "day": "2026-10-05",
+                            "start": "07:00",
+                            "end": "15:00",
+                        }
+                    ],
+                }
+            ],
+        }
+    )
+
+    availability = [
+        item
+        for item in build_jev_questions("Alice cannot work before 15:00.", schedule)
+        if item.question_type.key == "availability_applies"
+    ]
+
+    assert [item.target.locator["shift"] for item in availability] == [
+        "morning",
+        "afternoon",
+        "evening",
+        "next_day",
+    ]
+    assert [item.target.context["selection_role"] for item in availability] == [
+        "covered_by_extracted_unavailability",
+        "covered_by_extracted_unavailability",
+        "negative_control",
+        "negative_control",
+    ]
+
+
 def test_jev_telemetry_counts_logical_questions_and_input_tokens():
     telemetry = RunTelemetry.start(
         ExperimentConfig(use_jev=True), "shift_schedule"
@@ -391,6 +479,60 @@ def test_jev_telemetry_counts_logical_questions_and_input_tokens():
     assert telemetry.n_jev_questions == 3  # two shifts plus preference weight
     assert telemetry.jev_input_tokens == 77
     assert telemetry.latency_jev_s >= 0
+
+
+def test_deterministic_chunking_accumulates_calls_tokens_and_questions():
+    telemetry = RunTelemetry.start(ExperimentConfig(use_jev=True), "dayplan")
+    client = FakeJevClient(input_tokens=11)
+
+    result = apply_jev(
+        "Plan this day",
+        sample_plan(),
+        client=client,
+        telemetry=telemetry,
+        max_questions_per_request=3,
+    )
+
+    assert len(result.decisions) == 10
+    assert [len(call["questions"]) for call in client.calls] == [3, 3, 3, 1]
+    assert telemetry.n_jev_calls == 4
+    assert telemetry.n_jev_questions == 10
+    assert telemetry.jev_input_tokens == 44
+
+
+def test_changed_is_false_when_prior_hardness_rewrite_removes_weight_target():
+    changes = {
+        ("constraint_hardness", "preference:0:report"): ("hard", 0.95),
+        ("pref_weight", "preference:0:finish_before"): (
+            4.0,
+            0.95,
+            {0: 0, 1: 0, 2: 0, 3: 0, 4: 1},
+        ),
+    }
+
+    result = apply_jev(
+        "The report deadline is firm.",
+        sample_plan(),
+        client=FakeJevClient(_custom_answers(changes)),
+    )
+
+    hardness = next(
+        item
+        for item in result.decisions
+        if item.question_type == "constraint_hardness"
+        and item.item == "preference:0:report"
+    )
+    weight = next(
+        item
+        for item in result.decisions
+        if item.question_type == "pref_weight"
+        and item.item == "preference:0:finish_before"
+    )
+    assert hardness.changed is True
+    assert weight.applied is True
+    assert weight.jev_value == 5
+    assert weight.gpt_value == 1
+    assert weight.changed is False
 
 
 class FakeOpenAIClient:

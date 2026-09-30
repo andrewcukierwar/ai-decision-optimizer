@@ -15,7 +15,7 @@ import math
 from typing import Any, Callable, Dict, FrozenSet, List, Literal, Mapping, Optional, Sequence, Union
 
 from pydantic import BaseModel, ConfigDict, Field
-from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
+from typesafe_sdk import Choice, Noul, RetryPolicy, Score, TypeSafeClient
 
 from .config import jev_apply_threshold, typesafe_api_key, typesafe_model
 from .dayplan import DayPlan, Preference, PreferenceType, TaskMode
@@ -91,6 +91,15 @@ class JevQuestion:
 class JevResult:
     problem: Problem
     decisions: List[JevDecision]
+    resolved_model: Optional[str] = None
+
+
+# TypeSafe documents and encourages multi-question batching, but its public API
+# reference does not currently publish a maximum question count.  Keep requests
+# comfortably bounded and deterministic instead of depending on an undocumented
+# server limit.  Callers can lower this for operational constraints.
+DEFAULT_JEV_BATCH_SIZE = 64
+AVAILABILITY_CONTROLS_PER_EMPLOYEE = 2
 
 
 PREFERENCE_STRENGTH_RUBRIC = (
@@ -149,30 +158,25 @@ def apply_jev(
     model: Optional[str] = None,
     threshold: Optional[float] = None,
     telemetry: Optional[RunTelemetry] = None,
+    max_questions_per_request: int = DEFAULT_JEV_BATCH_SIZE,
+    request_timeout_seconds: Optional[float] = None,
+    max_retries: int = 0,
 ) -> JevResult:
     """Batch applicable questions, confidence-gate rewrites, and revalidate."""
 
     questions = build_jev_questions(request, problem)
     if not questions:
         return JevResult(problem=problem, decisions=[])
+    if max_questions_per_request < 1:
+        raise ValueError("max_questions_per_request must be at least 1")
+    if max_retries < 0:
+        raise ValueError("max_retries must be nonnegative")
 
     selected_model = model or typesafe_model()
     selected_threshold = jev_apply_threshold() if threshold is None else threshold
     if not 0 <= selected_threshold <= 1:
         raise ValueError("Jev apply threshold must be between 0 and 1")
 
-    state = {
-        "original_request": request,
-        "extracted_context": [
-            {
-                "question": item.question_type.key,
-                "item": item.target.item,
-                "gpt_value": item.question_type.gpt_value(problem, item.target),
-                **dict(item.target.context),
-            }
-            for item in questions
-        ],
-    }
     owns_client = client is None
     if client is None:
         api_key = typesafe_api_key()
@@ -180,52 +184,83 @@ def apply_jev(
             raise MissingTypeSafeAPIKeyError(
                 "TYPESAFE_API_KEY is required when Jev is enabled"
             )
-        client = TypeSafeClient(api_key=api_key)
+        client = TypeSafeClient(
+            api_key=api_key,
+            timeout=request_timeout_seconds,
+            retry=RetryPolicy(max_retries=max_retries),
+        )
 
+    answers_by_name: Dict[str, Any] = {}
+    resolved_models: List[str] = []
     try:
-        try:
-            if telemetry is None:
-                response = client.system_one(
-                    state=state,
-                    questions={item.name: item.sdk_question for item in questions},
-                    model=selected_model,
-                )
-            else:
-                with telemetry.track("jev"):
-                    response = client.system_one(
-                        state=state,
-                        questions={item.name: item.sdk_question for item in questions},
-                        model=selected_model,
-                    )
-                telemetry.record_jev_response(response, len(questions))
-        except JevError:
-            raise
-        except Exception as exc:
-            raise JevError("TypeSafe System One request failed: %s" % exc) from exc
+        for start in range(0, len(questions), max_questions_per_request):
+            chunk = questions[start : start + max_questions_per_request]
+            state = {
+                "original_request": request,
+                "extracted_context": [
+                    {
+                        "question": item.question_type.key,
+                        "item": item.target.item,
+                        "gpt_value": item.question_type.gpt_value(problem, item.target),
+                        **dict(item.target.context),
+                    }
+                    for item in chunk
+                ],
+            }
+            try:
+                call_kwargs = {
+                    "state": state,
+                    "questions": {
+                        item.name: item.sdk_question for item in chunk
+                    },
+                    "model": selected_model,
+                    "retry": RetryPolicy(max_retries=max_retries),
+                }
+                if request_timeout_seconds is not None:
+                    call_kwargs["timeout"] = request_timeout_seconds
+                if telemetry is None:
+                    response = client.system_one(**call_kwargs)
+                else:
+                    with telemetry.track("jev"):
+                        response = client.system_one(**call_kwargs)
+                    telemetry.record_jev_response(response, len(chunk))
+            except JevError:
+                raise
+            except Exception as exc:
+                raise JevError("TypeSafe System One request failed: %s" % exc) from exc
+
+            answers = getattr(response, "answers", None)
+            if not isinstance(answers, Mapping):
+                raise JevError("TypeSafe response did not contain an answers mapping")
+            for question in chunk:
+                if question.name not in answers:
+                    raise JevError("TypeSafe response omitted answer %s" % question.name)
+                answers_by_name[question.name] = answers[question.name]
+            response_model = getattr(response, "model", None)
+            if response_model and str(response_model) not in resolved_models:
+                resolved_models.append(str(response_model))
     finally:
         if owns_client and client is not None:
             client.close()
 
-    answers = getattr(response, "answers", None)
-    if not isinstance(answers, Mapping):
-        raise JevError("TypeSafe response did not contain an answers mapping")
-
     adjusted: Problem = problem.model_copy(deep=True)
     decisions: List[JevDecision] = []
     for question in questions:
-        if question.name not in answers:
-            raise JevError("TypeSafe response omitted answer %s" % question.name)
-        answer = answers[question.name]
+        answer = answers_by_name[question.name]
         gpt_value = question.question_type.gpt_value(problem, question.target)
         jev_value, confidence, detail = _read_answer(
             question.question_type.primitive, answer
         )
         accepted = confidence >= selected_threshold
-        changed = accepted and jev_value != gpt_value
         if accepted:
-            adjusted = question.question_type.apply(
+            before = adjusted.model_dump(mode="json")
+            candidate = question.question_type.apply(
                 adjusted, question.target, jev_value
             )
+            changed = candidate.model_dump(mode="json") != before
+            adjusted = candidate
+        else:
+            changed = False
         decisions.append(
             JevDecision(
                 question_type=question.question_type.key,
@@ -245,7 +280,11 @@ def apply_jev(
 
     # This is the only output boundary: no parallel Jev planning schema.
     validated = type(problem).model_validate(adjusted.model_dump(mode="python"))
-    return JevResult(problem=validated, decisions=decisions)
+    return JevResult(
+        problem=validated,
+        decisions=decisions,
+        resolved_model=",".join(resolved_models) or None,
+    )
 
 
 def _sdk_question(
@@ -593,14 +632,51 @@ def _apply_preference(
 
 
 def _availability_targets(_: str, problem: Problem) -> Sequence[JevQuestionTarget]:
+    """Select positive availability candidates plus bounded negative controls.
+
+    Every shift actually covered by an extracted explicit shift id, unavailable
+    day, or overlapping unavailable window is included.  Per employee, up to two
+    non-covered shifts are added as controls, preferring same-day temporal
+    contrasts and then the closest chronological shifts.  Preferred shifts do
+    not make an employee eligible for availability questions.
+
+    This intentionally tests the consequences of extracted unavailability; it
+    cannot recover an unavailability statement that GPT omitted entirely, and a
+    very broad statement may still yield many positive questions.
+    """
+
     if not isinstance(problem, ShiftSchedule):
         return []
     targets: List[JevQuestionTarget] = []
+    ordered_shifts = sorted(
+        problem.shifts,
+        key=lambda shift: (
+            shift.day,
+            time_to_minutes(shift.start),
+            time_to_minutes(shift.end),
+            shift.id,
+        ),
+    )
     for employee in problem.employees:
-        # Scaling guard: never fan out employees with no extracted statement.
-        if not employee.unavailable and not employee.preferred_shifts:
+        if not employee.unavailable:
             continue
-        for shift in problem.shifts:
+        positive_ids = {
+            shift.id
+            for shift in ordered_shifts
+            if _is_unavailable(employee.unavailable, shift)
+        }
+        negative_shifts = [
+            shift for shift in ordered_shifts if shift.id not in positive_ids
+        ]
+        control_ids = _availability_control_ids(
+            employee.unavailable,
+            ordered_shifts,
+            negative_shifts,
+        )
+        selected_ids = positive_ids | control_ids
+        for shift in ordered_shifts:
+            if shift.id not in selected_ids:
+                continue
             targets.append(
                 JevQuestionTarget(
                     item="employee:%s:shift:%s" % (employee.name, shift.id),
@@ -610,17 +686,57 @@ def _availability_targets(_: str, problem: Problem) -> Sequence[JevQuestionTarge
                         "unavailable": [
                             item.model_dump(mode="json") for item in employee.unavailable
                         ],
-                        "preferred_shifts": list(employee.preferred_shifts),
                         "candidate_shift": shift.model_dump(mode="json"),
+                        "selection_role": (
+                            "covered_by_extracted_unavailability"
+                            if shift.id in positive_ids
+                            else "negative_control"
+                        ),
                     },
                 )
             )
     return targets
 
 
+def _availability_control_ids(
+    periods: Sequence[Unavailability],
+    ordered_shifts: Sequence[Shift],
+    negative_shifts: Sequence[Shift],
+) -> set[str]:
+    if not negative_shifts:
+        return set()
+
+    ranked: List[tuple[int, int, int, str]] = []
+    for shift_index, shift in enumerate(ordered_shifts):
+        if shift not in negative_shifts:
+            continue
+        same_day = any(period.day == shift.day for period in periods if period.day)
+        closest_positive = min(
+            (
+                abs(shift_index - positive_index)
+                for positive_index, candidate in enumerate(ordered_shifts)
+                if _is_unavailable(periods, candidate)
+            ),
+            default=len(ordered_shifts),
+        )
+        ranked.append(
+            (
+                0 if same_day else 1,
+                closest_positive,
+                shift_index,
+                shift.id,
+            )
+        )
+    ranked.sort()
+    return {
+        shift_id
+        for _, _, _, shift_id in ranked[:AVAILABILITY_CONTROLS_PER_EMPLOYEE]
+    }
+
+
 def _availability_prompt(target: JevQuestionTarget) -> str:
     return (
-        "Does %s's availability or preference statement rule out candidate shift %s?"
+        "Does %s's unavailability statement rule out candidate shift %s?"
         % (target.locator["employee"], target.locator["shift"])
     )
 

@@ -125,6 +125,7 @@ def solve_day_plan_direct(
     client: Any = None,
     model: Optional[str] = None,
     telemetry: Optional[RunTelemetry] = None,
+    request_timeout_seconds: Optional[float] = None,
 ) -> DirectDayPlanResult:
     """Ask the selected model to solve the final typed DayPlan directly."""
 
@@ -135,6 +136,7 @@ def solve_day_plan_direct(
         client=client,
         model=model,
         telemetry=telemetry,
+        request_timeout_seconds=request_timeout_seconds,
     )
     if output.status == DirectStatus.INFEASIBLE:
         solution = materialize_day_plan_solution(
@@ -165,6 +167,7 @@ def solve_shift_schedule_direct(
     client: Any = None,
     model: Optional[str] = None,
     telemetry: Optional[RunTelemetry] = None,
+    request_timeout_seconds: Optional[float] = None,
 ) -> DirectShiftResult:
     """Ask the selected model to solve the final typed workforce problem."""
 
@@ -175,6 +178,7 @@ def solve_shift_schedule_direct(
         client=client,
         model=model,
         telemetry=telemetry,
+        request_timeout_seconds=request_timeout_seconds,
     )
     if output.status == DirectStatus.INFEASIBLE:
         solution = materialize_shift_schedule_solution(
@@ -209,30 +213,27 @@ def _request_structured_solution(
     client: Any,
     model: Optional[str],
     telemetry: Optional[RunTelemetry],
+    request_timeout_seconds: Optional[float],
 ) -> Any:
     if client is None:
         client = _create_openai_client()
     payload = json.dumps(problem.model_dump(mode="json"), indent=2, sort_keys=True)
     try:
+        request_kwargs = {
+            "model": model or openai_model(),
+            "input": [
+                {"role": "system", "content": instructions},
+                {"role": "user", "content": "Typed problem:\n" + payload},
+            ],
+            "text_format": output_schema,
+        }
+        if request_timeout_seconds is not None:
+            request_kwargs["timeout"] = request_timeout_seconds
         if telemetry is None:
-            response = client.responses.parse(
-                model=model or openai_model(),
-                input=[
-                    {"role": "system", "content": instructions},
-                    {"role": "user", "content": "Typed problem:\n" + payload},
-                ],
-                text_format=output_schema,
-            )
+            response = client.responses.parse(**request_kwargs)
         else:
             with telemetry.track("llm"):
-                response = client.responses.parse(
-                    model=model or openai_model(),
-                    input=[
-                        {"role": "system", "content": instructions},
-                        {"role": "user", "content": "Typed problem:\n" + payload},
-                    ],
-                    text_format=output_schema,
-                )
+                response = client.responses.parse(**request_kwargs)
             telemetry.record_openai_response(response)
     except ValidationError as exc:
         raise DirectSolverOutputError(

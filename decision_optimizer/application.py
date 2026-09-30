@@ -97,13 +97,18 @@ def run_dayplan_experiment(
     jev_client: Any = None,
     case_id: Optional[str] = None,
     time_limit_seconds: Optional[float] = 10.0,
+    request_timeout_seconds: Optional[float] = None,
 ) -> DayPlanExperimentRun:
     """Interpret and solve one DayPlan arm with a single telemetry record."""
 
     telemetry = RunTelemetry.start(config, "dayplan", case_id)
     try:
         extraction = parse_dayplan_request(
-            request, client=client, config=config, telemetry=telemetry
+            request,
+            client=client,
+            config=config,
+            telemetry=telemetry,
+            request_timeout_seconds=request_timeout_seconds,
         )
         if extraction.plan is None:
             telemetry.finish()
@@ -115,6 +120,7 @@ def run_dayplan_experiment(
                 extraction.plan,
                 client=jev_client,
                 telemetry=telemetry,
+                request_timeout_seconds=request_timeout_seconds,
             )
             extraction = extraction.model_copy(update={"plan": jev_result.problem})
             jev_decisions = jev_result.decisions
@@ -125,6 +131,7 @@ def run_dayplan_experiment(
             telemetry=telemetry,
             jev_decisions=jev_decisions,
             time_limit_seconds=time_limit_seconds,
+            request_timeout_seconds=request_timeout_seconds,
         )
         return DayPlanExperimentRun(extraction, run, telemetry, jev_decisions)
     except Exception as error:
@@ -140,13 +147,18 @@ def run_shift_schedule_experiment(
     jev_client: Any = None,
     case_id: Optional[str] = None,
     time_limit_seconds: Optional[float] = 10.0,
+    request_timeout_seconds: Optional[float] = None,
 ) -> ShiftScheduleExperimentRun:
     """Interpret and solve one workforce arm with a single telemetry record."""
 
     telemetry = RunTelemetry.start(config, "shift_schedule", case_id)
     try:
         extraction = parse_shift_schedule_request(
-            request, client=client, config=config, telemetry=telemetry
+            request,
+            client=client,
+            config=config,
+            telemetry=telemetry,
+            request_timeout_seconds=request_timeout_seconds,
         )
         if extraction.schedule is None:
             telemetry.finish()
@@ -158,6 +170,7 @@ def run_shift_schedule_experiment(
                 extraction.schedule,
                 client=jev_client,
                 telemetry=telemetry,
+                request_timeout_seconds=request_timeout_seconds,
             )
             extraction = extraction.model_copy(update={"schedule": jev_result.problem})
             jev_decisions = jev_result.decisions
@@ -168,6 +181,7 @@ def run_shift_schedule_experiment(
             telemetry=telemetry,
             jev_decisions=jev_decisions,
             time_limit_seconds=time_limit_seconds,
+            request_timeout_seconds=request_timeout_seconds,
         )
         return ShiftScheduleExperimentRun(extraction, run, telemetry, jev_decisions)
     except Exception as error:
@@ -183,6 +197,7 @@ def solve_confirmed_dayplan(
     client: Any = None,
     telemetry: Optional[RunTelemetry] = None,
     jev_decisions: Optional[list[JevDecision]] = None,
+    request_timeout_seconds: Optional[float] = None,
 ) -> DayPlanRun:
     """Solve, independently validate, diagnose if needed, and gate explanation facts."""
 
@@ -196,6 +211,7 @@ def solve_confirmed_dayplan(
                 client=client,
                 model=config.model,
                 telemetry=telemetry,
+                request_timeout_seconds=request_timeout_seconds,
             )
             solution = direct_result.solution
             direct_output = direct_result.output
@@ -233,6 +249,7 @@ def solve_confirmed_shift_schedule(
     client: Any = None,
     telemetry: Optional[RunTelemetry] = None,
     jev_decisions: Optional[list[JevDecision]] = None,
+    request_timeout_seconds: Optional[float] = None,
 ) -> ShiftScheduleRun:
     """Solve, independently validate, diagnose if needed, and gate explanation facts."""
 
@@ -246,6 +263,7 @@ def solve_confirmed_shift_schedule(
                 client=client,
                 model=config.model,
                 telemetry=telemetry,
+                request_timeout_seconds=request_timeout_seconds,
             )
             solution = direct_result.solution
             direct_output = direct_result.output
@@ -286,6 +304,7 @@ def parse_dayplan_request(
     model: Optional[str] = None,
     config: Optional[ExperimentConfig] = None,
     telemetry: Optional[RunTelemetry] = None,
+    request_timeout_seconds: Optional[float] = None,
 ) -> DayPlanExtraction:
     """Small adapter used by the UI and deterministic tests."""
 
@@ -294,6 +313,7 @@ def parse_dayplan_request(
         client=client,
         model=config.model if config is not None else model,
         telemetry=telemetry,
+        request_timeout_seconds=request_timeout_seconds,
     )
 
 
@@ -326,6 +346,7 @@ def parse_shift_schedule_request(
     model: Optional[str] = None,
     config: Optional[ExperimentConfig] = None,
     telemetry: Optional[RunTelemetry] = None,
+    request_timeout_seconds: Optional[float] = None,
 ) -> ShiftScheduleExtraction:
     """Small adapter used by the UI and deterministic tests."""
 
@@ -334,6 +355,7 @@ def parse_shift_schedule_request(
         client=client,
         model=config.model if config is not None else model,
         telemetry=telemetry,
+        request_timeout_seconds=request_timeout_seconds,
     )
 
 
