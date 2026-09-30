@@ -33,6 +33,28 @@ DEFAULT_OUTPUT = FIXTURES / "jev_expected_draft.json"
 DEFAULT_REVIEW_OUTPUT = FIXTURES / "jev_expected_review.tsv"
 
 
+def is_primary_scoring_eligible(label: Mapping[str, Any]) -> bool:
+    """Gate primary exact-answer accuracy, calibration, and Brier alike.
+
+    Draft proposals are not approvals. An explicit subjective exclusion takes
+    precedence over eligibility flags or an accidentally changed review status.
+    """
+    return (
+        label.get("primary_accuracy_calibration_eligible") is True
+        and not label.get("primary_exclusion_reason")
+        and (
+            (
+                label.get("review_status") == "human_reviewed_approved"
+                and label.get("label_provenance") == "fixture_intended_meaning"
+            )
+            or (
+                label.get("review_status") == "generator_derived"
+                and label.get("label_provenance") == "generator_derived"
+            )
+        )
+    )
+
+
 def load_selected_cases(path: Path = DEFAULT_SELECTION) -> List[Dict[str, Any]]:
     """Resolve the selection manifest against its source fixture files."""
 

@@ -1,7 +1,9 @@
 {
   "schema_version": 1,
-  "label_status": "draft_needs_human_review",
-  "notes": "Selection only. expected_jev labels must be generated and human-reviewed before calibration or benchmark claims.",
+  "label_status": "review_complete_with_subjective_exclusions",
+  "notes": "Selection unchanged. Reviewed answer key: jev_expected_draft.json; 54 human-approved fixture labels and 71 generator-derived deterministic labels are primary eligible. Three subjective strength labels are excluded from primary accuracy, calibration, and Brier scoring.",
+  "answer_key_file": "jev_expected_draft.json",
+  "review_summary": {"human_reviewed_approved": 54, "generator_derived_scored": 71, "subjective_excluded": 3, "primary_scored_total": 125, "labels_total": 128},
   "cases": [
     {"domain": "dayplan", "source": "dayplan_nl_eval.json", "name": "wfh_laundry_lift_groceries"},
     {"domain": "dayplan", "source": "dayplan_nl_eval.json", "name": "active_and_passive"},
