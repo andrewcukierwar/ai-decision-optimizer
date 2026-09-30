@@ -1,0 +1,1967 @@
+{
+  "status_counts": {
+    "success": 103,
+    "terminal_failure": 9
+  },
+  "terminal_failures": [
+    {
+      "case": "workout_before_four_soft",
+      "architecture": "Luna 6 \u00b7 Direct LLM",
+      "category": "timeout",
+      "stage": "extraction",
+      "error": "DayPlanAPIError: DayPlan parsing request failed: Request timed out."
+    },
+    {
+      "case": "workout_before_four_soft",
+      "architecture": "Luna 6 \u00b7 CP-SAT",
+      "category": "timeout",
+      "stage": "extraction",
+      "error": "DayPlanAPIError: DayPlan parsing request failed: Request timed out."
+    },
+    {
+      "case": "workout_before_four_soft",
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 Direct LLM",
+      "category": "timeout",
+      "stage": "extraction",
+      "error": "DayPlanAPIError: DayPlan parsing request failed: Request timed out."
+    },
+    {
+      "case": "workout_before_four_soft",
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+      "category": "timeout",
+      "stage": "extraction",
+      "error": "DayPlanAPIError: DayPlan parsing request failed: Request timed out."
+    },
+    {
+      "case": "workout_before_four_hard",
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 Direct LLM",
+      "category": "timeout",
+      "stage": "solve_or_evaluate",
+      "error": "DirectSolverAPIError: Direct solver request failed: Request timed out."
+    },
+    {
+      "case": "impossible_hard_workout_window",
+      "architecture": "Luna 6 \u00b7 Direct LLM",
+      "category": "invalid_model_output",
+      "stage": "extraction",
+      "error": "DayPlanOutputError: OpenAI returned structured data that failed DayPlanExtraction validation: plan: Value error, task names must be unique"
+    },
+    {
+      "case": "impossible_hard_workout_window",
+      "architecture": "Luna 6 \u00b7 CP-SAT",
+      "category": "invalid_model_output",
+      "stage": "extraction",
+      "error": "DayPlanOutputError: OpenAI returned structured data that failed DayPlanExtraction validation: plan: Value error, task names must be unique"
+    },
+    {
+      "case": "impossible_hard_workout_window",
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 Direct LLM",
+      "category": "invalid_model_output",
+      "stage": "extraction",
+      "error": "DayPlanOutputError: OpenAI returned structured data that failed DayPlanExtraction validation: plan: Value error, task names must be unique"
+    },
+    {
+      "case": "impossible_hard_workout_window",
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+      "category": "invalid_model_output",
+      "stage": "extraction",
+      "error": "DayPlanOutputError: OpenAI returned structured data that failed DayPlanExtraction validation: plan: Value error, task names must be unique"
+    }
+  ],
+  "original_artifact_sha256": {
+    "benchmark_results/final_sol61_v2/cache/0c2b7e4a7837_gpt-6-luna_extraction.json": "59547a3d5a818c7c61a26fdc539844a3bc03d72356674bdfec2545a46c1a5a0a",
+    "benchmark_results/final_sol61_v2/cache/0c2b7e4a7837_gpt-6-luna_jev.json": "d95b79704da390403c0ca90f3471685967e14f28b44ccae351d4886e3239f9dc",
+    "benchmark_results/final_sol61_v2/cache/0c2b7e4a7837_gpt-6.1-sol_extraction.json": "8bf6580e3f84b7cd05f3bfc7bd45755a382428a343198b988a989389dd596df0",
+    "benchmark_results/final_sol61_v2/cache/0c2b7e4a7837_gpt-6.1-sol_jev.json": "fb04ac6e1f23983c8c5500dc9f783199040e509bb6ca1e7db5619ebcca20ba16",
+    "benchmark_results/final_sol61_v2/cache/1a54f5ae606e_gpt-6-luna_extraction.json": "7d222d5ba868efd82bf59daffe3269d187cdbdd611fd9e82f27e9debf5f177f8",
+    "benchmark_results/final_sol61_v2/cache/1a54f5ae606e_gpt-6-luna_jev.json": "4de7eda7b49c75be41d362e7ccfeddf4ad6f91357989f35df8ce7ff756d6214e",
+    "benchmark_results/final_sol61_v2/cache/1a54f5ae606e_gpt-6.1-sol_extraction.json": "44e2920c112900ef0949ee2eacf98f9cef1fa5da3b26635c80e60d087400f9c5",
+    "benchmark_results/final_sol61_v2/cache/1a54f5ae606e_gpt-6.1-sol_jev.json": "a46a8c06c12af4f338f44fd2f6f0d8ce63044aa33399c61c8e18f2fc4aa2a5f5",
+    "benchmark_results/final_sol61_v2/cache/1e9f1ffed414_gpt-6-luna_extraction.json": "6391442673eb9ed9225913b8d90b4f6939350c6ef7adf21288a5e759f831d688",
+    "benchmark_results/final_sol61_v2/cache/1e9f1ffed414_gpt-6.1-sol_extraction.json": "dbecc064fa55ff07cef16f140381a967cc52dd8842ed22264486317de6932793",
+    "benchmark_results/final_sol61_v2/cache/1e9f1ffed414_gpt-6.1-sol_jev.json": "75bbd18b54fce4e7da869fad9531497d1ae0896ee6ab1066eeea936caaafccb3",
+    "benchmark_results/final_sol61_v2/cache/370b0c6bb67d_gpt-6-luna_extraction.json": "561b6fbb9ff7940741d35c71bb2c650990de613a88c12383254bdd506f49d787",
+    "benchmark_results/final_sol61_v2/cache/370b0c6bb67d_gpt-6.1-sol_extraction.json": "e8d343ba8b252d5778354375bbd3d6e466f7424796e2351340cb44427ab1e36a",
+    "benchmark_results/final_sol61_v2/cache/370b0c6bb67d_gpt-6.1-sol_jev.json": "0f9e7d8b02bfaa4b62bb024e7d191cec26543a2754bc817083c42bdee2cbea3f",
+    "benchmark_results/final_sol61_v2/cache/5242d736b559_gpt-6-luna_extraction.json": "2e2d4cc0045055ba75495d0353e9d2d2e0df3d49d1569277b0ea49f3079113b8",
+    "benchmark_results/final_sol61_v2/cache/5242d736b559_gpt-6-luna_jev.json": "28faa9f7721be4b3678a243e1274d1013eeb137de34ebf000c323b379c5073db",
+    "benchmark_results/final_sol61_v2/cache/5242d736b559_gpt-6.1-sol_extraction.json": "fdd4976a744500783c504fe70bdf97af90b3ab35de61fb7f13d5f28899650661",
+    "benchmark_results/final_sol61_v2/cache/5242d736b559_gpt-6.1-sol_jev.json": "4bb16c2e89da7ce3915ad4940cdf39cc382a47a1ebf342dd6a7de701a0c9c27a",
+    "benchmark_results/final_sol61_v2/cache/6fde234e6c8e_gpt-6-luna_extraction.json": "cec4d3becce4e0b47ac27d411d4a306816267745c9a00a3835b448ed43521250",
+    "benchmark_results/final_sol61_v2/cache/6fde234e6c8e_gpt-6-luna_jev.json": "35ac043af3ac231e779c6525a8d9cc4156601d2a1b1c5dce53c0040369e116b3",
+    "benchmark_results/final_sol61_v2/cache/6fde234e6c8e_gpt-6.1-sol_extraction.json": "de39e2119686b9790f77d9a024aabe0d6f74fda319f46645cffc94be09b7e314",
+    "benchmark_results/final_sol61_v2/cache/6fde234e6c8e_gpt-6.1-sol_jev.json": "4cfea22ac4aaea11ca91d2650177e5de65928b262b7acbf388b8667d9a3f4a70",
+    "benchmark_results/final_sol61_v2/cache/91622a944854_gpt-6-luna_extraction.json": "823aad67800b2633dd127395a7dbc27f4be75019ba47bf8939155efc84451af0",
+    "benchmark_results/final_sol61_v2/cache/91622a944854_gpt-6-luna_jev.json": "229b794e3b8a2d2dd5a51c19e79bc2b87e1fa8f89a8495a2695b0b369f238b04",
+    "benchmark_results/final_sol61_v2/cache/91622a944854_gpt-6.1-sol_extraction.json": "73061d24b89a57510a15eb54e15d41ae5b394887b48c1d37ca31a1e2b4bf42b5",
+    "benchmark_results/final_sol61_v2/cache/91622a944854_gpt-6.1-sol_jev.json": "5cbb3b89f2da1752797934e8dcf2bea47ccdac92b2bd4ca29a71ec7027c33243",
+    "benchmark_results/final_sol61_v2/cache/a0d919c50eb3_gpt-6-luna_extraction.json": "b544c73064418e86b34cd026a0237de39911e22bac5a8681ed55155359c60987",
+    "benchmark_results/final_sol61_v2/cache/a0d919c50eb3_gpt-6-luna_jev.json": "ce5a3f62da684e40e612492c5a52411884c86b90ab7276671d7e8bf7e3710362",
+    "benchmark_results/final_sol61_v2/cache/a0d919c50eb3_gpt-6.1-sol_extraction.json": "b51f8db0fe6ad0b513ff6449d213acd69fca2d026a125d927124dd08682bd029",
+    "benchmark_results/final_sol61_v2/cache/a0d919c50eb3_gpt-6.1-sol_jev.json": "103766bf3d5a3bca9e34dff50546c1af177992b0319aed356edef00bc9708c70",
+    "benchmark_results/final_sol61_v2/cache/b4d51a0f8c40_gpt-6-luna_extraction.json": "a262c0b52d00ffa3beb14cd1c439789de44f1d2ffb11aca71704c2bc450f8b8c",
+    "benchmark_results/final_sol61_v2/cache/b4d51a0f8c40_gpt-6-luna_jev.json": "7037223bd752f50d41a4ffa84b8210a7125a31dffcebc472008e7ae600f7b939",
+    "benchmark_results/final_sol61_v2/cache/b4d51a0f8c40_gpt-6.1-sol_extraction.json": "0e3c5fb383ba770d57fe7fefc6590017231729d66b435a420a391db77f41dfa6",
+    "benchmark_results/final_sol61_v2/cache/b4d51a0f8c40_gpt-6.1-sol_jev.json": "bd557c8c1c8020a1466b281f190e816714693dcea2c386b15cc8757c621e1366",
+    "benchmark_results/final_sol61_v2/cache/bfb9f9f0a649_gpt-6-luna_extraction.json": "ea1c69ab4525085f4f6602b3a144ad9591a26df01dbcb803ea220d731d210a40",
+    "benchmark_results/final_sol61_v2/cache/bfb9f9f0a649_gpt-6-luna_jev.json": "dccbb219aab41c7afbe3c9f595400feb0a82185a19a6adaaac4baeef5d9ef2ac",
+    "benchmark_results/final_sol61_v2/cache/bfb9f9f0a649_gpt-6.1-sol_extraction.json": "44ee8df6968afd6906e65837f1c950abf6887e30ff49fd030745f61b5a6e3992",
+    "benchmark_results/final_sol61_v2/cache/bfb9f9f0a649_gpt-6.1-sol_jev.json": "d90a685865546d9785d3f5a49d4e9f99adc926554c9140ea22ebb0ef87520430",
+    "benchmark_results/final_sol61_v2/cache/c07b7beecfec_gpt-6-luna_extraction.json": "97def49637789ebf46e55e1041b6b4c26cfd8f67bd9cde4f7837974cf9ff8008",
+    "benchmark_results/final_sol61_v2/cache/c07b7beecfec_gpt-6.1-sol_extraction.json": "db6900c575ea319c812f6b360c52d6a0fc0449cc72bdacad575495c8c075e337",
+    "benchmark_results/final_sol61_v2/cache/c07b7beecfec_gpt-6.1-sol_jev.json": "1eb21073a02234b54dab12bb737a5db1a62ba0fa1da05fcd612908d7659f40ba",
+    "benchmark_results/final_sol61_v2/cache/c83c78df6127_gpt-6-luna_extraction.json": "7fc836a4303cc55253ab934e71229dd6da882dfb4286fa428eb5039aa21b1ab6",
+    "benchmark_results/final_sol61_v2/cache/c83c78df6127_gpt-6-luna_jev.json": "2b5f6cf4b631d3c8e26fe3ede9f8914e26971e72e2b90954ae4f807a02e29bce",
+    "benchmark_results/final_sol61_v2/cache/c83c78df6127_gpt-6.1-sol_extraction.json": "5f5b49ad9d0fcb29531ef78f20d7801d576065b4a8103e037b7b2d95bc70cbbc",
+    "benchmark_results/final_sol61_v2/cache/c83c78df6127_gpt-6.1-sol_jev.json": "ca24b3e42e03c81b65ce43f0c353c621c0368a33943e2a998805753b6b230efc",
+    "benchmark_results/final_sol61_v2/cache/f0cd123854f3_gpt-6-luna_extraction.json": "b808fcf8ffc4a03b0e51f527ac01484c50f7c07e6b2be308e97ba4a3b6940495",
+    "benchmark_results/final_sol61_v2/cache/f0cd123854f3_gpt-6-luna_jev.json": "d4274469b73caa11d5d6fc924321532f897fdf5858e9b33efbd9fbffd58ebcc9",
+    "benchmark_results/final_sol61_v2/cache/f0cd123854f3_gpt-6.1-sol_extraction.json": "2866f532b5ff5feb99860a28599232be2388bf086ac6aa7ef0cdda9e92a55f88",
+    "benchmark_results/final_sol61_v2/cache/f0cd123854f3_gpt-6.1-sol_jev.json": "5d22e5c7c7585b8952b4933b3023fb6b8da21dc59fd2d4d9be125ada8b2ccdcf",
+    "benchmark_results/final_sol61_v2/cache/fbc4e5e6dc3e_gpt-6-luna_extraction.json": "78cfc80be1f99b47b9eeafdf4b42c78dab6bc134104ce0ab89c5f5cd29bc90c3",
+    "benchmark_results/final_sol61_v2/cache/fbc4e5e6dc3e_gpt-6-luna_jev.json": "cd6255990ea9b7a60bfb0a27868ca5f7f1f406c50d331b1121abe8bc98cb1f39",
+    "benchmark_results/final_sol61_v2/cache/fbc4e5e6dc3e_gpt-6.1-sol_extraction.json": "13913816a4127678c6e938311efb83ba8e86af49d73574025ba55bdf5fabdb14",
+    "benchmark_results/final_sol61_v2/jev_decisions.jsonl": "0f80a016b185e86c463e99ff3ae98ac6f440f46811f0a79ce3cbbbdba19278cb",
+    "benchmark_results/final_sol61_v2/latest.jsonl": "fe82d789c2e05d7cfd1d9be5dbdd07c6c595a3e70396be1e7d3276e96703b88d",
+    "benchmark_results/final_sol61_v2/latest_summary.csv": "556d4e6d8c0893997dc046c0b45c70eaef07a04d05c3f32e5d0ec1ae68dec95b"
+  },
+  "provenance_implementation_hash": "d1724b8770cb49b1b51f96870fdc07311d439938fd9197d76a282c0a7cbd8330",
+  "summary_matches_rows": true,
+  "pilot_separation_verified": true,
+  "pairing": [
+    {
+      "case": "hard_timing",
+      "model": "gpt-6-luna",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "16c6a6aa4e5d16bfe6981b69a7018e2c8d62ba2796e4b82f355f1e371a6e31ab",
+      "jev_final_hash": "16c6a6aa4e5d16bfe6981b69a7018e2c8d62ba2796e4b82f355f1e371a6e31ab"
+    },
+    {
+      "case": "hard_timing",
+      "model": "gpt-6.1-sol",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "56304a44c7ee81b8bb37d62d3d842140227f61201e6807455943f3b57c24b644",
+      "jev_final_hash": "56304a44c7ee81b8bb37d62d3d842140227f61201e6807455943f3b57c24b644"
+    },
+    {
+      "case": "regional_week",
+      "model": "gpt-6-luna",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "de0022980a25540858124b42d5badefc53786a38968dbb9f65cd86a57ef28463",
+      "jev_final_hash": "43e54dcba0120dbb32e580213f7fb35fc062dfa22c0839f3bd0098ee8dee14e3"
+    },
+    {
+      "case": "regional_week",
+      "model": "gpt-6.1-sol",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "de0022980a25540858124b42d5badefc53786a38968dbb9f65cd86a57ef28463",
+      "jev_final_hash": "4f1226b0d613d2e63a961c248b07a1eb60aab0cdaf02c0b06fe53f3d69c97e25"
+    },
+    {
+      "case": "impossible_hard_workout_window",
+      "model": "gpt-6-luna",
+      "stage": "terminal_extraction",
+      "extraction_hash": null,
+      "jev_final_hash": null
+    },
+    {
+      "case": "impossible_hard_workout_window",
+      "model": "gpt-6.1-sol",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "39f1529f37f9d5ab1fe255b3ca1bef71757a5215ca9d56c635d6bc4e7b5ac7a1",
+      "jev_final_hash": "39f1529f37f9d5ab1fe255b3ca1bef71757a5215ca9d56c635d6bc4e7b5ac7a1"
+    },
+    {
+      "case": "wfh_laundry_lift_groceries",
+      "model": "gpt-6-luna",
+      "stage": "no_formulation",
+      "extraction_hash": "c4f3fcb799fe53f3afbe3866159809e54e8ce34bb92e3035b593f652e7beb9ba",
+      "jev_final_hash": null
+    },
+    {
+      "case": "wfh_laundry_lift_groceries",
+      "model": "gpt-6.1-sol",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "fd346f1df81fd6ac3b880b5cbedd7fefa358069f54acaa7c100b72f1b5769c61",
+      "jev_final_hash": "fd346f1df81fd6ac3b880b5cbedd7fefa358069f54acaa7c100b72f1b5769c61"
+    },
+    {
+      "case": "laundry_precedence",
+      "model": "gpt-6-luna",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "4148d79ab642b485e19f26181b3360f993658847ce4d2468632f80ddfeb35494",
+      "jev_final_hash": "4148d79ab642b485e19f26181b3360f993658847ce4d2468632f80ddfeb35494"
+    },
+    {
+      "case": "laundry_precedence",
+      "model": "gpt-6.1-sol",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "13eebe6c20ac0107f164da086fccef529205f53a447822f85f13e3a0f997b941",
+      "jev_final_hash": "13eebe6c20ac0107f164da086fccef529205f53a447822f85f13e3a0f997b941"
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6-luna",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "c436b1942458649e0e12003e676af88738cd7642a251bfb3234eaeae0b12cd15",
+      "jev_final_hash": "6a0799aeff9e3b3293e3a11c6ae92863a6542b5d5e19fdc79a66b96d01640db5"
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6.1-sol",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "c436b1942458649e0e12003e676af88738cd7642a251bfb3234eaeae0b12cd15",
+      "jev_final_hash": "6a0799aeff9e3b3293e3a11c6ae92863a6542b5d5e19fdc79a66b96d01640db5"
+    },
+    {
+      "case": "ten_day_rotation",
+      "model": "gpt-6-luna",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "e20b2daa11a7113d6b774e3bacecd4767f306468fca26e0e3068761a5e1dc431",
+      "jev_final_hash": "e20b2daa11a7113d6b774e3bacecd4767f306468fca26e0e3068761a5e1dc431"
+    },
+    {
+      "case": "ten_day_rotation",
+      "model": "gpt-6.1-sol",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "e20b2daa11a7113d6b774e3bacecd4767f306468fca26e0e3068761a5e1dc431",
+      "jev_final_hash": "e20b2daa11a7113d6b774e3bacecd4767f306468fca26e0e3068761a5e1dc431"
+    },
+    {
+      "case": "workout_before_four_hard",
+      "model": "gpt-6-luna",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "ab524ecb0df76094d54e4f8de322f2310ca60c7573d7e32694666ff6b4087889",
+      "jev_final_hash": "ab524ecb0df76094d54e4f8de322f2310ca60c7573d7e32694666ff6b4087889"
+    },
+    {
+      "case": "workout_before_four_hard",
+      "model": "gpt-6.1-sol",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "6bbd31c5171087edb5610cdcec3a03161535199ef7e2bbe784c826930c11d26a",
+      "jev_final_hash": "6bbd31c5171087edb5610cdcec3a03161535199ef7e2bbe784c826930c11d26a"
+    },
+    {
+      "case": "straightforward_staffing",
+      "model": "gpt-6-luna",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "ce99cf3a0d84089852c7733ca12f039e77f4c566110299df1cde32454391e182",
+      "jev_final_hash": "ce99cf3a0d84089852c7733ca12f039e77f4c566110299df1cde32454391e182"
+    },
+    {
+      "case": "straightforward_staffing",
+      "model": "gpt-6.1-sol",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "ce99cf3a0d84089852c7733ca12f039e77f4c566110299df1cde32454391e182",
+      "jev_final_hash": "ce99cf3a0d84089852c7733ca12f039e77f4c566110299df1cde32454391e182"
+    },
+    {
+      "case": "active_and_passive",
+      "model": "gpt-6-luna",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "71d3e9e890c73b6d7a843f38f7375355edab301087e3255584caac230bc8e885",
+      "jev_final_hash": "71d3e9e890c73b6d7a843f38f7375355edab301087e3255584caac230bc8e885"
+    },
+    {
+      "case": "active_and_passive",
+      "model": "gpt-6.1-sol",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "7fc3054faa5deb3fdd42e79e8400e67466cccfc14af15f2113ec83bd2c42486e",
+      "jev_final_hash": "7fc3054faa5deb3fdd42e79e8400e67466cccfc14af15f2113ec83bd2c42486e"
+    },
+    {
+      "case": "workout_before_four_soft",
+      "model": "gpt-6-luna",
+      "stage": "terminal_extraction",
+      "extraction_hash": null,
+      "jev_final_hash": null
+    },
+    {
+      "case": "workout_before_four_soft",
+      "model": "gpt-6.1-sol",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "7127afffee0156cdc3fc70fa14c218ff275b2e6093ec32083896c9d8f84d5913",
+      "jev_final_hash": "7127afffee0156cdc3fc70fa14c218ff275b2e6093ec32083896c9d8f84d5913"
+    },
+    {
+      "case": "preferences_and_availability",
+      "model": "gpt-6-luna",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "ce4371c4ba435a4cb5322f6972a3e39bce4ac1926e24dbafd9a9d3f79e35175e",
+      "jev_final_hash": "ce4371c4ba435a4cb5322f6972a3e39bce4ac1926e24dbafd9a9d3f79e35175e"
+    },
+    {
+      "case": "preferences_and_availability",
+      "model": "gpt-6.1-sol",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "ce4371c4ba435a4cb5322f6972a3e39bce4ac1926e24dbafd9a9d3f79e35175e",
+      "jev_final_hash": "ce4371c4ba435a4cb5322f6972a3e39bce4ac1926e24dbafd9a9d3f79e35175e"
+    },
+    {
+      "case": "soft_finish_preference",
+      "model": "gpt-6-luna",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "887f249afa20a2c0030ad1beedf69281ae9d05294debe7a9999d7ea31067e7a9",
+      "jev_final_hash": "887f249afa20a2c0030ad1beedf69281ae9d05294debe7a9999d7ea31067e7a9"
+    },
+    {
+      "case": "soft_finish_preference",
+      "model": "gpt-6.1-sol",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "887f249afa20a2c0030ad1beedf69281ae9d05294debe7a9999d7ea31067e7a9",
+      "jev_final_hash": "887f249afa20a2c0030ad1beedf69281ae9d05294debe7a9999d7ea31067e7a9"
+    },
+    {
+      "case": "optional_walk_if_time",
+      "model": "gpt-6-luna",
+      "stage": "shared_extraction_and_jev",
+      "extraction_hash": "ce8d2ebcdd84c4978e814de630d36ead9f9a771448f2940ea540226699fceb1c",
+      "jev_final_hash": "ce8d2ebcdd84c4978e814de630d36ead9f9a771448f2940ea540226699fceb1c"
+    },
+    {
+      "case": "optional_walk_if_time",
+      "model": "gpt-6.1-sol",
+      "stage": "no_formulation",
+      "extraction_hash": "c4f3fcb799fe53f3afbe3866159809e54e8ce34bb92e3035b593f652e7beb9ba",
+      "jev_final_hash": null
+    }
+  ],
+  "labels": {
+    "human_reviewed_approved": 54,
+    "generator_derived_scored": 71,
+    "subjective_excluded": 3,
+    "primary_scored_total": 125,
+    "labels_total": 128
+  },
+  "excluded_subjective": [
+    {
+      "case": "soft_finish_preference",
+      "question_id": "pref_weight:{\"end\":null,\"start\":null,\"task\":\"report\",\"time\":\"15:00\",\"type\":\"finish_before\"}#0",
+      "answer": 1
+    },
+    {
+      "case": "workout_before_four_soft",
+      "question_id": "pref_weight:{\"end\":null,\"start\":null,\"task\":\"workout\",\"time\":\"16:00\",\"type\":\"finish_before\"}#0",
+      "answer": 3
+    },
+    {
+      "case": "preferences_and_availability",
+      "question_id": "pref_weight:{\"objective\":\"preference_penalty\"}#0",
+      "answer": 1
+    }
+  ],
+  "coverage_totals": {
+    "canonical": 256,
+    "aligned": 228,
+    "missing": 28,
+    "unaligned_generated": 2,
+    "unaligned_decisions": 0,
+    "primary": 250,
+    "primary_aligned": 223,
+    "primary_missing": 27
+  },
+  "coverage": [
+    {
+      "case": "hard_timing",
+      "model": "gpt-6-luna",
+      "canonical": 5,
+      "aligned": 5,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 5,
+      "primary_aligned": 5,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "hard_timing",
+      "model": "gpt-6.1-sol",
+      "canonical": 5,
+      "aligned": 5,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 5,
+      "primary_aligned": 5,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "regional_week",
+      "model": "gpt-6-luna",
+      "canonical": 34,
+      "aligned": 34,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 34,
+      "primary_aligned": 34,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "regional_week",
+      "model": "gpt-6.1-sol",
+      "canonical": 34,
+      "aligned": 34,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 34,
+      "primary_aligned": 34,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "impossible_hard_workout_window",
+      "model": "gpt-6-luna",
+      "canonical": 3,
+      "aligned": 0,
+      "missing": 3,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 3,
+      "primary_aligned": 0,
+      "primary_missing": 3,
+      "missing_ids": [
+        "constraint_hardness:{\"end\":\"16:00\",\"start\":null,\"task\":\"workout\"}#0",
+        "task_mode:{\"task\":\"workout\"}#0",
+        "task_requirement:{\"task\":\"workout\"}#0"
+      ],
+      "unaligned": [],
+      "source": "terminal_extraction"
+    },
+    {
+      "case": "impossible_hard_workout_window",
+      "model": "gpt-6.1-sol",
+      "canonical": 3,
+      "aligned": 3,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 3,
+      "primary_aligned": 3,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "wfh_laundry_lift_groceries",
+      "model": "gpt-6-luna",
+      "canonical": 15,
+      "aligned": 0,
+      "missing": 15,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 15,
+      "primary_aligned": 0,
+      "primary_missing": 15,
+      "missing_ids": [
+        "constraint_hardness:{\"end\":\"08:30\",\"start\":\"08:00\",\"task\":\"wash\"}#0",
+        "constraint_hardness:{\"end\":\"16:00\",\"start\":null,\"task\":\"lift\"}#0",
+        "constraint_hardness:{\"end\":\"20:30\",\"start\":null,\"task\":\"groceries\"}#0",
+        "pref_weight:{\"end\":null,\"start\":null,\"task\":\"lift\",\"time\":\"16:00\",\"type\":\"finish_before\"}#0",
+        "pref_weight:{\"end\":null,\"start\":null,\"task\":null,\"time\":null,\"type\":\"minimize_work_interruptions\"}#0",
+        "task_mode:{\"task\":\"dry\"}#0",
+        "task_mode:{\"task\":\"groceries\"}#0",
+        "task_mode:{\"task\":\"lift\"}#0",
+        "task_mode:{\"task\":\"transfer\"}#0",
+        "task_mode:{\"task\":\"wash\"}#0",
+        "task_requirement:{\"task\":\"dry\"}#0",
+        "task_requirement:{\"task\":\"groceries\"}#0",
+        "task_requirement:{\"task\":\"lift\"}#0",
+        "task_requirement:{\"task\":\"transfer\"}#0",
+        "task_requirement:{\"task\":\"wash\"}#0"
+      ],
+      "unaligned": [],
+      "source": "missing_info"
+    },
+    {
+      "case": "wfh_laundry_lift_groceries",
+      "model": "gpt-6.1-sol",
+      "canonical": 15,
+      "aligned": 15,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 15,
+      "primary_aligned": 15,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "laundry_precedence",
+      "model": "gpt-6-luna",
+      "canonical": 6,
+      "aligned": 6,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 6,
+      "primary_aligned": 6,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "laundry_precedence",
+      "model": "gpt-6.1-sol",
+      "canonical": 6,
+      "aligned": 6,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 6,
+      "primary_aligned": 6,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6-luna",
+      "canonical": 4,
+      "aligned": 4,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 4,
+      "primary_aligned": 4,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6.1-sol",
+      "canonical": 4,
+      "aligned": 4,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 4,
+      "primary_aligned": 4,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "ten_day_rotation",
+      "model": "gpt-6-luna",
+      "canonical": 37,
+      "aligned": 37,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 37,
+      "primary_aligned": 37,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "ten_day_rotation",
+      "model": "gpt-6.1-sol",
+      "canonical": 37,
+      "aligned": 37,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 37,
+      "primary_aligned": 37,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "workout_before_four_hard",
+      "model": "gpt-6-luna",
+      "canonical": 3,
+      "aligned": 3,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 3,
+      "primary_aligned": 3,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "workout_before_four_hard",
+      "model": "gpt-6.1-sol",
+      "canonical": 3,
+      "aligned": 3,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 3,
+      "primary_aligned": 3,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "straightforward_staffing",
+      "model": "gpt-6-luna",
+      "canonical": 2,
+      "aligned": 2,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 2,
+      "primary_aligned": 2,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "straightforward_staffing",
+      "model": "gpt-6.1-sol",
+      "canonical": 2,
+      "aligned": 2,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 2,
+      "primary_aligned": 2,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "active_and_passive",
+      "model": "gpt-6-luna",
+      "canonical": 4,
+      "aligned": 4,
+      "missing": 0,
+      "unaligned_generated": 1,
+      "unaligned_decisions": 0,
+      "primary": 4,
+      "primary_aligned": 4,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [
+        {
+          "canonical_question_id": null,
+          "semantic_candidate_id": "constraint_hardness:{\"end\":\"10:30\",\"start\":\"09:00\",\"task\":\"dishwasher\"}#0",
+          "question_type": "constraint_hardness",
+          "generated_item": "task:Dishwasher run:hard_window",
+          "locator": {
+            "kind": "hard_window",
+            "task": "Dishwasher run"
+          },
+          "context": {
+            "task": "Dishwasher run",
+            "earliest_start": "09:00",
+            "latest_end": "10:30"
+          },
+          "alignment_status": "unaligned_generated",
+          "gpt_baseline_answer": "hard",
+          "jev_answer": "hard",
+          "jev_probability": 0.99,
+          "probabilities": {
+            "hard": 0.99,
+            "soft": 0.01
+          },
+          "applied": true,
+          "changed": false,
+          "final_applied_answer": "hard",
+          "final_value_status": "represented",
+          "jev_observation_status": "observed"
+        }
+      ],
+      "source": "observed"
+    },
+    {
+      "case": "active_and_passive",
+      "model": "gpt-6.1-sol",
+      "canonical": 4,
+      "aligned": 4,
+      "missing": 0,
+      "unaligned_generated": 1,
+      "unaligned_decisions": 0,
+      "primary": 4,
+      "primary_aligned": 4,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [
+        {
+          "canonical_question_id": null,
+          "semantic_candidate_id": "constraint_hardness:{\"end\":\"10:30\",\"start\":\"09:00\",\"task\":\"dishwasher\"}#0",
+          "question_type": "constraint_hardness",
+          "generated_item": "task:Dishwasher:hard_window",
+          "locator": {
+            "kind": "hard_window",
+            "task": "Dishwasher"
+          },
+          "context": {
+            "task": "Dishwasher",
+            "earliest_start": "09:00",
+            "latest_end": "10:30"
+          },
+          "alignment_status": "unaligned_generated",
+          "gpt_baseline_answer": "hard",
+          "jev_answer": "hard",
+          "jev_probability": 0.99,
+          "probabilities": {
+            "hard": 0.99,
+            "soft": 0.01
+          },
+          "applied": true,
+          "changed": false,
+          "final_applied_answer": "hard",
+          "final_value_status": "represented",
+          "jev_observation_status": "observed"
+        }
+      ],
+      "source": "observed"
+    },
+    {
+      "case": "workout_before_four_soft",
+      "model": "gpt-6-luna",
+      "canonical": 4,
+      "aligned": 0,
+      "missing": 4,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 3,
+      "primary_aligned": 0,
+      "primary_missing": 3,
+      "missing_ids": [
+        "constraint_hardness:{\"end\":\"16:00\",\"start\":null,\"task\":\"workout\"}#0",
+        "pref_weight:{\"end\":null,\"start\":null,\"task\":\"workout\",\"time\":\"16:00\",\"type\":\"finish_before\"}#0",
+        "task_mode:{\"task\":\"workout\"}#0",
+        "task_requirement:{\"task\":\"workout\"}#0"
+      ],
+      "unaligned": [],
+      "source": "terminal_extraction"
+    },
+    {
+      "case": "workout_before_four_soft",
+      "model": "gpt-6.1-sol",
+      "canonical": 4,
+      "aligned": 4,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 3,
+      "primary_aligned": 3,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "preferences_and_availability",
+      "model": "gpt-6-luna",
+      "canonical": 3,
+      "aligned": 3,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 2,
+      "primary_aligned": 2,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "preferences_and_availability",
+      "model": "gpt-6.1-sol",
+      "canonical": 3,
+      "aligned": 3,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 2,
+      "primary_aligned": 2,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "soft_finish_preference",
+      "model": "gpt-6-luna",
+      "canonical": 4,
+      "aligned": 4,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 3,
+      "primary_aligned": 3,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "soft_finish_preference",
+      "model": "gpt-6.1-sol",
+      "canonical": 4,
+      "aligned": 4,
+      "missing": 0,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 3,
+      "primary_aligned": 3,
+      "primary_missing": 0,
+      "missing_ids": [],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "optional_walk_if_time",
+      "model": "gpt-6-luna",
+      "canonical": 4,
+      "aligned": 2,
+      "missing": 2,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 4,
+      "primary_aligned": 2,
+      "primary_missing": 2,
+      "missing_ids": [
+        "task_mode:{\"task\":\"walk\"}#0",
+        "task_requirement:{\"task\":\"walk\"}#0"
+      ],
+      "unaligned": [],
+      "source": "observed"
+    },
+    {
+      "case": "optional_walk_if_time",
+      "model": "gpt-6.1-sol",
+      "canonical": 4,
+      "aligned": 0,
+      "missing": 4,
+      "unaligned_generated": 0,
+      "unaligned_decisions": 0,
+      "primary": 4,
+      "primary_aligned": 0,
+      "primary_missing": 4,
+      "missing_ids": [
+        "task_mode:{\"task\":\"report\"}#0",
+        "task_mode:{\"task\":\"walk\"}#0",
+        "task_requirement:{\"task\":\"report\"}#0",
+        "task_requirement:{\"task\":\"walk\"}#0"
+      ],
+      "unaligned": [],
+      "source": "missing_info"
+    }
+  ],
+  "canonical_metric_discrepancies": [
+    {
+      "case": "straightforward_staffing",
+      "architecture": "Luna 6 \u00b7 Direct LLM",
+      "differences": {
+        "formulation_match": {
+          "recorded": false,
+          "offline": true
+        },
+        "formulation_match_structural": {
+          "recorded": false,
+          "offline": true
+        }
+      }
+    },
+    {
+      "case": "straightforward_staffing",
+      "architecture": "Luna 6 \u00b7 CP-SAT",
+      "differences": {
+        "formulation_match": {
+          "recorded": false,
+          "offline": true
+        },
+        "formulation_match_structural": {
+          "recorded": false,
+          "offline": true
+        }
+      }
+    },
+    {
+      "case": "straightforward_staffing",
+      "architecture": "Sol 6.1 \u00b7 Direct LLM",
+      "differences": {
+        "formulation_match": {
+          "recorded": false,
+          "offline": true
+        },
+        "formulation_match_structural": {
+          "recorded": false,
+          "offline": true
+        }
+      }
+    },
+    {
+      "case": "straightforward_staffing",
+      "architecture": "Sol 6.1 \u00b7 CP-SAT",
+      "differences": {
+        "formulation_match": {
+          "recorded": false,
+          "offline": true
+        },
+        "formulation_match_structural": {
+          "recorded": false,
+          "offline": true
+        }
+      }
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "architecture": "Luna 6 \u00b7 Direct LLM",
+      "differences": {
+        "formulation_match": {
+          "recorded": false,
+          "offline": true
+        },
+        "formulation_match_structural": {
+          "recorded": false,
+          "offline": true
+        }
+      }
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "architecture": "Luna 6 \u00b7 CP-SAT",
+      "differences": {
+        "formulation_match": {
+          "recorded": false,
+          "offline": true
+        },
+        "formulation_match_structural": {
+          "recorded": false,
+          "offline": true
+        }
+      }
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "architecture": "Sol 6.1 \u00b7 Direct LLM",
+      "differences": {
+        "formulation_match": {
+          "recorded": false,
+          "offline": true
+        },
+        "formulation_match_structural": {
+          "recorded": false,
+          "offline": true
+        }
+      }
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "architecture": "Sol 6.1 \u00b7 CP-SAT",
+      "differences": {
+        "formulation_match": {
+          "recorded": false,
+          "offline": true
+        },
+        "formulation_match_structural": {
+          "recorded": false,
+          "offline": true
+        }
+      }
+    }
+  ],
+  "failure_row_observation_discrepancies": [
+    {
+      "case": "workout_before_four_hard",
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 Direct LLM",
+      "actual_jev_observations": 3,
+      "recorded_observed": 0
+    }
+  ],
+  "row_incremental_accounting": {
+    "openai_call_attempts": 76,
+    "jev_call_attempts": 24,
+    "openai_input_tokens": 85099,
+    "openai_output_tokens": 45989,
+    "jev_input_tokens": 50302,
+    "openai_estimated_cost_usd": 0.2870259
+  },
+  "reconciled_openai": {
+    "n_model_call_attempts": 76,
+    "n_model_calls": 74,
+    "openai_input_tokens": 86583,
+    "openai_output_tokens": 46461
+  },
+  "reconciled_openai_estimated_cost": 0.2874102999999999,
+  "openai_by_model": {
+    "gpt-6-luna": {
+      "n_model_call_attempts": 36,
+      "n_model_calls": 34,
+      "openai_input_tokens": 40988,
+      "openai_output_tokens": 28683,
+      "estimated_cost": 0.0184403
+    },
+    "gpt-6.1-sol": {
+      "n_model_call_attempts": 40,
+      "n_model_calls": 40,
+      "openai_input_tokens": 45595,
+      "openai_output_tokens": 17778,
+      "estimated_cost": 0.26896999999999993
+    }
+  },
+  "reconciled_jev": {
+    "n_jev_call_attempts": 24,
+    "n_jev_calls": 24,
+    "n_jev_questions": 230,
+    "jev_input_tokens": 50946
+  },
+  "standalone_cost_sum": 0.6507532,
+  "openai_stages": [
+    {
+      "case": "hard_timing",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1504,
+        "openai_output_tokens": 316
+      },
+      "estimated_cost": 0.00030839999999999996
+    },
+    {
+      "case": "hard_timing",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 492,
+        "openai_output_tokens": 153
+      },
+      "estimated_cost": 0.00012570000000000002
+    },
+    {
+      "case": "hard_timing",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 492,
+        "openai_output_tokens": 165
+      },
+      "estimated_cost": 0.00013169999999999995
+    },
+    {
+      "case": "hard_timing",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1504,
+        "openai_output_tokens": 511
+      },
+      "estimated_cost": 0.008118
+    },
+    {
+      "case": "hard_timing",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 494,
+        "openai_output_tokens": 132
+      },
+      "estimated_cost": 0.002308000000000001
+    },
+    {
+      "case": "hard_timing",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 494,
+        "openai_output_tokens": 136
+      },
+      "estimated_cost": 0.0023479999999999994
+    },
+    {
+      "case": "regional_week",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2236,
+        "openai_output_tokens": 2169
+      },
+      "estimated_cost": 0.0013081
+    },
+    {
+      "case": "regional_week",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2500,
+        "openai_output_tokens": 3148
+      },
+      "estimated_cost": 0.001824
+    },
+    {
+      "case": "regional_week",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2534,
+        "openai_output_tokens": 4000
+      },
+      "estimated_cost": 0.0022534
+    },
+    {
+      "case": "regional_week",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2236,
+        "openai_output_tokens": 1604
+      },
+      "estimated_cost": 0.020512
+    },
+    {
+      "case": "regional_week",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2500,
+        "openai_output_tokens": 1898
+      },
+      "estimated_cost": 0.023980000000000005
+    },
+    {
+      "case": "regional_week",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2568,
+        "openai_output_tokens": 1757
+      },
+      "estimated_cost": 0.022706
+    },
+    {
+      "case": "impossible_hard_workout_window",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1484,
+        "openai_output_tokens": 472
+      },
+      "estimated_cost": 0.00038439999999999997
+    },
+    {
+      "case": "impossible_hard_workout_window",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1484,
+        "openai_output_tokens": 157
+      },
+      "estimated_cost": 0.004538
+    },
+    {
+      "case": "impossible_hard_workout_window",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 403,
+        "openai_output_tokens": 55
+      },
+      "estimated_cost": 0.0013559999999999996
+    },
+    {
+      "case": "impossible_hard_workout_window",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 403,
+        "openai_output_tokens": 55
+      },
+      "estimated_cost": 0.0013559999999999996
+    },
+    {
+      "case": "wfh_laundry_lift_groceries",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1603,
+        "openai_output_tokens": 917
+      },
+      "estimated_cost": 0.0006188
+    },
+    {
+      "case": "wfh_laundry_lift_groceries",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1603,
+        "openai_output_tokens": 567
+      },
+      "estimated_cost": 0.008876
+    },
+    {
+      "case": "wfh_laundry_lift_groceries",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 886,
+        "openai_output_tokens": 366
+      },
+      "estimated_cost": 0.005432000000000001
+    },
+    {
+      "case": "wfh_laundry_lift_groceries",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 886,
+        "openai_output_tokens": 397
+      },
+      "estimated_cost": 0.005741999999999999
+    },
+    {
+      "case": "laundry_precedence",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1511,
+        "openai_output_tokens": 463
+      },
+      "estimated_cost": 0.00038260000000000003
+    },
+    {
+      "case": "laundry_precedence",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 570,
+        "openai_output_tokens": 225
+      },
+      "estimated_cost": 0.0001695
+    },
+    {
+      "case": "laundry_precedence",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 570,
+        "openai_output_tokens": 280
+      },
+      "estimated_cost": 0.00019699999999999996
+    },
+    {
+      "case": "laundry_precedence",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1511,
+        "openai_output_tokens": 254
+      },
+      "estimated_cost": 0.005562
+    },
+    {
+      "case": "laundry_precedence",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 570,
+        "openai_output_tokens": 145
+      },
+      "estimated_cost": 0.0025899999999999994
+    },
+    {
+      "case": "laundry_precedence",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 570,
+        "openai_output_tokens": 122
+      },
+      "estimated_cost": 0.00236
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1325,
+        "openai_output_tokens": 366
+      },
+      "estimated_cost": 0.0003155
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 719,
+        "openai_output_tokens": 143
+      },
+      "estimated_cost": 0.00014340000000000002
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 751,
+        "openai_output_tokens": 188
+      },
+      "estimated_cost": 0.00016910000000000004
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1325,
+        "openai_output_tokens": 349
+      },
+      "estimated_cost": 0.00614
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 719,
+        "openai_output_tokens": 76
+      },
+      "estimated_cost": 0.0021980000000000003
+    },
+    {
+      "case": "infeasible_staffing_is_extracted_not_repaired",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 751,
+        "openai_output_tokens": 75
+      },
+      "estimated_cost": 0.0022520000000000005
+    },
+    {
+      "case": "ten_day_rotation",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2582,
+        "openai_output_tokens": 2601
+      },
+      "estimated_cost": 0.0015587
+    },
+    {
+      "case": "ten_day_rotation",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 3091,
+        "openai_output_tokens": 3320
+      },
+      "estimated_cost": 0.0019691
+    },
+    {
+      "case": "ten_day_rotation",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 3091,
+        "openai_output_tokens": 5824
+      },
+      "estimated_cost": 0.0032210999999999997
+    },
+    {
+      "case": "ten_day_rotation",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 2582,
+        "openai_output_tokens": 2146
+      },
+      "estimated_cost": 0.026624
+    },
+    {
+      "case": "ten_day_rotation",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 3091,
+        "openai_output_tokens": 2247
+      },
+      "estimated_cost": 0.028652
+    },
+    {
+      "case": "ten_day_rotation",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 3091,
+        "openai_output_tokens": 2287
+      },
+      "estimated_cost": 0.029052000000000005
+    },
+    {
+      "case": "workout_before_four_hard",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1482,
+        "openai_output_tokens": 284
+      },
+      "estimated_cost": 0.00029020000000000006
+    },
+    {
+      "case": "workout_before_four_hard",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 403,
+        "openai_output_tokens": 110
+      },
+      "estimated_cost": 9.530000000000004e-05
+    },
+    {
+      "case": "workout_before_four_hard",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0
+      },
+      "estimated_cost": 0.0
+    },
+    {
+      "case": "workout_before_four_hard",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1482,
+        "openai_output_tokens": 131
+      },
+      "estimated_cost": 0.004274
+    },
+    {
+      "case": "workout_before_four_hard",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 404,
+        "openai_output_tokens": 78
+      },
+      "estimated_cost": 0.001588
+    },
+    {
+      "case": "workout_before_four_hard",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 404,
+        "openai_output_tokens": 77
+      },
+      "estimated_cost": 0.0015779999999999995
+    },
+    {
+      "case": "straightforward_staffing",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1300,
+        "openai_output_tokens": 278
+      },
+      "estimated_cost": 0.000269
+    },
+    {
+      "case": "straightforward_staffing",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 582,
+        "openai_output_tokens": 155
+      },
+      "estimated_cost": 0.0001357
+    },
+    {
+      "case": "straightforward_staffing",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 582,
+        "openai_output_tokens": 119
+      },
+      "estimated_cost": 0.00011769999999999999
+    },
+    {
+      "case": "straightforward_staffing",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1300,
+        "openai_output_tokens": 231
+      },
+      "estimated_cost": 0.00491
+    },
+    {
+      "case": "straightforward_staffing",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 582,
+        "openai_output_tokens": 81
+      },
+      "estimated_cost": 0.001974
+    },
+    {
+      "case": "straightforward_staffing",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 582,
+        "openai_output_tokens": 90
+      },
+      "estimated_cost": 0.002064
+    },
+    {
+      "case": "active_and_passive",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1505,
+        "openai_output_tokens": 693
+      },
+      "estimated_cost": 0.000497
+    },
+    {
+      "case": "active_and_passive",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 491,
+        "openai_output_tokens": 181
+      },
+      "estimated_cost": 0.00013960000000000003
+    },
+    {
+      "case": "active_and_passive",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 491,
+        "openai_output_tokens": 201
+      },
+      "estimated_cost": 0.00014959999999999995
+    },
+    {
+      "case": "active_and_passive",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1505,
+        "openai_output_tokens": 299
+      },
+      "estimated_cost": 0.006
+    },
+    {
+      "case": "active_and_passive",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 490,
+        "openai_output_tokens": 139
+      },
+      "estimated_cost": 0.0023700000000000006
+    },
+    {
+      "case": "active_and_passive",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 490,
+        "openai_output_tokens": 120
+      },
+      "estimated_cost": 0.0021799999999999996
+    },
+    {
+      "case": "workout_before_four_soft",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 0,
+        "openai_input_tokens": 0,
+        "openai_output_tokens": 0
+      },
+      "estimated_cost": 0.0
+    },
+    {
+      "case": "workout_before_four_soft",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1488,
+        "openai_output_tokens": 160
+      },
+      "estimated_cost": 0.004576
+    },
+    {
+      "case": "workout_before_four_soft",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 451,
+        "openai_output_tokens": 82
+      },
+      "estimated_cost": 0.0017219999999999996
+    },
+    {
+      "case": "workout_before_four_soft",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 451,
+        "openai_output_tokens": 89
+      },
+      "estimated_cost": 0.0017920000000000002
+    },
+    {
+      "case": "preferences_and_availability",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1273,
+        "openai_output_tokens": 268
+      },
+      "estimated_cost": 0.0002613
+    },
+    {
+      "case": "preferences_and_availability",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 573,
+        "openai_output_tokens": 112
+      },
+      "estimated_cost": 0.00011329999999999999
+    },
+    {
+      "case": "preferences_and_availability",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 573,
+        "openai_output_tokens": 113
+      },
+      "estimated_cost": 0.0001138
+    },
+    {
+      "case": "preferences_and_availability",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1273,
+        "openai_output_tokens": 224
+      },
+      "estimated_cost": 0.004786
+    },
+    {
+      "case": "preferences_and_availability",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 573,
+        "openai_output_tokens": 87
+      },
+      "estimated_cost": 0.0020160000000000004
+    },
+    {
+      "case": "preferences_and_availability",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 573,
+        "openai_output_tokens": 73
+      },
+      "estimated_cost": 0.001876
+    },
+    {
+      "case": "soft_finish_preference",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1488,
+        "openai_output_tokens": 265
+      },
+      "estimated_cost": 0.0002813
+    },
+    {
+      "case": "soft_finish_preference",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 449,
+        "openai_output_tokens": 126
+      },
+      "estimated_cost": 0.00010790000000000002
+    },
+    {
+      "case": "soft_finish_preference",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 449,
+        "openai_output_tokens": 126
+      },
+      "estimated_cost": 0.00010790000000000002
+    },
+    {
+      "case": "soft_finish_preference",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1488,
+        "openai_output_tokens": 172
+      },
+      "estimated_cost": 0.004696
+    },
+    {
+      "case": "soft_finish_preference",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 449,
+        "openai_output_tokens": 80
+      },
+      "estimated_cost": 0.0016979999999999999
+    },
+    {
+      "case": "soft_finish_preference",
+      "model": "gpt-6.1-sol",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 449,
+        "openai_output_tokens": 74
+      },
+      "estimated_cost": 0.0016379999999999997
+    },
+    {
+      "case": "optional_walk_if_time",
+      "model": "gpt-6-luna",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1490,
+        "openai_output_tokens": 696
+      },
+      "estimated_cost": 0.000497
+    },
+    {
+      "case": "optional_walk_if_time",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_false",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 401,
+        "openai_output_tokens": 101
+      },
+      "estimated_cost": 9.060000000000003e-05
+    },
+    {
+      "case": "optional_walk_if_time",
+      "model": "gpt-6-luna",
+      "stage": "direct_jev_true",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 401,
+        "openai_output_tokens": 105
+      },
+      "estimated_cost": 9.259999999999997e-05
+    },
+    {
+      "case": "optional_walk_if_time",
+      "model": "gpt-6.1-sol",
+      "stage": "extraction",
+      "usage": {
+        "n_model_call_attempts": 1,
+        "n_model_calls": 1,
+        "openai_input_tokens": 1490,
+        "openai_output_tokens": 155
+      },
+      "estimated_cost": 0.00453
+    }
+  ],
+  "missing_formulations": [
+    {
+      "case": "wfh_laundry_lift_groceries",
+      "model": "gpt-6-luna",
+      "missing_info": [
+        "The schema can represent a task\u2019s earliest start, but not require it to start exactly at 08:00. Can the laundry wash start be treated as an earliest start instead?"
+      ]
+    },
+    {
+      "case": "optional_walk_if_time",
+      "model": "gpt-6.1-sol",
+      "missing_info": [
+        "The schema cannot represent optional tasks. Should I omit the walk or include it as a required 30-minute active task?"
+      ]
+    }
+  ],
+  "raw_dataset_unchanged": true
+}
