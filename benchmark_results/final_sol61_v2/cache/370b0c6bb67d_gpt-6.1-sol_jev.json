@@ -1,0 +1,638 @@
+{
+  "case_id": "wfh_laundry_lift_groceries",
+  "decisions": [
+    {
+      "applied": false,
+      "changed": false,
+      "confidence": 0.68,
+      "context": {
+        "timing": {
+          "end": null,
+          "start": null,
+          "task": "lifting",
+          "time": "16:00",
+          "type": "finish_before",
+          "weight": 5
+        }
+      },
+      "expected_score": null,
+      "final_value": "soft",
+      "final_value_status": "represented",
+      "gpt_value": "soft",
+      "item": "preference:0:lifting",
+      "jev_value": "soft",
+      "locator": {
+        "kind": "soft_preference",
+        "signature": {
+          "end": null,
+          "start": null,
+          "task": "lifting",
+          "time": "16:00",
+          "type": "finish_before",
+          "weight": 5
+        }
+      },
+      "model_confidence": 0.35,
+      "primitive": "choice",
+      "probabilities": {
+        "hard": 0.32,
+        "soft": 0.68
+      },
+      "question_name": "q000_constraint_hardness",
+      "question_type": "constraint_hardness",
+      "semantic_question_id": "constraint_hardness:{\"end\":\"16:00\",\"start\":null,\"task\":\"lifting\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "earliest_start": "08:00",
+        "latest_end": "08:30",
+        "task": "wash clothes"
+      },
+      "expected_score": null,
+      "final_value": "hard",
+      "final_value_status": "represented",
+      "gpt_value": "hard",
+      "item": "task:wash clothes:hard_window",
+      "jev_value": "hard",
+      "locator": {
+        "kind": "hard_window",
+        "task": "wash clothes"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "hard": 1.0,
+        "soft": 0.0
+      },
+      "question_name": "q001_constraint_hardness",
+      "question_type": "constraint_hardness",
+      "semantic_question_id": "constraint_hardness:{\"end\":\"08:30\",\"start\":\"08:00\",\"task\":\"wash clothes\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.99,
+      "context": {
+        "earliest_start": null,
+        "latest_end": "20:30",
+        "task": "groceries"
+      },
+      "expected_score": null,
+      "final_value": "hard",
+      "final_value_status": "represented",
+      "gpt_value": "hard",
+      "item": "task:groceries:hard_latest",
+      "jev_value": "hard",
+      "locator": {
+        "kind": "hard_latest",
+        "task": "groceries"
+      },
+      "model_confidence": 0.99,
+      "primitive": "choice",
+      "probabilities": {
+        "hard": 0.99,
+        "soft": 0.01
+      },
+      "question_name": "q002_constraint_hardness",
+      "question_type": "constraint_hardness",
+      "semantic_question_id": "constraint_hardness:{\"end\":\"20:30\",\"start\":null,\"task\":\"groceries\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 30,
+        "mode": "passive",
+        "required": true,
+        "task": "wash clothes"
+      },
+      "expected_score": null,
+      "final_value": "required",
+      "final_value_status": "represented",
+      "gpt_value": "required",
+      "item": "task:wash clothes",
+      "jev_value": "required",
+      "locator": {
+        "task": "wash clothes"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "optional": 0.0,
+        "required": 1.0
+      },
+      "question_name": "q003_task_requirement",
+      "question_type": "task_requirement",
+      "semantic_question_id": "task_requirement:{\"task\":\"wash clothes\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 5,
+        "mode": "active",
+        "required": true,
+        "task": "transfer clothes"
+      },
+      "expected_score": null,
+      "final_value": "required",
+      "final_value_status": "represented",
+      "gpt_value": "required",
+      "item": "task:transfer clothes",
+      "jev_value": "required",
+      "locator": {
+        "task": "transfer clothes"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "optional": 0.0,
+        "required": 1.0
+      },
+      "question_name": "q004_task_requirement",
+      "question_type": "task_requirement",
+      "semantic_question_id": "task_requirement:{\"task\":\"transfer clothes\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 45,
+        "mode": "passive",
+        "required": true,
+        "task": "dry clothes"
+      },
+      "expected_score": null,
+      "final_value": "required",
+      "final_value_status": "represented",
+      "gpt_value": "required",
+      "item": "task:dry clothes",
+      "jev_value": "required",
+      "locator": {
+        "task": "dry clothes"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "optional": 0.0,
+        "required": 1.0
+      },
+      "question_name": "q005_task_requirement",
+      "question_type": "task_requirement",
+      "semantic_question_id": "task_requirement:{\"task\":\"dry clothes\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 60,
+        "mode": "active",
+        "required": true,
+        "task": "lifting"
+      },
+      "expected_score": null,
+      "final_value": "required",
+      "final_value_status": "represented",
+      "gpt_value": "required",
+      "item": "task:lifting",
+      "jev_value": "required",
+      "locator": {
+        "task": "lifting"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "optional": 0.0,
+        "required": 1.0
+      },
+      "question_name": "q006_task_requirement",
+      "question_type": "task_requirement",
+      "semantic_question_id": "task_requirement:{\"task\":\"lifting\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 45,
+        "mode": "active",
+        "required": true,
+        "task": "groceries"
+      },
+      "expected_score": null,
+      "final_value": "required",
+      "final_value_status": "represented",
+      "gpt_value": "required",
+      "item": "task:groceries",
+      "jev_value": "required",
+      "locator": {
+        "task": "groceries"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "optional": 0.0,
+        "required": 1.0
+      },
+      "question_name": "q007_task_requirement",
+      "question_type": "task_requirement",
+      "semantic_question_id": "task_requirement:{\"task\":\"groceries\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": false,
+      "changed": false,
+      "confidence": 0.54,
+      "context": {
+        "duration_min": 30,
+        "mode": "passive",
+        "required": true,
+        "task": "wash clothes"
+      },
+      "expected_score": null,
+      "final_value": "passive",
+      "final_value_status": "represented",
+      "gpt_value": "passive",
+      "item": "task:wash clothes",
+      "jev_value": "passive",
+      "locator": {
+        "task": "wash clothes"
+      },
+      "model_confidence": 0.08,
+      "primitive": "choice",
+      "probabilities": {
+        "active": 0.46,
+        "passive": 0.54
+      },
+      "question_name": "q008_task_mode",
+      "question_type": "task_mode",
+      "semantic_question_id": "task_mode:{\"task\":\"wash clothes\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.94,
+      "context": {
+        "duration_min": 5,
+        "mode": "active",
+        "required": true,
+        "task": "transfer clothes"
+      },
+      "expected_score": null,
+      "final_value": "active",
+      "final_value_status": "represented",
+      "gpt_value": "active",
+      "item": "task:transfer clothes",
+      "jev_value": "active",
+      "locator": {
+        "task": "transfer clothes"
+      },
+      "model_confidence": 0.87,
+      "primitive": "choice",
+      "probabilities": {
+        "active": 0.94,
+        "passive": 0.06
+      },
+      "question_name": "q009_task_mode",
+      "question_type": "task_mode",
+      "semantic_question_id": "task_mode:{\"task\":\"transfer clothes\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.95,
+      "context": {
+        "duration_min": 45,
+        "mode": "passive",
+        "required": true,
+        "task": "dry clothes"
+      },
+      "expected_score": null,
+      "final_value": "passive",
+      "final_value_status": "represented",
+      "gpt_value": "passive",
+      "item": "task:dry clothes",
+      "jev_value": "passive",
+      "locator": {
+        "task": "dry clothes"
+      },
+      "model_confidence": 0.9,
+      "primitive": "choice",
+      "probabilities": {
+        "active": 0.05,
+        "passive": 0.95
+      },
+      "question_name": "q010_task_mode",
+      "question_type": "task_mode",
+      "semantic_question_id": "task_mode:{\"task\":\"dry clothes\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.99,
+      "context": {
+        "duration_min": 60,
+        "mode": "active",
+        "required": true,
+        "task": "lifting"
+      },
+      "expected_score": null,
+      "final_value": "active",
+      "final_value_status": "represented",
+      "gpt_value": "active",
+      "item": "task:lifting",
+      "jev_value": "active",
+      "locator": {
+        "task": "lifting"
+      },
+      "model_confidence": 0.98,
+      "primitive": "choice",
+      "probabilities": {
+        "active": 0.99,
+        "passive": 0.01
+      },
+      "question_name": "q011_task_mode",
+      "question_type": "task_mode",
+      "semantic_question_id": "task_mode:{\"task\":\"lifting\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 45,
+        "mode": "active",
+        "required": true,
+        "task": "groceries"
+      },
+      "expected_score": null,
+      "final_value": "active",
+      "final_value_status": "represented",
+      "gpt_value": "active",
+      "item": "task:groceries",
+      "jev_value": "active",
+      "locator": {
+        "task": "groceries"
+      },
+      "model_confidence": 0.99,
+      "primitive": "choice",
+      "probabilities": {
+        "active": 1.0,
+        "passive": 0.0
+      },
+      "question_name": "q012_task_mode",
+      "question_type": "task_mode",
+      "semantic_question_id": "task_mode:{\"task\":\"groceries\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.96,
+      "context": {
+        "preference": {
+          "end": null,
+          "start": null,
+          "task": "lifting",
+          "time": "16:00",
+          "type": "finish_before",
+          "weight": 5
+        }
+      },
+      "expected_score": 3.91,
+      "final_value": 5,
+      "final_value_status": "represented",
+      "gpt_value": 5,
+      "item": "preference:0:finish_before",
+      "jev_value": 5,
+      "locator": {
+        "domain": "dayplan",
+        "signature": {
+          "end": null,
+          "start": null,
+          "task": "lifting",
+          "time": "16:00",
+          "type": "finish_before",
+          "weight": 5
+        }
+      },
+      "model_confidence": 0.93,
+      "primitive": "score",
+      "probabilities": {
+        "0": 0.01,
+        "1": 0.01,
+        "2": 0.01,
+        "3": 0.01,
+        "4": 0.96
+      },
+      "question_name": "q013_pref_weight",
+      "question_type": "pref_weight",
+      "semantic_question_id": "pref_weight:{\"end\":null,\"start\":null,\"task\":\"lifting\",\"time\":\"16:00\",\"type\":\"finish_before\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.91,
+      "context": {
+        "preference": {
+          "end": null,
+          "start": null,
+          "task": null,
+          "time": null,
+          "type": "minimize_work_interruptions",
+          "weight": 3
+        }
+      },
+      "expected_score": 1.94,
+      "final_value": 3,
+      "final_value_status": "represented",
+      "gpt_value": 3,
+      "item": "preference:1:minimize_work_interruptions",
+      "jev_value": 3,
+      "locator": {
+        "domain": "dayplan",
+        "signature": {
+          "end": null,
+          "start": null,
+          "task": null,
+          "time": null,
+          "type": "minimize_work_interruptions",
+          "weight": 3
+        }
+      },
+      "model_confidence": 0.9,
+      "primitive": "score",
+      "probabilities": {
+        "0": 0.01,
+        "1": 0.06,
+        "2": 0.91,
+        "3": 0.01,
+        "4": 0.01
+      },
+      "question_name": "q014_pref_weight",
+      "question_type": "pref_weight",
+      "semantic_question_id": "pref_weight:{\"end\":null,\"start\":null,\"task\":null,\"time\":null,\"type\":\"minimize_work_interruptions\"}#0",
+      "yes_probability": null
+    }
+  ],
+  "extraction_fingerprint": "b6317b098066e5dd2eff057f3b08d49e3fb29278775a92a0653e7eac59081789",
+  "extraction_problem_hash": "fd346f1df81fd6ac3b880b5cbedd7fefa358069f54acaa7c100b72f1b5769c61",
+  "fingerprint": "19935cb17a66c4b7d3e1908f1219eb28dc945cbe47e1bcf9c9d99e434bad7b33",
+  "jev_apply_threshold": 0.7,
+  "jev_batch_size": 64,
+  "model": "gpt-6.1-sol",
+  "problem": {
+    "fixed_events": [
+      {
+        "end": "10:30",
+        "name": "standup",
+        "start": "10:00"
+      },
+      {
+        "end": "13:30",
+        "name": "planning",
+        "start": "13:00"
+      },
+      {
+        "end": "16:00",
+        "name": "client call",
+        "start": "15:30"
+      }
+    ],
+    "horizon": {
+      "end": "21:00",
+      "start": "08:00"
+    },
+    "precedences": [
+      {
+        "after": "transfer clothes",
+        "before": "wash clothes",
+        "max_gap_min": 15,
+        "min_gap_min": 0
+      },
+      {
+        "after": "dry clothes",
+        "before": "transfer clothes",
+        "max_gap_min": 0,
+        "min_gap_min": 0
+      }
+    ],
+    "preferences": [
+      {
+        "end": null,
+        "start": null,
+        "task": "lifting",
+        "time": "16:00",
+        "type": "finish_before",
+        "weight": 5
+      },
+      {
+        "end": null,
+        "start": null,
+        "task": null,
+        "time": null,
+        "type": "minimize_work_interruptions",
+        "weight": 3
+      }
+    ],
+    "tasks": [
+      {
+        "duration_min": 30,
+        "earliest_start": "08:00",
+        "latest_end": "08:30",
+        "mode": "passive",
+        "name": "wash clothes",
+        "required": true
+      },
+      {
+        "duration_min": 5,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "active",
+        "name": "transfer clothes",
+        "required": true
+      },
+      {
+        "duration_min": 45,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "passive",
+        "name": "dry clothes",
+        "required": true
+      },
+      {
+        "duration_min": 60,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "active",
+        "name": "lifting",
+        "required": true
+      },
+      {
+        "duration_min": 45,
+        "earliest_start": null,
+        "latest_end": "20:30",
+        "mode": "active",
+        "name": "groceries",
+        "required": true
+      }
+    ],
+    "work_window": {
+      "end": "17:00",
+      "start": "09:00"
+    }
+  },
+  "requested_jev_model": "jev-latest",
+  "resolved_jev_model": "jev-1.13.0",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "jev",
+  "telemetry": {
+    "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+    "case_id": "wfh_laundry_lift_groceries",
+    "error": null,
+    "estimated_cost": 0.0,
+    "jev_input_tokens": 2189,
+    "latency_jev_s": 0.2630669999634847,
+    "latency_llm_s": 0.0,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 0.26599391701165587,
+    "model": "gpt-6.1-sol",
+    "n_jev_call_attempts": 1,
+    "n_jev_calls": 1,
+    "n_jev_questions": 15,
+    "n_model_call_attempts": 0,
+    "n_model_calls": 0,
+    "openai_input_tokens": 0,
+    "openai_output_tokens": 0,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": true
+  }
+}

@@ -1,0 +1,228 @@
+{
+  "case_id": "preferences_and_availability",
+  "decisions": [
+    {
+      "applied": false,
+      "changed": false,
+      "confidence": 0.27,
+      "context": {
+        "objective": "employee shift preferences",
+        "weight": 1
+      },
+      "expected_score": 2.17,
+      "final_value": 1,
+      "final_value_status": "represented",
+      "gpt_value": 1,
+      "item": "objective:preference_penalty",
+      "jev_value": 2,
+      "locator": {
+        "domain": "shift_schedule",
+        "field": "preference_penalty"
+      },
+      "model_confidence": 0.0,
+      "primitive": "score",
+      "probabilities": {
+        "0": 0.1,
+        "1": 0.27,
+        "2": 0.27,
+        "3": 0.09,
+        "4": 0.27
+      },
+      "question_name": "q000_pref_weight",
+      "question_type": "pref_weight",
+      "semantic_question_id": "pref_weight:{\"objective\":\"preference_penalty\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.98,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-06",
+          "end": "13:00",
+          "id": "s1",
+          "location": "clinic",
+          "required_staff": 1,
+          "start": "09:00"
+        },
+        "employee": "Blair",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "s1",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Blair:shift:s1",
+      "jev_value": true,
+      "locator": {
+        "employee": "Blair",
+        "shift": "s1"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.020000000000000018,
+        "yes": 0.98
+      },
+      "question_name": "q001_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Blair\",\"shift\":\"s1\"}#0",
+      "yes_probability": 0.98
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.96,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-06",
+          "end": "18:00",
+          "id": "s2",
+          "location": "clinic",
+          "required_staff": 1,
+          "start": "14:00"
+        },
+        "employee": "Blair",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "s1",
+            "start": null
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Blair:shift:s2",
+      "jev_value": false,
+      "locator": {
+        "employee": "Blair",
+        "shift": "s2"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.96,
+        "yes": 0.04
+      },
+      "question_name": "q002_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Blair\",\"shift\":\"s2\"}#0",
+      "yes_probability": 0.04
+    }
+  ],
+  "extraction_fingerprint": "536a2d65f406adf81f6f19dc0be2b644ce2bd62363db6733885be49affde61ec",
+  "extraction_problem_hash": "ce4371c4ba435a4cb5322f6972a3e39bce4ac1926e24dbafd9a9d3f79e35175e",
+  "fingerprint": "07b054afc23d3697dff0625b8b2cf146a3788e1e3ef4a1b23c6d0d848566b3f5",
+  "jev_apply_threshold": 0.7,
+  "jev_batch_size": 64,
+  "model": "gpt-6-luna",
+  "problem": {
+    "employees": [
+      {
+        "eligible_locations": [
+          "clinic"
+        ],
+        "max_hours": 8,
+        "name": "Alex",
+        "preferred_shifts": [
+          "s1"
+        ],
+        "unavailable": []
+      },
+      {
+        "eligible_locations": [
+          "clinic"
+        ],
+        "max_hours": 8,
+        "name": "Blair",
+        "preferred_shifts": [
+          "s2"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "s1",
+            "start": null
+          }
+        ]
+      }
+    ],
+    "objective_weights": {
+      "fairness": 1,
+      "preference_penalty": 1
+    },
+    "rules": [
+      {
+        "min_rest_hours": 0,
+        "type": "minimum_rest"
+      }
+    ],
+    "shifts": [
+      {
+        "day": "2026-10-06",
+        "end": "13:00",
+        "id": "s1",
+        "location": "clinic",
+        "required_staff": 1,
+        "start": "09:00"
+      },
+      {
+        "day": "2026-10-06",
+        "end": "18:00",
+        "id": "s2",
+        "location": "clinic",
+        "required_staff": 1,
+        "start": "14:00"
+      }
+    ]
+  },
+  "requested_jev_model": "jev-latest",
+  "resolved_jev_model": "jev-1.13.0",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "jev",
+  "telemetry": {
+    "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+    "case_id": "preferences_and_availability",
+    "error": null,
+    "estimated_cost": 0.0,
+    "jev_input_tokens": 820,
+    "latency_jev_s": 0.19758637493941933,
+    "latency_llm_s": 0.0,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 0.19828545802738518,
+    "model": "gpt-6-luna",
+    "n_jev_call_attempts": 1,
+    "n_jev_calls": 1,
+    "n_jev_questions": 3,
+    "n_model_call_attempts": 0,
+    "n_model_calls": 0,
+    "openai_input_tokens": 0,
+    "openai_output_tokens": 0,
+    "problem_type": "shift_schedule",
+    "resolved_openai_models": [],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": true
+  }
+}

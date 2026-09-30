@@ -1,0 +1,75 @@
+{
+  "case_id": "active_and_passive",
+  "fingerprint": "b8063fc21d3317e98520c1566feed95626dbd18a3229071c0d026e3cb1caa50a",
+  "missing_info": [],
+  "model": "gpt-6.1-sol",
+  "problem": {
+    "fixed_events": [
+      {
+        "end": "10:00",
+        "name": "Meeting",
+        "start": "09:00"
+      }
+    ],
+    "horizon": {
+      "end": "12:00",
+      "start": "09:00"
+    },
+    "precedences": [],
+    "preferences": [],
+    "tasks": [
+      {
+        "duration_min": 90,
+        "earliest_start": "09:00",
+        "latest_end": "10:30",
+        "mode": "passive",
+        "name": "Dishwasher",
+        "required": true
+      },
+      {
+        "duration_min": 30,
+        "earliest_start": "10:30",
+        "latest_end": null,
+        "mode": "active",
+        "name": "Phone call",
+        "required": true
+      }
+    ],
+    "work_window": null
+  },
+  "problem_hash": "7fc3054faa5deb3fdd42e79e8400e67466cccfc14af15f2113ec83bd2c42486e",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Sol 6.1 \u00b7 CP-SAT",
+    "case_id": "active_and_passive",
+    "error": null,
+    "estimated_cost": 0.006,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 7.80613279202953,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 7.8062062920071185,
+    "model": "gpt-6.1-sol",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 1505,
+    "openai_output_tokens": 299,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [
+      "gpt-6.1-sol"
+    ],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": false
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "case_id": "infeasible_staffing_is_extracted_not_repaired",
+  "fingerprint": "b22e538f10211aa0c1f29db14b20ea9ea58c50bcc69d26f811ce97303776a737",
+  "missing_info": [],
+  "model": "gpt-6-luna",
+  "problem": {
+    "employees": [
+      {
+        "eligible_locations": [
+          "front_desk"
+        ],
+        "max_hours": 4,
+        "name": "Alice",
+        "preferred_shifts": [],
+        "unavailable": []
+      },
+      {
+        "eligible_locations": [
+          "front_desk"
+        ],
+        "max_hours": 4,
+        "name": "Bob",
+        "preferred_shifts": [],
+        "unavailable": []
+      },
+      {
+        "eligible_locations": [
+          "back_room"
+        ],
+        "max_hours": 4,
+        "name": "Carla",
+        "preferred_shifts": [],
+        "unavailable": [
+          {
+            "day": "2026-10-05",
+            "end": "13:00",
+            "shift_id": null,
+            "start": "09:00"
+          }
+        ]
+      }
+    ],
+    "objective_weights": {
+      "fairness": 1,
+      "preference_penalty": 1
+    },
+    "rules": [],
+    "shifts": [
+      {
+        "day": "2026-10-05",
+        "end": "13:00",
+        "id": "front_morning",
+        "location": "front_desk",
+        "required_staff": 2,
+        "start": "09:00"
+      },
+      {
+        "day": "2026-10-05",
+        "end": "17:00",
+        "id": "front_afternoon",
+        "location": "front_desk",
+        "required_staff": 2,
+        "start": "13:00"
+      },
+      {
+        "day": "2026-10-05",
+        "end": "13:00",
+        "id": "back_morning",
+        "location": "back_room",
+        "required_staff": 1,
+        "start": "09:00"
+      },
+      {
+        "day": "2026-10-05",
+        "end": "17:00",
+        "id": "back_afternoon",
+        "location": "back_room",
+        "required_staff": 1,
+        "start": "13:00"
+      }
+    ]
+  },
+  "problem_hash": "c436b1942458649e0e12003e676af88738cd7642a251bfb3234eaeae0b12cd15",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Luna 6 \u00b7 CP-SAT",
+    "case_id": "infeasible_staffing_is_extracted_not_repaired",
+    "error": null,
+    "estimated_cost": 0.0003155,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 3.328997042030096,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 3.329064124962315,
+    "model": "gpt-6-luna",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 1325,
+    "openai_output_tokens": 366,
+    "problem_type": "shift_schedule",
+    "resolved_openai_models": [
+      "gpt-6-luna"
+    ],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": false
+  }
+}

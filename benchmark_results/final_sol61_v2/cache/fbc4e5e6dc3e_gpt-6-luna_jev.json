@@ -1,0 +1,125 @@
+{
+  "case_id": "optional_walk_if_time",
+  "decisions": [
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 90,
+        "mode": "active",
+        "required": true,
+        "task": "Complete report"
+      },
+      "expected_score": null,
+      "final_value": "required",
+      "final_value_status": "represented",
+      "gpt_value": "required",
+      "item": "task:Complete report",
+      "jev_value": "required",
+      "locator": {
+        "task": "Complete report"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "optional": 0.0,
+        "required": 1.0
+      },
+      "question_name": "q000_task_requirement",
+      "question_type": "task_requirement",
+      "semantic_question_id": "task_requirement:{\"task\":\"Complete report\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 90,
+        "mode": "active",
+        "required": true,
+        "task": "Complete report"
+      },
+      "expected_score": null,
+      "final_value": "active",
+      "final_value_status": "represented",
+      "gpt_value": "active",
+      "item": "task:Complete report",
+      "jev_value": "active",
+      "locator": {
+        "task": "Complete report"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "active": 1.0,
+        "passive": 0.0
+      },
+      "question_name": "q001_task_mode",
+      "question_type": "task_mode",
+      "semantic_question_id": "task_mode:{\"task\":\"Complete report\"}#0",
+      "yes_probability": null
+    }
+  ],
+  "extraction_fingerprint": "3e25dd001180c8cae726788f6e045e7a5e7466c28fc7f229f3220a31f796abb3",
+  "extraction_problem_hash": "ce8d2ebcdd84c4978e814de630d36ead9f9a771448f2940ea540226699fceb1c",
+  "fingerprint": "11685710c7ff66f8e506f7ca6f8447bf800d4783f62b4fb64d56d913425e94ee",
+  "jev_apply_threshold": 0.7,
+  "jev_batch_size": 64,
+  "model": "gpt-6-luna",
+  "problem": {
+    "fixed_events": [],
+    "horizon": {
+      "end": "17:00",
+      "start": "09:00"
+    },
+    "precedences": [],
+    "preferences": [],
+    "tasks": [
+      {
+        "duration_min": 90,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "active",
+        "name": "Complete report",
+        "required": true
+      }
+    ],
+    "work_window": null
+  },
+  "requested_jev_model": "jev-latest",
+  "resolved_jev_model": "jev-1.13.0",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "jev",
+  "telemetry": {
+    "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+    "case_id": "optional_walk_if_time",
+    "error": null,
+    "estimated_cost": 0.0,
+    "jev_input_tokens": 533,
+    "latency_jev_s": 0.19519274996127933,
+    "latency_llm_s": 0.0,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 0.19587041600607336,
+    "model": "gpt-6-luna",
+    "n_jev_call_attempts": 1,
+    "n_jev_calls": 1,
+    "n_jev_questions": 2,
+    "n_model_call_attempts": 0,
+    "n_model_calls": 0,
+    "openai_input_tokens": 0,
+    "openai_output_tokens": 0,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": true
+  }
+}

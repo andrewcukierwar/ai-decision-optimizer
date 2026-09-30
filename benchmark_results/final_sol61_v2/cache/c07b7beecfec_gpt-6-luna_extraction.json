@@ -1,0 +1,39 @@
+{
+  "case_id": "workout_before_four_soft",
+  "failure_category": "timeout",
+  "fingerprint": "a657f246204c51d9b8fd408753e86912373fff2020d3ca16c992c287e463b676",
+  "model": "gpt-6-luna",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Luna 6 \u00b7 CP-SAT",
+    "case_id": "workout_before_four_soft",
+    "error": "DayPlanAPIError: DayPlan parsing request failed: Request timed out.",
+    "estimated_cost": 0.0,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 240.00626716692932,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 240.0064170419937,
+    "model": "gpt-6-luna",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 0,
+    "openai_input_tokens": 0,
+    "openai_output_tokens": 0,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [],
+    "solution_engine": "cp_sat",
+    "success": false,
+    "use_jev": false
+  },
+  "terminal_error": "DayPlan parsing request failed: Request timed out."
+}

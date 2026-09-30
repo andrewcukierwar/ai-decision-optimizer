@@ -1,0 +1,90 @@
+{
+  "case_id": "laundry_precedence",
+  "fingerprint": "8c8e41e0625673fcf592a76be4930bdb5f59b80b12cb86d0000753896fbb3a79",
+  "missing_info": [],
+  "model": "gpt-6-luna",
+  "problem": {
+    "fixed_events": [],
+    "horizon": {
+      "end": "14:00",
+      "start": "08:00"
+    },
+    "precedences": [
+      {
+        "after": "Transfer",
+        "before": "Wash",
+        "max_gap_min": 10,
+        "min_gap_min": 0
+      },
+      {
+        "after": "Dry",
+        "before": "Transfer",
+        "max_gap_min": 0,
+        "min_gap_min": 0
+      }
+    ],
+    "preferences": [],
+    "tasks": [
+      {
+        "duration_min": 30,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "passive",
+        "name": "Wash",
+        "required": true
+      },
+      {
+        "duration_min": 5,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "active",
+        "name": "Transfer",
+        "required": true
+      },
+      {
+        "duration_min": 45,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "passive",
+        "name": "Dry",
+        "required": true
+      }
+    ],
+    "work_window": null
+  },
+  "problem_hash": "4148d79ab642b485e19f26181b3360f993658847ce4d2468632f80ddfeb35494",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Luna 6 \u00b7 CP-SAT",
+    "case_id": "laundry_precedence",
+    "error": null,
+    "estimated_cost": 0.00038260000000000003,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 4.78903674997855,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 4.789126583957113,
+    "model": "gpt-6-luna",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 1511,
+    "openai_output_tokens": 463,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [
+      "gpt-6-luna"
+    ],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": false
+  }
+}

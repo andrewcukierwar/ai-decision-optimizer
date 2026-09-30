@@ -1,0 +1,44 @@
+{
+  "case_id": "wfh_laundry_lift_groceries",
+  "fingerprint": "864e4a1d5d204c24bd98152664fa9cf33fe2f75723984349204baf33b4fc2ffb",
+  "missing_info": [
+    "The schema can represent a task\u2019s earliest start, but not require it to start exactly at 08:00. Can the laundry wash start be treated as an earliest start instead?"
+  ],
+  "model": "gpt-6-luna",
+  "problem": null,
+  "problem_hash": "c4f3fcb799fe53f3afbe3866159809e54e8ce34bb92e3035b593f652e7beb9ba",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Luna 6 \u00b7 CP-SAT",
+    "case_id": "wfh_laundry_lift_groceries",
+    "error": null,
+    "estimated_cost": 0.0006188,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 11.629841292044148,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 11.62989145796746,
+    "model": "gpt-6-luna",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 1603,
+    "openai_output_tokens": 917,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [
+      "gpt-6-luna"
+    ],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": false
+  }
+}

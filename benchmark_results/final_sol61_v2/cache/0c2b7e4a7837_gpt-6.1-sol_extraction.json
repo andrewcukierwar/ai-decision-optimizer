@@ -1,0 +1,76 @@
+{
+  "case_id": "hard_timing",
+  "fingerprint": "d8e998ee903eac93f09ef89ed4e17c4b724da45ca4d33c4ed79dd05c4a58f1a6",
+  "missing_info": [],
+  "model": "gpt-6.1-sol",
+  "problem": {
+    "fixed_events": [],
+    "horizon": {
+      "end": "18:00",
+      "start": "08:00"
+    },
+    "precedences": [
+      {
+        "after": "shower",
+        "before": "workout",
+        "max_gap_min": null,
+        "min_gap_min": 0
+      }
+    ],
+    "preferences": [],
+    "tasks": [
+      {
+        "duration_min": 45,
+        "earliest_start": "16:00",
+        "latest_end": "18:00",
+        "mode": "active",
+        "name": "workout",
+        "required": true
+      },
+      {
+        "duration_min": 20,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "active",
+        "name": "shower",
+        "required": true
+      }
+    ],
+    "work_window": null
+  },
+  "problem_hash": "56304a44c7ee81b8bb37d62d3d842140227f61201e6807455943f3b57c24b644",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Sol 6.1 \u00b7 CP-SAT",
+    "case_id": "hard_timing",
+    "error": null,
+    "estimated_cost": 0.008118,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 12.511904082959518,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 12.511990749975666,
+    "model": "gpt-6.1-sol",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 1504,
+    "openai_output_tokens": 511,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [
+      "gpt-6.1-sol"
+    ],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": false
+  }
+}

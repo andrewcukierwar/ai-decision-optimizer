@@ -1,0 +1,155 @@
+{
+  "case_id": "workout_before_four_hard",
+  "decisions": [
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "earliest_start": null,
+        "latest_end": "16:00",
+        "task": "Workout"
+      },
+      "expected_score": null,
+      "final_value": "hard",
+      "final_value_status": "represented",
+      "gpt_value": "hard",
+      "item": "task:Workout:hard_latest",
+      "jev_value": "hard",
+      "locator": {
+        "kind": "hard_latest",
+        "task": "Workout"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "hard": 1.0,
+        "soft": 0.0
+      },
+      "question_name": "q000_constraint_hardness",
+      "question_type": "constraint_hardness",
+      "semantic_question_id": "constraint_hardness:{\"end\":\"16:00\",\"start\":null,\"task\":\"Workout\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 60,
+        "mode": "active",
+        "required": true,
+        "task": "Workout"
+      },
+      "expected_score": null,
+      "final_value": "required",
+      "final_value_status": "represented",
+      "gpt_value": "required",
+      "item": "task:Workout",
+      "jev_value": "required",
+      "locator": {
+        "task": "Workout"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "optional": 0.0,
+        "required": 1.0
+      },
+      "question_name": "q001_task_requirement",
+      "question_type": "task_requirement",
+      "semantic_question_id": "task_requirement:{\"task\":\"Workout\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 60,
+        "mode": "active",
+        "required": true,
+        "task": "Workout"
+      },
+      "expected_score": null,
+      "final_value": "active",
+      "final_value_status": "represented",
+      "gpt_value": "active",
+      "item": "task:Workout",
+      "jev_value": "active",
+      "locator": {
+        "task": "Workout"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "active": 1.0,
+        "passive": 0.0
+      },
+      "question_name": "q002_task_mode",
+      "question_type": "task_mode",
+      "semantic_question_id": "task_mode:{\"task\":\"Workout\"}#0",
+      "yes_probability": null
+    }
+  ],
+  "extraction_fingerprint": "16762f31efd7db2c6a0fa6413fbce49ff757c130aebfbe55f35f4e4b0040e3bf",
+  "extraction_problem_hash": "ab524ecb0df76094d54e4f8de322f2310ca60c7573d7e32694666ff6b4087889",
+  "fingerprint": "145175419abdcb80d25c8ee488242946afe2e22cc38aeb389afe21aa9af653fc",
+  "jev_apply_threshold": 0.7,
+  "jev_batch_size": 64,
+  "model": "gpt-6-luna",
+  "problem": {
+    "fixed_events": [],
+    "horizon": {
+      "end": "18:00",
+      "start": "09:00"
+    },
+    "precedences": [],
+    "preferences": [],
+    "tasks": [
+      {
+        "duration_min": 60,
+        "earliest_start": null,
+        "latest_end": "16:00",
+        "mode": "active",
+        "name": "Workout",
+        "required": true
+      }
+    ],
+    "work_window": null
+  },
+  "requested_jev_model": "jev-latest",
+  "resolved_jev_model": "jev-1.13.0",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "jev",
+  "telemetry": {
+    "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+    "case_id": "workout_before_four_hard",
+    "error": null,
+    "estimated_cost": 0.0,
+    "jev_input_tokens": 644,
+    "latency_jev_s": 0.18086120893713087,
+    "latency_llm_s": 0.0,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 0.18130887497682124,
+    "model": "gpt-6-luna",
+    "n_jev_call_attempts": 1,
+    "n_jev_calls": 1,
+    "n_jev_questions": 3,
+    "n_model_call_attempts": 0,
+    "n_model_calls": 0,
+    "openai_input_tokens": 0,
+    "openai_output_tokens": 0,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": true
+  }
+}

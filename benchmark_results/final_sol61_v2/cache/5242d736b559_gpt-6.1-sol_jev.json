@@ -1,0 +1,274 @@
+{
+  "case_id": "laundry_precedence",
+  "decisions": [
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 30,
+        "mode": "passive",
+        "required": true,
+        "task": "wash"
+      },
+      "expected_score": null,
+      "final_value": "required",
+      "final_value_status": "represented",
+      "gpt_value": "required",
+      "item": "task:wash",
+      "jev_value": "required",
+      "locator": {
+        "task": "wash"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "optional": 0.0,
+        "required": 1.0
+      },
+      "question_name": "q000_task_requirement",
+      "question_type": "task_requirement",
+      "semantic_question_id": "task_requirement:{\"task\":\"wash\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 5,
+        "mode": "active",
+        "required": true,
+        "task": "transfer"
+      },
+      "expected_score": null,
+      "final_value": "required",
+      "final_value_status": "represented",
+      "gpt_value": "required",
+      "item": "task:transfer",
+      "jev_value": "required",
+      "locator": {
+        "task": "transfer"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "optional": 0.0,
+        "required": 1.0
+      },
+      "question_name": "q001_task_requirement",
+      "question_type": "task_requirement",
+      "semantic_question_id": "task_requirement:{\"task\":\"transfer\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 45,
+        "mode": "passive",
+        "required": true,
+        "task": "dry"
+      },
+      "expected_score": null,
+      "final_value": "required",
+      "final_value_status": "represented",
+      "gpt_value": "required",
+      "item": "task:dry",
+      "jev_value": "required",
+      "locator": {
+        "task": "dry"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "optional": 0.0,
+        "required": 1.0
+      },
+      "question_name": "q002_task_requirement",
+      "question_type": "task_requirement",
+      "semantic_question_id": "task_requirement:{\"task\":\"dry\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 30,
+        "mode": "passive",
+        "required": true,
+        "task": "wash"
+      },
+      "expected_score": null,
+      "final_value": "passive",
+      "final_value_status": "represented",
+      "gpt_value": "passive",
+      "item": "task:wash",
+      "jev_value": "passive",
+      "locator": {
+        "task": "wash"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "active": 0.0,
+        "passive": 1.0
+      },
+      "question_name": "q003_task_mode",
+      "question_type": "task_mode",
+      "semantic_question_id": "task_mode:{\"task\":\"wash\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 5,
+        "mode": "active",
+        "required": true,
+        "task": "transfer"
+      },
+      "expected_score": null,
+      "final_value": "active",
+      "final_value_status": "represented",
+      "gpt_value": "active",
+      "item": "task:transfer",
+      "jev_value": "active",
+      "locator": {
+        "task": "transfer"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "active": 1.0,
+        "passive": 0.0
+      },
+      "question_name": "q004_task_mode",
+      "question_type": "task_mode",
+      "semantic_question_id": "task_mode:{\"task\":\"transfer\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 45,
+        "mode": "passive",
+        "required": true,
+        "task": "dry"
+      },
+      "expected_score": null,
+      "final_value": "passive",
+      "final_value_status": "represented",
+      "gpt_value": "passive",
+      "item": "task:dry",
+      "jev_value": "passive",
+      "locator": {
+        "task": "dry"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "active": 0.0,
+        "passive": 1.0
+      },
+      "question_name": "q005_task_mode",
+      "question_type": "task_mode",
+      "semantic_question_id": "task_mode:{\"task\":\"dry\"}#0",
+      "yes_probability": null
+    }
+  ],
+  "extraction_fingerprint": "ee871a2a64bd3f375d3ce5fa253f28c2a0bc0f710ce4605f93ff4c459f1ffe2f",
+  "extraction_problem_hash": "13eebe6c20ac0107f164da086fccef529205f53a447822f85f13e3a0f997b941",
+  "fingerprint": "560d460a7213774764f6a02738de7673d992320d2a6f2247a845fdd286b9e7fc",
+  "jev_apply_threshold": 0.7,
+  "jev_batch_size": 64,
+  "model": "gpt-6.1-sol",
+  "problem": {
+    "fixed_events": [],
+    "horizon": {
+      "end": "14:00",
+      "start": "08:00"
+    },
+    "precedences": [
+      {
+        "after": "transfer",
+        "before": "wash",
+        "max_gap_min": 10,
+        "min_gap_min": 0
+      },
+      {
+        "after": "dry",
+        "before": "transfer",
+        "max_gap_min": 0,
+        "min_gap_min": 0
+      }
+    ],
+    "preferences": [],
+    "tasks": [
+      {
+        "duration_min": 30,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "passive",
+        "name": "wash",
+        "required": true
+      },
+      {
+        "duration_min": 5,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "active",
+        "name": "transfer",
+        "required": true
+      },
+      {
+        "duration_min": 45,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "passive",
+        "name": "dry",
+        "required": true
+      }
+    ],
+    "work_window": null
+  },
+  "requested_jev_model": "jev-latest",
+  "resolved_jev_model": "jev-1.13.0",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "jev",
+  "telemetry": {
+    "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+    "case_id": "laundry_precedence",
+    "error": null,
+    "estimated_cost": 0.0,
+    "jev_input_tokens": 963,
+    "latency_jev_s": 0.21164662495721132,
+    "latency_llm_s": 0.0,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 0.21347466600127518,
+    "model": "gpt-6.1-sol",
+    "n_jev_call_attempts": 1,
+    "n_jev_calls": 1,
+    "n_jev_questions": 6,
+    "n_model_call_attempts": 0,
+    "n_model_calls": 0,
+    "openai_input_tokens": 0,
+    "openai_output_tokens": 0,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": true
+  }
+}

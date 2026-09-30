@@ -1,0 +1,102 @@
+{
+  "case_id": "preferences_and_availability",
+  "fingerprint": "6133b91b61b999d9387c87481b292f3247513b0f92d789517e415aec5f3bee36",
+  "missing_info": [],
+  "model": "gpt-6.1-sol",
+  "problem": {
+    "employees": [
+      {
+        "eligible_locations": [
+          "clinic"
+        ],
+        "max_hours": 8,
+        "name": "Alex",
+        "preferred_shifts": [
+          "s1"
+        ],
+        "unavailable": []
+      },
+      {
+        "eligible_locations": [
+          "clinic"
+        ],
+        "max_hours": 8,
+        "name": "Blair",
+        "preferred_shifts": [
+          "s2"
+        ],
+        "unavailable": [
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "s1",
+            "start": null
+          }
+        ]
+      }
+    ],
+    "objective_weights": {
+      "fairness": 1,
+      "preference_penalty": 1
+    },
+    "rules": [
+      {
+        "min_rest_hours": 0,
+        "type": "minimum_rest"
+      }
+    ],
+    "shifts": [
+      {
+        "day": "2026-10-06",
+        "end": "13:00",
+        "id": "s1",
+        "location": "clinic",
+        "required_staff": 1,
+        "start": "09:00"
+      },
+      {
+        "day": "2026-10-06",
+        "end": "18:00",
+        "id": "s2",
+        "location": "clinic",
+        "required_staff": 1,
+        "start": "14:00"
+      }
+    ]
+  },
+  "problem_hash": "ce4371c4ba435a4cb5322f6972a3e39bce4ac1926e24dbafd9a9d3f79e35175e",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Sol 6.1 \u00b7 CP-SAT",
+    "case_id": "preferences_and_availability",
+    "error": null,
+    "estimated_cost": 0.004786,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 6.468209250015207,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 6.468300541979261,
+    "model": "gpt-6.1-sol",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 1273,
+    "openai_output_tokens": 224,
+    "problem_type": "shift_schedule",
+    "resolved_openai_models": [
+      "gpt-6.1-sol"
+    ],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": false
+  }
+}

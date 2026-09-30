@@ -1,0 +1,75 @@
+{
+  "case_id": "active_and_passive",
+  "fingerprint": "2c25c2199c6d5f6b4928e0b450375e91d1119388992cf08a3996da31e44e8e6a",
+  "missing_info": [],
+  "model": "gpt-6-luna",
+  "problem": {
+    "fixed_events": [
+      {
+        "end": "10:00",
+        "name": "Meeting",
+        "start": "09:00"
+      }
+    ],
+    "horizon": {
+      "end": "12:00",
+      "start": "09:00"
+    },
+    "precedences": [],
+    "preferences": [],
+    "tasks": [
+      {
+        "duration_min": 90,
+        "earliest_start": "09:00",
+        "latest_end": "10:30",
+        "mode": "passive",
+        "name": "Dishwasher run",
+        "required": true
+      },
+      {
+        "duration_min": 30,
+        "earliest_start": "10:30",
+        "latest_end": null,
+        "mode": "active",
+        "name": "Phone call",
+        "required": true
+      }
+    ],
+    "work_window": null
+  },
+  "problem_hash": "71d3e9e890c73b6d7a843f38f7375355edab301087e3255584caac230bc8e885",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Luna 6 \u00b7 CP-SAT",
+    "case_id": "active_and_passive",
+    "error": null,
+    "estimated_cost": 0.000497,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 8.05336979101412,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 8.053511291043833,
+    "model": "gpt-6-luna",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 1505,
+    "openai_output_tokens": 693,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [
+      "gpt-6-luna"
+    ],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": false
+  }
+}

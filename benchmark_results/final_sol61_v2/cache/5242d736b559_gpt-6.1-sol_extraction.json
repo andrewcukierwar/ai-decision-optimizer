@@ -1,0 +1,90 @@
+{
+  "case_id": "laundry_precedence",
+  "fingerprint": "ee871a2a64bd3f375d3ce5fa253f28c2a0bc0f710ce4605f93ff4c459f1ffe2f",
+  "missing_info": [],
+  "model": "gpt-6.1-sol",
+  "problem": {
+    "fixed_events": [],
+    "horizon": {
+      "end": "14:00",
+      "start": "08:00"
+    },
+    "precedences": [
+      {
+        "after": "transfer",
+        "before": "wash",
+        "max_gap_min": 10,
+        "min_gap_min": 0
+      },
+      {
+        "after": "dry",
+        "before": "transfer",
+        "max_gap_min": 0,
+        "min_gap_min": 0
+      }
+    ],
+    "preferences": [],
+    "tasks": [
+      {
+        "duration_min": 30,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "passive",
+        "name": "wash",
+        "required": true
+      },
+      {
+        "duration_min": 5,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "active",
+        "name": "transfer",
+        "required": true
+      },
+      {
+        "duration_min": 45,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "passive",
+        "name": "dry",
+        "required": true
+      }
+    ],
+    "work_window": null
+  },
+  "problem_hash": "13eebe6c20ac0107f164da086fccef529205f53a447822f85f13e3a0f997b941",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Sol 6.1 \u00b7 CP-SAT",
+    "case_id": "laundry_precedence",
+    "error": null,
+    "estimated_cost": 0.005562,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 9.668148332973942,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 9.668299000011757,
+    "model": "gpt-6.1-sol",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 1511,
+    "openai_output_tokens": 254,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [
+      "gpt-6.1-sol"
+    ],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": false
+  }
+}

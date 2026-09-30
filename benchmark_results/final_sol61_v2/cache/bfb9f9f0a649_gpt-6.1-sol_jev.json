@@ -1,0 +1,229 @@
+{
+  "case_id": "active_and_passive",
+  "decisions": [
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.99,
+      "context": {
+        "earliest_start": "09:00",
+        "latest_end": "10:30",
+        "task": "Dishwasher"
+      },
+      "expected_score": null,
+      "final_value": "hard",
+      "final_value_status": "represented",
+      "gpt_value": "hard",
+      "item": "task:Dishwasher:hard_window",
+      "jev_value": "hard",
+      "locator": {
+        "kind": "hard_window",
+        "task": "Dishwasher"
+      },
+      "model_confidence": 0.99,
+      "primitive": "choice",
+      "probabilities": {
+        "hard": 0.99,
+        "soft": 0.01
+      },
+      "question_name": "q000_constraint_hardness",
+      "question_type": "constraint_hardness",
+      "semantic_question_id": "constraint_hardness:{\"end\":\"10:30\",\"start\":\"09:00\",\"task\":\"Dishwasher\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.99,
+      "context": {
+        "duration_min": 90,
+        "mode": "passive",
+        "required": true,
+        "task": "Dishwasher"
+      },
+      "expected_score": null,
+      "final_value": "required",
+      "final_value_status": "represented",
+      "gpt_value": "required",
+      "item": "task:Dishwasher",
+      "jev_value": "required",
+      "locator": {
+        "task": "Dishwasher"
+      },
+      "model_confidence": 0.99,
+      "primitive": "choice",
+      "probabilities": {
+        "optional": 0.01,
+        "required": 0.99
+      },
+      "question_name": "q001_task_requirement",
+      "question_type": "task_requirement",
+      "semantic_question_id": "task_requirement:{\"task\":\"Dishwasher\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 30,
+        "mode": "active",
+        "required": true,
+        "task": "Phone call"
+      },
+      "expected_score": null,
+      "final_value": "required",
+      "final_value_status": "represented",
+      "gpt_value": "required",
+      "item": "task:Phone call",
+      "jev_value": "required",
+      "locator": {
+        "task": "Phone call"
+      },
+      "model_confidence": 0.99,
+      "primitive": "choice",
+      "probabilities": {
+        "optional": 0.0,
+        "required": 1.0
+      },
+      "question_name": "q002_task_requirement",
+      "question_type": "task_requirement",
+      "semantic_question_id": "task_requirement:{\"task\":\"Phone call\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 90,
+        "mode": "passive",
+        "required": true,
+        "task": "Dishwasher"
+      },
+      "expected_score": null,
+      "final_value": "passive",
+      "final_value_status": "represented",
+      "gpt_value": "passive",
+      "item": "task:Dishwasher",
+      "jev_value": "passive",
+      "locator": {
+        "task": "Dishwasher"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "active": 0.0,
+        "passive": 1.0
+      },
+      "question_name": "q003_task_mode",
+      "question_type": "task_mode",
+      "semantic_question_id": "task_mode:{\"task\":\"Dishwasher\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 30,
+        "mode": "active",
+        "required": true,
+        "task": "Phone call"
+      },
+      "expected_score": null,
+      "final_value": "active",
+      "final_value_status": "represented",
+      "gpt_value": "active",
+      "item": "task:Phone call",
+      "jev_value": "active",
+      "locator": {
+        "task": "Phone call"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "active": 1.0,
+        "passive": 0.0
+      },
+      "question_name": "q004_task_mode",
+      "question_type": "task_mode",
+      "semantic_question_id": "task_mode:{\"task\":\"Phone call\"}#0",
+      "yes_probability": null
+    }
+  ],
+  "extraction_fingerprint": "b8063fc21d3317e98520c1566feed95626dbd18a3229071c0d026e3cb1caa50a",
+  "extraction_problem_hash": "7fc3054faa5deb3fdd42e79e8400e67466cccfc14af15f2113ec83bd2c42486e",
+  "fingerprint": "936cf62ac0a1c0e9e01f890360071c31b73acde73a9e7dce6e435a956063778d",
+  "jev_apply_threshold": 0.7,
+  "jev_batch_size": 64,
+  "model": "gpt-6.1-sol",
+  "problem": {
+    "fixed_events": [
+      {
+        "end": "10:00",
+        "name": "Meeting",
+        "start": "09:00"
+      }
+    ],
+    "horizon": {
+      "end": "12:00",
+      "start": "09:00"
+    },
+    "precedences": [],
+    "preferences": [],
+    "tasks": [
+      {
+        "duration_min": 90,
+        "earliest_start": "09:00",
+        "latest_end": "10:30",
+        "mode": "passive",
+        "name": "Dishwasher",
+        "required": true
+      },
+      {
+        "duration_min": 30,
+        "earliest_start": "10:30",
+        "latest_end": null,
+        "mode": "active",
+        "name": "Phone call",
+        "required": true
+      }
+    ],
+    "work_window": null
+  },
+  "requested_jev_model": "jev-latest",
+  "resolved_jev_model": "jev-1.13.0",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "jev",
+  "telemetry": {
+    "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+    "case_id": "active_and_passive",
+    "error": null,
+    "estimated_cost": 0.0,
+    "jev_input_tokens": 899,
+    "latency_jev_s": 0.26589887496083975,
+    "latency_llm_s": 0.0,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 0.2668712920276448,
+    "model": "gpt-6.1-sol",
+    "n_jev_call_attempts": 1,
+    "n_jev_calls": 1,
+    "n_jev_questions": 5,
+    "n_model_call_attempts": 0,
+    "n_model_calls": 0,
+    "openai_input_tokens": 0,
+    "openai_output_tokens": 0,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": true
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "case_id": "soft_finish_preference",
+  "decisions": [
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.99,
+      "context": {
+        "timing": {
+          "end": null,
+          "start": null,
+          "task": "report",
+          "time": "15:00",
+          "type": "finish_before",
+          "weight": 1
+        }
+      },
+      "expected_score": null,
+      "final_value": "soft",
+      "final_value_status": "represented",
+      "gpt_value": "soft",
+      "item": "preference:0:report",
+      "jev_value": "soft",
+      "locator": {
+        "kind": "soft_preference",
+        "signature": {
+          "end": null,
+          "start": null,
+          "task": "report",
+          "time": "15:00",
+          "type": "finish_before",
+          "weight": 1
+        }
+      },
+      "model_confidence": 0.98,
+      "primitive": "choice",
+      "probabilities": {
+        "hard": 0.01,
+        "soft": 0.99
+      },
+      "question_name": "q000_constraint_hardness",
+      "question_type": "constraint_hardness",
+      "semantic_question_id": "constraint_hardness:{\"end\":\"15:00\",\"start\":null,\"task\":\"report\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 60,
+        "mode": "active",
+        "required": true,
+        "task": "report"
+      },
+      "expected_score": null,
+      "final_value": "required",
+      "final_value_status": "represented",
+      "gpt_value": "required",
+      "item": "task:report",
+      "jev_value": "required",
+      "locator": {
+        "task": "report"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "optional": 0.0,
+        "required": 1.0
+      },
+      "question_name": "q001_task_requirement",
+      "question_type": "task_requirement",
+      "semantic_question_id": "task_requirement:{\"task\":\"report\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 1.0,
+      "context": {
+        "duration_min": 60,
+        "mode": "active",
+        "required": true,
+        "task": "report"
+      },
+      "expected_score": null,
+      "final_value": "active",
+      "final_value_status": "represented",
+      "gpt_value": "active",
+      "item": "task:report",
+      "jev_value": "active",
+      "locator": {
+        "task": "report"
+      },
+      "model_confidence": 1.0,
+      "primitive": "choice",
+      "probabilities": {
+        "active": 1.0,
+        "passive": 0.0
+      },
+      "question_name": "q002_task_mode",
+      "question_type": "task_mode",
+      "semantic_question_id": "task_mode:{\"task\":\"report\"}#0",
+      "yes_probability": null
+    },
+    {
+      "applied": false,
+      "changed": false,
+      "confidence": 0.46,
+      "context": {
+        "preference": {
+          "end": null,
+          "start": null,
+          "task": "report",
+          "time": "15:00",
+          "type": "finish_before",
+          "weight": 1
+        }
+      },
+      "expected_score": 1.17,
+      "final_value": 1,
+      "final_value_status": "represented",
+      "gpt_value": 1,
+      "item": "preference:0:finish_before",
+      "jev_value": 2,
+      "locator": {
+        "domain": "dayplan",
+        "signature": {
+          "end": null,
+          "start": null,
+          "task": "report",
+          "time": "15:00",
+          "type": "finish_before",
+          "weight": 1
+        }
+      },
+      "model_confidence": 0.45,
+      "primitive": "score",
+      "probabilities": {
+        "0": 0.24,
+        "1": 0.46,
+        "2": 0.24,
+        "3": 0.02,
+        "4": 0.04
+      },
+      "question_name": "q003_pref_weight",
+      "question_type": "pref_weight",
+      "semantic_question_id": "pref_weight:{\"end\":null,\"start\":null,\"task\":\"report\",\"time\":\"15:00\",\"type\":\"finish_before\"}#0",
+      "yes_probability": null
+    }
+  ],
+  "extraction_fingerprint": "c26dbc54969ec3293b514f9e8990154e6266d9618c078be5d2a4e44f93c3d871",
+  "extraction_problem_hash": "887f249afa20a2c0030ad1beedf69281ae9d05294debe7a9999d7ea31067e7a9",
+  "fingerprint": "41e02a7664b8db6994528e58e961dea313f8996b21675acd56daf1fb85f0a0a5",
+  "jev_apply_threshold": 0.7,
+  "jev_batch_size": 64,
+  "model": "gpt-6-luna",
+  "problem": {
+    "fixed_events": [],
+    "horizon": {
+      "end": "17:00",
+      "start": "09:00"
+    },
+    "precedences": [],
+    "preferences": [
+      {
+        "end": null,
+        "start": null,
+        "task": "report",
+        "time": "15:00",
+        "type": "finish_before",
+        "weight": 1
+      }
+    ],
+    "tasks": [
+      {
+        "duration_min": 60,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "active",
+        "name": "report",
+        "required": true
+      }
+    ],
+    "work_window": null
+  },
+  "requested_jev_model": "jev-latest",
+  "resolved_jev_model": "jev-1.13.0",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "jev",
+  "telemetry": {
+    "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+    "case_id": "soft_finish_preference",
+    "error": null,
+    "estimated_cost": 0.0,
+    "jev_input_tokens": 814,
+    "latency_jev_s": 0.2047474579885602,
+    "latency_llm_s": 0.0,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 0.20564016699790955,
+    "model": "gpt-6-luna",
+    "n_jev_call_attempts": 1,
+    "n_jev_calls": 1,
+    "n_jev_questions": 4,
+    "n_model_call_attempts": 0,
+    "n_model_calls": 0,
+    "openai_input_tokens": 0,
+    "openai_output_tokens": 0,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": true
+  }
+}

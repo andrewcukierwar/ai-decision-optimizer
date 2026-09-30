@@ -1,0 +1,142 @@
+{
+  "case_id": "wfh_laundry_lift_groceries",
+  "fingerprint": "b6317b098066e5dd2eff057f3b08d49e3fb29278775a92a0653e7eac59081789",
+  "missing_info": [],
+  "model": "gpt-6.1-sol",
+  "problem": {
+    "fixed_events": [
+      {
+        "end": "10:30",
+        "name": "standup",
+        "start": "10:00"
+      },
+      {
+        "end": "13:30",
+        "name": "planning",
+        "start": "13:00"
+      },
+      {
+        "end": "16:00",
+        "name": "client call",
+        "start": "15:30"
+      }
+    ],
+    "horizon": {
+      "end": "21:00",
+      "start": "08:00"
+    },
+    "precedences": [
+      {
+        "after": "transfer clothes",
+        "before": "wash clothes",
+        "max_gap_min": 15,
+        "min_gap_min": 0
+      },
+      {
+        "after": "dry clothes",
+        "before": "transfer clothes",
+        "max_gap_min": 0,
+        "min_gap_min": 0
+      }
+    ],
+    "preferences": [
+      {
+        "end": null,
+        "start": null,
+        "task": "lifting",
+        "time": "16:00",
+        "type": "finish_before",
+        "weight": 5
+      },
+      {
+        "end": null,
+        "start": null,
+        "task": null,
+        "time": null,
+        "type": "minimize_work_interruptions",
+        "weight": 3
+      }
+    ],
+    "tasks": [
+      {
+        "duration_min": 30,
+        "earliest_start": "08:00",
+        "latest_end": "08:30",
+        "mode": "passive",
+        "name": "wash clothes",
+        "required": true
+      },
+      {
+        "duration_min": 5,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "active",
+        "name": "transfer clothes",
+        "required": true
+      },
+      {
+        "duration_min": 45,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "passive",
+        "name": "dry clothes",
+        "required": true
+      },
+      {
+        "duration_min": 60,
+        "earliest_start": null,
+        "latest_end": null,
+        "mode": "active",
+        "name": "lifting",
+        "required": true
+      },
+      {
+        "duration_min": 45,
+        "earliest_start": null,
+        "latest_end": "20:30",
+        "mode": "active",
+        "name": "groceries",
+        "required": true
+      }
+    ],
+    "work_window": {
+      "end": "17:00",
+      "start": "09:00"
+    }
+  },
+  "problem_hash": "fd346f1df81fd6ac3b880b5cbedd7fefa358069f54acaa7c100b72f1b5769c61",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Sol 6.1 \u00b7 CP-SAT",
+    "case_id": "wfh_laundry_lift_groceries",
+    "error": null,
+    "estimated_cost": 0.008876,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 11.217912166961469,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 11.21799741697032,
+    "model": "gpt-6.1-sol",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 1603,
+    "openai_output_tokens": 567,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [
+      "gpt-6.1-sol"
+    ],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": false
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "case_id": "optional_walk_if_time",
+  "fingerprint": "0addd283ebe8d25ae6cad4bffd3121e4abbff13b46c7883585d5c888c29e0a15",
+  "missing_info": [
+    "The schema cannot represent optional tasks. Should I omit the walk or include it as a required 30-minute active task?"
+  ],
+  "model": "gpt-6.1-sol",
+  "problem": null,
+  "problem_hash": "c4f3fcb799fe53f3afbe3866159809e54e8ce34bb92e3035b593f652e7beb9ba",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Sol 6.1 \u00b7 CP-SAT",
+    "case_id": "optional_walk_if_time",
+    "error": null,
+    "estimated_cost": 0.00453,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 6.81397891708184,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 6.814065541955642,
+    "model": "gpt-6.1-sol",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 1490,
+    "openai_output_tokens": 155,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [
+      "gpt-6.1-sol"
+    ],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": false
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "case_id": "impossible_hard_workout_window",
+  "fingerprint": "89eca5d58217df5ef33c8088c722f497c20c679bab4c4d3ded5140a80fb5a135",
+  "missing_info": [],
+  "model": "gpt-6.1-sol",
+  "problem": {
+    "fixed_events": [],
+    "horizon": {
+      "end": "16:00",
+      "start": "15:30"
+    },
+    "precedences": [],
+    "preferences": [],
+    "tasks": [
+      {
+        "duration_min": 60,
+        "earliest_start": null,
+        "latest_end": "16:00",
+        "mode": "active",
+        "name": "Workout",
+        "required": true
+      }
+    ],
+    "work_window": null
+  },
+  "problem_hash": "39f1529f37f9d5ab1fe255b3ca1bef71757a5215ca9d56c635d6bc4e7b5ac7a1",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Sol 6.1 \u00b7 CP-SAT",
+    "case_id": "impossible_hard_workout_window",
+    "error": null,
+    "estimated_cost": 0.004538,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 4.98389179201331,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 4.983952208072878,
+    "model": "gpt-6.1-sol",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 1484,
+    "openai_output_tokens": 157,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [
+      "gpt-6.1-sol"
+    ],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": false
+  }
+}

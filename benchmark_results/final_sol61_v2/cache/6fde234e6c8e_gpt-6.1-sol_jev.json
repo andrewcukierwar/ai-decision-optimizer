@@ -1,0 +1,308 @@
+{
+  "case_id": "infeasible_staffing_is_extracted_not_repaired",
+  "decisions": [
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.98,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-05",
+          "end": "13:00",
+          "id": "back_morning",
+          "location": "back_room",
+          "required_staff": 1,
+          "start": "09:00"
+        },
+        "employee": "Carla",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": "2026-10-05",
+            "end": "13:00",
+            "shift_id": null,
+            "start": "09:00"
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Carla:shift:back_morning",
+      "jev_value": true,
+      "locator": {
+        "employee": "Carla",
+        "shift": "back_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.020000000000000018,
+        "yes": 0.98
+      },
+      "question_name": "q000_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Carla\",\"shift\":\"back_morning\"}#0",
+      "yes_probability": 0.98
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.93,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-05",
+          "end": "13:00",
+          "id": "front_morning",
+          "location": "front_desk",
+          "required_staff": 2,
+          "start": "09:00"
+        },
+        "employee": "Carla",
+        "selection_role": "covered_by_extracted_unavailability",
+        "unavailable": [
+          {
+            "day": "2026-10-05",
+            "end": "13:00",
+            "shift_id": null,
+            "start": "09:00"
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": true,
+      "item": "employee:Carla:shift:front_morning",
+      "jev_value": true,
+      "locator": {
+        "employee": "Carla",
+        "shift": "front_morning"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.06999999999999995,
+        "yes": 0.93
+      },
+      "question_name": "q001_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Carla\",\"shift\":\"front_morning\"}#0",
+      "yes_probability": 0.93
+    },
+    {
+      "applied": true,
+      "changed": false,
+      "confidence": 0.9299999999999999,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-05",
+          "end": "17:00",
+          "id": "back_afternoon",
+          "location": "back_room",
+          "required_staff": 1,
+          "start": "13:00"
+        },
+        "employee": "Carla",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": "2026-10-05",
+            "end": "13:00",
+            "shift_id": null,
+            "start": "09:00"
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": false,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Carla:shift:back_afternoon",
+      "jev_value": false,
+      "locator": {
+        "employee": "Carla",
+        "shift": "back_afternoon"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.9299999999999999,
+        "yes": 0.07
+      },
+      "question_name": "q002_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Carla\",\"shift\":\"back_afternoon\"}#0",
+      "yes_probability": 0.07
+    },
+    {
+      "applied": true,
+      "changed": true,
+      "confidence": 0.79,
+      "context": {
+        "candidate_shift": {
+          "day": "2026-10-05",
+          "end": "17:00",
+          "id": "front_afternoon",
+          "location": "front_desk",
+          "required_staff": 2,
+          "start": "13:00"
+        },
+        "employee": "Carla",
+        "selection_role": "negative_control",
+        "unavailable": [
+          {
+            "day": "2026-10-05",
+            "end": "13:00",
+            "shift_id": null,
+            "start": "09:00"
+          }
+        ]
+      },
+      "expected_score": null,
+      "final_value": true,
+      "final_value_status": "represented",
+      "gpt_value": false,
+      "item": "employee:Carla:shift:front_afternoon",
+      "jev_value": true,
+      "locator": {
+        "employee": "Carla",
+        "shift": "front_afternoon"
+      },
+      "model_confidence": null,
+      "primitive": "noul",
+      "probabilities": {
+        "no": 0.20999999999999996,
+        "yes": 0.79
+      },
+      "question_name": "q003_availability_applies",
+      "question_type": "availability_applies",
+      "semantic_question_id": "availability_applies:{\"employee\":\"Carla\",\"shift\":\"front_afternoon\"}#0",
+      "yes_probability": 0.79
+    }
+  ],
+  "extraction_fingerprint": "f40e251d1974404c1d80944546a8a039c96ecc69dd07ed38feb5f652123d89ea",
+  "extraction_problem_hash": "c436b1942458649e0e12003e676af88738cd7642a251bfb3234eaeae0b12cd15",
+  "fingerprint": "aa8f5e2415ea77dfe9034b0737767e4cec9cfad48fe580128249da41c9242495",
+  "jev_apply_threshold": 0.7,
+  "jev_batch_size": 64,
+  "model": "gpt-6.1-sol",
+  "problem": {
+    "employees": [
+      {
+        "eligible_locations": [
+          "front_desk"
+        ],
+        "max_hours": 4,
+        "name": "Alice",
+        "preferred_shifts": [],
+        "unavailable": []
+      },
+      {
+        "eligible_locations": [
+          "front_desk"
+        ],
+        "max_hours": 4,
+        "name": "Bob",
+        "preferred_shifts": [],
+        "unavailable": []
+      },
+      {
+        "eligible_locations": [
+          "back_room"
+        ],
+        "max_hours": 4,
+        "name": "Carla",
+        "preferred_shifts": [],
+        "unavailable": [
+          {
+            "day": "2026-10-05",
+            "end": "13:00",
+            "shift_id": null,
+            "start": "09:00"
+          },
+          {
+            "day": null,
+            "end": null,
+            "shift_id": "front_afternoon",
+            "start": null
+          }
+        ]
+      }
+    ],
+    "objective_weights": {
+      "fairness": 1,
+      "preference_penalty": 1
+    },
+    "rules": [],
+    "shifts": [
+      {
+        "day": "2026-10-05",
+        "end": "13:00",
+        "id": "front_morning",
+        "location": "front_desk",
+        "required_staff": 2,
+        "start": "09:00"
+      },
+      {
+        "day": "2026-10-05",
+        "end": "17:00",
+        "id": "front_afternoon",
+        "location": "front_desk",
+        "required_staff": 2,
+        "start": "13:00"
+      },
+      {
+        "day": "2026-10-05",
+        "end": "13:00",
+        "id": "back_morning",
+        "location": "back_room",
+        "required_staff": 1,
+        "start": "09:00"
+      },
+      {
+        "day": "2026-10-05",
+        "end": "17:00",
+        "id": "back_afternoon",
+        "location": "back_room",
+        "required_staff": 1,
+        "start": "13:00"
+      }
+    ]
+  },
+  "requested_jev_model": "jev-latest",
+  "resolved_jev_model": "jev-1.13.0",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "jev",
+  "telemetry": {
+    "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+    "case_id": "infeasible_staffing_is_extracted_not_repaired",
+    "error": null,
+    "estimated_cost": 0.0,
+    "jev_input_tokens": 1098,
+    "latency_jev_s": 0.210240334039554,
+    "latency_llm_s": 0.0,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 0.21134174999315292,
+    "model": "gpt-6.1-sol",
+    "n_jev_call_attempts": 1,
+    "n_jev_calls": 1,
+    "n_jev_questions": 4,
+    "n_model_call_attempts": 0,
+    "n_model_calls": 0,
+    "openai_input_tokens": 0,
+    "openai_output_tokens": 0,
+    "problem_type": "shift_schedule",
+    "resolved_openai_models": [],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": true
+  }
+}

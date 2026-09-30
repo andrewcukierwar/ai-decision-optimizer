@@ -1,0 +1,41 @@
+{
+  "case_id": "impossible_hard_workout_window",
+  "failure_category": "invalid_model_output",
+  "fingerprint": "bff06677f18f05ec2e03b0d393466dc0bf3ffffc2b8152bd418068967881ab88",
+  "model": "gpt-6-luna",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Luna 6 \u00b7 CP-SAT",
+    "case_id": "impossible_hard_workout_window",
+    "error": "DayPlanOutputError: OpenAI returned structured data that failed DayPlanExtraction validation: plan: Value error, task names must be unique",
+    "estimated_cost": 0.00038439999999999997,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 4.939656000002287,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 4.943230999982916,
+    "model": "gpt-6-luna",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 1484,
+    "openai_output_tokens": 472,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [
+      "gpt-6-luna"
+    ],
+    "solution_engine": "cp_sat",
+    "success": false,
+    "use_jev": false
+  },
+  "terminal_error": "OpenAI returned structured data that failed DayPlanExtraction validation: plan: Value error, task names must be unique"
+}

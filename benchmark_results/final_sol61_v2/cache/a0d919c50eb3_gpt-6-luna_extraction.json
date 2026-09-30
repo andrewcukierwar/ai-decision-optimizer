@@ -1,0 +1,61 @@
+{
+  "case_id": "workout_before_four_hard",
+  "fingerprint": "16762f31efd7db2c6a0fa6413fbce49ff757c130aebfbe55f35f4e4b0040e3bf",
+  "missing_info": [],
+  "model": "gpt-6-luna",
+  "problem": {
+    "fixed_events": [],
+    "horizon": {
+      "end": "18:00",
+      "start": "09:00"
+    },
+    "precedences": [],
+    "preferences": [],
+    "tasks": [
+      {
+        "duration_min": 60,
+        "earliest_start": null,
+        "latest_end": "16:00",
+        "mode": "active",
+        "name": "Workout",
+        "required": true
+      }
+    ],
+    "work_window": null
+  },
+  "problem_hash": "ab524ecb0df76094d54e4f8de322f2310ca60c7573d7e32694666ff6b4087889",
+  "runtime_configuration": {
+    "api_retries": 0,
+    "request_timeout_seconds": 240.0,
+    "solver_timeout_seconds": 10.0,
+    "timeout_policy": "terminal_no_retry_v1"
+  },
+  "schema_version": 2,
+  "stage": "extraction",
+  "telemetry": {
+    "architecture": "Luna 6 \u00b7 CP-SAT",
+    "case_id": "workout_before_four_hard",
+    "error": null,
+    "estimated_cost": 0.00029020000000000006,
+    "jev_input_tokens": 0,
+    "latency_jev_s": 0.0,
+    "latency_llm_s": 4.0862484170356765,
+    "latency_solver_s": 0.0,
+    "latency_total_s": 4.08629941707477,
+    "model": "gpt-6-luna",
+    "n_jev_call_attempts": 0,
+    "n_jev_calls": 0,
+    "n_jev_questions": 0,
+    "n_model_call_attempts": 1,
+    "n_model_calls": 1,
+    "openai_input_tokens": 1482,
+    "openai_output_tokens": 284,
+    "problem_type": "dayplan",
+    "resolved_openai_models": [
+      "gpt-6-luna"
+    ],
+    "solution_engine": "cp_sat",
+    "success": true,
+    "use_jev": false
+  }
+}
