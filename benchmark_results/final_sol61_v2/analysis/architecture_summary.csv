@@ -1,0 +1,9 @@
+architecture,cases,outcome_correct,outcome_denominator,usable_output,usable_output_denominator,terminal_failure,terminal_failure_denominator,abstention_no_usable_output,abstention_denominator,feasible_canonical_valid,feasible_denominator,infeasible_correct,infeasible_denominator,structural_formulation_match,full_formulation_match,formulation_denominator,optimal,optimal_denominator,optimal_percent_among_valid_feasible,latency_median_s,latency_mean_s,latency_denominator,terminal_timeout,timeout_denominator,openai_cost_median_usd,openai_cost_mean_usd,cost_denominator,cost_unknown_usage_cells
+Luna 6 · Direct LLM,14,8,14,11,14,2,14,1,14,7,12,1,2,9,9,14,6,7,85.71428571428571,8.139562062977348,29.49866483626621,14,1,14,0.0004465,0.0008490285714285715,14,1
+Luna 6 · CP-SAT,14,11,14,11,14,2,14,1,14,10,12,1,2,9,9,14,10,10,100.0,4.937965021003038,23.56034223521627,14,1,14,0.00034905000000000005,0.0004980214285714285,14,1
+Luna 6 · Jev · Direct LLM,14,9,14,10,14,3,14,1,14,8,12,1,2,7,7,14,6,8,75.0,10.124708020011894,49.642352589214816,14,2,14,0.00046235,0.0009661571428571428,14,2
+Luna 6 · Jev · CP-SAT,14,11,14,11,14,2,14,1,14,10,12,1,2,7,7,14,10,10,100.0,5.056374291481916,23.73111130964909,14,1,14,0.00034905000000000005,0.0004980214285714285,14,1
+Sol 6.1 · Direct LLM,14,13,14,13,14,0,14,1,14,11,12,2,2,12,11,14,11,11,100.0,11.589247707976028,20.123004282849642,14,0,14,0.007518,0.013716142857142857,14,0
+Sol 6.1 · CP-SAT,14,13,14,13,14,0,14,1,14,11,12,2,2,12,11,14,11,11,100.0,7.697304916509893,10.356652464143865,14,0,14,0.005236,0.008153,14,0
+Sol 6.1 · Jev · Direct LLM,14,13,14,13,14,0,14,1,14,11,12,2,2,10,9,14,11,11,100.0,11.822701583034359,19.626286154937198,14,0,14,0.007448,0.013649,14,0
+Sol 6.1 · Jev · CP-SAT,14,13,14,13,14,0,14,1,14,11,12,2,2,10,9,14,11,11,100.0,7.951730458531529,10.575933970427807,14,0,14,0.005236,0.008153,14,0

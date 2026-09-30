@@ -1,0 +1,3 @@
+# Additional local plotting dependency for scripts/analyze_benchmark.py.
+# Keep benchmark collection dependencies and their lock unchanged.
+matplotlib>=3.10,<4

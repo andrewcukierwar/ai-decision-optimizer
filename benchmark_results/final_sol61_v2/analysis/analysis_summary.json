@@ -1,0 +1,2138 @@
+{
+  "analysis_version": "phase10-offline-analysis-v1",
+  "architecture_summary": [
+    {
+      "abstention_denominator": 14,
+      "abstention_no_usable_output": 1,
+      "architecture": "Luna 6 \u00b7 Direct LLM",
+      "cases": 14,
+      "cost_denominator": 14,
+      "cost_unknown_usage_cells": 1,
+      "feasible_canonical_valid": 7,
+      "feasible_denominator": 12,
+      "formulation_denominator": 14,
+      "full_formulation_match": 9,
+      "infeasible_correct": 1,
+      "infeasible_denominator": 2,
+      "latency_denominator": 14,
+      "latency_mean_s": 29.49866483626621,
+      "latency_median_s": 8.139562062977348,
+      "openai_cost_mean_usd": 0.0008490285714285715,
+      "openai_cost_median_usd": 0.0004465,
+      "optimal": 6,
+      "optimal_denominator": 7,
+      "optimal_percent_among_valid_feasible": 85.71428571428571,
+      "outcome_correct": 8,
+      "outcome_denominator": 14,
+      "structural_formulation_match": 9,
+      "terminal_failure": 2,
+      "terminal_failure_denominator": 14,
+      "terminal_timeout": 1,
+      "timeout_denominator": 14,
+      "usable_output": 11,
+      "usable_output_denominator": 14
+    },
+    {
+      "abstention_denominator": 14,
+      "abstention_no_usable_output": 1,
+      "architecture": "Luna 6 \u00b7 CP-SAT",
+      "cases": 14,
+      "cost_denominator": 14,
+      "cost_unknown_usage_cells": 1,
+      "feasible_canonical_valid": 10,
+      "feasible_denominator": 12,
+      "formulation_denominator": 14,
+      "full_formulation_match": 9,
+      "infeasible_correct": 1,
+      "infeasible_denominator": 2,
+      "latency_denominator": 14,
+      "latency_mean_s": 23.56034223521627,
+      "latency_median_s": 4.937965021003038,
+      "openai_cost_mean_usd": 0.0004980214285714285,
+      "openai_cost_median_usd": 0.00034905000000000005,
+      "optimal": 10,
+      "optimal_denominator": 10,
+      "optimal_percent_among_valid_feasible": 100.0,
+      "outcome_correct": 11,
+      "outcome_denominator": 14,
+      "structural_formulation_match": 9,
+      "terminal_failure": 2,
+      "terminal_failure_denominator": 14,
+      "terminal_timeout": 1,
+      "timeout_denominator": 14,
+      "usable_output": 11,
+      "usable_output_denominator": 14
+    },
+    {
+      "abstention_denominator": 14,
+      "abstention_no_usable_output": 1,
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 Direct LLM",
+      "cases": 14,
+      "cost_denominator": 14,
+      "cost_unknown_usage_cells": 2,
+      "feasible_canonical_valid": 8,
+      "feasible_denominator": 12,
+      "formulation_denominator": 14,
+      "full_formulation_match": 7,
+      "infeasible_correct": 1,
+      "infeasible_denominator": 2,
+      "latency_denominator": 14,
+      "latency_mean_s": 49.642352589214816,
+      "latency_median_s": 10.124708020011894,
+      "openai_cost_mean_usd": 0.0009661571428571428,
+      "openai_cost_median_usd": 0.00046235,
+      "optimal": 6,
+      "optimal_denominator": 8,
+      "optimal_percent_among_valid_feasible": 75.0,
+      "outcome_correct": 9,
+      "outcome_denominator": 14,
+      "structural_formulation_match": 7,
+      "terminal_failure": 3,
+      "terminal_failure_denominator": 14,
+      "terminal_timeout": 2,
+      "timeout_denominator": 14,
+      "usable_output": 10,
+      "usable_output_denominator": 14
+    },
+    {
+      "abstention_denominator": 14,
+      "abstention_no_usable_output": 1,
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+      "cases": 14,
+      "cost_denominator": 14,
+      "cost_unknown_usage_cells": 1,
+      "feasible_canonical_valid": 10,
+      "feasible_denominator": 12,
+      "formulation_denominator": 14,
+      "full_formulation_match": 7,
+      "infeasible_correct": 1,
+      "infeasible_denominator": 2,
+      "latency_denominator": 14,
+      "latency_mean_s": 23.73111130964909,
+      "latency_median_s": 5.056374291481916,
+      "openai_cost_mean_usd": 0.0004980214285714285,
+      "openai_cost_median_usd": 0.00034905000000000005,
+      "optimal": 10,
+      "optimal_denominator": 10,
+      "optimal_percent_among_valid_feasible": 100.0,
+      "outcome_correct": 11,
+      "outcome_denominator": 14,
+      "structural_formulation_match": 7,
+      "terminal_failure": 2,
+      "terminal_failure_denominator": 14,
+      "terminal_timeout": 1,
+      "timeout_denominator": 14,
+      "usable_output": 11,
+      "usable_output_denominator": 14
+    },
+    {
+      "abstention_denominator": 14,
+      "abstention_no_usable_output": 1,
+      "architecture": "Sol 6.1 \u00b7 Direct LLM",
+      "cases": 14,
+      "cost_denominator": 14,
+      "cost_unknown_usage_cells": 0,
+      "feasible_canonical_valid": 11,
+      "feasible_denominator": 12,
+      "formulation_denominator": 14,
+      "full_formulation_match": 11,
+      "infeasible_correct": 2,
+      "infeasible_denominator": 2,
+      "latency_denominator": 14,
+      "latency_mean_s": 20.123004282849642,
+      "latency_median_s": 11.589247707976028,
+      "openai_cost_mean_usd": 0.013716142857142857,
+      "openai_cost_median_usd": 0.007518,
+      "optimal": 11,
+      "optimal_denominator": 11,
+      "optimal_percent_among_valid_feasible": 100.0,
+      "outcome_correct": 13,
+      "outcome_denominator": 14,
+      "structural_formulation_match": 12,
+      "terminal_failure": 0,
+      "terminal_failure_denominator": 14,
+      "terminal_timeout": 0,
+      "timeout_denominator": 14,
+      "usable_output": 13,
+      "usable_output_denominator": 14
+    },
+    {
+      "abstention_denominator": 14,
+      "abstention_no_usable_output": 1,
+      "architecture": "Sol 6.1 \u00b7 CP-SAT",
+      "cases": 14,
+      "cost_denominator": 14,
+      "cost_unknown_usage_cells": 0,
+      "feasible_canonical_valid": 11,
+      "feasible_denominator": 12,
+      "formulation_denominator": 14,
+      "full_formulation_match": 11,
+      "infeasible_correct": 2,
+      "infeasible_denominator": 2,
+      "latency_denominator": 14,
+      "latency_mean_s": 10.356652464143865,
+      "latency_median_s": 7.697304916509893,
+      "openai_cost_mean_usd": 0.008153,
+      "openai_cost_median_usd": 0.005236,
+      "optimal": 11,
+      "optimal_denominator": 11,
+      "optimal_percent_among_valid_feasible": 100.0,
+      "outcome_correct": 13,
+      "outcome_denominator": 14,
+      "structural_formulation_match": 12,
+      "terminal_failure": 0,
+      "terminal_failure_denominator": 14,
+      "terminal_timeout": 0,
+      "timeout_denominator": 14,
+      "usable_output": 13,
+      "usable_output_denominator": 14
+    },
+    {
+      "abstention_denominator": 14,
+      "abstention_no_usable_output": 1,
+      "architecture": "Sol 6.1 \u00b7 Jev \u00b7 Direct LLM",
+      "cases": 14,
+      "cost_denominator": 14,
+      "cost_unknown_usage_cells": 0,
+      "feasible_canonical_valid": 11,
+      "feasible_denominator": 12,
+      "formulation_denominator": 14,
+      "full_formulation_match": 9,
+      "infeasible_correct": 2,
+      "infeasible_denominator": 2,
+      "latency_denominator": 14,
+      "latency_mean_s": 19.626286154937198,
+      "latency_median_s": 11.822701583034359,
+      "openai_cost_mean_usd": 0.013649,
+      "openai_cost_median_usd": 0.007448,
+      "optimal": 11,
+      "optimal_denominator": 11,
+      "optimal_percent_among_valid_feasible": 100.0,
+      "outcome_correct": 13,
+      "outcome_denominator": 14,
+      "structural_formulation_match": 10,
+      "terminal_failure": 0,
+      "terminal_failure_denominator": 14,
+      "terminal_timeout": 0,
+      "timeout_denominator": 14,
+      "usable_output": 13,
+      "usable_output_denominator": 14
+    },
+    {
+      "abstention_denominator": 14,
+      "abstention_no_usable_output": 1,
+      "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+      "cases": 14,
+      "cost_denominator": 14,
+      "cost_unknown_usage_cells": 0,
+      "feasible_canonical_valid": 11,
+      "feasible_denominator": 12,
+      "formulation_denominator": 14,
+      "full_formulation_match": 9,
+      "infeasible_correct": 2,
+      "infeasible_denominator": 2,
+      "latency_denominator": 14,
+      "latency_mean_s": 10.575933970427807,
+      "latency_median_s": 7.951730458531529,
+      "openai_cost_mean_usd": 0.008153,
+      "openai_cost_median_usd": 0.005236,
+      "optimal": 11,
+      "optimal_denominator": 11,
+      "optimal_percent_among_valid_feasible": 100.0,
+      "outcome_correct": 13,
+      "outcome_denominator": 14,
+      "structural_formulation_match": 10,
+      "terminal_failure": 0,
+      "terminal_failure_denominator": 14,
+      "terminal_timeout": 0,
+      "timeout_denominator": 14,
+      "usable_output": 13,
+      "usable_output_denominator": 14
+    }
+  ],
+  "cases": 14,
+  "decision_coverage": {
+    "aligned_missing_jev_answer": 0,
+    "aligned_primary": 223,
+    "canonical_primary_instances": 250,
+    "category": "all",
+    "excluded_subjective_aligned": 5,
+    "excluded_subjective_instances": 6,
+    "final_not_represented_aligned": 0,
+    "jev_observed_primary": 223,
+    "missing_not_generated_primary": 27,
+    "model": "all",
+    "scope": "overall",
+    "unaligned_generated": 2
+  },
+  "defensible_findings": [
+    "Architecture outcome correctness ranges from 8 to 13 of 14; these are canonical case outcomes, not constraint fractions.",
+    "In 56 engine pairs, Direct and CP-SAT have 43/56 and 48/56 correct outcomes; CP-SAT improves 5 and worsens 0 paired outcomes.",
+    "Among valid feasible outputs, Direct attains 34/37 canonical optima and CP-SAT 42/42; objective comparisons remain within cases.",
+    "Luna and Sol record 39/56 and 52/56 correct cells, respectively, with shared extractions and different extraction failures/abstentions; this does not establish general superiority.",
+    "GPT, Jev proposed, and final represented decisions score 223/223, 208/223, and 216/223 aligned primary answers; the end-to-end denominator is 250.",
+    "Per-question-type accuracy is necessary: generated Workforce availability labels dominate pooled counts and cannot substitute for Day Planner results.",
+    "Across 56 Jev pairs, outcomes improve in 2, worsen in 1, and remain the same in 53; formulation edits and independent Direct solve variation must be distinguished.",
+    "Calibration is descriptive and primitive-specific: pooled Choice binary Brier 0.005284, Noul Brier 0.075577, and five-class Score Brier 0.291500 from only 10 eligible Score observations.",
+    "Nine terminal and eight abstention cells remain scored; they arise from three failed stages and two clarification extractions rather than 17 independent extraction attempts.",
+    "Actual recorded OpenAI experiment cost is $0.2874103 plus unknown timeout billing; standalone medians/means describe isolation requirements and Jev dollar cost is unassigned."
+  ],
+  "experiment_accounting": {
+    "jev_call_attempts": 24,
+    "jev_completed_calls": 24,
+    "jev_cost_usd": null,
+    "jev_input_tokens": 50946,
+    "jev_questions": 230,
+    "jev_usage_unknown_calls": 0,
+    "openai_call_attempts": 76,
+    "openai_estimated_cost_usd": 0.2874103,
+    "openai_input_tokens": 86583,
+    "openai_output_tokens": 46461,
+    "openai_responses_with_metadata": 74,
+    "openai_usage_unknown_calls": 2,
+    "timeout_billing_usd": null
+  },
+  "extraction_coverage": [
+    {
+      "case_model_stages": 14,
+      "clarification_null_formulation": 1,
+      "model": "gpt-6-luna",
+      "terminal_extraction_failure": 2,
+      "typed_extractions": 11
+    },
+    {
+      "case_model_stages": 14,
+      "clarification_null_formulation": 1,
+      "model": "gpt-6.1-sol",
+      "terminal_extraction_failure": 0,
+      "typed_extractions": 13
+    }
+  ],
+  "failures_and_abstentions": [
+    {
+      "architecture": "Luna 6 \u00b7 CP-SAT",
+      "case_id": "impossible_hard_workout_window",
+      "constraint_violations": [],
+      "failure_category": "invalid_model_output",
+      "failure_stage": "extraction",
+      "missing_info": [],
+      "status": "terminal_failure"
+    },
+    {
+      "architecture": "Luna 6 \u00b7 Direct LLM",
+      "case_id": "impossible_hard_workout_window",
+      "constraint_violations": [],
+      "failure_category": "invalid_model_output",
+      "failure_stage": "extraction",
+      "missing_info": [],
+      "status": "terminal_failure"
+    },
+    {
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+      "case_id": "impossible_hard_workout_window",
+      "constraint_violations": [],
+      "failure_category": "invalid_model_output",
+      "failure_stage": "extraction",
+      "missing_info": [],
+      "status": "terminal_failure"
+    },
+    {
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 Direct LLM",
+      "case_id": "impossible_hard_workout_window",
+      "constraint_violations": [],
+      "failure_category": "invalid_model_output",
+      "failure_stage": "extraction",
+      "missing_info": [],
+      "status": "terminal_failure"
+    },
+    {
+      "architecture": "Sol 6.1 \u00b7 CP-SAT",
+      "case_id": "optional_walk_if_time",
+      "constraint_violations": [
+        "No usable model output"
+      ],
+      "failure_category": null,
+      "failure_stage": null,
+      "missing_info": [
+        "The schema cannot represent optional tasks. Should I omit the walk or include it as a required 30-minute active task?"
+      ],
+      "status": "success"
+    },
+    {
+      "architecture": "Sol 6.1 \u00b7 Direct LLM",
+      "case_id": "optional_walk_if_time",
+      "constraint_violations": [
+        "No usable model output"
+      ],
+      "failure_category": null,
+      "failure_stage": null,
+      "missing_info": [
+        "The schema cannot represent optional tasks. Should I omit the walk or include it as a required 30-minute active task?"
+      ],
+      "status": "success"
+    },
+    {
+      "architecture": "Sol 6.1 \u00b7 Jev \u00b7 CP-SAT",
+      "case_id": "optional_walk_if_time",
+      "constraint_violations": [
+        "No usable model output"
+      ],
+      "failure_category": null,
+      "failure_stage": null,
+      "missing_info": [
+        "The schema cannot represent optional tasks. Should I omit the walk or include it as a required 30-minute active task?"
+      ],
+      "status": "success"
+    },
+    {
+      "architecture": "Sol 6.1 \u00b7 Jev \u00b7 Direct LLM",
+      "case_id": "optional_walk_if_time",
+      "constraint_violations": [
+        "No usable model output"
+      ],
+      "failure_category": null,
+      "failure_stage": null,
+      "missing_info": [
+        "The schema cannot represent optional tasks. Should I omit the walk or include it as a required 30-minute active task?"
+      ],
+      "status": "success"
+    },
+    {
+      "architecture": "Luna 6 \u00b7 CP-SAT",
+      "case_id": "wfh_laundry_lift_groceries",
+      "constraint_violations": [
+        "No usable model output"
+      ],
+      "failure_category": null,
+      "failure_stage": null,
+      "missing_info": [
+        "The schema can represent a task\u2019s earliest start, but not require it to start exactly at 08:00. Can the laundry wash start be treated as an earliest start instead?"
+      ],
+      "status": "success"
+    },
+    {
+      "architecture": "Luna 6 \u00b7 Direct LLM",
+      "case_id": "wfh_laundry_lift_groceries",
+      "constraint_violations": [
+        "No usable model output"
+      ],
+      "failure_category": null,
+      "failure_stage": null,
+      "missing_info": [
+        "The schema can represent a task\u2019s earliest start, but not require it to start exactly at 08:00. Can the laundry wash start be treated as an earliest start instead?"
+      ],
+      "status": "success"
+    },
+    {
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+      "case_id": "wfh_laundry_lift_groceries",
+      "constraint_violations": [
+        "No usable model output"
+      ],
+      "failure_category": null,
+      "failure_stage": null,
+      "missing_info": [
+        "The schema can represent a task\u2019s earliest start, but not require it to start exactly at 08:00. Can the laundry wash start be treated as an earliest start instead?"
+      ],
+      "status": "success"
+    },
+    {
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 Direct LLM",
+      "case_id": "wfh_laundry_lift_groceries",
+      "constraint_violations": [
+        "No usable model output"
+      ],
+      "failure_category": null,
+      "failure_stage": null,
+      "missing_info": [
+        "The schema can represent a task\u2019s earliest start, but not require it to start exactly at 08:00. Can the laundry wash start be treated as an earliest start instead?"
+      ],
+      "status": "success"
+    },
+    {
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 Direct LLM",
+      "case_id": "workout_before_four_hard",
+      "constraint_violations": [
+        "No usable model output"
+      ],
+      "failure_category": "timeout",
+      "failure_stage": "solve_or_evaluate",
+      "missing_info": [],
+      "status": "terminal_failure"
+    },
+    {
+      "architecture": "Luna 6 \u00b7 CP-SAT",
+      "case_id": "workout_before_four_soft",
+      "constraint_violations": [
+        "No usable model output"
+      ],
+      "failure_category": "timeout",
+      "failure_stage": "extraction",
+      "missing_info": [],
+      "status": "terminal_failure"
+    },
+    {
+      "architecture": "Luna 6 \u00b7 Direct LLM",
+      "case_id": "workout_before_four_soft",
+      "constraint_violations": [
+        "No usable model output"
+      ],
+      "failure_category": "timeout",
+      "failure_stage": "extraction",
+      "missing_info": [],
+      "status": "terminal_failure"
+    },
+    {
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 CP-SAT",
+      "case_id": "workout_before_four_soft",
+      "constraint_violations": [
+        "No usable model output"
+      ],
+      "failure_category": "timeout",
+      "failure_stage": "extraction",
+      "missing_info": [],
+      "status": "terminal_failure"
+    },
+    {
+      "architecture": "Luna 6 \u00b7 Jev \u00b7 Direct LLM",
+      "case_id": "workout_before_four_soft",
+      "constraint_violations": [
+        "No usable model output"
+      ],
+      "failure_category": "timeout",
+      "failure_stage": "extraction",
+      "missing_info": [],
+      "status": "terminal_failure"
+    }
+  ],
+  "jev_outcome_broken": [
+    {
+      "accepted_answers": 3,
+      "after_architecture": "Luna 6 \u00b7 Jev \u00b7 Direct LLM",
+      "after_cost_usd": 0.00029020000000000006,
+      "after_feasible_valid": false,
+      "after_latency_s": 244.2740616251249,
+      "after_objective_gap": null,
+      "after_optimal": false,
+      "after_outcome_correct": false,
+      "after_status": "terminal_failure",
+      "after_structural_match": true,
+      "after_usable_output": false,
+      "applied_typed_edits": 0,
+      "asked_questions": 3,
+      "before_architecture": "Luna 6 \u00b7 Direct LLM",
+      "before_cost_usd": 0.0003855000000000001,
+      "before_feasible_valid": true,
+      "before_latency_s": 7.316302500083111,
+      "before_objective_gap": 0,
+      "before_optimal": true,
+      "before_outcome_correct": true,
+      "before_status": "success",
+      "before_structural_match": true,
+      "before_usable_output": true,
+      "canonical_validity_effect": "worsened",
+      "case_id": "workout_before_four_hard",
+      "cost_delta_has_unknown_usage": true,
+      "cost_delta_usd": -9.530000000000004e-05,
+      "domain": "dayplan",
+      "engine": "direct_llm",
+      "formulation_available": true,
+      "formulation_change_category": "asked_no_applied_formulation_change",
+      "latency_delta_s": 236.95775912504178,
+      "model": "gpt-6-luna",
+      "objective_effect": "not_comparable",
+      "optimum_effect": "worsened",
+      "outcome_effect": "worsened",
+      "structural_effect": "same",
+      "typed_formulation_changed": false,
+      "use_jev": false
+    }
+  ],
+  "jev_outcome_fixed": [
+    {
+      "accepted_answers": 5,
+      "after_architecture": "Luna 6 \u00b7 Jev \u00b7 Direct LLM",
+      "after_cost_usd": 0.0004400999999999999,
+      "after_feasible_valid": true,
+      "after_latency_s": 7.007634375011548,
+      "after_objective_gap": 0,
+      "after_optimal": true,
+      "after_outcome_correct": true,
+      "after_status": "success",
+      "after_structural_match": true,
+      "after_usable_output": true,
+      "applied_typed_edits": 0,
+      "asked_questions": 5,
+      "before_architecture": "Luna 6 \u00b7 Direct LLM",
+      "before_cost_usd": 0.0004341,
+      "before_feasible_valid": false,
+      "before_latency_s": 6.4615701659349725,
+      "before_objective_gap": null,
+      "before_optimal": false,
+      "before_outcome_correct": false,
+      "before_status": "success",
+      "before_structural_match": true,
+      "before_usable_output": true,
+      "canonical_validity_effect": "improved",
+      "case_id": "hard_timing",
+      "cost_delta_has_unknown_usage": false,
+      "cost_delta_usd": 5.999999999999929e-06,
+      "domain": "dayplan",
+      "engine": "direct_llm",
+      "formulation_available": true,
+      "formulation_change_category": "asked_no_applied_formulation_change",
+      "latency_delta_s": 0.5460642090765759,
+      "model": "gpt-6-luna",
+      "objective_effect": "not_comparable",
+      "optimum_effect": "improved",
+      "outcome_effect": "improved",
+      "structural_effect": "same",
+      "typed_formulation_changed": false,
+      "use_jev": false
+    },
+    {
+      "accepted_answers": 29,
+      "after_architecture": "Luna 6 \u00b7 Jev \u00b7 Direct LLM",
+      "after_cost_usd": 0.0047798,
+      "after_feasible_valid": true,
+      "after_latency_s": 71.09602995892055,
+      "after_objective_gap": 480,
+      "after_optimal": false,
+      "after_outcome_correct": true,
+      "after_status": "success",
+      "after_structural_match": true,
+      "after_usable_output": true,
+      "applied_typed_edits": 0,
+      "asked_questions": 37,
+      "before_architecture": "Luna 6 \u00b7 Direct LLM",
+      "before_cost_usd": 0.0035278,
+      "before_feasible_valid": false,
+      "before_latency_s": 46.89068987488281,
+      "before_objective_gap": null,
+      "before_optimal": false,
+      "before_outcome_correct": false,
+      "before_status": "success",
+      "before_structural_match": true,
+      "before_usable_output": true,
+      "canonical_validity_effect": "improved",
+      "case_id": "ten_day_rotation",
+      "cost_delta_has_unknown_usage": false,
+      "cost_delta_usd": 0.0012519999999999996,
+      "domain": "shift_schedule",
+      "engine": "direct_llm",
+      "formulation_available": true,
+      "formulation_change_category": "asked_no_applied_formulation_change",
+      "latency_delta_s": 24.205340084037744,
+      "model": "gpt-6-luna",
+      "objective_effect": "not_comparable",
+      "optimum_effect": "same",
+      "outcome_effect": "improved",
+      "structural_effect": "same",
+      "typed_formulation_changed": false,
+      "use_jev": false
+    }
+  ],
+  "jev_stage_latency": {
+    "completed_calls": 24,
+    "mean_s": 0.2250156580315282,
+    "median_s": 0.21094347949838266
+  },
+  "label_policy": {
+    "generator_derived_scored": 71,
+    "human_reviewed_approved": 54,
+    "labels_total": 128,
+    "primary_scored_total": 125,
+    "subjective_excluded": 3
+  },
+  "limitations": [
+    "14 curated cases (nine Day Planner, five Workforce), with one extraction sample per case/model; no repeated-run variance is measured.",
+    "Four architecture variants per case/model share one extraction; both Jev-on engines share one Jev stage. The 112 cells are not independent observations.",
+    "Two Workforce cases are generated from templates with explicit canonical specifications and numeric weights; their many availability labels dominate pooled accuracy.",
+    "Extraction prompts were developed with awareness of benchmark-style examples (benchmark-prompt tuning).",
+    "Direct LLM solves the same typed JSON used by CP-SAT, rather than the raw natural-language request.",
+    "Jev can review only questions generated from GPT-extracted content; omitted content, extraction failures, and clarification abstentions constrain coverage.",
+    "Primary accuracy and calibration exclude three subjective preference-strength labels. Score observations are few; do not interpret them as a general calibration claim.",
+    "Custom user prompts have no canonical ground truth and are not evaluated here.",
+    "This is an exploratory Resume MVP benchmark: no significance tests, independence-based confidence intervals, composite scores, or claims of general model superiority.",
+    "Standalone architecture telemetry is an isolation estimate. Recorded experimental costs exclude unknown usage/billing for two OpenAI timeout requests and are not invoices. No TypeSafe dollar cost is assigned.",
+    "Reconciliation normalized eight Workforce formulation rows and recovered upstream Jev evidence for one failed Direct solve. Its exact timed-out request body was not persisted; no solution was inferred."
+  ],
+  "observations_consumed": 112,
+  "output_sha256": {
+    "analysis_report.md": "745fda72947b875b7a2c58803e0d4ee34dcbc5e6ee0db44c4117f28d8c4abf67",
+    "architecture_summary.csv": "974bfbda7c228cbdac4b6c9a681af7f5d0c0dcf5eaf4e273af9858327b6df1df",
+    "calibration.png": "1e264ab94ea196ac0a90dbf90ba1bfdc14c5298b4b7ba87922d6307fc848c4da",
+    "calibration_metrics.json": "841ef15265311cac97eb83b9b95ba562cd12e49911c012651cafb01191bc6d3f",
+    "decision_instances.jsonl": "fe67dbf6f818f260fe13ea04bb2a20f8bb2b24c0a888d3e3d7a6382f284857e8",
+    "engine_pairs.csv": "e3f5618c181a5e3e40f698a5c49a87af9f5aae7e8c4535f9263ff407c9719bc6",
+    "jev_accuracy.csv": "aecb4eb61c85755928ae82c605cefa35ac21437d16c528635dfac184531e5cb8",
+    "jev_coverage.csv": "fdb9f1ba7dba1c3554ffcacb831cdefe6831401d0efab868ed9939608990f488",
+    "jev_effects.csv": "20e303ae823bffb9f5cc6196b21a8d37396f81c0756dee57bb6bd25884dabc5a",
+    "model_pairs.csv": "f22619ca665350177feef36529d284c9e69bf5c5d5ac4462a709c02ac1e38cf2",
+    "objective_gaps.csv": "6d04d1b17ecf2c44713aa9b38b5de224ae0135f3874d60f421bbe8440f65fa45"
+  },
+  "paired_comparisons": {
+    "engine": [
+      {
+        "after_abstention": 4,
+        "after_feasible_valid": 26,
+        "after_optimal": 26,
+        "after_outcome_correct": 28,
+        "after_structural_match": 22,
+        "after_terminal_failure": 4,
+        "after_usable_output": 28,
+        "before_abstention": 4,
+        "before_feasible_valid": 22,
+        "before_optimal": 22,
+        "before_outcome_correct": 24,
+        "before_structural_match": 22,
+        "before_terminal_failure": 5,
+        "before_usable_output": 27,
+        "canonical_validity_effects": {
+          "improved": 4,
+          "not_applicable_infeasible": 4,
+          "same": 28
+        },
+        "category": "dayplan",
+        "cost_delta_mean_usd": -0.001096261111111111,
+        "cost_delta_median_usd": -0.00015954999999999998,
+        "cost_delta_unknown_usage_pairs": 3,
+        "feasible_pair_denominator": 32,
+        "latency_delta_mean_s": -9.86978521751007,
+        "latency_delta_median_s": -3.3976821459364146,
+        "objective_effects": {
+          "not_comparable": 14,
+          "same": 22
+        },
+        "optimum_effects": {
+          "improved": 4,
+          "not_applicable_infeasible": 4,
+          "same": 28
+        },
+        "outcome_effects": {
+          "improved": 4,
+          "same": 32
+        },
+        "pairs": 36,
+        "scope": "domain",
+        "structural_effects": {
+          "same": 36
+        }
+      },
+      {
+        "after_abstention": 0,
+        "after_feasible_valid": 16,
+        "after_optimal": 16,
+        "after_outcome_correct": 20,
+        "after_structural_match": 16,
+        "after_terminal_failure": 0,
+        "after_usable_output": 20,
+        "before_abstention": 0,
+        "before_feasible_valid": 15,
+        "before_optimal": 12,
+        "before_outcome_correct": 19,
+        "before_structural_match": 16,
+        "before_terminal_failure": 0,
+        "before_usable_output": 20,
+        "canonical_validity_effects": {
+          "improved": 1,
+          "not_applicable_infeasible": 4,
+          "same": 15
+        },
+        "category": "shift_schedule",
+        "cost_delta_mean_usd": -0.006341530000000001,
+        "cost_delta_median_usd": -0.0019950000000000002,
+        "cost_delta_unknown_usage_pairs": 0,
+        "feasible_pair_denominator": 16,
+        "latency_delta_mean_s": -17.70077412716346,
+        "latency_delta_median_s": -4.731295333534945,
+        "objective_effects": {
+          "improved": 3,
+          "not_comparable": 5,
+          "same": 12
+        },
+        "optimum_effects": {
+          "improved": 4,
+          "not_applicable_infeasible": 4,
+          "same": 12
+        },
+        "outcome_effects": {
+          "improved": 1,
+          "same": 19
+        },
+        "pairs": 20,
+        "scope": "domain",
+        "structural_effects": {
+          "same": 20
+        }
+      },
+      {
+        "after_abstention": 2,
+        "after_feasible_valid": 21,
+        "after_optimal": 21,
+        "after_outcome_correct": 24,
+        "after_structural_match": 21,
+        "after_terminal_failure": 2,
+        "after_usable_output": 24,
+        "before_abstention": 2,
+        "before_feasible_valid": 18,
+        "before_optimal": 17,
+        "before_outcome_correct": 21,
+        "before_structural_match": 21,
+        "before_terminal_failure": 2,
+        "before_usable_output": 24,
+        "canonical_validity_effects": {
+          "improved": 3,
+          "not_applicable_infeasible": 4,
+          "same": 21
+        },
+        "category": "false",
+        "cost_delta_mean_usd": -0.0029570750000000004,
+        "cost_delta_median_usd": -0.0014719999999999998,
+        "cost_delta_unknown_usage_pairs": 1,
+        "feasible_pair_denominator": 24,
+        "latency_delta_mean_s": -7.852337209877858,
+        "latency_delta_median_s": -3.4193603124585934,
+        "objective_effects": {
+          "improved": 1,
+          "not_comparable": 10,
+          "same": 17
+        },
+        "optimum_effects": {
+          "improved": 4,
+          "not_applicable_infeasible": 4,
+          "same": 20
+        },
+        "outcome_effects": {
+          "improved": 3,
+          "same": 25
+        },
+        "pairs": 28,
+        "scope": "jev",
+        "structural_effects": {
+          "same": 28
+        }
+      },
+      {
+        "after_abstention": 2,
+        "after_feasible_valid": 21,
+        "after_optimal": 21,
+        "after_outcome_correct": 24,
+        "after_structural_match": 17,
+        "after_terminal_failure": 2,
+        "after_usable_output": 24,
+        "before_abstention": 2,
+        "before_feasible_valid": 19,
+        "before_optimal": 17,
+        "before_outcome_correct": 22,
+        "before_structural_match": 17,
+        "before_terminal_failure": 3,
+        "before_usable_output": 23,
+        "canonical_validity_effects": {
+          "improved": 2,
+          "not_applicable_infeasible": 4,
+          "same": 22
+        },
+        "category": "true",
+        "cost_delta_mean_usd": -0.0029820678571428573,
+        "cost_delta_median_usd": -0.0014669999999999996,
+        "cost_delta_unknown_usage_pairs": 2,
+        "feasible_pair_denominator": 24,
+        "latency_delta_mean_s": -17.48079673203756,
+        "latency_delta_median_s": -3.858833145000972,
+        "objective_effects": {
+          "improved": 2,
+          "not_comparable": 9,
+          "same": 17
+        },
+        "optimum_effects": {
+          "improved": 4,
+          "not_applicable_infeasible": 4,
+          "same": 20
+        },
+        "outcome_effects": {
+          "improved": 2,
+          "same": 26
+        },
+        "pairs": 28,
+        "scope": "jev",
+        "structural_effects": {
+          "same": 28
+        }
+      },
+      {
+        "after_abstention": 2,
+        "after_feasible_valid": 20,
+        "after_optimal": 20,
+        "after_outcome_correct": 22,
+        "after_structural_match": 16,
+        "after_terminal_failure": 4,
+        "after_usable_output": 22,
+        "before_abstention": 2,
+        "before_feasible_valid": 15,
+        "before_optimal": 12,
+        "before_outcome_correct": 17,
+        "before_structural_match": 16,
+        "before_terminal_failure": 5,
+        "before_usable_output": 21,
+        "canonical_validity_effects": {
+          "improved": 5,
+          "not_applicable_infeasible": 4,
+          "same": 19
+        },
+        "category": "gpt-6-luna",
+        "cost_delta_mean_usd": -0.0004095714285714286,
+        "cost_delta_median_usd": -0.00011575,
+        "cost_delta_unknown_usage_pairs": 3,
+        "feasible_pair_denominator": 24,
+        "latency_delta_mean_s": -15.924781940307835,
+        "latency_delta_median_s": -3.1355819790042005,
+        "objective_effects": {
+          "improved": 3,
+          "not_comparable": 13,
+          "same": 12
+        },
+        "optimum_effects": {
+          "improved": 8,
+          "not_applicable_infeasible": 4,
+          "same": 16
+        },
+        "outcome_effects": {
+          "improved": 5,
+          "same": 23
+        },
+        "pairs": 28,
+        "scope": "model",
+        "structural_effects": {
+          "same": 28
+        }
+      },
+      {
+        "after_abstention": 2,
+        "after_feasible_valid": 22,
+        "after_optimal": 22,
+        "after_outcome_correct": 26,
+        "after_structural_match": 22,
+        "after_terminal_failure": 0,
+        "after_usable_output": 26,
+        "before_abstention": 2,
+        "before_feasible_valid": 22,
+        "before_optimal": 22,
+        "before_outcome_correct": 26,
+        "before_structural_match": 22,
+        "before_terminal_failure": 0,
+        "before_usable_output": 26,
+        "canonical_validity_effects": {
+          "not_applicable_infeasible": 4,
+          "same": 24
+        },
+        "category": "gpt-6.1-sol",
+        "cost_delta_mean_usd": -0.005529571428571429,
+        "cost_delta_median_usd": -0.0021219999999999998,
+        "cost_delta_unknown_usage_pairs": 0,
+        "feasible_pair_denominator": 24,
+        "latency_delta_mean_s": -9.408352001607584,
+        "latency_delta_median_s": -4.22236039605923,
+        "objective_effects": {
+          "not_comparable": 6,
+          "same": 22
+        },
+        "optimum_effects": {
+          "not_applicable_infeasible": 4,
+          "same": 24
+        },
+        "outcome_effects": {
+          "same": 28
+        },
+        "pairs": 28,
+        "scope": "model",
+        "structural_effects": {
+          "same": 28
+        }
+      },
+      {
+        "after_abstention": 1,
+        "after_feasible_valid": 10,
+        "after_optimal": 10,
+        "after_outcome_correct": 11,
+        "after_structural_match": 9,
+        "after_terminal_failure": 2,
+        "after_usable_output": 11,
+        "before_abstention": 1,
+        "before_feasible_valid": 7,
+        "before_optimal": 6,
+        "before_outcome_correct": 8,
+        "before_structural_match": 9,
+        "before_terminal_failure": 2,
+        "before_usable_output": 11,
+        "canonical_validity_effects": {
+          "improved": 3,
+          "not_applicable_infeasible": 2,
+          "same": 9
+        },
+        "category": "gpt-6-luna/jev=false",
+        "cost_delta_mean_usd": -0.00035100714285714286,
+        "cost_delta_median_usd": -0.0001195,
+        "cost_delta_unknown_usage_pairs": 1,
+        "feasible_pair_denominator": 12,
+        "latency_delta_mean_s": -5.938322601049939,
+        "latency_delta_median_s": -2.6262260629446246,
+        "objective_effects": {
+          "improved": 1,
+          "not_comparable": 7,
+          "same": 6
+        },
+        "optimum_effects": {
+          "improved": 4,
+          "not_applicable_infeasible": 2,
+          "same": 8
+        },
+        "outcome_effects": {
+          "improved": 3,
+          "same": 11
+        },
+        "pairs": 14,
+        "scope": "model_jev",
+        "structural_effects": {
+          "same": 14
+        }
+      },
+      {
+        "after_abstention": 1,
+        "after_feasible_valid": 10,
+        "after_optimal": 10,
+        "after_outcome_correct": 11,
+        "after_structural_match": 7,
+        "after_terminal_failure": 2,
+        "after_usable_output": 11,
+        "before_abstention": 1,
+        "before_feasible_valid": 8,
+        "before_optimal": 6,
+        "before_outcome_correct": 9,
+        "before_structural_match": 7,
+        "before_terminal_failure": 3,
+        "before_usable_output": 10,
+        "canonical_validity_effects": {
+          "improved": 2,
+          "not_applicable_infeasible": 2,
+          "same": 10
+        },
+        "category": "gpt-6-luna/jev=true",
+        "cost_delta_mean_usd": -0.00046813571428571424,
+        "cost_delta_median_usd": -0.00011575,
+        "cost_delta_unknown_usage_pairs": 2,
+        "feasible_pair_denominator": 12,
+        "latency_delta_mean_s": -25.91124127956573,
+        "latency_delta_median_s": -3.500644187501166,
+        "objective_effects": {
+          "improved": 2,
+          "not_comparable": 6,
+          "same": 6
+        },
+        "optimum_effects": {
+          "improved": 4,
+          "not_applicable_infeasible": 2,
+          "same": 8
+        },
+        "outcome_effects": {
+          "improved": 2,
+          "same": 12
+        },
+        "pairs": 14,
+        "scope": "model_jev",
+        "structural_effects": {
+          "same": 14
+        }
+      },
+      {
+        "after_abstention": 1,
+        "after_feasible_valid": 11,
+        "after_optimal": 11,
+        "after_outcome_correct": 13,
+        "after_structural_match": 12,
+        "after_terminal_failure": 0,
+        "after_usable_output": 13,
+        "before_abstention": 1,
+        "before_feasible_valid": 11,
+        "before_optimal": 11,
+        "before_outcome_correct": 13,
+        "before_structural_match": 12,
+        "before_terminal_failure": 0,
+        "before_usable_output": 13,
+        "canonical_validity_effects": {
+          "not_applicable_infeasible": 2,
+          "same": 12
+        },
+        "category": "gpt-6.1-sol/jev=false",
+        "cost_delta_mean_usd": -0.005563142857142858,
+        "cost_delta_median_usd": -0.0021070000000000004,
+        "cost_delta_unknown_usage_pairs": 0,
+        "feasible_pair_denominator": 12,
+        "latency_delta_mean_s": -9.766351818705775,
+        "latency_delta_median_s": -4.5757273335475475,
+        "objective_effects": {
+          "not_comparable": 3,
+          "same": 11
+        },
+        "optimum_effects": {
+          "not_applicable_infeasible": 2,
+          "same": 12
+        },
+        "outcome_effects": {
+          "same": 14
+        },
+        "pairs": 14,
+        "scope": "model_jev",
+        "structural_effects": {
+          "same": 14
+        }
+      },
+      {
+        "after_abstention": 1,
+        "after_feasible_valid": 11,
+        "after_optimal": 11,
+        "after_outcome_correct": 13,
+        "after_structural_match": 10,
+        "after_terminal_failure": 0,
+        "after_usable_output": 13,
+        "before_abstention": 1,
+        "before_feasible_valid": 11,
+        "before_optimal": 11,
+        "before_outcome_correct": 13,
+        "before_structural_match": 10,
+        "before_terminal_failure": 0,
+        "before_usable_output": 13,
+        "canonical_validity_effects": {
+          "not_applicable_infeasible": 2,
+          "same": 12
+        },
+        "category": "gpt-6.1-sol/jev=true",
+        "cost_delta_mean_usd": -0.005496,
+        "cost_delta_median_usd": -0.0021219999999999998,
+        "cost_delta_unknown_usage_pairs": 0,
+        "feasible_pair_denominator": 12,
+        "latency_delta_mean_s": -9.050352184509393,
+        "latency_delta_median_s": -4.071146791451611,
+        "objective_effects": {
+          "not_comparable": 3,
+          "same": 11
+        },
+        "optimum_effects": {
+          "not_applicable_infeasible": 2,
+          "same": 12
+        },
+        "outcome_effects": {
+          "same": 14
+        },
+        "pairs": 14,
+        "scope": "model_jev",
+        "structural_effects": {
+          "same": 14
+        }
+      },
+      {
+        "after_abstention": 4,
+        "after_feasible_valid": 42,
+        "after_optimal": 42,
+        "after_outcome_correct": 48,
+        "after_structural_match": 38,
+        "after_terminal_failure": 4,
+        "after_usable_output": 48,
+        "before_abstention": 4,
+        "before_feasible_valid": 37,
+        "before_optimal": 34,
+        "before_outcome_correct": 43,
+        "before_structural_match": 38,
+        "before_terminal_failure": 5,
+        "before_usable_output": 47,
+        "canonical_validity_effects": {
+          "improved": 5,
+          "not_applicable_infeasible": 8,
+          "same": 43
+        },
+        "category": "all",
+        "cost_delta_mean_usd": -0.0029695714285714286,
+        "cost_delta_median_usd": -0.0014669999999999996,
+        "cost_delta_unknown_usage_pairs": 3,
+        "feasible_pair_denominator": 48,
+        "latency_delta_mean_s": -12.666566970957708,
+        "latency_delta_median_s": -3.69045997899957,
+        "objective_effects": {
+          "improved": 3,
+          "not_comparable": 19,
+          "same": 34
+        },
+        "optimum_effects": {
+          "improved": 8,
+          "not_applicable_infeasible": 8,
+          "same": 40
+        },
+        "outcome_effects": {
+          "improved": 5,
+          "same": 51
+        },
+        "pairs": 56,
+        "scope": "overall",
+        "structural_effects": {
+          "same": 56
+        }
+      }
+    ],
+    "jev": [
+      {
+        "after_abstention": 4,
+        "after_feasible_valid": 24,
+        "after_optimal": 24,
+        "after_outcome_correct": 26,
+        "after_structural_match": 22,
+        "after_terminal_failure": 5,
+        "after_usable_output": 27,
+        "before_abstention": 4,
+        "before_feasible_valid": 24,
+        "before_optimal": 24,
+        "before_outcome_correct": 26,
+        "before_structural_match": 22,
+        "before_terminal_failure": 4,
+        "before_usable_output": 28,
+        "canonical_validity_effects": {
+          "improved": 1,
+          "not_applicable_infeasible": 4,
+          "same": 30,
+          "worsened": 1
+        },
+        "category": "dayplan",
+        "cost_delta_mean_usd": -3.3277777777778993e-06,
+        "cost_delta_median_usd": 0.0,
+        "cost_delta_unknown_usage_pairs": 3,
+        "feasible_pair_denominator": 32,
+        "formulation_change_categories": {
+          "applied_edit_no_net_typed_change": 0,
+          "asked_no_applied_formulation_change": 28,
+          "no_questions": 0,
+          "typed_formulation_changed": 0,
+          "unavailable_formulation": 8
+        },
+        "latency_delta_mean_s": 6.727297152819422,
+        "latency_delta_median_s": 0.2028515834826976,
+        "objective_effects": {
+          "not_comparable": 13,
+          "same": 23
+        },
+        "optimum_effects": {
+          "improved": 1,
+          "not_applicable_infeasible": 4,
+          "same": 30,
+          "worsened": 1
+        },
+        "outcome_effects": {
+          "improved": 1,
+          "same": 34,
+          "worsened": 1
+        },
+        "pairs": 36,
+        "scope": "domain",
+        "structural_effects": {
+          "same": 36
+        }
+      },
+      {
+        "after_abstention": 0,
+        "after_feasible_valid": 16,
+        "after_optimal": 14,
+        "after_outcome_correct": 20,
+        "after_structural_match": 12,
+        "after_terminal_failure": 0,
+        "after_usable_output": 20,
+        "before_abstention": 0,
+        "before_feasible_valid": 15,
+        "before_optimal": 14,
+        "before_outcome_correct": 19,
+        "before_structural_match": 20,
+        "before_terminal_failure": 0,
+        "before_usable_output": 20,
+        "canonical_validity_effects": {
+          "improved": 1,
+          "not_applicable_infeasible": 4,
+          "same": 15
+        },
+        "category": "shift_schedule",
+        "cost_delta_mean_usd": 4.097999999999998e-05,
+        "cost_delta_median_usd": 0.0,
+        "cost_delta_unknown_usage_pairs": 0,
+        "feasible_pair_denominator": 16,
+        "formulation_change_categories": {
+          "applied_edit_no_net_typed_change": 0,
+          "asked_no_applied_formulation_change": 12,
+          "no_questions": 0,
+          "typed_formulation_changed": 8,
+          "unavailable_formulation": 0
+        },
+        "latency_delta_mean_s": 1.9167792689520866,
+        "latency_delta_median_s": 0.2134632920497097,
+        "objective_effects": {
+          "improved": 1,
+          "not_comparable": 5,
+          "same": 14
+        },
+        "optimum_effects": {
+          "not_applicable_infeasible": 4,
+          "same": 16
+        },
+        "outcome_effects": {
+          "improved": 1,
+          "same": 19
+        },
+        "pairs": 20,
+        "scope": "domain",
+        "structural_effects": {
+          "same": 12,
+          "worsened": 8
+        }
+      },
+      {
+        "after_abstention": 2,
+        "after_feasible_valid": 21,
+        "after_optimal": 21,
+        "after_outcome_correct": 24,
+        "after_structural_match": 17,
+        "after_terminal_failure": 2,
+        "after_usable_output": 24,
+        "before_abstention": 2,
+        "before_feasible_valid": 21,
+        "before_optimal": 21,
+        "before_outcome_correct": 24,
+        "before_structural_match": 21,
+        "before_terminal_failure": 2,
+        "before_usable_output": 24,
+        "canonical_validity_effects": {
+          "not_applicable_infeasible": 4,
+          "same": 24
+        },
+        "category": "cp_sat",
+        "cost_delta_mean_usd": 0.0,
+        "cost_delta_median_usd": 0.0,
+        "cost_delta_unknown_usage_pairs": 1,
+        "feasible_pair_denominator": 24,
+        "formulation_change_categories": {
+          "applied_edit_no_net_typed_change": 0,
+          "asked_no_applied_formulation_change": 20,
+          "no_questions": 0,
+          "typed_formulation_changed": 4,
+          "unavailable_formulation": 4
+        },
+        "latency_delta_mean_s": 0.1950252903583792,
+        "latency_delta_median_s": 0.20642941701225936,
+        "objective_effects": {
+          "not_comparable": 7,
+          "same": 21
+        },
+        "optimum_effects": {
+          "not_applicable_infeasible": 4,
+          "same": 24
+        },
+        "outcome_effects": {
+          "same": 28
+        },
+        "pairs": 28,
+        "scope": "engine",
+        "structural_effects": {
+          "same": 24,
+          "worsened": 4
+        }
+      },
+      {
+        "after_abstention": 2,
+        "after_feasible_valid": 19,
+        "after_optimal": 17,
+        "after_outcome_correct": 22,
+        "after_structural_match": 17,
+        "after_terminal_failure": 3,
+        "after_usable_output": 23,
+        "before_abstention": 2,
+        "before_feasible_valid": 18,
+        "before_optimal": 17,
+        "before_outcome_correct": 21,
+        "before_structural_match": 21,
+        "before_terminal_failure": 2,
+        "before_usable_output": 24,
+        "canonical_validity_effects": {
+          "improved": 2,
+          "not_applicable_infeasible": 4,
+          "same": 21,
+          "worsened": 1
+        },
+        "category": "direct_llm",
+        "cost_delta_mean_usd": 2.4992857142856967e-05,
+        "cost_delta_median_usd": 2.500000000000061e-07,
+        "cost_delta_unknown_usage_pairs": 2,
+        "feasible_pair_denominator": 24,
+        "formulation_change_categories": {
+          "applied_edit_no_net_typed_change": 0,
+          "asked_no_applied_formulation_change": 20,
+          "no_questions": 0,
+          "typed_formulation_changed": 4,
+          "unavailable_formulation": 4
+        },
+        "latency_delta_mean_s": 9.823484812518084,
+        "latency_delta_median_s": 0.15267708350438625,
+        "objective_effects": {
+          "improved": 1,
+          "not_comparable": 11,
+          "same": 16
+        },
+        "optimum_effects": {
+          "improved": 1,
+          "not_applicable_infeasible": 4,
+          "same": 22,
+          "worsened": 1
+        },
+        "outcome_effects": {
+          "improved": 2,
+          "same": 25,
+          "worsened": 1
+        },
+        "pairs": 28,
+        "scope": "engine",
+        "structural_effects": {
+          "same": 24,
+          "worsened": 4
+        }
+      },
+      {
+        "after_abstention": 2,
+        "after_feasible_valid": 18,
+        "after_optimal": 16,
+        "after_outcome_correct": 20,
+        "after_structural_match": 14,
+        "after_terminal_failure": 5,
+        "after_usable_output": 21,
+        "before_abstention": 2,
+        "before_feasible_valid": 17,
+        "before_optimal": 16,
+        "before_outcome_correct": 19,
+        "before_structural_match": 18,
+        "before_terminal_failure": 4,
+        "before_usable_output": 22,
+        "canonical_validity_effects": {
+          "improved": 2,
+          "not_applicable_infeasible": 4,
+          "same": 21,
+          "worsened": 1
+        },
+        "category": "gpt-6-luna",
+        "cost_delta_mean_usd": 5.856428571428569e-05,
+        "cost_delta_median_usd": 0.0,
+        "cost_delta_unknown_usage_pairs": 3,
+        "feasible_pair_denominator": 24,
+        "formulation_change_categories": {
+          "applied_edit_no_net_typed_change": 0,
+          "asked_no_applied_formulation_change": 18,
+          "no_questions": 0,
+          "typed_formulation_changed": 4,
+          "unavailable_formulation": 6
+        },
+        "latency_delta_mean_s": 10.157228413690714,
+        "latency_delta_median_s": 0.20903487550094724,
+        "objective_effects": {
+          "improved": 1,
+          "not_comparable": 12,
+          "same": 15
+        },
+        "optimum_effects": {
+          "improved": 1,
+          "not_applicable_infeasible": 4,
+          "same": 22,
+          "worsened": 1
+        },
+        "outcome_effects": {
+          "improved": 2,
+          "same": 25,
+          "worsened": 1
+        },
+        "pairs": 28,
+        "scope": "model",
+        "structural_effects": {
+          "same": 24,
+          "worsened": 4
+        }
+      },
+      {
+        "after_abstention": 2,
+        "after_feasible_valid": 22,
+        "after_optimal": 22,
+        "after_outcome_correct": 26,
+        "after_structural_match": 20,
+        "after_terminal_failure": 0,
+        "after_usable_output": 26,
+        "before_abstention": 2,
+        "before_feasible_valid": 22,
+        "before_optimal": 22,
+        "before_outcome_correct": 26,
+        "before_structural_match": 24,
+        "before_terminal_failure": 0,
+        "before_usable_output": 26,
+        "canonical_validity_effects": {
+          "not_applicable_infeasible": 4,
+          "same": 24
+        },
+        "category": "gpt-6.1-sol",
+        "cost_delta_mean_usd": -3.357142857142872e-05,
+        "cost_delta_median_usd": 0.0,
+        "cost_delta_unknown_usage_pairs": 0,
+        "feasible_pair_denominator": 24,
+        "formulation_change_categories": {
+          "applied_edit_no_net_typed_change": 0,
+          "asked_no_applied_formulation_change": 22,
+          "no_questions": 0,
+          "typed_formulation_changed": 4,
+          "unavailable_formulation": 2
+        },
+        "latency_delta_mean_s": -0.13871831081425107,
+        "latency_delta_median_s": 0.20360341656487435,
+        "objective_effects": {
+          "not_comparable": 6,
+          "same": 22
+        },
+        "optimum_effects": {
+          "not_applicable_infeasible": 4,
+          "same": 24
+        },
+        "outcome_effects": {
+          "same": 28
+        },
+        "pairs": 28,
+        "scope": "model",
+        "structural_effects": {
+          "same": 24,
+          "worsened": 4
+        }
+      },
+      {
+        "after_abstention": 4,
+        "after_feasible_valid": 40,
+        "after_optimal": 38,
+        "after_outcome_correct": 46,
+        "after_structural_match": 34,
+        "after_terminal_failure": 5,
+        "after_usable_output": 47,
+        "before_abstention": 4,
+        "before_feasible_valid": 39,
+        "before_optimal": 38,
+        "before_outcome_correct": 45,
+        "before_structural_match": 42,
+        "before_terminal_failure": 4,
+        "before_usable_output": 48,
+        "canonical_validity_effects": {
+          "improved": 2,
+          "not_applicable_infeasible": 8,
+          "same": 45,
+          "worsened": 1
+        },
+        "category": "all",
+        "cost_delta_mean_usd": 1.2496428571428483e-05,
+        "cost_delta_median_usd": 0.0,
+        "cost_delta_unknown_usage_pairs": 3,
+        "feasible_pair_denominator": 48,
+        "formulation_change_categories": {
+          "applied_edit_no_net_typed_change": 0,
+          "asked_no_applied_formulation_change": 40,
+          "no_questions": 0,
+          "typed_formulation_changed": 8,
+          "unavailable_formulation": 8
+        },
+        "latency_delta_mean_s": 5.009255051438231,
+        "latency_delta_median_s": 0.20642941701225936,
+        "objective_effects": {
+          "improved": 1,
+          "not_comparable": 18,
+          "same": 37
+        },
+        "optimum_effects": {
+          "improved": 1,
+          "not_applicable_infeasible": 8,
+          "same": 46,
+          "worsened": 1
+        },
+        "outcome_effects": {
+          "improved": 2,
+          "same": 53,
+          "worsened": 1
+        },
+        "pairs": 56,
+        "scope": "overall",
+        "structural_effects": {
+          "same": 48,
+          "worsened": 8
+        }
+      }
+    ],
+    "model": [
+      {
+        "after_abstention": 4,
+        "after_feasible_valid": 28,
+        "after_optimal": 28,
+        "after_outcome_correct": 32,
+        "after_structural_match": 28,
+        "after_terminal_failure": 0,
+        "after_usable_output": 32,
+        "before_abstention": 4,
+        "before_feasible_valid": 20,
+        "before_optimal": 20,
+        "before_outcome_correct": 20,
+        "before_structural_match": 16,
+        "before_terminal_failure": 9,
+        "before_usable_output": 23,
+        "canonical_validity_effects": {
+          "improved": 12,
+          "not_applicable_infeasible": 4,
+          "same": 16,
+          "worsened": 4
+        },
+        "category": "dayplan",
+        "cost_delta_mean_usd": 0.006341438888888889,
+        "cost_delta_median_usd": 0.0055096,
+        "cost_delta_unknown_usage_pairs": 5,
+        "feasible_pair_denominator": 32,
+        "latency_delta_mean_s": -29.418735874978463,
+        "latency_delta_median_s": 1.6384213538258336,
+        "objective_effects": {
+          "not_comparable": 20,
+          "same": 16
+        },
+        "optimum_effects": {
+          "improved": 12,
+          "not_applicable_infeasible": 4,
+          "same": 16,
+          "worsened": 4
+        },
+        "outcome_effects": {
+          "improved": 16,
+          "same": 16,
+          "worsened": 4
+        },
+        "pairs": 36,
+        "scope": "domain",
+        "structural_effects": {
+          "improved": 12,
+          "same": 24
+        }
+      },
+      {
+        "after_abstention": 0,
+        "after_feasible_valid": 16,
+        "after_optimal": 16,
+        "after_outcome_correct": 20,
+        "after_structural_match": 16,
+        "after_terminal_failure": 0,
+        "after_usable_output": 20,
+        "before_abstention": 0,
+        "before_feasible_valid": 15,
+        "before_optimal": 12,
+        "before_outcome_correct": 19,
+        "before_structural_match": 16,
+        "before_terminal_failure": 0,
+        "before_usable_output": 20,
+        "canonical_validity_effects": {
+          "improved": 1,
+          "not_applicable_infeasible": 4,
+          "same": 15
+        },
+        "category": "shift_schedule",
+        "cost_delta_mean_usd": 0.01718735,
+        "cost_delta_median_usd": 0.0072332,
+        "cost_delta_unknown_usage_pairs": 0,
+        "feasible_pair_denominator": 16,
+        "latency_delta_mean_s": 6.928308706369717,
+        "latency_delta_median_s": 4.375638603407424,
+        "objective_effects": {
+          "improved": 3,
+          "not_comparable": 5,
+          "same": 12
+        },
+        "optimum_effects": {
+          "improved": 4,
+          "not_applicable_infeasible": 4,
+          "same": 12
+        },
+        "outcome_effects": {
+          "improved": 1,
+          "same": 19
+        },
+        "pairs": 20,
+        "scope": "domain",
+        "structural_effects": {
+          "same": 20
+        }
+      },
+      {
+        "after_abstention": 2,
+        "after_feasible_valid": 22,
+        "after_optimal": 22,
+        "after_outcome_correct": 26,
+        "after_structural_match": 22,
+        "after_terminal_failure": 0,
+        "after_usable_output": 26,
+        "before_abstention": 2,
+        "before_feasible_valid": 20,
+        "before_optimal": 20,
+        "before_outcome_correct": 22,
+        "before_structural_match": 16,
+        "before_terminal_failure": 4,
+        "before_usable_output": 22,
+        "canonical_validity_effects": {
+          "improved": 4,
+          "not_applicable_infeasible": 4,
+          "same": 18,
+          "worsened": 2
+        },
+        "category": "cp_sat",
+        "cost_delta_mean_usd": 0.007654978571428572,
+        "cost_delta_median_usd": 0.0049102,
+        "cost_delta_unknown_usage_pairs": 2,
+        "feasible_pair_denominator": 24,
+        "latency_delta_mean_s": -13.179433555146845,
+        "latency_delta_median_s": 2.2581657494301908,
+        "objective_effects": {
+          "not_comparable": 10,
+          "same": 18
+        },
+        "optimum_effects": {
+          "improved": 4,
+          "not_applicable_infeasible": 4,
+          "same": 18,
+          "worsened": 2
+        },
+        "outcome_effects": {
+          "improved": 6,
+          "same": 20,
+          "worsened": 2
+        },
+        "pairs": 28,
+        "scope": "engine",
+        "structural_effects": {
+          "improved": 6,
+          "same": 22
+        }
+      },
+      {
+        "after_abstention": 2,
+        "after_feasible_valid": 22,
+        "after_optimal": 22,
+        "after_outcome_correct": 26,
+        "after_structural_match": 22,
+        "after_terminal_failure": 0,
+        "after_usable_output": 26,
+        "before_abstention": 2,
+        "before_feasible_valid": 15,
+        "before_optimal": 12,
+        "before_outcome_correct": 17,
+        "before_structural_match": 16,
+        "before_terminal_failure": 5,
+        "before_usable_output": 21,
+        "canonical_validity_effects": {
+          "improved": 9,
+          "not_applicable_infeasible": 4,
+          "same": 13,
+          "worsened": 2
+        },
+        "category": "direct_llm",
+        "cost_delta_mean_usd": 0.012774978571428572,
+        "cost_delta_median_usd": 0.00696485,
+        "cost_delta_unknown_usage_pairs": 3,
+        "feasible_pair_denominator": 24,
+        "latency_delta_mean_s": -19.695863493847096,
+        "latency_delta_median_s": 3.2866240625153296,
+        "objective_effects": {
+          "improved": 3,
+          "not_comparable": 15,
+          "same": 10
+        },
+        "optimum_effects": {
+          "improved": 12,
+          "not_applicable_infeasible": 4,
+          "same": 10,
+          "worsened": 2
+        },
+        "outcome_effects": {
+          "improved": 11,
+          "same": 15,
+          "worsened": 2
+        },
+        "pairs": 28,
+        "scope": "engine",
+        "structural_effects": {
+          "improved": 6,
+          "same": 22
+        }
+      },
+      {
+        "after_abstention": 1,
+        "after_feasible_valid": 11,
+        "after_optimal": 11,
+        "after_outcome_correct": 13,
+        "after_structural_match": 12,
+        "after_terminal_failure": 0,
+        "after_usable_output": 13,
+        "before_abstention": 1,
+        "before_feasible_valid": 10,
+        "before_optimal": 10,
+        "before_outcome_correct": 11,
+        "before_structural_match": 9,
+        "before_terminal_failure": 2,
+        "before_usable_output": 11,
+        "canonical_validity_effects": {
+          "improved": 2,
+          "not_applicable_infeasible": 2,
+          "same": 9,
+          "worsened": 1
+        },
+        "category": "cp_sat/jev=false",
+        "cost_delta_mean_usd": 0.007654978571428572,
+        "cost_delta_median_usd": 0.0049102,
+        "cost_delta_unknown_usage_pairs": 1,
+        "feasible_pair_denominator": 12,
+        "latency_delta_mean_s": -13.203689771072407,
+        "latency_delta_median_s": 2.2488319578696974,
+        "objective_effects": {
+          "not_comparable": 5,
+          "same": 9
+        },
+        "optimum_effects": {
+          "improved": 2,
+          "not_applicable_infeasible": 2,
+          "same": 9,
+          "worsened": 1
+        },
+        "outcome_effects": {
+          "improved": 3,
+          "same": 10,
+          "worsened": 1
+        },
+        "pairs": 14,
+        "scope": "engine_jev",
+        "structural_effects": {
+          "improved": 3,
+          "same": 11
+        }
+      },
+      {
+        "after_abstention": 1,
+        "after_feasible_valid": 11,
+        "after_optimal": 11,
+        "after_outcome_correct": 13,
+        "after_structural_match": 10,
+        "after_terminal_failure": 0,
+        "after_usable_output": 13,
+        "before_abstention": 1,
+        "before_feasible_valid": 10,
+        "before_optimal": 10,
+        "before_outcome_correct": 11,
+        "before_structural_match": 7,
+        "before_terminal_failure": 2,
+        "before_usable_output": 11,
+        "canonical_validity_effects": {
+          "improved": 2,
+          "not_applicable_infeasible": 2,
+          "same": 9,
+          "worsened": 1
+        },
+        "category": "cp_sat/jev=true",
+        "cost_delta_mean_usd": 0.007654978571428572,
+        "cost_delta_median_usd": 0.0049102,
+        "cost_delta_unknown_usage_pairs": 1,
+        "feasible_pair_denominator": 12,
+        "latency_delta_mean_s": -13.155177339221284,
+        "latency_delta_median_s": 2.3022135829087347,
+        "objective_effects": {
+          "not_comparable": 5,
+          "same": 9
+        },
+        "optimum_effects": {
+          "improved": 2,
+          "not_applicable_infeasible": 2,
+          "same": 9,
+          "worsened": 1
+        },
+        "outcome_effects": {
+          "improved": 3,
+          "same": 10,
+          "worsened": 1
+        },
+        "pairs": 14,
+        "scope": "engine_jev",
+        "structural_effects": {
+          "improved": 3,
+          "same": 11
+        }
+      },
+      {
+        "after_abstention": 1,
+        "after_feasible_valid": 11,
+        "after_optimal": 11,
+        "after_outcome_correct": 13,
+        "after_structural_match": 12,
+        "after_terminal_failure": 0,
+        "after_usable_output": 13,
+        "before_abstention": 1,
+        "before_feasible_valid": 7,
+        "before_optimal": 6,
+        "before_outcome_correct": 8,
+        "before_structural_match": 9,
+        "before_terminal_failure": 2,
+        "before_usable_output": 11,
+        "canonical_validity_effects": {
+          "improved": 5,
+          "not_applicable_infeasible": 2,
+          "same": 6,
+          "worsened": 1
+        },
+        "category": "direct_llm/jev=false",
+        "cost_delta_mean_usd": 0.012867114285714286,
+        "cost_delta_median_usd": 0.0070396,
+        "cost_delta_unknown_usage_pairs": 1,
+        "feasible_pair_denominator": 12,
+        "latency_delta_mean_s": -9.37566055341657,
+        "latency_delta_median_s": 4.682830708916299,
+        "objective_effects": {
+          "improved": 1,
+          "not_comparable": 8,
+          "same": 5
+        },
+        "optimum_effects": {
+          "improved": 6,
+          "not_applicable_infeasible": 2,
+          "same": 5,
+          "worsened": 1
+        },
+        "outcome_effects": {
+          "improved": 6,
+          "same": 7,
+          "worsened": 1
+        },
+        "pairs": 14,
+        "scope": "engine_jev",
+        "structural_effects": {
+          "improved": 3,
+          "same": 11
+        }
+      },
+      {
+        "after_abstention": 1,
+        "after_feasible_valid": 11,
+        "after_optimal": 11,
+        "after_outcome_correct": 13,
+        "after_structural_match": 10,
+        "after_terminal_failure": 0,
+        "after_usable_output": 13,
+        "before_abstention": 1,
+        "before_feasible_valid": 8,
+        "before_optimal": 6,
+        "before_outcome_correct": 9,
+        "before_structural_match": 7,
+        "before_terminal_failure": 3,
+        "before_usable_output": 10,
+        "canonical_validity_effects": {
+          "improved": 4,
+          "not_applicable_infeasible": 2,
+          "same": 7,
+          "worsened": 1
+        },
+        "category": "direct_llm/jev=true",
+        "cost_delta_mean_usd": 0.012682842857142856,
+        "cost_delta_median_usd": 0.00696485,
+        "cost_delta_unknown_usage_pairs": 2,
+        "feasible_pair_denominator": 12,
+        "latency_delta_mean_s": -30.016066434277622,
+        "latency_delta_median_s": 2.90010264510056,
+        "objective_effects": {
+          "improved": 2,
+          "not_comparable": 7,
+          "same": 5
+        },
+        "optimum_effects": {
+          "improved": 6,
+          "not_applicable_infeasible": 2,
+          "same": 5,
+          "worsened": 1
+        },
+        "outcome_effects": {
+          "improved": 5,
+          "same": 8,
+          "worsened": 1
+        },
+        "pairs": 14,
+        "scope": "engine_jev",
+        "structural_effects": {
+          "improved": 3,
+          "same": 11
+        }
+      },
+      {
+        "after_abstention": 2,
+        "after_feasible_valid": 22,
+        "after_optimal": 22,
+        "after_outcome_correct": 26,
+        "after_structural_match": 24,
+        "after_terminal_failure": 0,
+        "after_usable_output": 26,
+        "before_abstention": 2,
+        "before_feasible_valid": 17,
+        "before_optimal": 16,
+        "before_outcome_correct": 19,
+        "before_structural_match": 18,
+        "before_terminal_failure": 4,
+        "before_usable_output": 22,
+        "canonical_validity_effects": {
+          "improved": 7,
+          "not_applicable_infeasible": 4,
+          "same": 15,
+          "worsened": 2
+        },
+        "category": "false",
+        "cost_delta_mean_usd": 0.01026104642857143,
+        "cost_delta_median_usd": 0.0061514,
+        "cost_delta_unknown_usage_pairs": 2,
+        "feasible_pair_denominator": 24,
+        "latency_delta_mean_s": -11.289675162244489,
+        "latency_delta_median_s": 3.3227935419417918,
+        "objective_effects": {
+          "improved": 1,
+          "not_comparable": 13,
+          "same": 14
+        },
+        "optimum_effects": {
+          "improved": 8,
+          "not_applicable_infeasible": 4,
+          "same": 14,
+          "worsened": 2
+        },
+        "outcome_effects": {
+          "improved": 9,
+          "same": 17,
+          "worsened": 2
+        },
+        "pairs": 28,
+        "scope": "jev",
+        "structural_effects": {
+          "improved": 6,
+          "same": 22
+        }
+      },
+      {
+        "after_abstention": 2,
+        "after_feasible_valid": 22,
+        "after_optimal": 22,
+        "after_outcome_correct": 26,
+        "after_structural_match": 20,
+        "after_terminal_failure": 0,
+        "after_usable_output": 26,
+        "before_abstention": 2,
+        "before_feasible_valid": 18,
+        "before_optimal": 16,
+        "before_outcome_correct": 20,
+        "before_structural_match": 14,
+        "before_terminal_failure": 5,
+        "before_usable_output": 21,
+        "canonical_validity_effects": {
+          "improved": 6,
+          "not_applicable_infeasible": 4,
+          "same": 16,
+          "worsened": 2
+        },
+        "category": "true",
+        "cost_delta_mean_usd": 0.010168910714285714,
+        "cost_delta_median_usd": 0.00611585,
+        "cost_delta_unknown_usage_pairs": 3,
+        "feasible_pair_denominator": 24,
+        "latency_delta_mean_s": -21.585621886749454,
+        "latency_delta_median_s": 2.853522978548426,
+        "objective_effects": {
+          "improved": 2,
+          "not_comparable": 12,
+          "same": 14
+        },
+        "optimum_effects": {
+          "improved": 8,
+          "not_applicable_infeasible": 4,
+          "same": 14,
+          "worsened": 2
+        },
+        "outcome_effects": {
+          "improved": 8,
+          "same": 18,
+          "worsened": 2
+        },
+        "pairs": 28,
+        "scope": "jev",
+        "structural_effects": {
+          "improved": 6,
+          "same": 22
+        }
+      },
+      {
+        "after_abstention": 4,
+        "after_feasible_valid": 44,
+        "after_optimal": 44,
+        "after_outcome_correct": 52,
+        "after_structural_match": 44,
+        "after_terminal_failure": 0,
+        "after_usable_output": 52,
+        "before_abstention": 4,
+        "before_feasible_valid": 35,
+        "before_optimal": 32,
+        "before_outcome_correct": 39,
+        "before_structural_match": 32,
+        "before_terminal_failure": 9,
+        "before_usable_output": 43,
+        "canonical_validity_effects": {
+          "improved": 13,
+          "not_applicable_infeasible": 8,
+          "same": 31,
+          "worsened": 4
+        },
+        "category": "all",
+        "cost_delta_mean_usd": 0.010214978571428572,
+        "cost_delta_median_usd": 0.00614585,
+        "cost_delta_unknown_usage_pairs": 5,
+        "feasible_pair_denominator": 48,
+        "latency_delta_mean_s": -16.43764852449697,
+        "latency_delta_median_s": 3.0900482914876193,
+        "objective_effects": {
+          "improved": 3,
+          "not_comparable": 25,
+          "same": 28
+        },
+        "optimum_effects": {
+          "improved": 16,
+          "not_applicable_infeasible": 8,
+          "same": 28,
+          "worsened": 4
+        },
+        "outcome_effects": {
+          "improved": 17,
+          "same": 35,
+          "worsened": 4
+        },
+        "pairs": 56,
+        "scope": "overall",
+        "structural_effects": {
+          "improved": 12,
+          "same": 44
+        }
+      }
+    ]
+  },
+  "plot_dependencies": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.3",
+    "pillow": "12.3.0"
+  },
+  "provenance": {
+    "analysis_script_sha256": "0af68032df329d7c3aae567bafdda99bff338c36c8db2ded5f34f40f77f7c780",
+    "answer_key_sha256": "17f408a714821385b0910b8fc1440c087d4aa516c4c60d93cf1be677e7797ed0",
+    "authoritative_input": "reconciled.jsonl",
+    "immutable_inputs_verified": 74,
+    "manifest_sha256": "5565f8be829d4a6bb644d3b41561872726833953a5770c6829c8420e4f2a7b6d",
+    "reconciled_sha256": "0ea7bda8c1c9d2f81291b8ce75f0206019ba913f3f8bb5223d76870cfb8b348d"
+  }
+}

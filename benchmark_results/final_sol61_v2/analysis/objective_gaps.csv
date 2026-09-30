@@ -1,0 +1,113 @@
+case_id,domain,architecture,canonical_feasible,canonical_validation_valid,objective_value,optimal_objective,objective_gap,optimal
+active_and_passive,dayplan,Luna 6 · CP-SAT,True,True,0,0,0,True
+active_and_passive,dayplan,Luna 6 · Direct LLM,True,True,0,0,0,True
+active_and_passive,dayplan,Luna 6 · Jev · CP-SAT,True,True,0,0,0,True
+active_and_passive,dayplan,Luna 6 · Jev · Direct LLM,True,True,0,0,0,True
+active_and_passive,dayplan,Sol 6.1 · CP-SAT,True,True,0,0,0,True
+active_and_passive,dayplan,Sol 6.1 · Direct LLM,True,True,0,0,0,True
+active_and_passive,dayplan,Sol 6.1 · Jev · CP-SAT,True,True,0,0,0,True
+active_and_passive,dayplan,Sol 6.1 · Jev · Direct LLM,True,True,0,0,0,True
+hard_timing,dayplan,Luna 6 · CP-SAT,True,True,0,0,0,True
+hard_timing,dayplan,Luna 6 · Direct LLM,True,False,0,0,,False
+hard_timing,dayplan,Luna 6 · Jev · CP-SAT,True,True,0,0,0,True
+hard_timing,dayplan,Luna 6 · Jev · Direct LLM,True,True,0,0,0,True
+hard_timing,dayplan,Sol 6.1 · CP-SAT,True,True,0,0,0,True
+hard_timing,dayplan,Sol 6.1 · Direct LLM,True,True,0,0,0,True
+hard_timing,dayplan,Sol 6.1 · Jev · CP-SAT,True,True,0,0,0,True
+hard_timing,dayplan,Sol 6.1 · Jev · Direct LLM,True,True,0,0,0,True
+impossible_hard_workout_window,dayplan,Luna 6 · CP-SAT,False,False,,,,False
+impossible_hard_workout_window,dayplan,Luna 6 · Direct LLM,False,False,,,,False
+impossible_hard_workout_window,dayplan,Luna 6 · Jev · CP-SAT,False,False,,,,False
+impossible_hard_workout_window,dayplan,Luna 6 · Jev · Direct LLM,False,False,,,,False
+impossible_hard_workout_window,dayplan,Sol 6.1 · CP-SAT,False,True,,,,False
+impossible_hard_workout_window,dayplan,Sol 6.1 · Direct LLM,False,True,,,,False
+impossible_hard_workout_window,dayplan,Sol 6.1 · Jev · CP-SAT,False,True,,,,False
+impossible_hard_workout_window,dayplan,Sol 6.1 · Jev · Direct LLM,False,True,,,,False
+infeasible_staffing_is_extracted_not_repaired,shift_schedule,Luna 6 · CP-SAT,False,True,,,,False
+infeasible_staffing_is_extracted_not_repaired,shift_schedule,Luna 6 · Direct LLM,False,True,,,,False
+infeasible_staffing_is_extracted_not_repaired,shift_schedule,Luna 6 · Jev · CP-SAT,False,True,,,,False
+infeasible_staffing_is_extracted_not_repaired,shift_schedule,Luna 6 · Jev · Direct LLM,False,True,,,,False
+infeasible_staffing_is_extracted_not_repaired,shift_schedule,Sol 6.1 · CP-SAT,False,True,,,,False
+infeasible_staffing_is_extracted_not_repaired,shift_schedule,Sol 6.1 · Direct LLM,False,True,,,,False
+infeasible_staffing_is_extracted_not_repaired,shift_schedule,Sol 6.1 · Jev · CP-SAT,False,True,,,,False
+infeasible_staffing_is_extracted_not_repaired,shift_schedule,Sol 6.1 · Jev · Direct LLM,False,True,,,,False
+laundry_precedence,dayplan,Luna 6 · CP-SAT,True,True,0,0,0,True
+laundry_precedence,dayplan,Luna 6 · Direct LLM,True,False,0,0,,False
+laundry_precedence,dayplan,Luna 6 · Jev · CP-SAT,True,True,0,0,0,True
+laundry_precedence,dayplan,Luna 6 · Jev · Direct LLM,True,False,0,0,,False
+laundry_precedence,dayplan,Sol 6.1 · CP-SAT,True,True,0,0,0,True
+laundry_precedence,dayplan,Sol 6.1 · Direct LLM,True,True,0,0,0,True
+laundry_precedence,dayplan,Sol 6.1 · Jev · CP-SAT,True,True,0,0,0,True
+laundry_precedence,dayplan,Sol 6.1 · Jev · Direct LLM,True,True,0,0,0,True
+optional_walk_if_time,dayplan,Luna 6 · CP-SAT,True,True,0,0,0,True
+optional_walk_if_time,dayplan,Luna 6 · Direct LLM,True,True,0,0,0,True
+optional_walk_if_time,dayplan,Luna 6 · Jev · CP-SAT,True,True,0,0,0,True
+optional_walk_if_time,dayplan,Luna 6 · Jev · Direct LLM,True,True,0,0,0,True
+optional_walk_if_time,dayplan,Sol 6.1 · CP-SAT,True,False,,0,,False
+optional_walk_if_time,dayplan,Sol 6.1 · Direct LLM,True,False,,0,,False
+optional_walk_if_time,dayplan,Sol 6.1 · Jev · CP-SAT,True,False,,0,,False
+optional_walk_if_time,dayplan,Sol 6.1 · Jev · Direct LLM,True,False,,0,,False
+preferences_and_availability,shift_schedule,Luna 6 · CP-SAT,True,True,0,0,0,True
+preferences_and_availability,shift_schedule,Luna 6 · Direct LLM,True,True,0,0,0,True
+preferences_and_availability,shift_schedule,Luna 6 · Jev · CP-SAT,True,True,0,0,0,True
+preferences_and_availability,shift_schedule,Luna 6 · Jev · Direct LLM,True,True,0,0,0,True
+preferences_and_availability,shift_schedule,Sol 6.1 · CP-SAT,True,True,0,0,0,True
+preferences_and_availability,shift_schedule,Sol 6.1 · Direct LLM,True,True,0,0,0,True
+preferences_and_availability,shift_schedule,Sol 6.1 · Jev · CP-SAT,True,True,0,0,0,True
+preferences_and_availability,shift_schedule,Sol 6.1 · Jev · Direct LLM,True,True,0,0,0,True
+regional_week,shift_schedule,Luna 6 · CP-SAT,True,True,840,840,0,True
+regional_week,shift_schedule,Luna 6 · Direct LLM,True,True,1320,840,480,False
+regional_week,shift_schedule,Luna 6 · Jev · CP-SAT,True,True,840,840,0,True
+regional_week,shift_schedule,Luna 6 · Jev · Direct LLM,True,True,960,840,120,False
+regional_week,shift_schedule,Sol 6.1 · CP-SAT,True,True,840,840,0,True
+regional_week,shift_schedule,Sol 6.1 · Direct LLM,True,True,840,840,0,True
+regional_week,shift_schedule,Sol 6.1 · Jev · CP-SAT,True,True,840,840,0,True
+regional_week,shift_schedule,Sol 6.1 · Jev · Direct LLM,True,True,840,840,0,True
+soft_finish_preference,dayplan,Luna 6 · CP-SAT,True,True,0,0,0,True
+soft_finish_preference,dayplan,Luna 6 · Direct LLM,True,True,0,0,0,True
+soft_finish_preference,dayplan,Luna 6 · Jev · CP-SAT,True,True,0,0,0,True
+soft_finish_preference,dayplan,Luna 6 · Jev · Direct LLM,True,True,0,0,0,True
+soft_finish_preference,dayplan,Sol 6.1 · CP-SAT,True,True,0,0,0,True
+soft_finish_preference,dayplan,Sol 6.1 · Direct LLM,True,True,0,0,0,True
+soft_finish_preference,dayplan,Sol 6.1 · Jev · CP-SAT,True,True,0,0,0,True
+soft_finish_preference,dayplan,Sol 6.1 · Jev · Direct LLM,True,True,0,0,0,True
+straightforward_staffing,shift_schedule,Luna 6 · CP-SAT,True,True,480,480,0,True
+straightforward_staffing,shift_schedule,Luna 6 · Direct LLM,True,True,480,480,0,True
+straightforward_staffing,shift_schedule,Luna 6 · Jev · CP-SAT,True,True,480,480,0,True
+straightforward_staffing,shift_schedule,Luna 6 · Jev · Direct LLM,True,True,480,480,0,True
+straightforward_staffing,shift_schedule,Sol 6.1 · CP-SAT,True,True,480,480,0,True
+straightforward_staffing,shift_schedule,Sol 6.1 · Direct LLM,True,True,480,480,0,True
+straightforward_staffing,shift_schedule,Sol 6.1 · Jev · CP-SAT,True,True,480,480,0,True
+straightforward_staffing,shift_schedule,Sol 6.1 · Jev · Direct LLM,True,True,480,480,0,True
+ten_day_rotation,shift_schedule,Luna 6 · CP-SAT,True,True,720,720,0,True
+ten_day_rotation,shift_schedule,Luna 6 · Direct LLM,True,False,2760,720,,False
+ten_day_rotation,shift_schedule,Luna 6 · Jev · CP-SAT,True,True,720,720,0,True
+ten_day_rotation,shift_schedule,Luna 6 · Jev · Direct LLM,True,True,1200,720,480,False
+ten_day_rotation,shift_schedule,Sol 6.1 · CP-SAT,True,True,720,720,0,True
+ten_day_rotation,shift_schedule,Sol 6.1 · Direct LLM,True,True,720,720,0,True
+ten_day_rotation,shift_schedule,Sol 6.1 · Jev · CP-SAT,True,True,720,720,0,True
+ten_day_rotation,shift_schedule,Sol 6.1 · Jev · Direct LLM,True,True,720,720,0,True
+wfh_laundry_lift_groceries,dayplan,Luna 6 · CP-SAT,True,False,,3,,False
+wfh_laundry_lift_groceries,dayplan,Luna 6 · Direct LLM,True,False,,3,,False
+wfh_laundry_lift_groceries,dayplan,Luna 6 · Jev · CP-SAT,True,False,,3,,False
+wfh_laundry_lift_groceries,dayplan,Luna 6 · Jev · Direct LLM,True,False,,3,,False
+wfh_laundry_lift_groceries,dayplan,Sol 6.1 · CP-SAT,True,True,3,3,0,True
+wfh_laundry_lift_groceries,dayplan,Sol 6.1 · Direct LLM,True,True,3,3,0,True
+wfh_laundry_lift_groceries,dayplan,Sol 6.1 · Jev · CP-SAT,True,True,3,3,0,True
+wfh_laundry_lift_groceries,dayplan,Sol 6.1 · Jev · Direct LLM,True,True,3,3,0,True
+workout_before_four_hard,dayplan,Luna 6 · CP-SAT,True,True,0,0,0,True
+workout_before_four_hard,dayplan,Luna 6 · Direct LLM,True,True,0,0,0,True
+workout_before_four_hard,dayplan,Luna 6 · Jev · CP-SAT,True,True,0,0,0,True
+workout_before_four_hard,dayplan,Luna 6 · Jev · Direct LLM,True,False,,0,,False
+workout_before_four_hard,dayplan,Sol 6.1 · CP-SAT,True,True,0,0,0,True
+workout_before_four_hard,dayplan,Sol 6.1 · Direct LLM,True,True,0,0,0,True
+workout_before_four_hard,dayplan,Sol 6.1 · Jev · CP-SAT,True,True,0,0,0,True
+workout_before_four_hard,dayplan,Sol 6.1 · Jev · Direct LLM,True,True,0,0,0,True
+workout_before_four_soft,dayplan,Luna 6 · CP-SAT,True,False,,0,,False
+workout_before_four_soft,dayplan,Luna 6 · Direct LLM,True,False,,0,,False
+workout_before_four_soft,dayplan,Luna 6 · Jev · CP-SAT,True,False,,0,,False
+workout_before_four_soft,dayplan,Luna 6 · Jev · Direct LLM,True,False,,0,,False
+workout_before_four_soft,dayplan,Sol 6.1 · CP-SAT,True,True,0,0,0,True
+workout_before_four_soft,dayplan,Sol 6.1 · Direct LLM,True,True,0,0,0,True
+workout_before_four_soft,dayplan,Sol 6.1 · Jev · CP-SAT,True,True,0,0,0,True
+workout_before_four_soft,dayplan,Sol 6.1 · Jev · Direct LLM,True,True,0,0,0,True

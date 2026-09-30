@@ -1,0 +1,781 @@
+{
+  "definitions": {
+    "choice_binary_brier": "0.5 * sum over both classes (p_k-y_k)^2; equivalent to positive-class squared error; range 0\u20131. Also report the unscaled two-class sum (range 0\u20132).",
+    "noul_binary_brier": "(p_yes - y_yes)^2; range 0\u20131; separate from Choice.",
+    "reliability": "Confidence of the selected Jev answer versus exact correctness, five equal-width bins [0,.2), \u2026, [.8,1]. Missing/unaligned/subjective labels excluded; empty bins are null.",
+    "score_mae": "Absolute error of the modal selected weight in optimizer levels 1\u20135.",
+    "score_multiclass_brier": "sum over five classes (p_k-y_k)^2; SDK 0\u20134 maps to canonical weights 1\u20135; range 0\u20132; never pooled with binary Brier.",
+    "score_normalized_rps": "1/4 * sum at thresholds 1\u20134 (cumulative predicted probability - cumulative one-hot truth)^2; range 0\u20131."
+  },
+  "groups": {
+    "availability_applies": {
+      "binary_brier": 0.07557733333333333,
+      "n": 150,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 0.75,
+          "lower": 0.4,
+          "mean_selected_confidence": 0.5433333333333333,
+          "n": 12,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 0.4666666666666667,
+          "lower": 0.6,
+          "mean_selected_confidence": 0.7206666666666667,
+          "n": 15,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 0.967479674796748,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.9233333333333333,
+          "n": 123,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 135
+    },
+    "constraint_hardness": {
+      "binary_brier": 0.009345454545454544,
+      "n": 11,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.4,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.6,
+          "mean_selected_confidence": 0.68,
+          "n": 1,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.996,
+          "n": 10,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 11,
+      "two_class_sum_brier": 0.018690909090909088
+    },
+    "gpt-6-luna/availability_applies": {
+      "binary_brier": 0.07403599999999999,
+      "n": 75,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 0.8,
+          "lower": 0.4,
+          "mean_selected_confidence": 0.54,
+          "n": 5,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 0.5,
+          "lower": 0.6,
+          "mean_selected_confidence": 0.72625,
+          "n": 8,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 0.967741935483871,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.922258064516129,
+          "n": 62,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 68
+    },
+    "gpt-6-luna/constraint_hardness": {
+      "binary_brier": 3.333333333333337e-05,
+      "n": 3,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.4,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.6,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.9966666666666667,
+          "n": 3,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 3,
+      "two_class_sum_brier": 6.666666666666674e-05
+    },
+    "gpt-6-luna/pref_weight": {
+      "mae_levels": 0,
+      "multiclass_brier": 0.36250000000000004,
+      "n": 4,
+      "normalized_rps": 0.07922500000000002,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.4,
+          "mean_selected_confidence": 0.4633333333333333,
+          "n": 3,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.6,
+          "mean_selected_confidence": 0.62,
+          "n": 1,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.8,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 4
+    },
+    "gpt-6-luna/task_mode": {
+      "binary_brier": 0.0,
+      "n": 10,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.4,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.6,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.8,
+          "mean_selected_confidence": 1.0,
+          "n": 10,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 10,
+      "two_class_sum_brier": 0.0
+    },
+    "gpt-6-luna/task_requirement": {
+      "binary_brier": 1.000000000000001e-05,
+      "n": 10,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.4,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.6,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.999,
+          "n": 10,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 10,
+      "two_class_sum_brier": 2.000000000000002e-05
+    },
+    "gpt-6.1-sol/availability_applies": {
+      "binary_brier": 0.07711866666666667,
+      "n": 75,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 0.7142857142857143,
+          "lower": 0.4,
+          "mean_selected_confidence": 0.5457142857142857,
+          "n": 7,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 0.42857142857142855,
+          "lower": 0.6,
+          "mean_selected_confidence": 0.7142857142857143,
+          "n": 7,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 0.9672131147540983,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.9244262295081968,
+          "n": 61,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 67
+    },
+    "gpt-6.1-sol/constraint_hardness": {
+      "binary_brier": 0.012837499999999998,
+      "n": 8,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.4,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.6,
+          "mean_selected_confidence": 0.68,
+          "n": 1,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.9957142857142857,
+          "n": 7,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 8,
+      "two_class_sum_brier": 0.025674999999999996
+    },
+    "gpt-6.1-sol/pref_weight": {
+      "mae_levels": 0,
+      "multiclass_brier": 0.24416666666666667,
+      "n": 6,
+      "normalized_rps": 0.054925,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.4,
+          "mean_selected_confidence": 0.46,
+          "n": 3,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.6,
+          "mean_selected_confidence": 0.63,
+          "n": 1,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.935,
+          "n": 2,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 6
+    },
+    "gpt-6.1-sol/task_mode": {
+      "binary_brier": 0.0136125,
+      "n": 16,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.4,
+          "mean_selected_confidence": 0.54,
+          "n": 1,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.6,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.992,
+          "n": 15,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 16,
+      "two_class_sum_brier": 0.027225
+    },
+    "gpt-6.1-sol/task_requirement": {
+      "binary_brier": 0.0007624999999999999,
+      "n": 16,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.4,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.6,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.9925,
+          "n": 16,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 16,
+      "two_class_sum_brier": 0.0015249999999999999
+    },
+    "pooled_choice": {
+      "binary_brier": 0.005284126984126984,
+      "n": 63,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.4,
+          "mean_selected_confidence": 0.54,
+          "n": 1,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.6,
+          "mean_selected_confidence": 0.68,
+          "n": 1,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.9952459016393442,
+          "n": 61,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 63,
+      "two_class_sum_brier": 0.010568253968253968
+    },
+    "pref_weight": {
+      "mae_levels": 0,
+      "multiclass_brier": 0.29150000000000004,
+      "n": 10,
+      "normalized_rps": 0.06464500000000001,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.4,
+          "mean_selected_confidence": 0.46166666666666667,
+          "n": 6,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.6,
+          "mean_selected_confidence": 0.625,
+          "n": 2,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.935,
+          "n": 2,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 10
+    },
+    "task_mode": {
+      "binary_brier": 0.008376923076923077,
+      "n": 26,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.4,
+          "mean_selected_confidence": 0.54,
+          "n": 1,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.6,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.9952,
+          "n": 25,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 26,
+      "two_class_sum_brier": 0.016753846153846154
+    },
+    "task_requirement": {
+      "binary_brier": 0.00047307692307692307,
+      "n": 26,
+      "reliability_bins": [
+        {
+          "empirical_correctness": null,
+          "lower": 0.0,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.2,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.2,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.4,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.4,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.6,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": null,
+          "lower": 0.6,
+          "mean_selected_confidence": null,
+          "n": 0,
+          "upper": 0.8,
+          "upper_inclusive": false
+        },
+        {
+          "empirical_correctness": 1,
+          "lower": 0.8,
+          "mean_selected_confidence": 0.995,
+          "n": 26,
+          "upper": 1.0,
+          "upper_inclusive": true
+        }
+      ],
+      "selected_answer_correct": 26,
+      "two_class_sum_brier": 0.0009461538461538461
+    }
+  },
+  "score_interpretation": "Small eligible Score sample; descriptive metrics only, insufficient for a broad calibration claim."
+}
