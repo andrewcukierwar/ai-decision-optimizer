@@ -10,6 +10,7 @@ from datetime import datetime, time as datetime_time
 import re
 from typing import Any, Dict, Iterable, List, Union
 
+from .dayplan.schema import time_to_minutes
 
 TimeValue = Union[str, datetime_time]
 
@@ -198,7 +199,10 @@ def build_dayplan_schedule_rows(plan: Any, assignments: Iterable[Any]) -> List[D
             )
         )
 
-    entries.sort(key=lambda item: (item[0], item[1], item[2], item[3].lower()))
+    # DayPlan uses local clock minutes, regardless of incidental tzinfo.
+    entries.sort(key=lambda item: (
+        time_to_minutes(item[0]), time_to_minutes(item[1]), item[2], item[3].lower()
+    ))
     return [item[4] for item in entries]
 
 

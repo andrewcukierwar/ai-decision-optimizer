@@ -17,6 +17,7 @@ from .dayplan import (
     TaskAssignment,
     materialize_day_plan_solution,
 )
+from .dayplan.schema import minutes_to_time, time_to_minutes
 from .shift_schedule import (
     ShiftAssignment,
     ShiftSchedule,
@@ -149,7 +150,12 @@ def solve_day_plan_direct(
         )
     else:
         assignments = [
-            TaskAssignment(name=item.task, start=item.start, end=item.end)
+            # Offsets are metadata, not UTC conversions, in this local-clock domain.
+            TaskAssignment(
+                name=item.task,
+                start=minutes_to_time(time_to_minutes(item.start)),
+                end=minutes_to_time(time_to_minutes(item.end)),
+            )
             for item in output.assignments
         ]
         known_names = {task.name for task in plan.tasks}

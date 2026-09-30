@@ -1,4 +1,5 @@
 import json
+from datetime import time
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -126,6 +127,32 @@ def test_direct_dayplan_is_structured_materialized_and_validated(model):
     assert "CP-SAT" not in DAYPLAN_DIRECT_INSTRUCTIONS
     assert run.telemetry.n_model_calls == 1
     assert run.telemetry.openai_input_tokens == 100
+
+
+@pytest.mark.parametrize("offset", ["-05:00", "+09:00"])
+def test_direct_dayplan_materializes_offset_times_without_shifting_local_clock(offset):
+    plan = DayPlan.model_validate({
+        "horizon": {"start": "09:00", "end": "18:00"},
+        "tasks": [{"name": "focus", "duration_min": 60, "mode": "active"}],
+    })
+    direct = DirectDayPlanSolution.model_validate({
+        "status": "feasible",
+        "assignments": [{"task": "focus", "start": "10:00" + offset, "end": "11:00" + offset}],
+        "unscheduled_tasks": [],
+        "explanation": "A feasible local-clock schedule.",
+    })
+
+    run = solve_confirmed_dayplan(
+        plan, config=ExperimentConfig(solution_engine="direct_llm"), client=FakeClient(direct),
+    )
+
+    assignment = run.solution.assignments[0]
+    assert assignment.start == time(10)
+    assert assignment.end == time(11)
+    assert assignment.start.tzinfo is assignment.end.tzinfo is None
+    assert assignment.model_dump(mode="json") == {"name": "focus", "start": "10:00", "end": "11:00"}
+    assert run.validation.valid, run.validation.errors
+    assert run.direct_output.assignments[0].start.tzinfo is not None
 
 
 @pytest.mark.parametrize("model", ["gpt-6-luna", "gpt-6.1-sol"])

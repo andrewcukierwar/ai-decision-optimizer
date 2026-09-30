@@ -1,11 +1,12 @@
 import json
-from datetime import time
+from datetime import time, timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
 from decision_optimizer.dayplan import DayPlan, solve_day_plan, validate_solution
+from decision_optimizer.dayplan.schema import TaskAssignment
 from decision_optimizer.diagnostics import _format_minutes
 from decision_optimizer.explanations import build_dayplan_explanation_payload
 from decision_optimizer.presentation import (
@@ -188,6 +189,38 @@ def test_schedule_rows_show_duplicate_fixed_event_display_names_individually():
         "1:00–1:30 PM",
         "4:00–4:30 PM",
     ]
+
+
+@pytest.mark.parametrize("offset_hours", [-5, 9])
+def test_schedule_rows_sort_mixed_timezone_times_by_local_clock(offset_hours):
+    plan = DayPlan.model_validate({
+        "horizon": {"start": "08:00", "end": "18:00"},
+        "fixed_events": [{"name": "meeting", "start": "10:00", "end": "10:30"}],
+        "tasks": [
+            {"name": "early", "duration_min": 30, "mode": "active"},
+            {"name": "short passive", "duration_min": 15, "mode": "passive"},
+            {"name": "parallel", "duration_min": 30, "mode": "passive"},
+            {"name": "late", "duration_min": 30, "mode": "active"},
+        ],
+    })
+    offset = timezone(timedelta(hours=offset_hours))
+    assignments = [
+        TaskAssignment(name="late", start=time(11), end=time(11, 30)),
+        TaskAssignment(name="parallel", start=time(10), end=time(10, 30)),
+        TaskAssignment(name="short passive", start=time(10, tzinfo=offset), end=time(10, 15, tzinfo=offset)),
+        TaskAssignment(name="early", start=time(9, tzinfo=offset), end=time(9, 30, tzinfo=offset)),
+    ]
+
+    rows = build_dayplan_schedule_rows(plan, assignments)
+
+    assert [row["Activity"] for row in rows] == [
+        "Early", "Short passive", "Meeting", "Parallel", "Late",
+    ]
+    assert [row["Time"] for row in rows] == [
+        "9:00–9:30 AM", "10:00–10:15 AM", "10:00–10:30 AM",
+        "10:00–10:30 AM", "11:00–11:30 AM",
+    ]
+    assert rows[2]["Type"] == "Fixed event"
 
 
 def test_preference_result_text_uses_grounded_penalty_facts_only():
