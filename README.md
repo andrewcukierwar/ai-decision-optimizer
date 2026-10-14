@@ -1,6 +1,6 @@
 # AI Decision Optimizer
 
-**An app that turns plain-English scheduling requests into optimal schedules, plus a benchmark that compares 8 ways of combining LLMs and a traditional optimization solver to do it.**
+**An app that turns plain-English scheduling requests into constraint-based schedules, plus a benchmark that compares 8 ways of combining LLMs and a traditional optimization solver to do it.**
 
 [**Try the live demo →**](https://ai-decision-optimizer.streamlit.app/)
 
@@ -32,7 +32,7 @@ When you build an AI system for a problem with hard rules, which design choices 
 | Decision layer | None, or TypeSafe Jev reviewing ambiguous judgments |
 | Solver | Let the LLM produce the schedule, or hand it to OR-Tools CP-SAT |
 
-That's **2 × 2 × 2 = 8 architectures**, each run on **14 hand-curated test cases** and scored against ground-truth answers.
+That's **2 × 2 × 2 = 8 architectures**, each run on **14 curated benchmark cases** and scored against ground-truth answers.
 
 ## Key findings
 
@@ -52,7 +52,9 @@ That's **2 × 2 × 2 = 8 architectures**, each run on **14 hand-curated test cas
 | Sol 6.1 · Jev · LLM solver | 13 | 11.8 s | $0.0074 |
 | Sol 6.1 · Jev · CP-SAT | 13 | 8.0 s | $0.0052 |
 
-This is a small, curated benchmark (14 cases, one run each), so treat these as directional observations rather than general claims. The [full analysis](benchmark_results/final_sol61_v2/analysis/analysis_report.md) and [methodology](docs/benchmark_methodology.md) cover the details, including calibration of Jev's confidence scores.
+Costs estimate OpenAI usage and exclude unknown timeout billing.
+
+This is a small benchmark (14 cases per architecture, with shared extraction across variants), so the findings are descriptive rather than conclusive. The [full analysis](benchmark_results/final_sol61_v2/analysis/analysis_report.md) and [methodology](docs/benchmark_methodology.md) cover the details, including calibration of Jev's confidence scores.
 
 ## How it works
 
